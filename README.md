@@ -39,13 +39,17 @@ index.html    GitHub Pages entry point (Pages serves from repo root)
 
 ## Registries
 
-| File | Domain groups | Entries |
-|---|---|---|
-| `systems.json` | 16 | 46 |
-| `roles.json` | 15 | 47 |
-| `regulations.json` | 16 | 38 |
-| `facts.json` | 15 | 36 |
-| `kpis.json` | 16 | 20 |
+| File | Domain groups | Entries | DO-NOT-USE denials |
+|---|---|---|---|
+| `systems.json` | 15 | 36 | 10 |
+| `roles.json` | 15 | 47 | — |
+| `regulations.json` | 15 | 35 | 3 |
+| `facts.json` | 15 | 36 | — |
+| `kpis.json` | 15 | 18 | 2 |
+
+Three registries carry a `not_yet_sourced_do_not_use` group. Those are
+explicit refusals, not entries: naming one is a rejection, and
+`validate_content.py` quotes the refusal back.
 
 Every entry carries a source. `systems[].scope` is `company_specific` or
 `industry_typical` and is rendered as a visible badge on each process page —
