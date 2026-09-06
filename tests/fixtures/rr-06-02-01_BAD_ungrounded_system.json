@@ -1,0 +1,36 @@
+{
+  "pid": "RR-06-02-01",
+  "name": "Automated Track Geometry Inspection Run and Exception Triage",
+  "l1": "Engineering: Track, Structures & Signals",
+  "l2": "Automated Track Inspection (geometry and rail flaw)",
+  "description": "A track geometry car traverses the subdivision on a scheduled cycle, recording gauge, cross-level, alignment and surface measurements against Federal Track Safety Standards class limits. Exceptions are scored and routed to the Roadmaster for disposition. TrackVision Pro ingests the raw geometry stream and auto-classifies each exception into priority bands, cutting triage time by 34% and clearing 1,200 exceptions per week across the region. Priority defects generate an immediate slow order; the Track Supervisor confirms the restriction is in force before the next train is authorised over the segment. Since March 2019 the program has run continuously on all main line track.",
+  "actors": [
+    "Track Supervisor",
+    "Roadmaster",
+    "Track Geometry Analyst"
+  ],
+  "inputs": [
+    "Scheduled inspection cycle plan",
+    "Prior exception history for the subdivision"
+  ],
+  "outputs": [
+    "Scored geometry exception list",
+    "Slow order request for priority defects"
+  ],
+  "systems": [
+    {"name": "TrackVision Pro", "scope": "company_specific", "source_id": "SYS-D06-09"},
+    {"name": "Track geometry car (generic)", "scope": "industry_typical", "source_id": "SYS-D06-07"}
+  ],
+  "regulatory_hook": ["49 CFR Part 213"],
+  "operating_rule_ref": "GCOR (general reference)",
+  "kpi_moved": [
+    "Track-caused defect rate (per mile inspected)",
+    "Mean time to defect closure"
+  ],
+  "pain_points": [
+    "Exception volume exceeds gang capacity during peak surfacing season"
+  ],
+  "confidence": "high",
+  "sources": ["https://railroads.dot.gov/track-inspection"],
+  "last_reviewed": "2026-09-05"
+}

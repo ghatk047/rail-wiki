@@ -1,0 +1,1736 @@
+{
+  "_meta": {
+    "generated_by": "scripts/build_taxonomy.py",
+    "source_of_truth": "docs/rail-wiki-build-spec-v2.md §1 (totals) and §2 (L1/L2 names)",
+    "pid_format": "RR-{L1}-{L2}-{NN}",
+    "allocation_rule": "Per-L1 total from §1, divided evenly across that L1's §2 L2 clusters; remainder distributed one per cluster from the top of the §2 list. The spec fixes L1 totals but not L2 weights — this rule is an assumption.",
+    "l1_count": 15,
+    "l2_count": 136,
+    "process_count": 290,
+    "domains": [
+      {
+        "l1_id": "RR-01",
+        "l1": "Service Design & Network Planning",
+        "l2_clusters": 7,
+        "processes": 20,
+        "spec_total": 20,
+        "per_l2": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-02",
+        "l1": "Dispatching & Train Movement",
+        "l2_clusters": 8,
+        "processes": 22,
+        "spec_total": 22,
+        "per_l2": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-03",
+        "l1": "Terminal & Yard Operations",
+        "l2_clusters": 9,
+        "processes": 26,
+        "spec_total": 26,
+        "per_l2": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-04",
+        "l1": "Crew Management",
+        "l2_clusters": 9,
+        "processes": 22,
+        "spec_total": 22,
+        "per_l2": [
+          3,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-05",
+        "l1": "Mechanical & Rolling Stock",
+        "l2_clusters": 9,
+        "processes": 24,
+        "spec_total": 24,
+        "per_l2": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-06",
+        "l1": "Engineering: Track, Structures & Signals",
+        "l2_clusters": 12,
+        "processes": 32,
+        "spec_total": 32,
+        "per_l2": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-07",
+        "l1": "Safety & Regulatory Compliance",
+        "l2_clusters": 9,
+        "processes": 18,
+        "spec_total": 18,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-08",
+        "l1": "Hazardous Materials & Environmental",
+        "l2_clusters": 9,
+        "processes": 15,
+        "spec_total": 15,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "l1_id": "RR-09",
+        "l1": "Intermodal & Automotive Operations",
+        "l2_clusters": 9,
+        "processes": 16,
+        "spec_total": 16,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1
+        ]
+      },
+      {
+        "l1_id": "RR-10",
+        "l1": "Commercial, Pricing & Customer Service",
+        "l2_clusters": 11,
+        "processes": 22,
+        "spec_total": 22,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "l1_id": "RR-11",
+        "l1": "Interline, Equipment & Car Management",
+        "l2_clusters": 10,
+        "processes": 16,
+        "spec_total": 16,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "l1_id": "RR-12",
+        "l1": "Technology, Data & Cybersecurity",
+        "l2_clusters": 9,
+        "processes": 16,
+        "spec_total": 16,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1
+        ]
+      },
+      {
+        "l1_id": "RR-13",
+        "l1": "Finance, Revenue Accounting & Procurement",
+        "l2_clusters": 9,
+        "processes": 17,
+        "spec_total": 17,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1
+        ]
+      },
+      {
+        "l1_id": "RR-14",
+        "l1": "HR, Labor Relations & Training",
+        "l2_clusters": 7,
+        "processes": 12,
+        "spec_total": 12,
+        "per_l2": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1
+        ]
+      },
+      {
+        "l1_id": "RR-15",
+        "l1": "Merger & Network Integration",
+        "l2_clusters": 9,
+        "processes": 12,
+        "spec_total": 12,
+        "per_l2": [
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  "processes": [
+    {
+      "pid": "RR-01-01-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Operating Plan Design"
+    },
+    {
+      "pid": "RR-01-01-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Operating Plan Design"
+    },
+    {
+      "pid": "RR-01-01-03",
+      "l1": "Service Design & Network Planning",
+      "l2": "Operating Plan Design"
+    },
+    {
+      "pid": "RR-01-02-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Train Symbol & Blocking Plan"
+    },
+    {
+      "pid": "RR-01-02-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Train Symbol & Blocking Plan"
+    },
+    {
+      "pid": "RR-01-02-03",
+      "l1": "Service Design & Network Planning",
+      "l2": "Train Symbol & Blocking Plan"
+    },
+    {
+      "pid": "RR-01-03-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Car Trip Plan Management"
+    },
+    {
+      "pid": "RR-01-03-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Car Trip Plan Management"
+    },
+    {
+      "pid": "RR-01-03-03",
+      "l1": "Service Design & Network Planning",
+      "l2": "Car Trip Plan Management"
+    },
+    {
+      "pid": "RR-01-04-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Terminal Mission Design"
+    },
+    {
+      "pid": "RR-01-04-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Terminal Mission Design"
+    },
+    {
+      "pid": "RR-01-04-03",
+      "l1": "Service Design & Network Planning",
+      "l2": "Terminal Mission Design"
+    },
+    {
+      "pid": "RR-01-05-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Line Capacity & Route Planning"
+    },
+    {
+      "pid": "RR-01-05-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Line Capacity & Route Planning"
+    },
+    {
+      "pid": "RR-01-05-03",
+      "l1": "Service Design & Network Planning",
+      "l2": "Line Capacity & Route Planning"
+    },
+    {
+      "pid": "RR-01-06-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Locomotive Power Distribution Planning"
+    },
+    {
+      "pid": "RR-01-06-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Locomotive Power Distribution Planning"
+    },
+    {
+      "pid": "RR-01-06-03",
+      "l1": "Service Design & Network Planning",
+      "l2": "Locomotive Power Distribution Planning"
+    },
+    {
+      "pid": "RR-01-07-01",
+      "l1": "Service Design & Network Planning",
+      "l2": "Network Performance Metrics & STB Weekly Performance Reporting"
+    },
+    {
+      "pid": "RR-01-07-02",
+      "l1": "Service Design & Network Planning",
+      "l2": "Network Performance Metrics & STB Weekly Performance Reporting"
+    },
+    {
+      "pid": "RR-02-01-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Territory Dispatching (CTC)"
+    },
+    {
+      "pid": "RR-02-01-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Territory Dispatching (CTC)"
+    },
+    {
+      "pid": "RR-02-01-03",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Territory Dispatching (CTC)"
+    },
+    {
+      "pid": "RR-02-02-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Track Warrant Control / Dark Territory"
+    },
+    {
+      "pid": "RR-02-02-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Track Warrant Control / Dark Territory"
+    },
+    {
+      "pid": "RR-02-02-03",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Track Warrant Control / Dark Territory"
+    },
+    {
+      "pid": "RR-02-03-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Authority Issuance & Roadway Worker Coordination"
+    },
+    {
+      "pid": "RR-02-03-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Authority Issuance & Roadway Worker Coordination"
+    },
+    {
+      "pid": "RR-02-03-03",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Authority Issuance & Roadway Worker Coordination"
+    },
+    {
+      "pid": "RR-02-04-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Meet/Pass & Train Prioritization"
+    },
+    {
+      "pid": "RR-02-04-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Meet/Pass & Train Prioritization"
+    },
+    {
+      "pid": "RR-02-04-03",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Meet/Pass & Train Prioritization"
+    },
+    {
+      "pid": "RR-02-05-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Enroute Exception Handling (PTC failure, mechanical, weather)"
+    },
+    {
+      "pid": "RR-02-05-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Enroute Exception Handling (PTC failure, mechanical, weather)"
+    },
+    {
+      "pid": "RR-02-05-03",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Enroute Exception Handling (PTC failure, mechanical, weather)"
+    },
+    {
+      "pid": "RR-02-06-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Chief Dispatcher & Network Desk"
+    },
+    {
+      "pid": "RR-02-06-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Chief Dispatcher & Network Desk"
+    },
+    {
+      "pid": "RR-02-06-03",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Chief Dispatcher & Network Desk"
+    },
+    {
+      "pid": "RR-02-07-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Slow Order, Heat and Cold Order Management"
+    },
+    {
+      "pid": "RR-02-07-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Slow Order, Heat and Cold Order Management"
+    },
+    {
+      "pid": "RR-02-08-01",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Emergency & Derailment Dispatch Response"
+    },
+    {
+      "pid": "RR-02-08-02",
+      "l1": "Dispatching & Train Movement",
+      "l2": "Emergency & Derailment Dispatch Response"
+    },
+    {
+      "pid": "RR-03-01-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Inbound Train Processing & Yarding"
+    },
+    {
+      "pid": "RR-03-01-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Inbound Train Processing & Yarding"
+    },
+    {
+      "pid": "RR-03-01-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Inbound Train Processing & Yarding"
+    },
+    {
+      "pid": "RR-03-02-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Hump and Flat Classification"
+    },
+    {
+      "pid": "RR-03-02-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Hump and Flat Classification"
+    },
+    {
+      "pid": "RR-03-02-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Hump and Flat Classification"
+    },
+    {
+      "pid": "RR-03-03-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Outbound Train Build & Departure"
+    },
+    {
+      "pid": "RR-03-03-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Outbound Train Build & Departure"
+    },
+    {
+      "pid": "RR-03-03-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Outbound Train Build & Departure"
+    },
+    {
+      "pid": "RR-03-04-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Local and Industry Switching"
+    },
+    {
+      "pid": "RR-03-04-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Local and Industry Switching"
+    },
+    {
+      "pid": "RR-03-04-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Local and Industry Switching"
+    },
+    {
+      "pid": "RR-03-05-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Air Brake Tests & Departure Inspection"
+    },
+    {
+      "pid": "RR-03-05-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Air Brake Tests & Departure Inspection"
+    },
+    {
+      "pid": "RR-03-05-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Air Brake Tests & Departure Inspection"
+    },
+    {
+      "pid": "RR-03-06-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yard Planning & Dwell Management"
+    },
+    {
+      "pid": "RR-03-06-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yard Planning & Dwell Management"
+    },
+    {
+      "pid": "RR-03-06-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yard Planning & Dwell Management"
+    },
+    {
+      "pid": "RR-03-07-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Interchange Delivery and Receipt"
+    },
+    {
+      "pid": "RR-03-07-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Interchange Delivery and Receipt"
+    },
+    {
+      "pid": "RR-03-07-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Interchange Delivery and Receipt"
+    },
+    {
+      "pid": "RR-03-08-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yardmaster Operations"
+    },
+    {
+      "pid": "RR-03-08-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yardmaster Operations"
+    },
+    {
+      "pid": "RR-03-08-03",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yardmaster Operations"
+    },
+    {
+      "pid": "RR-03-09-01",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yard Air, Utility and Ground Support"
+    },
+    {
+      "pid": "RR-03-09-02",
+      "l1": "Terminal & Yard Operations",
+      "l2": "Yard Air, Utility and Ground Support"
+    },
+    {
+      "pid": "RR-04-01-01",
+      "l1": "Crew Management",
+      "l2": "Crew Calling & Extra Board"
+    },
+    {
+      "pid": "RR-04-01-02",
+      "l1": "Crew Management",
+      "l2": "Crew Calling & Extra Board"
+    },
+    {
+      "pid": "RR-04-01-03",
+      "l1": "Crew Management",
+      "l2": "Crew Calling & Extra Board"
+    },
+    {
+      "pid": "RR-04-02-01",
+      "l1": "Crew Management",
+      "l2": "Crew District and CBA Rule Administration"
+    },
+    {
+      "pid": "RR-04-02-02",
+      "l1": "Crew Management",
+      "l2": "Crew District and CBA Rule Administration"
+    },
+    {
+      "pid": "RR-04-02-03",
+      "l1": "Crew Management",
+      "l2": "Crew District and CBA Rule Administration"
+    },
+    {
+      "pid": "RR-04-03-01",
+      "l1": "Crew Management",
+      "l2": "Hours of Service Compliance & Records"
+    },
+    {
+      "pid": "RR-04-03-02",
+      "l1": "Crew Management",
+      "l2": "Hours of Service Compliance & Records"
+    },
+    {
+      "pid": "RR-04-03-03",
+      "l1": "Crew Management",
+      "l2": "Hours of Service Compliance & Records"
+    },
+    {
+      "pid": "RR-04-04-01",
+      "l1": "Crew Management",
+      "l2": "Rest, Attendance and Predictable Scheduling Programs"
+    },
+    {
+      "pid": "RR-04-04-02",
+      "l1": "Crew Management",
+      "l2": "Rest, Attendance and Predictable Scheduling Programs"
+    },
+    {
+      "pid": "RR-04-04-03",
+      "l1": "Crew Management",
+      "l2": "Rest, Attendance and Predictable Scheduling Programs"
+    },
+    {
+      "pid": "RR-04-05-01",
+      "l1": "Crew Management",
+      "l2": "Deadhead and Limbo Time Management"
+    },
+    {
+      "pid": "RR-04-05-02",
+      "l1": "Crew Management",
+      "l2": "Deadhead and Limbo Time Management"
+    },
+    {
+      "pid": "RR-04-06-01",
+      "l1": "Crew Management",
+      "l2": "Engineer and Conductor Certification"
+    },
+    {
+      "pid": "RR-04-06-02",
+      "l1": "Crew Management",
+      "l2": "Engineer and Conductor Certification"
+    },
+    {
+      "pid": "RR-04-07-01",
+      "l1": "Crew Management",
+      "l2": "Territory Qualification & Familiarization"
+    },
+    {
+      "pid": "RR-04-07-02",
+      "l1": "Crew Management",
+      "l2": "Territory Qualification & Familiarization"
+    },
+    {
+      "pid": "RR-04-08-01",
+      "l1": "Crew Management",
+      "l2": "Crew Size Compliance"
+    },
+    {
+      "pid": "RR-04-08-02",
+      "l1": "Crew Management",
+      "l2": "Crew Size Compliance"
+    },
+    {
+      "pid": "RR-04-09-01",
+      "l1": "Crew Management",
+      "l2": "Tie-up, Lodging and Crew Transportation"
+    },
+    {
+      "pid": "RR-04-09-02",
+      "l1": "Crew Management",
+      "l2": "Tie-up, Lodging and Crew Transportation"
+    },
+    {
+      "pid": "RR-05-01-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Running Repair & Servicing"
+    },
+    {
+      "pid": "RR-05-01-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Running Repair & Servicing"
+    },
+    {
+      "pid": "RR-05-01-03",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Running Repair & Servicing"
+    },
+    {
+      "pid": "RR-05-02-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Heavy Overhaul and Shop Operations"
+    },
+    {
+      "pid": "RR-05-02-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Heavy Overhaul and Shop Operations"
+    },
+    {
+      "pid": "RR-05-02-03",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Heavy Overhaul and Shop Operations"
+    },
+    {
+      "pid": "RR-05-03-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Railcar Repair & Billing Repair Card Processing"
+    },
+    {
+      "pid": "RR-05-03-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Railcar Repair & Billing Repair Card Processing"
+    },
+    {
+      "pid": "RR-05-03-03",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Railcar Repair & Billing Repair Card Processing"
+    },
+    {
+      "pid": "RR-05-04-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Inbound/Outbound Mechanical Inspection"
+    },
+    {
+      "pid": "RR-05-04-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Inbound/Outbound Mechanical Inspection"
+    },
+    {
+      "pid": "RR-05-04-03",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Inbound/Outbound Mechanical Inspection"
+    },
+    {
+      "pid": "RR-05-05-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Wayside Detector Network (hot bearing, wheel impact, acoustic)"
+    },
+    {
+      "pid": "RR-05-05-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Wayside Detector Network (hot bearing, wheel impact, acoustic)"
+    },
+    {
+      "pid": "RR-05-05-03",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Wayside Detector Network (hot bearing, wheel impact, acoustic)"
+    },
+    {
+      "pid": "RR-05-06-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Condition-Based Maintenance & Equipment Health Alerts"
+    },
+    {
+      "pid": "RR-05-06-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Condition-Based Maintenance & Equipment Health Alerts"
+    },
+    {
+      "pid": "RR-05-06-03",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Condition-Based Maintenance & Equipment Health Alerts"
+    },
+    {
+      "pid": "RR-05-07-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Fleet Reliability and Failure Analysis"
+    },
+    {
+      "pid": "RR-05-07-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Fleet Reliability and Failure Analysis"
+    },
+    {
+      "pid": "RR-05-08-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Bad Order Management"
+    },
+    {
+      "pid": "RR-05-08-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Bad Order Management"
+    },
+    {
+      "pid": "RR-05-09-01",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Fuel Efficiency and Emissions Compliance"
+    },
+    {
+      "pid": "RR-05-09-02",
+      "l1": "Mechanical & Rolling Stock",
+      "l2": "Locomotive Fuel Efficiency and Emissions Compliance"
+    },
+    {
+      "pid": "RR-06-01-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Visual and Walking Track Inspection"
+    },
+    {
+      "pid": "RR-06-01-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Visual and Walking Track Inspection"
+    },
+    {
+      "pid": "RR-06-01-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Visual and Walking Track Inspection"
+    },
+    {
+      "pid": "RR-06-02-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Automated Track Inspection (geometry and rail flaw)"
+    },
+    {
+      "pid": "RR-06-02-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Automated Track Inspection (geometry and rail flaw)"
+    },
+    {
+      "pid": "RR-06-02-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Automated Track Inspection (geometry and rail flaw)"
+    },
+    {
+      "pid": "RR-06-03-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Maintenance-of-Way Programs (rail, tie, surfacing gangs)"
+    },
+    {
+      "pid": "RR-06-03-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Maintenance-of-Way Programs (rail, tie, surfacing gangs)"
+    },
+    {
+      "pid": "RR-06-03-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Maintenance-of-Way Programs (rail, tie, surfacing gangs)"
+    },
+    {
+      "pid": "RR-06-04-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Track Authority and Roadway Worker Protection"
+    },
+    {
+      "pid": "RR-06-04-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Track Authority and Roadway Worker Protection"
+    },
+    {
+      "pid": "RR-06-04-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Track Authority and Roadway Worker Protection"
+    },
+    {
+      "pid": "RR-06-05-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Bridges and Structures"
+    },
+    {
+      "pid": "RR-06-05-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Bridges and Structures"
+    },
+    {
+      "pid": "RR-06-05-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Bridges and Structures"
+    },
+    {
+      "pid": "RR-06-06-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Signal Design, Installation and Testing"
+    },
+    {
+      "pid": "RR-06-06-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Signal Design, Installation and Testing"
+    },
+    {
+      "pid": "RR-06-06-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Signal Design, Installation and Testing"
+    },
+    {
+      "pid": "RR-06-07-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "PTC Wayside Assets and Subdivision Track Data File Management"
+    },
+    {
+      "pid": "RR-06-07-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "PTC Wayside Assets and Subdivision Track Data File Management"
+    },
+    {
+      "pid": "RR-06-07-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "PTC Wayside Assets and Subdivision Track Data File Management"
+    },
+    {
+      "pid": "RR-06-08-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Grade Crossing Signals and FRA Crossing Inventory"
+    },
+    {
+      "pid": "RR-06-08-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Grade Crossing Signals and FRA Crossing Inventory"
+    },
+    {
+      "pid": "RR-06-08-03",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Grade Crossing Signals and FRA Crossing Inventory"
+    },
+    {
+      "pid": "RR-06-09-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Capital Program and Line Capacity Projects"
+    },
+    {
+      "pid": "RR-06-09-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Capital Program and Line Capacity Projects"
+    },
+    {
+      "pid": "RR-06-10-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Right-of-Way, Real Estate and Utility Occupancy"
+    },
+    {
+      "pid": "RR-06-10-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Right-of-Way, Real Estate and Utility Occupancy"
+    },
+    {
+      "pid": "RR-06-11-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Vegetation, Drainage and Environmental Field Work"
+    },
+    {
+      "pid": "RR-06-11-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Vegetation, Drainage and Environmental Field Work"
+    },
+    {
+      "pid": "RR-06-12-01",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Derailment Site Restoration"
+    },
+    {
+      "pid": "RR-06-12-02",
+      "l1": "Engineering: Track, Structures & Signals",
+      "l2": "Derailment Site Restoration"
+    },
+    {
+      "pid": "RR-07-01-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Operating Rules Administration (GCOR)"
+    },
+    {
+      "pid": "RR-07-01-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Operating Rules Administration (GCOR)"
+    },
+    {
+      "pid": "RR-07-02-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Efficiency Testing and Operational Observation"
+    },
+    {
+      "pid": "RR-07-02-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Efficiency Testing and Operational Observation"
+    },
+    {
+      "pid": "RR-07-03-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Drug and Alcohol Program"
+    },
+    {
+      "pid": "RR-07-03-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Drug and Alcohol Program"
+    },
+    {
+      "pid": "RR-07-04-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Accident and Incident Reporting"
+    },
+    {
+      "pid": "RR-07-04-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Accident and Incident Reporting"
+    },
+    {
+      "pid": "RR-07-05-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "FRA Inspection and Enforcement Liaison"
+    },
+    {
+      "pid": "RR-07-05-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "FRA Inspection and Enforcement Liaison"
+    },
+    {
+      "pid": "RR-07-06-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Confidential Close Call Reporting"
+    },
+    {
+      "pid": "RR-07-06-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Confidential Close Call Reporting"
+    },
+    {
+      "pid": "RR-07-07-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Railroad Police, Trespass and Cargo Security"
+    },
+    {
+      "pid": "RR-07-07-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Railroad Police, Trespass and Cargo Security"
+    },
+    {
+      "pid": "RR-07-08-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Grade Crossing Public Safety Outreach"
+    },
+    {
+      "pid": "RR-07-08-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "Grade Crossing Public Safety Outreach"
+    },
+    {
+      "pid": "RR-07-09-01",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "STB Regulatory Filings and Annual Reporting"
+    },
+    {
+      "pid": "RR-07-09-02",
+      "l1": "Safety & Regulatory Compliance",
+      "l2": "STB Regulatory Filings and Annual Reporting"
+    },
+    {
+      "pid": "RR-08-01-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Hazmat Acceptance, Documentation and Placarding"
+    },
+    {
+      "pid": "RR-08-01-02",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Hazmat Acceptance, Documentation and Placarding"
+    },
+    {
+      "pid": "RR-08-02-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "TIH/PIH Handling and Route Risk Analysis"
+    },
+    {
+      "pid": "RR-08-02-02",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "TIH/PIH Handling and Route Risk Analysis"
+    },
+    {
+      "pid": "RR-08-03-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Key Train Operating Restrictions"
+    },
+    {
+      "pid": "RR-08-03-02",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Key Train Operating Restrictions"
+    },
+    {
+      "pid": "RR-08-04-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Hazmat Training and Certification"
+    },
+    {
+      "pid": "RR-08-04-02",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Hazmat Training and Certification"
+    },
+    {
+      "pid": "RR-08-05-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Emergency Response Planning and First-Responder Data Access"
+    },
+    {
+      "pid": "RR-08-05-02",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Emergency Response Planning and First-Responder Data Access"
+    },
+    {
+      "pid": "RR-08-06-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Tank Car Compliance and Fleet Transition"
+    },
+    {
+      "pid": "RR-08-06-02",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Tank Car Compliance and Fleet Transition"
+    },
+    {
+      "pid": "RR-08-07-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Environmental Permitting and Site Remediation"
+    },
+    {
+      "pid": "RR-08-08-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Emissions, Fuel and Sustainability Programs"
+    },
+    {
+      "pid": "RR-08-09-01",
+      "l1": "Hazardous Materials & Environmental",
+      "l2": "Spill Prevention and Stormwater"
+    },
+    {
+      "pid": "RR-09-01-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Intermodal Gate (ingate/outgate)"
+    },
+    {
+      "pid": "RR-09-01-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Intermodal Gate (ingate/outgate)"
+    },
+    {
+      "pid": "RR-09-02-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Lift and Stack Operations"
+    },
+    {
+      "pid": "RR-09-02-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Lift and Stack Operations"
+    },
+    {
+      "pid": "RR-09-03-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Intermodal Train Build and Loading Plan"
+    },
+    {
+      "pid": "RR-09-03-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Intermodal Train Build and Loading Plan"
+    },
+    {
+      "pid": "RR-09-04-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Drayage and Motor Carrier Coordination"
+    },
+    {
+      "pid": "RR-09-04-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Drayage and Motor Carrier Coordination"
+    },
+    {
+      "pid": "RR-09-05-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Appointment and Terminal Capacity Management"
+    },
+    {
+      "pid": "RR-09-05-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Appointment and Terminal Capacity Management"
+    },
+    {
+      "pid": "RR-09-06-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Chassis and Container Pool Management"
+    },
+    {
+      "pid": "RR-09-06-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Chassis and Container Pool Management"
+    },
+    {
+      "pid": "RR-09-07-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Port and International Interchange"
+    },
+    {
+      "pid": "RR-09-07-02",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Port and International Interchange"
+    },
+    {
+      "pid": "RR-09-08-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Automotive Loading, Multilevel Handling and Vehicle Damage"
+    },
+    {
+      "pid": "RR-09-09-01",
+      "l1": "Intermodal & Automotive Operations",
+      "l2": "Transload and Bulk Terminal Operations"
+    },
+    {
+      "pid": "RR-10-01-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Freight Sales and Account Management"
+    },
+    {
+      "pid": "RR-10-01-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Freight Sales and Account Management"
+    },
+    {
+      "pid": "RR-10-02-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Pricing, Tariffs and Rate Quotation"
+    },
+    {
+      "pid": "RR-10-02-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Pricing, Tariffs and Rate Quotation"
+    },
+    {
+      "pid": "RR-10-03-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Contract Management and Common Carrier Obligation"
+    },
+    {
+      "pid": "RR-10-03-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Contract Management and Common Carrier Obligation"
+    },
+    {
+      "pid": "RR-10-04-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Bid, RFP and Shuttle Train Capacity Auctions"
+    },
+    {
+      "pid": "RR-10-04-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Bid, RFP and Shuttle Train Capacity Auctions"
+    },
+    {
+      "pid": "RR-10-05-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Demurrage and Accessorial Billing"
+    },
+    {
+      "pid": "RR-10-05-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Demurrage and Accessorial Billing"
+    },
+    {
+      "pid": "RR-10-06-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Waybill and Bill of Lading Intake"
+    },
+    {
+      "pid": "RR-10-06-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Waybill and Bill of Lading Intake"
+    },
+    {
+      "pid": "RR-10-07-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Customer Service Center and Shipment Tracing"
+    },
+    {
+      "pid": "RR-10-07-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Customer Service Center and Shipment Tracing"
+    },
+    {
+      "pid": "RR-10-08-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Digital Customer Channels and APIs"
+    },
+    {
+      "pid": "RR-10-08-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Digital Customer Channels and APIs"
+    },
+    {
+      "pid": "RR-10-09-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Freight Claims, Loss and Damage"
+    },
+    {
+      "pid": "RR-10-09-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Freight Claims, Loss and Damage"
+    },
+    {
+      "pid": "RR-10-10-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Industrial Development and Site Selection"
+    },
+    {
+      "pid": "RR-10-10-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Industrial Development and Site Selection"
+    },
+    {
+      "pid": "RR-10-11-01",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Service Disruption Communication and Recovery"
+    },
+    {
+      "pid": "RR-10-11-02",
+      "l1": "Commercial, Pricing & Customer Service",
+      "l2": "Service Disruption Communication and Recovery"
+    },
+    {
+      "pid": "RR-11-01-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Interchange Agreements and Junction Operations"
+    },
+    {
+      "pid": "RR-11-01-02",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Interchange Agreements and Junction Operations"
+    },
+    {
+      "pid": "RR-11-02-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Industry Equipment Registry (Umler-class)"
+    },
+    {
+      "pid": "RR-11-02-02",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Industry Equipment Registry (Umler-class)"
+    },
+    {
+      "pid": "RR-11-03-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Car Hire and Per Diem Accounting"
+    },
+    {
+      "pid": "RR-11-03-02",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Car Hire and Per Diem Accounting"
+    },
+    {
+      "pid": "RR-11-04-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Empty Car Distribution and Fleet Allocation"
+    },
+    {
+      "pid": "RR-11-04-02",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Empty Car Distribution and Fleet Allocation"
+    },
+    {
+      "pid": "RR-11-05-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Private and Foreign Car Handling"
+    },
+    {
+      "pid": "RR-11-05-02",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Private and Foreign Car Handling"
+    },
+    {
+      "pid": "RR-11-06-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Short Line and Regional Partner Management"
+    },
+    {
+      "pid": "RR-11-06-02",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Short Line and Regional Partner Management"
+    },
+    {
+      "pid": "RR-11-07-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Trackage Rights and Haulage Arrangements"
+    },
+    {
+      "pid": "RR-11-08-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Joint Facilities and Terminal Railroads"
+    },
+    {
+      "pid": "RR-11-09-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Interline EDI Messaging"
+    },
+    {
+      "pid": "RR-11-10-01",
+      "l1": "Interline, Equipment & Car Management",
+      "l2": "Cross-Border Interchange and Customs (Mexico/Canada gateways)"
+    },
+    {
+      "pid": "RR-12-01-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Transportation Management Platform Operations"
+    },
+    {
+      "pid": "RR-12-01-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Transportation Management Platform Operations"
+    },
+    {
+      "pid": "RR-12-02-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Computer-Aided Dispatch Platform Operations"
+    },
+    {
+      "pid": "RR-12-02-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Computer-Aided Dispatch Platform Operations"
+    },
+    {
+      "pid": "RR-12-03-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "PTC Back Office Server Operations"
+    },
+    {
+      "pid": "RR-12-03-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "PTC Back Office Server Operations"
+    },
+    {
+      "pid": "RR-12-04-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Enterprise Asset Management Platform"
+    },
+    {
+      "pid": "RR-12-04-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Enterprise Asset Management Platform"
+    },
+    {
+      "pid": "RR-12-05-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Data Platform, Analytics and ML"
+    },
+    {
+      "pid": "RR-12-05-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Data Platform, Analytics and ML"
+    },
+    {
+      "pid": "RR-12-06-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Field and Mobile Technology"
+    },
+    {
+      "pid": "RR-12-06-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Field and Mobile Technology"
+    },
+    {
+      "pid": "RR-12-07-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Wayside Telecommunications and ROW Network"
+    },
+    {
+      "pid": "RR-12-07-02",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Wayside Telecommunications and ROW Network"
+    },
+    {
+      "pid": "RR-12-08-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Cybersecurity and Rail Security Directives"
+    },
+    {
+      "pid": "RR-12-09-01",
+      "l1": "Technology, Data & Cybersecurity",
+      "l2": "Integration, API and Partner Connectivity"
+    },
+    {
+      "pid": "RR-13-01-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Revenue Accounting and Recognition"
+    },
+    {
+      "pid": "RR-13-01-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Revenue Accounting and Recognition"
+    },
+    {
+      "pid": "RR-13-02-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Freight Billing and Collections"
+    },
+    {
+      "pid": "RR-13-02-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Freight Billing and Collections"
+    },
+    {
+      "pid": "RR-13-03-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Interline Settlement and Division of Revenue"
+    },
+    {
+      "pid": "RR-13-03-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Interline Settlement and Division of Revenue"
+    },
+    {
+      "pid": "RR-13-04-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Cost Accounting and Regulatory Costing"
+    },
+    {
+      "pid": "RR-13-04-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Cost Accounting and Regulatory Costing"
+    },
+    {
+      "pid": "RR-13-05-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Capital Budgeting and Project Authorization"
+    },
+    {
+      "pid": "RR-13-05-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Capital Budgeting and Project Authorization"
+    },
+    {
+      "pid": "RR-13-06-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Fuel Procurement and Hedging"
+    },
+    {
+      "pid": "RR-13-06-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Fuel Procurement and Hedging"
+    },
+    {
+      "pid": "RR-13-07-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Materials, Supply Chain and Warehousing"
+    },
+    {
+      "pid": "RR-13-07-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Materials, Supply Chain and Warehousing"
+    },
+    {
+      "pid": "RR-13-08-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Equipment Leasing and Asset Finance"
+    },
+    {
+      "pid": "RR-13-08-02",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Equipment Leasing and Asset Finance"
+    },
+    {
+      "pid": "RR-13-09-01",
+      "l1": "Finance, Revenue Accounting & Procurement",
+      "l2": "Regulatory Financial Reporting"
+    },
+    {
+      "pid": "RR-14-01-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Safety-Sensitive Hiring and Screening"
+    },
+    {
+      "pid": "RR-14-01-02",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Safety-Sensitive Hiring and Screening"
+    },
+    {
+      "pid": "RR-14-02-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Training Academy and Simulator Programs"
+    },
+    {
+      "pid": "RR-14-02-02",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Training Academy and Simulator Programs"
+    },
+    {
+      "pid": "RR-14-03-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Labor Relations under the Railway Labor Act"
+    },
+    {
+      "pid": "RR-14-03-02",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Labor Relations under the Railway Labor Act"
+    },
+    {
+      "pid": "RR-14-04-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "National and Local Bargaining"
+    },
+    {
+      "pid": "RR-14-04-02",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "National and Local Bargaining"
+    },
+    {
+      "pid": "RR-14-05-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Discipline and Investigation Procedure"
+    },
+    {
+      "pid": "RR-14-05-02",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Discipline and Investigation Procedure"
+    },
+    {
+      "pid": "RR-14-06-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Workforce Planning, Furlough and Recall"
+    },
+    {
+      "pid": "RR-14-07-01",
+      "l1": "HR, Labor Relations & Training",
+      "l2": "Attendance Policy Administration"
+    },
+    {
+      "pid": "RR-15-01-01",
+      "l1": "Merger & Network Integration",
+      "l2": "STB Major Merger Application Process"
+    },
+    {
+      "pid": "RR-15-01-02",
+      "l1": "Merger & Network Integration",
+      "l2": "STB Major Merger Application Process"
+    },
+    {
+      "pid": "RR-15-02-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Operating Plan and Service Assurance Plan"
+    },
+    {
+      "pid": "RR-15-02-02",
+      "l1": "Merger & Network Integration",
+      "l2": "Operating Plan and Service Assurance Plan"
+    },
+    {
+      "pid": "RR-15-03-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Labor Protective Conditions and Implementing Agreements"
+    },
+    {
+      "pid": "RR-15-03-02",
+      "l1": "Merger & Network Integration",
+      "l2": "Labor Protective Conditions and Implementing Agreements"
+    },
+    {
+      "pid": "RR-15-04-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Systems Cutover Planning (TMS, CAD, PTC, car accounting)"
+    },
+    {
+      "pid": "RR-15-05-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Reporting Mark and Equipment Registry Transition"
+    },
+    {
+      "pid": "RR-15-06-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Crew District and Dispatch Territory Consolidation"
+    },
+    {
+      "pid": "RR-15-07-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Terminal and Gateway Rationalization"
+    },
+    {
+      "pid": "RR-15-08-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Integration Risk and Historical Lessons"
+    },
+    {
+      "pid": "RR-15-09-01",
+      "l1": "Merger & Network Integration",
+      "l2": "Post-Merger Oversight and Reporting"
+    }
+  ]
+}
