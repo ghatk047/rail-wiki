@@ -1,0 +1,95 @@
+{
+  "_readme": "Job titles/crafts. 'source' for well-established industry roles is marked general_industry_knowledge where no single citable source exists for a role title this basic (e.g. 'Conductor') — this is acceptable ONLY for role names, never for systems, regulations, or figures.",
+
+  "domain_01_service_design": [
+    {"role": "Chairman, President and CEO (plan sponsor level)", "scope": "company_specific", "source": "Lance Fritz named as sponsor/announcer of Unified Plan 2020", "source_url": "https://www.progressiverailroading.com/union_pacific/news/Union-Pacific-to-launch-precision-scheduled-railroading-plan--55636"},
+    {"role": "Service Design / Network Planning Analyst", "scope": "industry_typical", "source": "general_industry_knowledge — role implied by the operating-plan design functions described in PSR trade coverage"},
+    {"role": "VP Network Planning & Operations", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_02_dispatching": [
+    {"role": "Train Dispatcher", "scope": "industry_typical", "source": "explicitly named as a GCOR-governed role required to know dispatching rules", "source_url": "https://data.ntsb.gov/Docket/Document/docBLOB?ID=40452007&FileExtension=.PDF&FileName=General+Code+of+Operating+Rules-Master.PDF"},
+    {"role": "Control Operator", "scope": "industry_typical", "source": "named alongside Train Dispatchers in GCOR as a rule-governed role", "source_url": "https://data.ntsb.gov/Docket/Document/docBLOB?ID=40452007&FileExtension=.PDF&FileName=General+Code+of+Operating+Rules-Master.PDF"},
+    {"role": "Chief Dispatcher", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_03_terminal_yard": [
+    {"role": "Yardmaster", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Switchman/Switch Foreman", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Car Inspector (Carman)", "scope": "industry_typical", "source": "general_industry_knowledge; role implied by 49 CFR 232 brake test requirements"}
+  ],
+
+  "domain_04_crew_management": [
+    {"role": "Locomotive Engineer", "scope": "industry_typical", "source": "general_industry_knowledge; certification basis at 49 CFR 240"},
+    {"role": "Conductor", "scope": "industry_typical", "source": "general_industry_knowledge; certification basis at 49 CFR 242"},
+    {"role": "Brakeman/Trainman", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Crew Caller / Crew Dispatcher", "scope": "industry_typical", "source": "general_industry_knowledge; supported by crew-management vendor literature describing crew calling as a function", "source_url": "https://rail.cloudmoyo.com/blog/cloud-based-railroads-crew-management-system-for-complex-operations/"},
+    {"role": "Trainmaster", "scope": "industry_typical", "source": "general_industry_knowledge — first-line field operating supervisor over crews in a terminal or subdivision"},
+    {"role": "Superintendent (Division)", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Local Chairman / General Chairman (union)", "scope": "industry_typical", "source": "Railway Labor Act structure", "source_url": "https://www.nmb.gov/NMB_Resources/rla.html"}
+  ],
+
+  "domain_05_mechanical": [
+    {"role": "Machinist / Locomotive Mechanic", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Car Repairer / Carman", "scope": "industry_typical", "source": "general_industry_knowledge; role implied by 49 CFR 215 freight car safety standards"},
+    {"role": "Fleet Reliability Engineer", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_06_engineering": [
+    {"role": "Track Supervisor", "scope": "company_specific", "source": "named in UP's own trade-press coverage of its track inspection program", "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/"},
+    {"role": "Assistant Foreman (track)", "scope": "company_specific", "source": "named in the same UP RT&S coverage", "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/"},
+    {"role": "Roadmaster", "scope": "industry_typical", "source": "general_industry_knowledge — field manager over a track maintenance territory"},
+    {"role": "Signal Maintainer", "scope": "industry_typical", "source": "general_industry_knowledge; role implied by 49 CFR 236 signal system maintenance requirements"},
+    {"role": "PTC Field Engineer / PTC Technician", "scope": "industry_typical", "source": "role implied by Wabtec I-ETMS field kit installation and support structure", "source_url": "https://www.wabteccorp.com/digital-intelligence/signaling-and-train-control/services/turnkey-solutions"},
+    {"role": "Employee-in-Charge (EIC)", "scope": "industry_typical", "source": "defined role under 49 CFR 214 roadway worker protection", "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-214"},
+    {"role": "Chief Engineer / VP Engineering", "scope": "industry_typical", "source": "general_industry_knowledge; a VP-Engineering signatory appears in the 2020 FRA petition correspondence", "source_url": "https://downloads.regulations.gov/FRA-2020-0031-0002/attachment_1.pdf"}
+  ],
+
+  "domain_07_safety_regulatory": [
+    {"role": "Rules Instructor / Rules Officer", "scope": "industry_typical", "source": "role implied by 49 CFR 217 periodic instruction requirement", "source_url": "https://grokipedia.com/page/general_code_of_operating_rules"},
+    {"role": "Efficiency Testing Officer", "scope": "industry_typical", "source": "general_industry_knowledge; testing function required under 49 CFR 217"},
+    {"role": "Chief Safety Officer / VP Safety", "scope": "industry_typical", "source": "general_industry_knowledge; FRA correspondence addressee title 'Chief Safety Officer' appears in official FRA letters", "source_url": "https://downloads.regulations.gov/FRA-2010-0072-0015/attachment_1.pdf"}
+  ],
+
+  "domain_08_hazmat_environmental": [
+    {"role": "Hazmat Compliance Officer", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "TRANSCAER Regional Coordinator", "scope": "industry_typical", "source": "named role in TRANSCAER outreach materials", "source_url": "https://www.westerncity.com/article/askrail-app-provides-hazmat-data-first-responders"},
+    {"role": "Emergency Response Coordinator", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_09_intermodal_automotive": [
+    {"role": "Intermodal Terminal Manager", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Crane/Lift Operator", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_10_commercial": [
+    {"role": "Account Manager / Sales Representative", "scope": "company_specific", "source": "UP's own Mexico Energy Reform program materials reference a 'Union Pacific sales representative' role for customer routing guidance", "source_url": "https://www.up.com/customers/mexico/mer/merfaqs/index.htm"},
+    {"role": "Pricing / Yield Manager", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Claims Adjuster", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_11_interline_equipment": [
+    {"role": "Car Hire / Interline Settlement Analyst", "scope": "industry_typical", "source": "general_industry_knowledge; function described throughout Railinc car hire documentation", "source_url": "https://public.railinc.com/products-services/car-hire"},
+    {"role": "Equipment Registration / Umler Data Analyst", "scope": "industry_typical", "source": "role implied by Umler change-request and registration workflow", "source_url": "https://public.railinc.com/products-services/umler-system"}
+  ],
+
+  "domain_12_technology": [
+    {"role": "CIO", "scope": "company_specific", "source": "Rahul Jalali named as UP CIO discussing NetControl", "source_url": "https://www.progressiverailroading.com/RailPrime/details/UP-adopts-a-more-modern-and-groundbreaking-transportation-management-system--71444"},
+    {"role": "Enterprise Architect / Platform Owner", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_13_finance": [
+    {"role": "Revenue Accountant", "scope": "industry_typical", "source": "general_industry_knowledge"},
+    {"role": "Cost Analyst (regulatory costing)", "scope": "industry_typical", "source": "general_industry_knowledge; regulatory costing is an STB-related function"}
+  ],
+
+  "domain_14_hr_labor": [
+    {"role": "Labor Relations Officer", "scope": "industry_typical", "source": "role implied by Railway Labor Act structure", "source_url": "https://www.nmb.gov/NMB_Resources/rla.html"},
+    {"role": "Training Academy Instructor", "scope": "industry_typical", "source": "general_industry_knowledge"}
+  ],
+
+  "domain_15_merger_integration": [
+    {"role": "Chairman/CEO (deal sponsor)", "scope": "company_specific", "source": "Jim Vena named as UP CEO in merger application statements", "source_url": "https://www.up.com/press-releases/growth/stb-supplemental-second-round-270727"},
+    {"role": "Integration Program Management Office (PMO) lead", "scope": "industry_typical", "source": "general_industry_knowledge — standard structure for major-merger integration programs"}
+  ]
+}

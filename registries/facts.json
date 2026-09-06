@@ -1,0 +1,221 @@
+{
+  "_readme": "Dated events and specific figures only. Every fact needs a source_url and as_of date. This is the registry that prevents the pipeline from inventing history.",
+
+  "domain_01_service_design": [
+    {
+      "fact": "Union Pacific announced Unified Plan 2020 in September 2018, implementing Precision Scheduled Railroading (PSR) principles, with phased rollout beginning October 1, 2018 starting on the eastern North/South corridor between Wisconsin and Texas.",
+      "source_url": "https://www.supplychaindive.com/news/Union-Pacific-precision-scheduled-railroading/532851/",
+      "as_of": "2018-09-20"
+    },
+    {
+      "fact": "PSR was created/popularized by the late E. Hunter Harrison, who implemented it at Canadian National and Canadian Pacific before his final role as CEO of CSX; UP became (per trade coverage at the time) the second US-based Class I to adopt it after CSX, though as of 2022 trade coverage PSR was in place or under adoption by all Class I railroads except BNSF.",
+      "source_url": "https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940",
+      "as_of": "2022-05-02"
+    },
+    {
+      "fact": "UP's own initial 'Blend and Balance' PSR design did not perform reliably in the field — by CEO Lance Fritz's own account, by mid-2018 UP determined the transportation plan as originally conceived was 'virtually impossible to execute reliably and consistently,' leading to a redesign in August 2018 that became Unified Plan 2020.",
+      "source_url": "https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940",
+      "as_of": "2022-05-02"
+    },
+    {
+      "fact": "The STB sent a letter to UP CEO Lance Fritz shortly after the Unified Plan 2020 announcement, asking UP to provide updates on the operating changes — illustrating that even a non-merger service change draws STB oversight attention.",
+      "source_url": "https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro",
+      "as_of": "2018-09-21"
+    }
+  ],
+
+  "domain_02_dispatching": [
+    {
+      "fact": "Union Pacific's Harriman Dispatching Center opened in Omaha in 1989, centralizing 10 regional dispatching centers into one location.",
+      "source_url": "https://www.up.com/about-us/history",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_03_terminal_yard": [
+    {
+      "fact": "Bailey Yard in North Platte, Nebraska is the largest railroad classification yard in the world: approximately 2,850 acres, about 8 miles long, 315 miles of track, named for former UP President Edd H. Bailey. It has 17 receiving and 16 departure tracks, two humps (eastbound ~34 ft, westbound ~20 ft), and 114 bowl tracks (49 westbound, 65 eastbound). It handles roughly 10,000-14,000 railcars and ~139 trains every 24 hours, sorting about 3,000 cars/day at up to 4 cars/minute. UP employs more than 2,600 people in North Platte.",
+      "source_url": "https://en.wikipedia.org/wiki/Bailey_Yard",
+      "as_of": "2025"
+    }
+  ],
+
+  "domain_04_crew_management": [
+    {
+      "fact": "PS Technology (PST) is a wholly-owned subsidiary of Union Pacific Railroad, building crew management/timekeeping software sold industry-wide.",
+      "source_url": "https://www.forbes.com/sites/oracle/2018/09/10/railroads-roll-ahead-with-cloud-based-crew-management/",
+      "as_of": "2018-09-10"
+    },
+    {
+      "fact": "On August 11, 2026, the Eleventh Circuit Court of Appeals upheld FRA's 2024 two-person minimum crew rule in a 2-1 decision, rejecting a challenge from the Association of American Railroads, the American Short Line and Regional Railroad Association, and six railroads including Union Pacific. The court denied the petitions for review but did not vacate the rule.",
+      "source_url": "https://www.freightwaves.com/news/federal-court-upholds-challenge-to-fras-two-person-rail-crew-rule",
+      "as_of": "2026-08-11"
+    },
+    {
+      "fact": "The FRA received approximately 13,500 public comments on the proposed 2024 crew size rule, with more than 98.5% supporting it.",
+      "source_url": "https://www.railwayage.com/regulatory/federal-court-upholds-fra-two-person-crew-rule/",
+      "as_of": "2026-08"
+    },
+    {
+      "fact": "As part of the new Eagle Pass gateway process (effective Nov 20, 2025), Ferromex crews operating into the US have been 'trained and qualified by Union Pacific, including certification' — a concrete, sourced example of cross-border crew qualification process, relevant to RR-04 territory qualification content.",
+      "source_url": "https://www.up.com/news/service/enhancing-safety-at-eagle-crossing-251121",
+      "as_of": "2025-11-21"
+    }
+  ],
+
+  "domain_05_mechanical": [],
+
+  "domain_06_engineering": [
+    {
+      "fact": "Union Pacific became the first Class I railroad to modernize all three core operating platforms — Positive Train Control, computer-aided dispatch, and transportation management — cutting over to NetControl on January 6, 2024, replacing the mainframe Transportation Control System (TCS) it had run for over 50 years.",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm",
+      "as_of": "2024-03-18"
+    },
+    {
+      "fact": "In March 2020, Union Pacific petitioned FRA for a temporary suspension of 49 CFR 213.233(c) to pilot autonomous track geometry measurement systems in place of traditional inspection methods, on segments of its SPSCL and Sunset routes across 5 subdivisions.",
+      "source_url": "https://downloads.regulations.gov/FRA-2020-0031-0002/attachment_1.pdf",
+      "as_of": "2020-04-28"
+    },
+    {
+      "fact": "As of an August 2024 trade profile, Union Pacific's track inspection fleet comprised one crewed traditional track geometry car, a crewed Hi-Rail system, ten automated locomotive-mounted inspection systems, and three boxcar-mounted autonomous systems; most inspection miles are completed by the locomotive- and boxcar-mounted systems.",
+      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/",
+      "as_of": "2024-08-07"
+    },
+    {
+      "fact": "Union Pacific reports track-caused defects down approximately 85% over the roughly five years since it began its automated track inspection program (i.e., program start approximately 2019).",
+      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/",
+      "as_of": "2024-08-07"
+    },
+    {
+      "fact": "Union Pacific was one of four railroads (with BNSF, Norfolk Southern, and CSX) that jointly submitted the I-ETMS PTC Development Plan v2.0 to FRA for Type Approval in June 2011, built on Wabtec's I-ETMS (formerly V-ETMS) product.",
+      "source_url": "https://downloads.regulations.gov/FRA-2010-0072-0015/attachment_1.pdf",
+      "as_of": "2011-06-01"
+    },
+    {
+      "fact": "NAMING CAVEAT — do not conflate: 'ATIP' (Automated Track Inspection Program) is the FRA's own government-run track inspection car fleet, which conducts compliance surveys of 50,000-100,000 miles of track per year across the network, including on UP track. It is not documented as UP's internal program name. CN separately operates its own branded 'Autonomous Track Inspection Program,' also abbreviated ATIP, which is a different company's program.",
+      "source_url": "https://railroads.dot.gov/railroad-safety/divisions/track/atip-overview",
+      "as_of": "2024-07-05"
+    }
+  ],
+
+  "domain_07_safety_regulatory": [
+    {
+      "fact": "GCOR (General Code of Operating Rules) is used by Class I railroads west of Chicago (including UP), most Class II railroads, and many short lines; railroads in the northeast US generally use NORAC instead. GCOR's 9th edition took effect September 23, 2025 per one trade summary, superseding prior editions and applying to BNSF, UP, and other adopters.",
+      "source_url": "https://grokipedia.com/page/general_code_of_operating_rules",
+      "as_of": "2025-09-23"
+    },
+    {
+      "fact": "FRA 2025 data shows overall train accidents down 14% year-over-year, cited by a US DOT representative in the context of the Aug 2026 crew-size ruling as evidence of continued safety improvement.",
+      "source_url": "https://www.cslra.org/?p=2977",
+      "as_of": "2026-08"
+    }
+  ],
+
+  "domain_08_hazmat_environmental": [
+    {
+      "fact": "The AskRail app was launched in October 2014 as a joint effort of America's Class I freight railroads, Amtrak, the International Association of Fire Chiefs, AAR, and Railinc (which administers the app). It serves more than 2.3 million first responders across 49 states, the District of Columbia, and 8 Canadian provinces, available in English and French across the US, Canada, and Mexico.",
+      "source_url": "https://www.aar.org/issue/askrail-app/",
+      "as_of": "2023-04-28"
+    },
+    {
+      "fact": "TRANSCAER (Transportation Community Awareness and Emergency Response) was founded in 1986 by Union Pacific and the Dow Chemical Company as a voluntary national outreach effort helping communities prepare for and respond to hazmat transportation incidents; it is now an industry-wide program.",
+      "source_url": "https://www.westerncity.com/article/askrail-app-provides-hazmat-data-first-responders",
+      "as_of": "current"
+    },
+    {
+      "fact": "The rail industry's shared hazmat emergency-response training facility, SERTC, is located in Pueblo, Colorado, and trains thousands of first responders annually (one program cited a target of training 2,000 first responders in a given year).",
+      "source_url": "https://www.aar.org/issue/askrail-app/",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_09_intermodal_automotive": [],
+
+  "domain_10_commercial": [],
+
+  "domain_11_interline_equipment": [
+    {
+      "fact": "Umler (Universal Machine Language Equipment Register) was established in 1968, originally using punch cards then magnetic tapes, moving to EDI/ANSI X12 standards in the 1980s. It is managed by Railinc for the AAR and registers over 2 million pieces of North American rail equipment with less than 1% error rate.",
+      "source_url": "https://utahrails.net/AAR-UMLER.html",
+      "as_of": "2026-04-20"
+    },
+    {
+      "fact": "On November 20, 2025, Union Pacific changed its interchange process with Ferromex (FXE) at the Eagle Pass, Texas gateway, moving the crew/train transfer point from the International Railway Bridge itself to UP's Clark Park Yard, 7 rail miles from the border. Mexican Ferromex crews (trained and certified by UP) now bring trains to the yard before a US crew takes over, reducing bridge transit time by roughly 50% and implemented as part of US Customs and Border Protection's Secure Corridor Initiative.",
+      "source_url": "https://www.up.com/news/service/enhancing-safety-at-eagle-crossing-251121",
+      "as_of": "2025-11-21"
+    },
+    {
+      "fact": "Eagle Pass-Piedras Negras is UP's (and BNSF's, as a trackage-rights tenant) #2 US-Mexico rail gateway by volume; the #1 gateway, Laredo-Nuevo Laredo, is controlled by CPKC (Canadian Pacific Kansas City), not UP. In an October data point cited in 2025 trade coverage, UP/BNSF interchanged an average of 16 trains/day with Ferromex via Eagle Pass, versus CPKC's ~24 trains/day at Laredo.",
+      "source_url": "https://www.trains.com/trn/news-reviews/news-wire/with-two-key-mexico-rail-gateways-shut-down-cross-border-freight-begins-stacking-up/",
+      "as_of": "2025-08-06"
+    },
+    {
+      "fact": "In September 2023, US Customs and Border Protection closed the Eagle Pass and El Paso rail border crossings due to a migrant crisis, halting UP and BNSF interchange with Ferromex for several days; UP donated $100,000 to the Eagle Pass mayor's discretionary fund during the closure and staged en-route trains to manage congestion. A similar closure recurred in December 2023.",
+      "source_url": "https://www.railwayage.com/freight/class-i/up-eagle-pass-border-crossing-reopening/",
+      "as_of": "2023-09-26"
+    },
+    {
+      "fact": "UP states its Mexico gateway coverage is the broadest and most direct of any US Class I railroad, connecting with Mexican railroads FXE (Ferromex) and KCSM (now part of CPKC de Mexico); named gateways for at least LPG/petroleum shipments include Calexico, El Paso, Nogales, Eagle Pass, Laredo, and Brownsville.",
+      "source_url": "https://www.up.com/customers/mexico/mer/merfaqs/index.htm",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_12_technology": [
+    {
+      "fact": "NetControl took approximately 10 years to develop (planning beginning around 2006) at a cost reported in trade coverage as approximately $200 million, replacing a 40+/50+ year old IBM mainframe-based transportation system (TCS). It is built on a service-oriented architecture supporting five major functions: resource, equipment, shipment, terminal, and train management. UP CIO at the time of cutover was Rahul Jalali.",
+      "source_url": "https://www.progressiverailroading.com/union_pacific/article/How-information-technology-helps-connect-the-strategic-dots-at-Union-Pacific-Railroad--36415",
+      "as_of": "current"
+    },
+    {
+      "fact": "The NetControl cutover itself (switching from TCS) was completed within approximately three hours with minimal operational disruption on January 6, 2024.",
+      "source_url": "https://railroad.net/up-moves-off-tcs-onto-netcontrol-t176767.html",
+      "as_of": "2024-03-11"
+    }
+  ],
+
+  "domain_13_finance": [],
+
+  "domain_14_hr_labor": [],
+
+  "domain_15_merger_integration": [
+    {
+      "fact": "Union Pacific and Norfolk Southern filed their first STB major merger application in December 2025; the STB rejected it as incomplete in a unanimous decision on January 16, 2026, citing inconsistencies in market share projections. The companies filed a revised application on April 30, 2026.",
+      "source_url": "https://www.stb.gov/news-communications/latest-news/pr-26-13/",
+      "as_of": "2026-06-03"
+    },
+    {
+      "fact": "On May 28, 2026, the STB unanimously accepted the revised UP/NS merger application as complete, but held the proceedings (including environmental review) in abeyance and ordered the companies to submit supplemental information by July 27, 2026. The STB will hold at least 12 in-person public meetings plus virtual meetings as part of the EIS process.",
+      "source_url": "https://www.stb.gov/news-communications/latest-news/pr-26-13/",
+      "as_of": "2026-06-03"
+    },
+    {
+      "fact": "UP and NS completed their supplemental information responses to the STB in a filing around July 27, 2026, and offered additional voluntary customer protection commitments (service protections, fixed pricing agreements) beyond those in prior rail mergers.",
+      "source_url": "https://www.up.com/press-releases/growth/stb-supplemental-second-round-270727",
+      "as_of": "2026-07-27"
+    },
+    {
+      "fact": "The STB resumed its review of the UP/NS merger in mid-August 2026 (having paused it in late May 2026), adopting a procedural schedule with a projected timeline running through at least May 28, 2027. The STB explicitly stated resumption does not mean approval. The STB denied UP/NS's request for expedited/separate review of the proposed divestiture of control of the Terminal Railroad Association of St. Louis, and directed the companies to re-submit data omitted during refiling by August 28, 2026.",
+      "source_url": "https://wwd.com/sourcing-journal/logistics/union-pacific-norfolk-southern-merger-stb-review-resumes-rail-1239143795/",
+      "as_of": "2026-08"
+    },
+    {
+      "fact": "The deal is valued at approximately $85 billion and is described by the companies as creating the first modern coast-to-coast (\"transcontinental\") US freight rail network, uniting two of the six remaining Class I railroads. UP CEO is Jim Vena; NS President and CEO is Mark George.",
+      "source_url": "https://www.up.com/press-releases/growth/stb-supplemental-second-round-270727",
+      "as_of": "2026-07-27"
+    },
+    {
+      "fact": "The merger application projects $133 million in annual capital synergies from leveraging the combined network and fleet more efficiently. Both companies describe a recent history of managing large, complex system changes as evidence for a 'precision integration' approach.",
+      "source_url": "https://investor.unionpacific.com/news-releases/news-release-details/creating-americas-first-transcontinental-railroad-union-pacific",
+      "as_of": "2025-12-19"
+    },
+    {
+      "fact": "Shipper groups (e.g., cited spokesperson O'Liddy) have formally urged the STB to reject the merger, arguing it would cause 'grave competitive impacts that cannot be effectively remedied through the STB's conditioning authority,' particularly for captive shippers. As of the most recent sourcing, the merger remains pending before the STB and has not been approved.",
+      "source_url": "https://www.logisticsmgmt.com/article/shipper_groups_urge_stb_to_reject_union_pacificnorfolk_southern_merger_bid",
+      "as_of": "recent (within the last month of sourcing)"
+    },
+    {
+      "fact": "MERGER CONTENT FRESHNESS WARNING: this domain's status is live and moving on a roughly monthly basis. Every RR-15 process page must carry a visible 'as of' date and a note that the STB has not approved the merger. Re-verify this registry section before each generation batch touching RR-15; do not treat any status line here as stable beyond the source date given."
+    }
+  ]
+}

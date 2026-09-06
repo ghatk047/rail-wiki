@@ -1,0 +1,353 @@
+{
+  "_readme": "Every entry requires source_url and as_of date. scope is 'company_specific' (verified specific to UP) or 'industry_typical' (used broadly across Class I railroads; not confirmed as UP's specific product, but generically accurate to name). Do not add an entry without a source. generate_rail_wiki.py may only reference systems by source_id.",
+
+  "domain_01_service_design": [
+    {
+      "source_id": "SYS-D01-01",
+      "name": "Unified Plan 2020",
+      "scope": "company_specific",
+      "detail": "UP's own operating plan implementing Precision Scheduled Railroading principles, announced Sept 2018, rolled out in phases from Oct 1 2018. Included the 'Blend and Balance' train service concept, which UP itself later determined by mid-2018 was 'virtually impossible to execute reliably and consistently' in its original form and redesigned.",
+      "source_url": "https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940",
+      "as_of": "2019"
+    },
+    {
+      "source_id": "SYS-D01-02",
+      "name": "NetControl (service design use)",
+      "scope": "company_specific",
+      "detail": "Cross-referenced from RR-12/RR-02 — NetControl's business logic layer processes car trip plans and terminal missions that originate as service-design output. Primary system ownership sits in Technology (RR-12); this entry exists so RR-01 process pages can cite the same source_id rather than inventing a new name.",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm",
+      "as_of": "2024-03-18",
+      "cross_domain_owner": "RR-12"
+    }
+  ],
+
+  "domain_02_dispatching": [
+    {
+      "source_id": "SYS-D02-01",
+      "name": "NetControl / CADx (Computer-Aided Dispatch)",
+      "scope": "company_specific",
+      "detail": "UP's dispatching platform since the Jan 6 2024 cutover, part of the same 'big three' modernization as PTC and transportation management. Replaced the legacy Transportation Control System (TCS).",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm",
+      "as_of": "2024-03-18"
+    },
+    {
+      "source_id": "SYS-D02-02",
+      "name": "Harriman Dispatching Center (HDC)",
+      "scope": "company_specific",
+      "detail": "UP's centralized dispatching facility in downtown Omaha, opened 1989, consolidating 10 regional dispatching centers into one location. Built inside a hardened former freight depot ('The Bunker').",
+      "source_url": "https://en.wikipedia.org/wiki/Union_Pacific_Harriman_Dispatch_Center",
+      "as_of": "2025"
+    },
+    {
+      "source_id": "SYS-D02-03",
+      "name": "Transportation Control System (TCS) — historical, retired",
+      "scope": "company_specific",
+      "detail": "UP's prior mainframe-based dispatching/transportation system, in service 50+ years, retired Jan 6 2024 in favor of NetControl. Retain in the wiki as historical context only — do not present as a current system.",
+      "source_url": "https://www.up.com/heritage/history/chronology/index.htm",
+      "as_of": "historical, superseded 2024"
+    }
+  ],
+
+  "domain_03_terminal_yard": [
+    {
+      "source_id": "SYS-D03-01",
+      "name": "Bailey Yard (North Platte, NE)",
+      "scope": "company_specific",
+      "detail": "UP's largest classification yard and the largest in the world by area: ~2,850 acres, ~8 miles long, 315 miles of track, 17 receiving/16 departure tracks, two humps (eastbound 34 ft, westbound ~20 ft), 114 bowl tracks (49 westbound/65 eastbound). Handles roughly 10,000-14,000 railcars and ~139 trains per 24 hours; sorts ~3,000 cars/day via the humps at up to 4 cars/minute.",
+      "source_url": "https://en.wikipedia.org/wiki/Bailey_Yard",
+      "as_of": "2025"
+    },
+    {
+      "source_id": "SYS-D03-02",
+      "name": "Hump yard (generic classification technology)",
+      "scope": "industry_typical",
+      "detail": "Standard industry technology: a graded mound over which cars are pushed and gravity-rolled onto sorting ('bowl') tracks according to destination, replacing manual flat switching for high-volume classification.",
+      "source_url": "https://en.wikipedia.org/wiki/Bailey_Yard",
+      "as_of": "2025"
+    }
+  ],
+
+  "domain_04_crew_management": [
+    {
+      "source_id": "SYS-D04-01",
+      "name": "PS Technology (PST)",
+      "scope": "company_specific",
+      "detail": "PS Technology is a wholly-owned subsidiary of Union Pacific Railroad. It builds and sells crew management software (including the CrewPro product line) to Class I, transit, and short line railroads industry-wide.",
+      "source_url": "https://www.forbes.com/sites/oracle/2018/09/10/railroads-roll-ahead-with-cloud-based-crew-management/",
+      "as_of": "2018-09-10",
+      "note": "Confirm current UP-internal crew calling platform name before citing PST/CrewPro as UP's own production system — sourcing here only supports 'UP owns PST, which sells crew management software industry-wide,' not 'UP runs CrewPro internally.' Treat those as two separate claims."
+    },
+    {
+      "source_id": "SYS-D04-02",
+      "name": "CrewPro",
+      "scope": "industry_typical",
+      "detail": "Crew management/scheduling product line built by PS Technology. Handles scheduling by availability and seniority, rest-status tracking, and certification/qualification expiration tracking. Deployed across Class I and short line railroads generally.",
+      "source_url": "https://www.forbes.com/sites/oracle/2018/09/10/railroads-roll-ahead-with-cloud-based-crew-management/",
+      "as_of": "2018-09-10"
+    },
+    {
+      "source_id": "SYS-D04-03",
+      "name": "HASTUS",
+      "scope": "industry_typical",
+      "detail": "GIRO crew/roster scheduling platform. Confirmed North American deployments are passenger rail/transit (BART, CTA, LA Metro, WMATA); no public sourcing found for Class I freight use. Include only as a passenger-rail comparator, not as a freight-industry system.",
+      "source_url": "https://www.progressiverailroading.com/c_s/article/Software-update-Crew-management-solutions--75346",
+      "as_of": "2024",
+      "caution": "do not present as a freight Class I system without further sourcing"
+    },
+    {
+      "source_id": "SYS-D04-04",
+      "name": "CloudMoyo Crew Management (CCM)",
+      "scope": "industry_typical",
+      "detail": "Cloud-native SaaS crew scheduling product marketed to rail/transportation operators generally; handles seniority, qualifications, HOS, and union rules.",
+      "source_url": "https://rail.cloudmoyo.com/product-brief/crew-management-system/",
+      "as_of": "2024"
+    },
+    {
+      "source_id": "SYS-D04-05",
+      "name": "trackHOS-class HOS monitoring tools",
+      "scope": "industry_typical",
+      "detail": "Generic reference to HOS tracking/compliance tooling referenced in trade coverage; use as a category description, not a specific vendor claim for UP.",
+      "source_url": "https://www.progressiverailroading.com/c_s/article/Product-update-Rail-crew-management-software--70406",
+      "as_of": "2024"
+    }
+  ],
+
+  "domain_05_mechanical": [
+    {
+      "source_id": "SYS-D05-01",
+      "name": "Wayside defect detector network (hot bearing / wheel impact / acoustic)",
+      "scope": "industry_typical",
+      "detail": "Standard industry category of trackside sensors that detect overheating bearings, wheel impact loads, and acoustic bearing defects as trains pass, without stopping the train. Referenced generically across FRA and industry safety literature; no UP-specific detector count sourced yet.",
+      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/",
+      "as_of": "2024-08-07",
+      "caution": "detector category is industry-standard; do not attribute a specific detector count or vendor to UP without further sourcing"
+    }
+  ],
+
+  "domain_06_engineering": [
+    {
+      "source_id": "SYS-D06-01",
+      "name": "I-ETMS (Interoperable Electronic Train Management System)",
+      "scope": "company_specific",
+      "detail": "Union Pacific is one of the four original railroads (with BNSF, CSX, Norfolk Southern) that developed and jointly submitted the I-ETMS PTC Development Plan to FRA. UP's PTC implementation is built on I-ETMS, supplied by Wabtec.",
+      "source_url": "https://downloads.regulations.gov/FRA-2010-0072-0015/attachment_1.pdf",
+      "as_of": "2011-06-01"
+    },
+    {
+      "source_id": "SYS-D06-02",
+      "name": "Wabtrax",
+      "scope": "industry_typical",
+      "detail": "Wabtec's track database creation/validation tool used by 'all Class I railroads' to build and validate PTC track databases (the subdivision track data files). Named as an industry-wide tool, not confirmed UP-exclusive branding.",
+      "source_url": "https://www.wabteccorp.com/digital-intelligence/signaling-and-train-control/services/turnkey-solutions",
+      "as_of": "2024"
+    },
+    {
+      "source_id": "SYS-D06-03",
+      "name": "PTC Back Office Server (BOS)",
+      "scope": "company_specific",
+      "detail": "Wabtec's PTC BOS product is explicitly named with Union Pacific among its Class I customer list, interfacing with existing dispatch office systems.",
+      "source_url": "https://www.wabteccorp.com/digital-intelligence/signaling-and-train-control/services/turnkey-solutions",
+      "as_of": "2024"
+    },
+    {
+      "source_id": "SYS-D06-04",
+      "name": "NetControl",
+      "scope": "company_specific",
+      "detail": "UP's transportation management platform, cut over 6 Jan 2024, replacing the 50+ year old mainframe Transportation Control System (TCS). Relevant to Engineering where subdivision/track asset data feeds train movement authority — but NetControl itself is a Dispatching/IT-domain system, cross-referenced here, not owned by Engineering.",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm",
+      "as_of": "2024-03-18",
+      "cross_domain_owner": "RR-12 (primary), RR-02 (secondary)"
+    },
+    {
+      "source_id": "SYS-D06-05",
+      "name": "FRA Automated Track Inspection Program (ATIP)",
+      "scope": "industry_typical",
+      "detail": "IMPORTANT NAMING CAVEAT: ATIP is the Federal Railroad Administration's OWN fleet of track inspection cars, conducting compliance surveys of 50,000-100,000 miles/year. It is a government program, not a UP-branded system. CN separately uses the same acronym ('Autonomous Track Inspection Program') for its own branded fleet. No public sourcing found for UP using the name 'ATIP' for its internal program.",
+      "source_url": "https://railroads.dot.gov/railroad-safety/divisions/track/atip-overview",
+      "as_of": "2024-07-05"
+    },
+    {
+      "source_id": "SYS-D06-06",
+      "name": "UP automated/autonomous track inspection program (unbranded)",
+      "scope": "company_specific",
+      "detail": "UP operates a crewed Hi-Rail system, one crewed traditional track geometry car, ten automated locomotive-mounted systems, and three boxcar-mounted autonomous systems. Program began approximately 2019; UP reports defects down ~85% over five years. No confirmed public brand name for this program as of last research — refer to it descriptively, not as 'ATIP.'",
+      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/",
+      "as_of": "2024-08-07"
+    },
+    {
+      "source_id": "SYS-D06-07",
+      "name": "Track geometry car (generic)",
+      "scope": "industry_typical",
+      "detail": "Standard industry category: rail-mounted vehicle measuring gauge, curvature, alignment, cross-level, surface smoothness without obstructing operations. Generic term, not a product name.",
+      "source_url": "https://en.wikipedia.org/wiki/Track_geometry_car",
+      "as_of": "2024"
+    },
+    {
+      "source_id": "SYS-D06-08",
+      "name": "RailAI (Tetra Tech)",
+      "scope": "industry_typical",
+      "detail": "Autonomous unmanned track inspection railcar product, operating in revenue service with unnamed North American Class I railroads and under FRA's ATIP. Not confirmed as a UP-specific deployment.",
+      "source_url": "https://railai.tetratech.com/",
+      "as_of": "2026-06-15"
+    }
+  ],
+
+  "domain_07_safety_regulatory": [
+    {
+      "source_id": "SYS-D07-01",
+      "name": "GCOR (General Code of Operating Rules)",
+      "scope": "company_specific",
+      "detail": "UP publishes and applies its own GCOR-based rule book (up.com/ert/gcor.pdf). GCOR is used by Class I railroads west of Chicago, most Class II railroads, and many short lines; railroads east of Chicago generally use NORAC instead. Currently in a 9th edition (effective Sept 23 2026 per trade summary) superseding prior editions; UP has historically issued its own amendments/special instructions on top of the base code.",
+      "source_url": "https://www.up.com/ert/gcor.pdf",
+      "as_of": "2025-09-23"
+    },
+    {
+      "source_id": "SYS-D07-02",
+      "name": "C3RS (Confidential Close Call Reporting System)",
+      "scope": "industry_typical",
+      "detail": "FRA-sponsored voluntary confidential close-call reporting program used across the rail industry, modeled on aviation ASRS-style non-punitive reporting. Named generically here pending confirmation of UP's specific participation status.",
+      "source_url": "https://railroads.dot.gov",
+      "as_of": "general",
+      "caution": "confirm UP's specific enrollment/site status before presenting as company-specific"
+    }
+  ],
+
+  "domain_08_hazmat_environmental": [
+    {
+      "source_id": "SYS-D08-01",
+      "name": "AskRail",
+      "scope": "industry_typical",
+      "detail": "Free mobile app giving vetted first responders real-time hazmat/railcar contents data during a rail incident. Launched Oct 2014 as a joint effort of all North American Class I railroads, Amtrak, the International Association of Fire Chiefs, AAR, and Railinc (which administers it). Serves 2.3M+ registered first responders across 49 states, DC, and 8 Canadian provinces. Not UP-specific — a shared industry utility.",
+      "source_url": "https://www.aar.org/issue/askrail-app/",
+      "as_of": "2023-04-28"
+    },
+    {
+      "source_id": "SYS-D08-02",
+      "name": "TRANSCAER (Transportation Community Awareness and Emergency Response)",
+      "scope": "company_specific",
+      "detail": "Voluntary national outreach program founded in 1986 by Union Pacific and Dow Chemical Company, focused on helping communities prepare for and respond to hazmat transportation incidents. UP is a founding organization, though the program is now industry-wide.",
+      "source_url": "https://www.westerncity.com/article/askrail-app-provides-hazmat-data-first-responders",
+      "as_of": "current"
+    },
+    {
+      "source_id": "SYS-D08-03",
+      "name": "SERTC (Security and Emergency Response Training Center)",
+      "scope": "industry_typical",
+      "detail": "Rail industry's shared hazmat emergency-response training facility, located in Pueblo, Colorado; trains thousands of first responders annually.",
+      "source_url": "https://www.aar.org/issue/askrail-app/",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_09_intermodal_automotive": [],
+
+  "domain_10_commercial": [],
+
+  "domain_11_interline_equipment": [
+    {
+      "source_id": "SYS-D11-01",
+      "name": "Umler (Universal Machine Language Equipment Register)",
+      "scope": "industry_typical",
+      "detail": "The industry's centralized electronic equipment registry, managed by Railinc for the AAR. Registers over 2 million pieces of equipment (railcars, locomotives, trailers, containers, chassis, end-of-train devices) with physical characteristics, ownership, and pool assignment data. Authoritative source for interchange eligibility under AAR Interchange Rules 90 and 93; feeds CHARM (Car Hire Accounting Rate Master) and TRAIN II. Established 1968, originally on punch cards.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/UmlerDataSpecs.pdf",
+      "as_of": "2026-06-11"
+    },
+    {
+      "source_id": "SYS-D11-02",
+      "name": "CHARM (Car Hire Accounting Rate Master)",
+      "scope": "industry_typical",
+      "detail": "Industry file verified against Umler that determines car hire billing rates for equipment in interchange service.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/UmlerDataSpecs.pdf",
+      "as_of": "2026-06-11"
+    },
+    {
+      "source_id": "SYS-D11-03",
+      "name": "TRAIN II (Tele Rail Automated Information Network Phase 2)",
+      "scope": "industry_typical",
+      "detail": "The rail industry's national car information/tracking system, verified against the Umler master file.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/UmlerDataSpecs.pdf",
+      "as_of": "2026-06-11"
+    },
+    {
+      "source_id": "SYS-D11-04",
+      "name": "EHMS (Equipment Health Management System)",
+      "scope": "industry_typical",
+      "detail": "Railinc-operated system tracking equipment health/defect data, part of the same Railinc product suite as Umler and DDCT (Damaged and Defective Car Tracking).",
+      "source_url": "https://public.railinc.com/support/getting-started-railinc",
+      "as_of": "current"
+    },
+    {
+      "source_id": "SYS-D11-05",
+      "name": "Interline Settlement System (ISS) / Switching Settlement Data Exchange (SSDX) / Car Hire Data Exchange (CHDX)",
+      "scope": "industry_typical",
+      "detail": "AAR Railway Accounting Rules (RAR)-governed systems for waybilling and settlement of interline shipments.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/GuideforRailroads.pdf",
+      "as_of": "2025-05-01"
+    },
+    {
+      "source_id": "SYS-D11-06",
+      "name": "Ferromex (FXE) interchange — Eagle Pass gateway",
+      "scope": "company_specific",
+      "detail": "UP's #2 U.S.-Mexico rail gateway by volume (behind CPKC's Laredo-Nuevo Laredo crossing). As of Nov 20 2025, UP shifted the FXE interchange point from the International Railway Bridge itself to UP's Clark Park Yard, 7 rail miles from the border, using Mexican partner crews qualified/certified by UP to bring trains to the yard before a U.S. crew change — cutting bridge transit time by 50% and implemented under CBP's Secure Corridor Initiative.",
+      "source_url": "https://www.up.com/news/service/enhancing-safety-at-eagle-crossing-251121",
+      "as_of": "2025-11-21"
+    },
+    {
+      "source_id": "SYS-D11-07",
+      "name": "UP Mexico gateway network",
+      "scope": "company_specific",
+      "detail": "UP states its Mexico gateway coverage is the broadest and most direct of any US Class I. Named gateways for at least LPG/petroleum products: Calexico, El Paso, Nogales, Eagle Pass, Laredo, Brownsville. UP connects with Mexican railroads FXE (Ferromex) and KCSM (now part of CPKC de Mexico).",
+      "source_url": "https://www.up.com/customers/mexico/mer/merfaqs/index.htm",
+      "as_of": "current",
+      "caution": "Laredo-Nuevo Laredo is controlled by CPKC, not UP, per separate sourcing — UP's own gateway page lists Laredo among product-specific routes but the primary Laredo rail bridge is a CPKC asset; verify UP's actual interchange arrangement at Laredo before writing a specific process there."
+    }
+  ],
+
+  "domain_12_technology": [
+    {
+      "source_id": "SYS-D12-01",
+      "name": "NetControl",
+      "scope": "company_specific",
+      "detail": "UP's transportation management platform (primary domain owner). Built on a service-oriented architecture; intakes millions of messages/day from customers, other railroads, and internal systems; applies business logic driving 75 key internal/external reporting measures; can trace every car on the network. Development took ~10 years and was described in trade coverage as costing approximately $200 million; cutover completed within roughly 3 hours on Jan 6 2024.",
+      "source_url": "https://www.progressiverailroading.com/union_pacific/article/How-information-technology-helps-connect-the-strategic-dots-at-Union-Pacific-Railroad--36415",
+      "as_of": "current"
+    },
+    {
+      "source_id": "SYS-D12-02",
+      "name": "PS Technology (PST)",
+      "scope": "company_specific",
+      "detail": "Wholly-owned UP subsidiary building rail-industry software (crew management via CrewPro among other product lines), sold to Class I, transit, and short line customers industry-wide. Cross-referenced from RR-04.",
+      "source_url": "https://www.forbes.com/sites/oracle/2018/09/10/railroads-roll-ahead-with-cloud-based-crew-management/",
+      "as_of": "2018-09-10",
+      "cross_domain_owner": "RR-04"
+    }
+  ],
+
+  "domain_13_finance": [],
+
+  "domain_14_hr_labor": [],
+
+  "domain_15_merger_integration": [
+    {
+      "source_id": "SYS-D15-01",
+      "name": "NetControl / TCS cutover precedent",
+      "scope": "company_specific",
+      "detail": "UP's own recent experience (Jan 2024) migrating all core operating systems in a single cutover is a genuine, citable internal precedent for the systems-integration risk discussion in a merger context — distinct from, and not to be confused with, the systems consolidation that would be required to integrate with Norfolk Southern's systems.",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm",
+      "as_of": "2024-03-18"
+    }
+  ],
+
+  "not_yet_sourced_do_not_use": [
+    "Any specific UP enterprise asset management (EAM) platform name for track/signal maintenance — no public source found yet. Do not write 'Hexagon' or 'INFOR' or any named EAM as UP-specific until sourced.",
+    "Any specific UP capital project management or GIS platform name for Engineering.",
+    "Any specific signal design/CAD software name.",
+    "Any specific UP intermodal terminal operating system (e.g., a Navis-class TOS) — not sourced for UP specifically.",
+    "Any specific UP revenue accounting, billing, or ERP platform name (SAP, Oracle, or otherwise) — not sourced.",
+    "Any specific UP cybersecurity platform or SOC vendor name — not sourced.",
+    "Any specific UP customer-facing digital platform name beyond up.com itself — not sourced with enough detail to cite as a distinct system.",
+    "Any specific UP training-academy platform, simulator vendor, or campus name — not sourced.",
+    "Any specific UP fuel-hedging or treasury system name — not sourced.",
+    "Norfolk Southern's internal system names for the merger domain — do not name NS-side systems without separate sourcing; RR-15 content about NS systems should stay generic until sourced."
+  ]
+}

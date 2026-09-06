@@ -1,0 +1,301 @@
+{
+  "_readme": "Statutory/regulatory citations are stable historical facts and do not require a live source_url in the same way systems do, but each entry still lists the authoritative source. generate_rail_wiki.py may only cite a regulatory_hook value present here.",
+
+  "domain_01_service_design": [
+    {
+      "cite": "49 CFR Part 1180 (cross-referenced)",
+      "title": "STB oversight of major service changes",
+      "detail": "STB leadership formally requested UP provide updates on Unified Plan 2020's operating changes shortly after announcement — an example of STB's ongoing service-oversight role even outside a merger proceeding. Primary regulatory home is RR-15/RR-07.",
+      "source_url": "https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro",
+      "as_of": "2018-09-21",
+      "cross_domain_owner": "RR-07, RR-15"
+    }
+  ],
+
+  "domain_02_dispatching": [
+    {
+      "cite": "49 CFR Part 217",
+      "title": "Railroad Operating Rules — periodic instruction, testing, operational monitoring",
+      "detail": "Requires each railroad to establish and maintain a program of periodic instruction, testing, and operational monitoring of employees involved in train operations to verify adherence to operating rules such as GCOR.",
+      "source_url": "https://grokipedia.com/page/general_code_of_operating_rules",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 220",
+      "title": "Railroad Communications",
+      "detail": "Governs radio communication procedures used in dispatching and train movement authority.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-220",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_03_terminal_yard": [
+    {
+      "cite": "49 CFR Part 232",
+      "title": "Brake System Safety Standards for Freight and Other Non-Passenger Trains",
+      "detail": "Governs air brake testing requirements performed at terminals/yards before train departure, including initial terminal tests.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-232",
+      "as_of": "current"
+    },
+    {
+      "cite": "AAR Interchange Rules (Rule 88 and related)",
+      "title": "Interchange inspection standards",
+      "detail": "Industry-standard (not federal) rules governing car inspection at the point of interchange between railroads.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/GuideforRailroads.pdf",
+      "as_of": "2025-05-01"
+    }
+  ],
+
+  "domain_04_crew_management": [
+    {
+      "cite": "49 U.S.C. § 21103",
+      "title": "Hours of Service of Train Employees",
+      "detail": "Statutory basis for train employee HOS: maximum 12 hours on duty, minimum 10 consecutive hours off duty (rest), limits on consecutive starts. Amended by the Rail Safety Improvement Act of 2008.",
+      "source_url": "https://www.congress.gov/bill/110th-congress/house-bill/2095",
+      "as_of": "2008"
+    },
+    {
+      "cite": "49 CFR Part 228",
+      "title": "Hours of Service of Railroad Employees; Recordkeeping",
+      "detail": "Implementing regulations for HOS recordkeeping, including electronic hours-of-service records requirements.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-228",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 240",
+      "title": "Qualification and Certification of Locomotive Engineers",
+      "detail": "Certification, testing, and recertification requirements for locomotive engineers.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-240",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 242",
+      "title": "Qualification and Certification of Conductors",
+      "detail": "Certification, testing, and recertification requirements for conductors.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-242",
+      "as_of": "current"
+    },
+    {
+      "cite": "FRA Train Crew Staffing Rule (2024)",
+      "title": "Train Crew Size Safety Requirements",
+      "detail": "FRA final rule mandating a minimum of two crew members on most freight train operations. Upheld 2-1 by the Eleventh Circuit Court of Appeals on August 11, 2026, rejecting a challenge from AAR, ASLRRA, and six railroads (including UP). The ruling denied the petitions for review but did not vacate the rule; litigation history is not necessarily closed.",
+      "source_url": "https://www.freightwaves.com/news/federal-court-upholds-challenge-to-fras-two-person-rail-crew-rule",
+      "as_of": "2026-08-11"
+    },
+    {
+      "cite": "Railway Labor Act (45 U.S.C. § 151 et seq.)",
+      "title": "Railway Labor Act",
+      "detail": "Governs rail labor relations — Section 6 notices, National Mediation Board mediation, cooling-off periods, Presidential Emergency Boards. Distinct from the NLRA, which does not apply to railroads.",
+      "source_url": "https://www.nmb.gov/NMB_Resources/rla.html",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_05_mechanical": [
+    {
+      "cite": "49 CFR Part 229",
+      "title": "Locomotive Safety Standards",
+      "detail": "Federal safety standards for locomotive inspection, maintenance, and equipment.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-229",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 215",
+      "title": "Railroad Freight Car Safety Standards",
+      "detail": "Federal safety standards for freight car condition and defect thresholds.",
+      "source_url": "https://umbrex.com/resources/industry-primers/travel-transportation-logistics-industry-primers/rail-rolling-stock-includes-railcar-leasing-and-services-industry-primer/",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 231",
+      "title": "Railroad Safety Appliance Standards",
+      "detail": "Standards for grab irons, handholds, ladders, and other safety appliances on rolling stock.",
+      "source_url": "https://umbrex.com/resources/industry-primers/travel-transportation-logistics-industry-primers/rail-rolling-stock-includes-railcar-leasing-and-services-industry-primer/",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_06_engineering": [
+    {
+      "cite": "49 CFR Part 213",
+      "title": "Track Safety Standards",
+      "detail": "Track geometry, structure, and inspection frequency standards by class of track.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-213",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR § 213.233(c)",
+      "title": "Track Inspections — specific inspection frequency/method requirement",
+      "detail": "The specific subsection UP petitioned FRA to temporarily suspend in 2020 to pilot autonomous track geometry measurement in place of traditional inspection methods on segments of the SPSCL and Sunset routes.",
+      "source_url": "https://downloads.regulations.gov/FRA-2020-0031-0002/attachment_1.pdf",
+      "as_of": "2020-04-28"
+    },
+    {
+      "cite": "49 CFR Part 214",
+      "title": "Railroad Workplace Safety — Roadway Worker Protection",
+      "detail": "On-track safety rules, including Form B track authority procedures and employee-in-charge protocols.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-214",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 236, Subpart I",
+      "title": "Positive Train Control Systems",
+      "detail": "PTC system standards, development plan requirements, and FRA Type Approval process. Basis for the I-ETMS PTC Development Plan filing jointly submitted by Wabtec, UP, NS, and CSX.",
+      "source_url": "https://downloads.regulations.gov/FRA-2010-0072-0015/attachment_1.pdf",
+      "as_of": "2011-06-01"
+    },
+    {
+      "cite": "49 CFR Part 234",
+      "title": "Grade Crossing Signal System Safety",
+      "detail": "Standards for highway-rail grade crossing warning systems.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-234",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 1180",
+      "title": "Surface Transportation Board — Rail Merger Procedures (cross-referenced from RR-15)",
+      "detail": "Referenced here only because Engineering capital planning intersects with merger-driven network integration; primary home is RR-15.",
+      "source_url": "https://www.ecfr.gov/current/title-49/part-1180",
+      "as_of": "current",
+      "cross_domain_owner": "RR-15"
+    }
+  ],
+
+  "domain_07_safety_regulatory": [
+    {
+      "cite": "GCOR (General Code of Operating Rules)",
+      "title": "General Code of Operating Rules",
+      "detail": "Adopted operating rule set used by Class I railroads west of Chicago (including UP), most Class II railroads, and many short lines. Railroads east of Chicago generally use NORAC instead. UP publishes its own GCOR-based rulebook plus System Special Instructions, Timetables, Hazardous Materials Instructions, and General Orders.",
+      "source_url": "https://en.wikipedia.org/wiki/General_Code_of_Operating_Rules",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 217",
+      "title": "Railroad Operating Rules",
+      "detail": "Requires periodic instruction, testing (efficiency testing), and operational monitoring programs to verify rule compliance.",
+      "source_url": "https://grokipedia.com/page/general_code_of_operating_rules",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 219",
+      "title": "Control of Alcohol and Drug Use",
+      "detail": "Federal drug and alcohol testing program requirements for safety-sensitive railroad employees.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-219",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 225",
+      "title": "Railroad Accidents/Incidents: Reports Classification, and Investigations",
+      "detail": "Federal accident/incident reporting thresholds and procedures.",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-225",
+      "as_of": "current"
+    },
+    {
+      "cite": "49 CFR Part 1180",
+      "title": "STB regulatory filing and annual reporting authority",
+      "detail": "General STB regulatory oversight basis; specific merger procedures are the primary home of RR-15.",
+      "source_url": "https://www.ecfr.gov/current/title-49/part-1180",
+      "as_of": "current",
+      "cross_domain_owner": "RR-15"
+    }
+  ],
+
+  "domain_08_hazmat_environmental": [
+    {
+      "cite": "49 CFR Parts 172-174",
+      "title": "PHMSA Hazardous Materials Regulations",
+      "detail": "Federal hazmat classification, documentation, placarding, and handling requirements for rail shipments; PHMSA (not FRA) is the primary regulator here, though FRA enforces rail-specific aspects.",
+      "source_url": "https://umbrex.com/resources/industry-primers/travel-transportation-logistics-industry-primers/rail-rolling-stock-includes-railcar-leasing-and-services-industry-primer/",
+      "as_of": "current"
+    },
+    {
+      "cite": "AAR Circular OT-55 (key train / TIH-PIH handling)",
+      "title": "Recommended railroad operating and handling rules for TIH/PIH and key trains",
+      "detail": "Industry (not federal) standard governing route selection, speed restrictions, and handling practices for toxic-inhalation-hazard/poison-inhalation-hazard materials and key trains. Named generically here; verify exact circular number/edition before citing a specific provision.",
+      "source_url": "http://www.joinnsoar.com/pdf/yellowbook_web.pdf",
+      "as_of": "current",
+      "caution": "confirm current circular number before citing a specific clause"
+    },
+    {
+      "cite": "AAR M-1002",
+      "title": "Tank car standards",
+      "detail": "AAR manual standard governing tank car design, construction, and inspection specifications.",
+      "source_url": "https://umbrex.com/resources/industry-primers/travel-transportation-logistics-industry-primers/rail-rolling-stock-includes-railcar-leasing-and-services-industry-primer/",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_09_intermodal_automotive": [],
+
+  "domain_10_commercial": [
+    {
+      "cite": "49 U.S.C. § 10101 et seq. (common carrier obligation)",
+      "title": "Common carrier obligation",
+      "detail": "Statutory basis for a railroad's obligation to provide transportation on reasonable request — foundational to RR-10 contract/demurrage process design. Cite generically; do not attach a specific UP tariff clause without sourcing.",
+      "source_url": "https://www.stb.gov",
+      "as_of": "current"
+    }
+  ],
+
+  "domain_11_interline_equipment": [
+    {
+      "cite": "AAR Interchange Rules 90 and 93",
+      "title": "Equipment registration for interchange eligibility",
+      "detail": "Umler is the industry's official source for accepting freight cars into interchange service under these rules.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/UmlerDataSpecs.pdf",
+      "as_of": "2026-06-11"
+    },
+    {
+      "cite": "AAR Interchange Rule 114",
+      "title": "Company/Mark ID registration requirement",
+      "detail": "Requires companies to hold an assigned Mark/Company ID to participate in interchange and Railinc systems.",
+      "source_url": "https://public.railinc.com/support/getting-started-railinc",
+      "as_of": "current"
+    },
+    {
+      "cite": "AAR Circular OT-10 (Code of Car Service and Car Hire Rules)",
+      "title": "Car hire and car service rules",
+      "detail": "Governs car hire billing, including superstructure cost data under Appendix T.",
+      "source_url": "https://public.railinc.com/products-services/car-hire",
+      "as_of": "current"
+    },
+    {
+      "cite": "AAR Railway Accounting Rule 260 (FMR 260)",
+      "title": "Freight station registration",
+      "detail": "Requires all freight stations be recorded in the Centralized Station Master (CSM) with an FSAC number from the Official Railroad Station List.",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/GuideforRailroads.pdf",
+      "as_of": "2025-05-01"
+    }
+  ],
+
+  "domain_12_technology": [],
+
+  "domain_13_finance": [],
+
+  "domain_14_hr_labor": [
+    {
+      "cite": "Railway Labor Act (45 U.S.C. § 151 et seq.)",
+      "title": "Railway Labor Act",
+      "detail": "Governs all rail labor relations, cross-referenced from RR-04. Section 6 notices, NMB mediation, cooling-off periods, Presidential Emergency Boards.",
+      "source_url": "https://www.nmb.gov/NMB_Resources/rla.html",
+      "as_of": "current",
+      "cross_domain_owner": "RR-04"
+    }
+  ],
+
+  "domain_15_merger_integration": [
+    {
+      "cite": "49 CFR Part 1180",
+      "title": "Major Rail Consolidation Procedures",
+      "detail": "STB's controlling regulation for major merger applications, including completeness requirements (the basis on which the STB rejected UP/NS's first application in January 2026), Operating Plan and Service Assurance Plan content, and the statutory 12-month evidentiary timeline from acceptance.",
+      "source_url": "https://www.stb.gov/news-communications/latest-news/pr-26-13/",
+      "as_of": "2026-06-03"
+    }
+  ],
+
+  "not_yet_sourced_do_not_use": [
+    "Any state-specific PUC/DOT crossing regulations layered on top of federal rules.",
+    "Specific numeric FRA track class speed limits by class — pull directly from 49 CFR 213 subpart B table before citing numbers, do not reproduce from memory.",
+    "PHMSA-specific tank car phase-out deadlines (e.g., DOT-111 retirement dates) — confirm current status before citing a specific year."
+  ]
+}

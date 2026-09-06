@@ -1,0 +1,20 @@
+# Generated process content — never committed (BUILD-SPEC-v2 §8)
+data/processes.json
+
+# Generated build artefacts
+data/*.xlsx
+data/*.pptx
+*.mmd.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

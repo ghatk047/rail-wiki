@@ -1,0 +1,158 @@
+{
+  "_readme": "KPIs used across the industry are reported weekly to AAR/STB. Domain-internal KPIs (e.g. specific engineering defect rates) are sourced individually; do not invent a metric name without a source.",
+
+  "domain_01_service_design": [
+    {
+      "kpi": "Operating ratio (OR)",
+      "scope": "company_specific",
+      "source": "UP explicitly tied Unified Plan 2020 to a 60% OR goal by 2020 and a longer-term 55% target",
+      "source_url": "https://www.progressiverailroading.com/union_pacific/news/Union-Pacific-to-launch-precision-scheduled-railroading-plan--55636"
+    },
+    {
+      "kpi": "Car dwell / car classification events / locomotive power requirement",
+      "scope": "company_specific",
+      "source": "named as explicit UP Unified Plan 2020 focus metrics",
+      "source_url": "https://www.freightwaves.com/news/union-pacific-turns-to-precision-scheduled-railroading"
+    }
+  ],
+
+  "domain_02_dispatching": [
+    {
+      "kpi": "Train speed by train type / terminal dwell / cars online",
+      "scope": "industry_typical",
+      "source": "STB's public weekly rail service performance data",
+      "source_url": "https://www.stb.gov"
+    }
+  ],
+
+  "domain_03_terminal_yard": [
+    {
+      "kpi": "Cars classified per day / cars per minute at the hump",
+      "scope": "company_specific",
+      "source": "Bailey Yard sorts ~3,000 cars/day at up to 4 cars/minute across its two humps",
+      "source_url": "https://en.wikipedia.org/wiki/Bailey_Yard"
+    },
+    {
+      "kpi": "Trains handled per 24 hours",
+      "scope": "company_specific",
+      "source": "Bailey Yard averages ~139 trains per day",
+      "source_url": "https://en.wikipedia.org/wiki/Bailey_Yard"
+    }
+  ],
+
+  "domain_04_crew_management": [
+    {
+      "kpi": "Crew availability / extra board utilization",
+      "scope": "industry_typical",
+      "source": "general_industry_knowledge — standard operating metric referenced across crew management vendor materials",
+      "source_url": "https://rail.cloudmoyo.com/product-brief/crew-management-system/"
+    },
+    {
+      "kpi": "HOS-related delay events / dead-on-HOS incidents",
+      "scope": "industry_typical",
+      "source": "general_industry_knowledge; recordkeeping basis at 49 CFR 228",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-228"
+    },
+    {
+      "kpi": "Certification currency / pending expirations",
+      "scope": "industry_typical",
+      "source": "explicitly named as a CrewPro function (tracking pending certification expirations)",
+      "source_url": "https://www.forbes.com/sites/oracle/2018/09/10/railroads-roll-ahead-with-cloud-based-crew-management/"
+    }
+  ],
+
+  "domain_05_mechanical": [
+    {
+      "kpi": "Locomotive availability / bad order rate",
+      "scope": "industry_typical",
+      "source": "general_industry_knowledge",
+      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/"
+    }
+  ],
+
+  "domain_06_engineering": [
+    {
+      "kpi": "Track-caused defect rate (per mile inspected)",
+      "scope": "company_specific",
+      "source": "UP reports defects down approximately 85% over five years of its automated inspection program",
+      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/"
+    },
+    {
+      "kpi": "PTC initialization success rate / enroute cutout events",
+      "scope": "industry_typical",
+      "source": "general_industry_knowledge; FRA tracks PTC performance metrics under Part 236 Subpart I reporting requirements",
+      "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-236"
+    },
+    {
+      "kpi": "Train speed by train type / terminal dwell / cars online",
+      "scope": "industry_typical",
+      "source": "STB's public weekly rail service performance data — cross-domain metric, primary home is RR-01 Service Design, cited here only where Engineering slow orders affect it",
+      "source_url": "https://www.stb.gov",
+      "cross_domain_owner": "RR-01"
+    }
+  ],
+
+  "domain_07_safety_regulatory": [
+    {
+      "kpi": "Train accidents (FRA-reportable) year-over-year",
+      "scope": "industry_typical",
+      "source": "FRA 2025 data shows overall train accidents down 14% year-over-year, cited in trade coverage of the crew-size ruling",
+      "source_url": "https://www.cslra.org/?p=2977"
+    }
+  ],
+
+  "domain_08_hazmat_environmental": [
+    {
+      "kpi": "AskRail registered first-responder coverage",
+      "scope": "industry_typical",
+      "source": "app serves 2.3M+ first responders across 49 states, DC, and 8 Canadian provinces",
+      "source_url": "https://www.aar.org/issue/askrail-app/"
+    }
+  ],
+
+  "domain_09_intermodal_automotive": [],
+
+  "domain_10_commercial": [],
+
+  "domain_11_interline_equipment": [
+    {
+      "kpi": "Equipment registered in Umler",
+      "scope": "industry_typical",
+      "source": "over 2 million pieces of equipment registered, with less than 1% error rate",
+      "source_url": "https://public.railinc.com/sites/default/files/documents/GuideforRailroads.pdf"
+    },
+    {
+      "kpi": "Daily trains interchanged at a gateway",
+      "scope": "company_specific",
+      "source": "UP/BNSF interchanged an average of 16 trains/day with Ferromex via Eagle Pass (Oct data); CPKC's Laredo-Nuevo Laredo crossing handled ~24 trains/day",
+      "source_url": "https://www.trains.com/trn/news-reviews/news-wire/with-two-key-mexico-rail-gateways-shut-down-cross-border-freight-begins-stacking-up/"
+    }
+  ],
+
+  "domain_12_technology": [
+    {
+      "kpi": "Internal/external reporting measures driven by NetControl",
+      "scope": "company_specific",
+      "source": "NetControl's business logic drives 75 key internal and external reporting measures",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm"
+    }
+  ],
+
+  "domain_13_finance": [],
+
+  "domain_14_hr_labor": [],
+
+  "domain_15_merger_integration": [
+    {
+      "kpi": "Projected annual capital synergies",
+      "scope": "company_specific",
+      "source": "UP/NS merger application projects $133 million in annual capital synergies from combined network/fleet efficiency",
+      "source_url": "https://investor.unionpacific.com/news-releases/news-release-details/creating-americas-first-transcontinental-railroad-union-pacific"
+    }
+  ],
+
+  "not_yet_sourced_do_not_use": [
+    "Any specific numeric target or threshold for the above KPIs at UP beyond what is explicitly cited — do not fabricate a number.",
+    "Domain 09, 10, 13, 14 KPIs — no company-specific sourcing found yet; do not populate with invented metrics. Use STB weekly performance measures (cross-referenced from RR-01/RR-02) as the only safe generic fallback for commercial/service metrics."
+  ]
+}
