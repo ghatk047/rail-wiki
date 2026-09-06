@@ -282,7 +282,7 @@ Do not generate 290 processes until all five of these exist and you have reviewe
 
 1. `registries/systems.json` and `registries/regulations.json` populated for domains 04 and 06 only, every entry sourced
 2. **Process A (regulated, citable):** `RR-03-05-01` Initial Terminal Air Brake Test — tests whether the pipeline can hold a precise regulatory process without drifting (49 CFR 232)
-3. **Process B (soft, commercial):** `RR-10-02-04` Spot Rate Quotation for a Carload Move — tests whether the pipeline produces something specific rather than generic consulting prose
+3. **Process B (soft, commercial):** `RR-10-02-02` Spot Rate Quotation for a Carload Move — tests whether the pipeline produces something specific rather than generic consulting prose
 4. **One EA landscape:** RR-06 Engineering — the most complex domain
 5. **One cross-domain flow:** the track defect flow (#3 above) — spans Engineering, Dispatching, and PTC data
 
