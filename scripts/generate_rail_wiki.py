@@ -29,6 +29,12 @@ An id the model invents does not resolve, and the process is assembled with
 the unresolved id left visible so the gate rejects it rather than the
 generator quietly dropping it. Nothing is written on a rejection.
 
+Description length is enforced here, not in validate_content.py. A rejection
+from the validator means exactly one thing — the registries do not ground
+something — and that single meaning is what makes it trustworthy as the §4
+gate. Length is a prose-quality condition, so it lives in Phase C with a
+bounded retry that tells the model what was wrong.
+
 Model
 -----
 Ollama REST at http://localhost:11434, model qwen2.5:14b-instruct, falling
@@ -62,6 +68,14 @@ OLLAMA_HOST = "http://localhost:11434"
 PREFERRED_MODEL = "qwen2.5:14b-instruct"
 FALLBACK_MODEL = "qwen2.5:latest"
 TIMEOUT = 180
+
+# Description length. The floor is a hard generator-side condition; the band is
+# advisory. Deliberately a floor and not the full band: a gate that demands 120
+# words gets 120 words, filler included, and padded prose is worse than short
+# prose for a wiki whose value is being recognisable to a rail person.
+DESC_FLOOR_WORDS = 100
+DESC_BAND = (120, 200)
+DEFAULT_RETRIES = 2
 
 MENU_REGISTRIES = ("systems", "roles", "regulations", "kpis")
 
@@ -131,7 +145,17 @@ def render_menu(menu: dict[str, list[Entry]], pains: list[str]) -> str:
     return "\n".join(lines)
 
 
-def build_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str]) -> str:
+def build_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
+                 retry_note: str | None = None) -> str:
+    """The prompt sent to the model.
+
+    The description requirement lives in its own section, not as a value in
+    the output template: a template value reads as a format hint and gets
+    ignored. It is also kept apart from the "leave statistics out" guidance,
+    because a length target and a suppression instruction in one sentence
+    fight each other and the suppression wins.
+    """
+    retry = f"\n{retry_note}\n" if retry_note else ""
     return f"""You are documenting one business process for a US Class I freight railroad.
 
 PROCESS
@@ -139,18 +163,43 @@ PROCESS
   L1  : {node['l1']}
   L2  : {node['l2']}
 
-You may reference ONLY the entities listed below, and ONLY by their id.
-Do NOT write any system name, job title, regulation citation, or metric name
-anywhere in your prose. Do not invent ids. If nothing in a list fits, return an
-empty list for it.
+ENTITIES
+You may reference the entities below ONLY, and ONLY by their id. Do not write
+a system name, job title, regulation citation or metric name anywhere in your
+prose. Do not invent ids. If nothing in a list fits, return an empty list.
 
 {render_menu(menu, pains)}
 
+WRITING THE DESCRIPTION
+This is the main body of work in this task. Write 120-200 words, covering all
+five of the following, in this order, at roughly 25-40 words each:
+
+  1. TRIGGER    What starts this work, and how the need becomes visible to
+                the people who act on it.
+  2. SEQUENCE   Who does what, in order, from trigger through to completion.
+  3. JUDGEMENT  The decision or exception that makes this process non-trivial
+                — the point where experience matters — and what happens on
+                each branch.
+  4. HANDOFF    What leaves this process, and who picks it up next.
+  5. DONE       The condition that means the work is complete and can be
+                closed out.
+
+Write about mechanism rather than measurement: explain how the work is
+carried out and what governs it. Figures, percentages and dates are not what
+makes a description good here, and a description is better without them
+unless one is genuinely central to the process.
+
+Plain declarative sentences. No consulting register, no filler, no restating
+the process name back. If you find yourself short of 120 words, you have
+under-described one of the five elements above — go back and expand it rather
+than padding.
+{retry}
+OUTPUT
 Return ONE JSON object, nothing else:
 
 {{
   "name": "specific process name, 4-12 words, no numbers",
-  "description": "120-200 words, plain language, how the work actually runs. Do not state any statistic, percentage, quantity or date unless it is central and you are certain it is public knowledge.",
+  "description": "the 120-200 word description specified above",
   "inputs": ["2-4 short noun phrases"],
   "outputs": ["2-4 short noun phrases"],
   "system_ids": ["SYS-..."],
@@ -228,18 +277,33 @@ MOCK_PROSE = {
         "system holds is treated as a defect in its own right and is reconciled "
         "before the cycle is closed out."
     ),
+    "short": (
+        "The crew performs the required test before departure and records the "
+        "result. Any defect found is repaired or the equipment is set out."
+    ),
+    # Deliberately over the length floor, so that it reaches the validator and
+    # exercises the grounding path rather than being turned back on length.
     "ungrounded-figure": (
-        "The work runs on a scheduled cycle rather than on demand. Automated "
-        "classification cut triage time by 34% and clears 1,200 exceptions per "
-        "week across the region. Since March 2019 the programme has run "
-        "continuously on all main line track. Findings are classified by "
-        "severity and the most serious generate an immediate operating "
-        "restriction before further movement is authorised."
+        "The work runs on a scheduled cycle rather than on demand. A planned "
+        "cycle is published for each subdivision, the field team executes "
+        "against it, and the results are scored and routed for disposition "
+        "before the next cycle opens. Automated classification cut triage time "
+        "by 34% and clears 1,200 exceptions per week across the region. Since "
+        "March 2019 the programme has run continuously on all main line track. "
+        "Findings are classified by severity: the most serious generate an "
+        "immediate operating restriction, which is placed into effect before "
+        "any further movement is authorised over the affected segment. Less "
+        "serious findings are queued into the planned maintenance programme and "
+        "tracked to closure. Every restriction imposed, changed or lifted is "
+        "recorded so that the field condition and the systems that govern "
+        "movement stay consistent with one another, and any disagreement "
+        "between them is reconciled before the cycle is closed out."
     ),
 }
 
 
-def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str) -> dict:
+def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
+                  attempt: int = 1) -> dict:
     """A canned model reply. Opens no socket."""
     sys_ids = [e.entry_id for e in menu["systems"][:2]]
     role_ids = [e.entry_id for e in menu["roles"][:3]]
@@ -251,9 +315,12 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str) 
     if profile == "invented-role":
         role_ids = ["ROLE-D06-99"] + role_ids[:2]
 
+    prose_key = profile
+    if profile == "short-then-good":
+        prose_key = "short" if attempt == 1 else "good"
     return {
         "name": "Scheduled Inspection Cycle and Exception Disposition",
-        "description": MOCK_PROSE.get(profile, MOCK_PROSE["good"]),
+        "description": MOCK_PROSE.get(prose_key, MOCK_PROSE["good"]),
         "inputs": ["Published inspection cycle plan", "Prior exception history"],
         "outputs": ["Scored exception list", "Operating restriction request"],
         "system_ids": sys_ids,
@@ -333,11 +400,32 @@ def assemble(node: dict, reply: dict, r, pains: list[str]) -> tuple[dict, list[s
         "last_reviewed": date.today().isoformat(),
     }
 
-    words = len(proc["description"].split())
-    if not (120 <= words <= 200):
-        notes.append(f"description is {words} words; §3 asks for 120-200 "
-                     f"(advisory — not a gate condition)")
     return proc, notes
+
+
+def check_description_length(proc: dict) -> tuple[bool, int, str | None]:
+    """(meets_floor, words, advisory). Below the floor is not writable."""
+    words = len((proc.get("description") or "").split())
+    lo, hi = DESC_BAND
+    if words < DESC_FLOOR_WORDS:
+        return False, words, None
+    if words < lo:
+        return True, words, f"description is {words} words, under the §3 band of {lo}-{hi}"
+    if words > hi:
+        return True, words, f"description is {words} words, over the §3 band of {lo}-{hi}"
+    return True, words, None
+
+
+def retry_note(words: int) -> str:
+    lo, hi = DESC_BAND
+    return (
+        f"PREVIOUS ATTEMPT REJECTED\n"
+        f"Your last description was {words} words. The requirement is {lo}-{hi}.\n"
+        f"It was rejected for length alone, not for content. Do not pad it. Work\n"
+        f"through TRIGGER, SEQUENCE, JUDGEMENT, HANDOFF and DONE in turn and give\n"
+        f"each of the five 25-40 words of real detail — at least one of them was\n"
+        f"left thin or skipped entirely last time."
+    )
 
 
 def _by_id(r, registry: str, entry_id: str) -> Entry | None:
@@ -378,11 +466,16 @@ def main() -> int:
     ap.add_argument("--mock", action="store_true",
                     help="use a canned response instead of calling Ollama (opens no socket)")
     ap.add_argument("--mock-profile", default="good",
-                    choices=["good", "ungrounded-figure", "invented-system", "invented-role"],
+                    choices=["good", "ungrounded-figure", "invented-system",
+                             "invented-role", "short", "short-then-good"],
                     help="which canned response to use with --mock")
     ap.add_argument("--host", default=OLLAMA_HOST)
     ap.add_argument("--registries", default=str(REGISTRY_DIR))
     ap.add_argument("--out", default=str(PROCESSES))
+    ap.add_argument("--max-retries", type=int, default=DEFAULT_RETRIES,
+                    dest="max_retries",
+                    help=f"retries when the description misses the "
+                         f"{DESC_FLOOR_WORDS}-word floor (default {DEFAULT_RETRIES})")
     ap.add_argument("--dry-run", action="store_true", help="validate but never write")
     ap.add_argument("--show-prompt", action="store_true",
                     help="print the prompt for this PID and exit — no model "
@@ -415,19 +508,48 @@ def main() -> int:
               f"{Path(args.out).name} untouched.")
         return 0
 
-    try:
-        if args.mock:
-            print(f"  MOCK: canned response, profile {args.mock_profile!r} (no network call)")
-            reply = mock_response(menu, pains, args.mock_profile)
-        else:
-            reply = call_ollama(prompt, args.host)
-    except GenerationError as e:
-        print(f"FATAL: {e}", file=sys.stderr)
-        return 2
+    attempts = 1 + max(0, args.max_retries)
+    note: str | None = None
+    proc = None
+    for attempt in range(1, attempts + 1):
+        prompt = build_prompt(node, menu, pains, retry_note=note)
+        try:
+            if args.mock:
+                print(f"  MOCK: canned response, profile {args.mock_profile!r} "
+                      f"(attempt {attempt}/{attempts}, no network call)")
+                reply = mock_response(menu, pains, args.mock_profile, attempt=attempt)
+            else:
+                print(f"  attempt {attempt}/{attempts}")
+                reply = call_ollama(prompt, args.host)
+        except GenerationError as e:
+            print(f"FATAL: {e}", file=sys.stderr)
+            return 2
 
-    proc, notes = assemble(node, reply, r, pains)
-    for n in notes:
-        print(f"  note: {n}")
+        proc, notes = assemble(node, reply, r, pains)
+        for n in notes:
+            print(f"  note: {n}")
+
+        ok, words, advisory = check_description_length(proc)
+        if ok:
+            if advisory:
+                print(f"  note: {advisory} (advisory)")
+            else:
+                print(f"  description: {words} words")
+            break
+        print(f"  REJECTED (length): description is {words} words, "
+              f"floor is {DESC_FLOOR_WORDS}")
+        if attempt < attempts:
+            note = retry_note(words)
+            print("  retrying with a corrective note")
+        else:
+            print()
+            print(f"REJECT  {node['pid']}")
+            print(f"        description did not reach {DESC_FLOOR_WORDS} words in "
+                  f"{attempts} attempt(s). Surfacing for human review rather than "
+                  f"looping — the prompt or the registry coverage for this domain "
+                  f"is the thing to look at, not the retry count.")
+            print(f"\n  NOT WRITTEN. {Path(args.out).name} is unchanged.")
+            return 1
 
     print()
     facts = vc.FactIndex(r)
