@@ -33,7 +33,8 @@ Model
 -----
 Ollama REST at http://localhost:11434, model qwen2.5:14b-instruct, falling
 back to qwen2.5:latest if the preferred tag is not pulled. --mock replaces the
-call entirely with a canned response and never opens a socket.
+call entirely with a canned response and never opens a socket. --show-prompt
+prints the prompt and exits before either path is reached.
 """
 
 from __future__ import annotations
@@ -383,7 +384,9 @@ def main() -> int:
     ap.add_argument("--registries", default=str(REGISTRY_DIR))
     ap.add_argument("--out", default=str(PROCESSES))
     ap.add_argument("--dry-run", action="store_true", help="validate but never write")
-    ap.add_argument("--show-prompt", action="store_true")
+    ap.add_argument("--show-prompt", action="store_true",
+                    help="print the prompt for this PID and exit — no model "
+                         "call, no write. Ignores --mock.")
     args = ap.parse_args()
 
     try:
@@ -405,7 +408,12 @@ def main() -> int:
 
     prompt = build_prompt(node, menu, pains)
     if args.show_prompt:
-        print("\n" + "-" * 70 + "\n" + prompt + "\n" + "-" * 70 + "\n")
+        # Preview only. Exits before any model call and before any write, so
+        # a prompt can be inspected for any PID at zero cost.
+        print("\n" + "-" * 70 + "\n" + prompt + "\n" + "-" * 70)
+        print(f"\n  --show-prompt: preview only. No model call, "
+              f"{Path(args.out).name} untouched.")
+        return 0
 
     try:
         if args.mock:
