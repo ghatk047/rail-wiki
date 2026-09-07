@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Process Preview Index</title>
+<meta http-equiv="refresh" content="60">
+<title>Batch Progress</title>
 <style>
 :root {
   --bg: #f7f7f5; --panel: #ffffff; --ink: #1c1d1f; --muted: #5c5f66;
@@ -87,17 +88,33 @@ footer {
   margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
   font-size: .8rem; color: var(--muted);
 }
+
+.st-ok { color: #1a7f37; }
+.st-bad { color: #b42318; }
 </style>
 </head>
 <body>
 <main>
   <div class="draft">
-    <strong>DRAFT preview index.</strong> Rendered from data/processes.json
-    (not committed) for human review under BUILD-SPEC-v2 §11. Not the final
-    site.
+    <strong>Live batch status.</strong> Refreshes here only when the local
+    terminal pushes — if the numbers stop moving, the terminal has stopped
+    or is between pushes. This is a heartbeat page, not the content review
+    index (<a href="index.html">that's here</a>).
   </div>
-  <h1>Generated Process Previews</h1>
-  <ul><li><a href="RR-01-01-01.html">RR-01-01-01</a> — Operating Plan Design <span style="color:var(--muted); font-size:.85rem;">(Service Design &amp; Network Planning)</span></li><li><a href="RR-03-05-01.html">RR-03-05-01</a> — Air Brake Test and Departure Inspection <span style="color:var(--muted); font-size:.85rem;">(Terminal &amp; Yard Operations)</span></li></ul>
+  <h1>Batch Progress</h1>
+  <div class="kv" style="margin-bottom:1.5rem;">
+    <dt>Taxonomy total</dt><dd>290</dd>
+    <dt>Generated before this run</dt><dd>2</dd>
+    <dt>This run so far</dt><dd>1 attempted, 1 written, 0 rejected/error</dd>
+    <dt>Last push</dt><dd>2026-09-07 18:21 UTC</dd>
+  </div>
+  <section>
+    <h2>This run's PIDs (most recent first)</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>PID</th><th>Name</th><th>Status</th><th>Reason</th></tr></thead>
+      <tbody><tr><td>RR-01-01-01</td><td>Operating Plan Design</td><td><span class="st-ok">written</span></td><td></td></tr></tbody>
+    </table></div>
+  </section>
   <footer>
     Independently compiled from public sources. Not affiliated with,
     sponsored by, or endorsed by any railroad. Illustrative of US Class I
