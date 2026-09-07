@@ -234,9 +234,18 @@ def _process_header(node: dict) -> str:
 
 def _entities_block(menu: dict[str, list[Entry]], pains: list[str]) -> str:
     return f"""ENTITIES
-You may reference the entities below ONLY, and ONLY by their id. Do not write
-a system name, job title, regulation citation or metric name anywhere in your
-prose. Do not invent ids. If nothing in a list fits, return an empty list.
+Select entities below ONLY by their id, and put that id ONLY in an id field
+of the OUTPUT JSON (system_ids, role_ids, regulation_ids, kpi_ids,
+pain_point_ids, or a step's role_id/system_id/kpi_id/pain_point_id) -- never
+inside prose. Do not invent ids. If nothing in a list fits, return an empty
+list.
+
+You may still describe roles and systems in prose using ordinary words --
+"the Yardmaster", "the inspection system" -- that is normal and expected. The
+one thing that must never appear inside prose is the id CODE ITSELF, things
+like "SYS-D06-01" or "ROLE-D06-02" or "P04" typed as text in a sentence. If
+you need to refer to an entity in prose, use its plain name or role, never
+its id string.
 
 {render_menu(menu, pains)}"""
 
