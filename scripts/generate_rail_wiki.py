@@ -240,7 +240,8 @@ def pick_model(host: str) -> str:
         f"Available: {sorted(have) or 'none'}")
 
 
-def call_ollama(prompt: str, host: str) -> dict:
+def call_ollama(prompt: str, host: str) -> tuple[dict, str]:
+    """Returns (parsed reply, raw response text) -- the raw text is what --debug shows."""
     model = pick_model(host)
     print(f"  model: {model} @ {host}")
     out = _http_json(f"{host}/api/generate", {
@@ -252,7 +253,7 @@ def call_ollama(prompt: str, host: str) -> dict:
     })
     raw = out.get("response", "")
     try:
-        return json.loads(raw)
+        return json.loads(raw), raw
     except json.JSONDecodeError as e:
         raise GenerationError(f"model did not return JSON: {e}\n---\n{raw[:800]}") from e
 
@@ -303,7 +304,7 @@ MOCK_PROSE = {
 
 
 def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
-                  attempt: int = 1) -> dict:
+                  attempt: int = 1) -> tuple[dict, str]:
     """A canned model reply. Opens no socket."""
     sys_ids = [e.entry_id for e in menu["systems"][:2]]
     role_ids = [e.entry_id for e in menu["roles"][:3]]
@@ -318,7 +319,7 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
     prose_key = profile
     if profile == "short-then-good":
         prose_key = "short" if attempt == 1 else "good"
-    return {
+    reply = {
         "name": "Scheduled Inspection Cycle and Exception Disposition",
         "description": MOCK_PROSE.get(prose_key, MOCK_PROSE["good"]),
         "inputs": ["Published inspection cycle plan", "Prior exception history"],
@@ -330,6 +331,7 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
         "pain_point_ids": ["P07"] if len(pains) >= 7 else ([f"P{len(pains):02d}"] if pains else []),
         "confidence": "medium",
     }
+    return reply, json.dumps(reply, indent=2, ensure_ascii=False)
 
 
 # --- assembly -----------------------------------------------------------------
@@ -480,6 +482,9 @@ def main() -> int:
     ap.add_argument("--show-prompt", action="store_true",
                     help="print the prompt for this PID and exit — no model "
                          "call, no write. Ignores --mock.")
+    ap.add_argument("--debug", action="store_true",
+                    help="dump the full raw model response and the full "
+                         "description text for every attempt, mock or live")
     args = ap.parse_args()
 
     try:
@@ -517,13 +522,26 @@ def main() -> int:
             if args.mock:
                 print(f"  MOCK: canned response, profile {args.mock_profile!r} "
                       f"(attempt {attempt}/{attempts}, no network call)")
-                reply = mock_response(menu, pains, args.mock_profile, attempt=attempt)
+                reply, raw = mock_response(menu, pains, args.mock_profile, attempt=attempt)
             else:
                 print(f"  attempt {attempt}/{attempts}")
-                reply = call_ollama(prompt, args.host)
+                reply, raw = call_ollama(prompt, args.host)
         except GenerationError as e:
             print(f"FATAL: {e}", file=sys.stderr)
             return 2
+
+        if args.debug:
+            print()
+            print(f"  {'=' * 66}")
+            print(f"  DEBUG: attempt {attempt}/{attempts} raw model response")
+            print(f"  {'=' * 66}")
+            print(raw)
+            desc = reply.get("description", "") if isinstance(reply, dict) else ""
+            print(f"  {'-' * 66}")
+            print(f"  description ({len(str(desc).split())} words):")
+            print(f"  {desc}")
+            print(f"  {'=' * 66}")
+            print()
 
         proc, notes = assemble(node, reply, r, pains)
         for n in notes:
