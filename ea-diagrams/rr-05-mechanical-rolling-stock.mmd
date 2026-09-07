@@ -3,15 +3,15 @@ flowchart TB
 
   subgraph PROCS["Mechanical & Rolling Stock — L2 process groups"]
     direction LR
-    G1["Locomotive Running Repair &…"]
-    G2["Locomotive Heavy Overhaul and…"]
-    G3["Railcar Repair & Billing…"]
-    G4["Inbound/Outbound Mechanical…"]
-    G5["Wayside Detector Network hot…"]
-    G6["Condition-Based Maintenance &…"]
-    G7["Fleet Reliability and Failure…"]
-    G8["Bad Order Management"]
-    G9["Locomotive Fuel Efficiency…"]
+    G1["Locomotive Running Repair &…"]:::l2
+    G2["Locomotive Heavy Overhaul and…"]:::l2
+    G3["Railcar Repair & Billing…"]:::l2
+    G4["Inbound/Outbound Mechanical…"]:::l2
+    G5["Wayside Detector Network hot…"]:::l2
+    G6["Condition-Based Maintenance &…"]:::l2
+    G7["Fleet Reliability and Failure…"]:::l2
+    G8["Bad Order Management"]:::l2
+    G9["Locomotive Fuel Efficiency…"]:::l2
   end
 
   subgraph INDUSTRY["Industry-typical"]
@@ -19,6 +19,9 @@ flowchart TB
     I1["Wayside defect detector network hot…\nSYS-D05-01"]:::industry
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

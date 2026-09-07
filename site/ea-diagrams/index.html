@@ -59,10 +59,10 @@ footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--r
 .dg-lb-bar button:hover { background: #3a3d43; }
 .dg-lb-bar .dg-lb-hint { color: #9a9da3; font-size: .78rem; }
 .dg-lb-bar .dg-lb-close { margin-left: auto; }
-.dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; display: flex; align-items: center; justify-content: center; }
+.dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; position: relative; }
 .dg-lb-canvas.grabbing { cursor: grabbing; }
-.dg-lb-inner { transform-origin: center center; will-change: transform; }
-.dg-lb-inner svg { max-width: none !important; height: auto !important; }
+.dg-lb-inner { position: absolute; will-change: transform; }
+.dg-lb-inner svg { display: block; max-width: none !important; }
 </style>
 </head>
 <body>

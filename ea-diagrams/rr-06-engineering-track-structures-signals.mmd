@@ -3,18 +3,18 @@ flowchart TB
 
   subgraph PROCS["Engineering: Track, Structures & Signals — L2 process groups"]
     direction LR
-    G1["Visual and Walking Track…"]
-    G2["Automated Track Inspection…"]
-    G3["Maintenance-of-Way Programs…"]
-    G4["Track Authority and Roadway…"]
-    G5["Bridges and Structures"]
-    G6["Signal Design, Installation…"]
-    G7["PTC Wayside Assets and…"]
-    G8["Grade Crossing Signals and…"]
-    G9["Capital Program and Line…"]
-    G10["Right-of-Way, Real Estate and…"]
-    G11["Vegetation, Drainage and…"]
-    G12["Derailment Site Restoration"]
+    G1["Visual and Walking Track…"]:::l2
+    G2["Automated Track Inspection…"]:::l2
+    G3["Maintenance-of-Way Programs…"]:::l2
+    G4["Track Authority and Roadway…"]:::l2
+    G5["Bridges and Structures"]:::l2
+    G6["Signal Design, Installation…"]:::l2
+    G7["PTC Wayside Assets and…"]:::l2
+    G8["Grade Crossing Signals and…"]:::l2
+    G9["Capital Program and Line…"]:::l2
+    G10["Right-of-Way, Real Estate and…"]:::l2
+    G11["Vegetation, Drainage and…"]:::l2
+    G12["Derailment Site Restoration"]:::l2
   end
 
   subgraph COMPANY["Company-specific (UP-confirmed)"]
@@ -32,6 +32,9 @@ flowchart TB
     I4["RailAI Tetra Tech\nSYS-D06-08"]:::industry
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

@@ -3,15 +3,15 @@ flowchart TB
 
   subgraph PROCS["Merger & Network Integration — L2 process groups"]
     direction LR
-    G1["STB Major Merger Application…"]
-    G2["Operating Plan and Service…"]
-    G3["Labor Protective Conditions…"]
-    G4["Systems Cutover Planning TMS,…"]
-    G5["Reporting Mark and Equipment…"]
-    G6["Crew District and Dispatch…"]
-    G7["Terminal and Gateway…"]
-    G8["Integration Risk and…"]
-    G9["Post-Merger Oversight and…"]
+    G1["STB Major Merger Application…"]:::l2
+    G2["Operating Plan and Service…"]:::l2
+    G3["Labor Protective Conditions…"]:::l2
+    G4["Systems Cutover Planning TMS,…"]:::l2
+    G5["Reporting Mark and Equipment…"]:::l2
+    G6["Crew District and Dispatch…"]:::l2
+    G7["Terminal and Gateway…"]:::l2
+    G8["Integration Risk and…"]:::l2
+    G9["Post-Merger Oversight and…"]:::l2
   end
 
   subgraph COMPANY["Company-specific (UP-confirmed)"]
@@ -19,6 +19,9 @@ flowchart TB
     C1["NetControl / TCS cutover precedent\nSYS-D15-01"]:::company
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

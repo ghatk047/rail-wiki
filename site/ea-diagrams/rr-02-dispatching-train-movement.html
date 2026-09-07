@@ -59,10 +59,10 @@ footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--r
 .dg-lb-bar button:hover { background: #3a3d43; }
 .dg-lb-bar .dg-lb-hint { color: #9a9da3; font-size: .78rem; }
 .dg-lb-bar .dg-lb-close { margin-left: auto; }
-.dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; display: flex; align-items: center; justify-content: center; }
+.dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; position: relative; }
 .dg-lb-canvas.grabbing { cursor: grabbing; }
-.dg-lb-inner { transform-origin: center center; will-change: transform; }
-.dg-lb-inner svg { max-width: none !important; height: auto !important; }
+.dg-lb-inner { position: absolute; will-change: transform; }
+.dg-lb-inner svg { display: block; max-width: none !important; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 </head>
@@ -72,7 +72,7 @@ footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--r
     <strong>Deterministic, registry-only.</strong> Built directly from
     registries/systems.json and data/taxonomy.json -- no model call, nothing
     inferred. A sparse or empty domain here means the registry has not been
-    sourced for it yet, not that a diagram is missing.
+    sourced for it yet, not that a diagram is missing. No processes generated for this domain yet, so no usage connectors -- the L2 groups and the systems are drawn as two unconnected clusters rather than a guessed connection. Connectors appear here as soon as a process citing one of these systems is generated.
   </div>
   <div class="breadcrumb"><a href="index.html">&larr; EA diagrams</a></div>
   <h1>RR-02 &middot; Dispatching &amp; Train Movement</h1>
@@ -86,14 +86,14 @@ flowchart TB
 
   subgraph PROCS[&quot;Dispatching &amp; Train Movement — L2 process groups&quot;]
     direction LR
-    G1[&quot;Territory Dispatching CTC&quot;]
-    G2[&quot;Track Warrant Control / Dark…&quot;]
-    G3[&quot;Authority Issuance &amp; Roadway…&quot;]
-    G4[&quot;Meet/Pass &amp; Train…&quot;]
-    G5[&quot;Enroute Exception Handling…&quot;]
-    G6[&quot;Chief Dispatcher &amp; Network…&quot;]
-    G7[&quot;Slow Order, Heat and Cold…&quot;]
-    G8[&quot;Emergency &amp; Derailment…&quot;]
+    G1[&quot;Territory Dispatching CTC&quot;]:::l2
+    G2[&quot;Track Warrant Control / Dark…&quot;]:::l2
+    G3[&quot;Authority Issuance &amp; Roadway…&quot;]:::l2
+    G4[&quot;Meet/Pass &amp; Train…&quot;]:::l2
+    G5[&quot;Enroute Exception Handling…&quot;]:::l2
+    G6[&quot;Chief Dispatcher &amp; Network…&quot;]:::l2
+    G7[&quot;Slow Order, Heat and Cold…&quot;]:::l2
+    G8[&quot;Emergency &amp; Derailment…&quot;]:::l2
   end
 
   subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
@@ -103,6 +103,9 @@ flowchart TB
     C3[&quot;Transportation Control System TCS —…\nSYS-D02-03&quot;]:::company
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
@@ -114,14 +117,14 @@ flowchart TB
 
   subgraph PROCS[&quot;Dispatching &amp; Train Movement — L2 process groups&quot;]
     direction LR
-    G1[&quot;Territory Dispatching CTC&quot;]
-    G2[&quot;Track Warrant Control / Dark…&quot;]
-    G3[&quot;Authority Issuance &amp; Roadway…&quot;]
-    G4[&quot;Meet/Pass &amp; Train…&quot;]
-    G5[&quot;Enroute Exception Handling…&quot;]
-    G6[&quot;Chief Dispatcher &amp; Network…&quot;]
-    G7[&quot;Slow Order, Heat and Cold…&quot;]
-    G8[&quot;Emergency &amp; Derailment…&quot;]
+    G1[&quot;Territory Dispatching CTC&quot;]:::l2
+    G2[&quot;Track Warrant Control / Dark…&quot;]:::l2
+    G3[&quot;Authority Issuance &amp; Roadway…&quot;]:::l2
+    G4[&quot;Meet/Pass &amp; Train…&quot;]:::l2
+    G5[&quot;Enroute Exception Handling…&quot;]:::l2
+    G6[&quot;Chief Dispatcher &amp; Network…&quot;]:::l2
+    G7[&quot;Slow Order, Heat and Cold…&quot;]:::l2
+    G8[&quot;Emergency &amp; Derailment…&quot;]:::l2
   end
 
   subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
@@ -131,6 +134,9 @@ flowchart TB
     C3[&quot;Transportation Control System TCS —…\nSYS-D02-03&quot;]:::company
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
@@ -156,16 +162,52 @@ classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3</
 <script>
 (function () {
   var scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0;
-  var lb, inner, canvas;
+  var baseW = 0, baseH = 0;
+  var lb, inner, canvas, svgEl;
 
-  function apply() { inner.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')'; }
+  // Pan via translate (cheap, never blurs). Zoom via the SVG's own pixel
+  // width/height (forces real vector re-render, never blurs either) --
+  // see the module docstring for why a CSS transform: scale() blurred.
+  function apply() {
+    inner.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+    if (svgEl) {
+      svgEl.style.width = (baseW * scale) + 'px';
+      svgEl.style.height = (baseH * scale) + 'px';
+    }
+  }
 
   function open(svg) {
-    inner.innerHTML = '';
-    inner.appendChild(svg.cloneNode(true));
-    scale = 1; tx = 0; ty = 0;
-    apply();
+    // Reveal the lightbox BEFORE measuring canvas -- a [hidden] element has
+    // no layout box, so getBoundingClientRect() on it (or anything inside
+    // it) returns all zeros. That was the immediate cause of a 0x0 SVG.
     lb.hidden = false;
+    inner.innerHTML = '';
+    var clone = svg.cloneNode(true);
+    inner.appendChild(clone);
+    svgEl = clone;
+
+    // Natural size: prefer the viewBox aspect ratio (always present on a
+    // Mermaid SVG) over the on-page rendered width, which is whatever the
+    // small container happened to constrain it to.
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    var canvasRect = canvas.getBoundingClientRect();
+    var targetW = Math.min(canvasRect.width * 0.9, (vb && vb.width) || canvasRect.width * 0.9);
+    if (vb && vb.width && vb.height) {
+      baseW = targetW;
+      baseH = targetW * (vb.height / vb.width);
+    } else {
+      var r = svg.getBoundingClientRect();
+      baseW = r.width || targetW;
+      baseH = r.height || targetW;
+    }
+    svgEl.removeAttribute('width');
+    svgEl.removeAttribute('height');
+
+    scale = 1;
+    // Centre the diagram in the canvas at its initial size.
+    tx = (canvasRect.width - baseW) / 2;
+    ty = (canvasRect.height - baseH) / 2;
+    apply();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -188,17 +230,29 @@ classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3</
     lb.querySelectorAll('[data-zoom]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var z = btn.getAttribute('data-zoom');
+        var rect = canvas.getBoundingClientRect();
+        var cx = rect.width / 2, cy = rect.height / 2;
+        var before = scale;
         if (z === 'in') scale = Math.min(scale * 1.25, 6);
         else if (z === 'out') scale = Math.max(scale / 1.25, .2);
-        else { scale = 1; tx = 0; ty = 0; }
+        else { scale = 1; tx = (rect.width - baseW) / 2; ty = (rect.height - baseH) / 2; apply(); return; }
+        // Keep the canvas centre fixed under the cursor-free zoom buttons.
+        tx = cx - (cx - tx) * (scale / before);
+        ty = cy - (cy - ty) * (scale / before);
         apply();
       });
     });
 
     canvas.addEventListener('wheel', function (e) {
       e.preventDefault();
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      var before = scale;
       var delta = e.deltaY < 0 ? 1.1 : .9;
       scale = Math.min(6, Math.max(.2, scale * delta));
+      // Zoom toward the mouse position, not the canvas centre.
+      tx = mx - (mx - tx) * (scale / before);
+      ty = my - (my - ty) * (scale / before);
       apply();
     }, { passive: false });
 

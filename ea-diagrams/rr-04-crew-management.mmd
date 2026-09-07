@@ -3,15 +3,15 @@ flowchart TB
 
   subgraph PROCS["Crew Management — L2 process groups"]
     direction LR
-    G1["Crew Calling & Extra Board"]
-    G2["Crew District and CBA Rule…"]
-    G3["Hours of Service Compliance &…"]
-    G4["Rest, Attendance and…"]
-    G5["Deadhead and Limbo Time…"]
-    G6["Engineer and Conductor…"]
-    G7["Territory Qualification &…"]
-    G8["Crew Size Compliance"]
-    G9["Tie-up, Lodging and Crew…"]
+    G1["Crew Calling & Extra Board"]:::l2
+    G2["Crew District and CBA Rule…"]:::l2
+    G3["Hours of Service Compliance &…"]:::l2
+    G4["Rest, Attendance and…"]:::l2
+    G5["Deadhead and Limbo Time…"]:::l2
+    G6["Engineer and Conductor…"]:::l2
+    G7["Territory Qualification &…"]:::l2
+    G8["Crew Size Compliance"]:::l2
+    G9["Tie-up, Lodging and Crew…"]:::l2
   end
 
   subgraph COMPANY["Company-specific (UP-confirmed)"]
@@ -26,6 +26,9 @@ flowchart TB
     I4["trackHOS-class HOS monitoring tools\nSYS-D04-05"]:::industry
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

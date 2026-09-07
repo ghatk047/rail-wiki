@@ -3,15 +3,15 @@ flowchart TB
 
   subgraph PROCS["Hazardous Materials & Environmental — L2 process groups"]
     direction LR
-    G1["Hazmat Acceptance,…"]
-    G2["TIH/PIH Handling and Route…"]
-    G3["Key Train Operating…"]
-    G4["Hazmat Training and…"]
-    G5["Emergency Response Planning…"]
-    G6["Tank Car Compliance and Fleet…"]
-    G7["Environmental Permitting and…"]
-    G8["Emissions, Fuel and…"]
-    G9["Spill Prevention and…"]
+    G1["Hazmat Acceptance,…"]:::l2
+    G2["TIH/PIH Handling and Route…"]:::l2
+    G3["Key Train Operating…"]:::l2
+    G4["Hazmat Training and…"]:::l2
+    G5["Emergency Response Planning…"]:::l2
+    G6["Tank Car Compliance and Fleet…"]:::l2
+    G7["Environmental Permitting and…"]:::l2
+    G8["Emissions, Fuel and…"]:::l2
+    G9["Spill Prevention and…"]:::l2
   end
 
   subgraph COMPANY["Company-specific (UP-confirmed)"]
@@ -24,6 +24,9 @@ flowchart TB
     I2["SERTC Security and Emergency Response…\nSYS-D08-03"]:::industry
   end
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

@@ -109,7 +109,14 @@ def _label(text: str, limit: int = 42) -> str:
 
 
 def build_domain_mermaid(l1_id: str, l1_name: str, l2_names: list[str],
-                         systems: list) -> str:
+                         systems: list, usage_edges: set[tuple[str, str]]) -> str:
+    """usage_edges is {(l2_name, system_source_id)} -- REAL evidence, read
+    from data/processes.json's already-generated processes, never inferred
+    or assumed. A domain with no generated processes yet draws its L2 groups
+    and its systems as two unconnected clusters and says so plainly: there is
+    no fabricated "L2 X plausibly uses system Y" line here. As more processes
+    get generated, edges accumulate the same way "queued" becomes "complete"
+    everywhere else on this site."""
     lines = [
         "%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%",
         "flowchart TB",
@@ -117,17 +124,18 @@ def build_domain_mermaid(l1_id: str, l1_name: str, l2_names: list[str],
         f'  subgraph PROCS["{_label(l1_name, 60)} — L2 process groups"]',
         "    direction LR",
     ]
-    l2_ids = []
+    l2_node_id: dict[str, str] = {}
     for i, l2 in enumerate(l2_names, start=1):
         nid = _mmd_id("G", i)
-        l2_ids.append(nid)
-        lines.append(f'    {nid}["{_label(l2, 30)}"]')
+        l2_node_id[l2] = nid
+        lines.append(f'    {nid}["{_label(l2, 30)}"]:::l2')
     lines.append("  end")
     lines.append("")
 
     company = [e for e in systems if e.scope == "company_specific"]
     industry = [e for e in systems if e.scope == "industry_typical"]
     other = [e for e in systems if e not in company and e not in industry]
+    sys_node_id: dict[str, str] = {}
 
     if not systems:
         lines.append(f'  NONE["No systems yet sourced in registries/systems.json\\n'
@@ -138,6 +146,7 @@ def build_domain_mermaid(l1_id: str, l1_name: str, l2_names: list[str],
             lines.append("    direction TB")
             for i, e in enumerate(company, start=1):
                 nid = _mmd_id("C", i)
+                sys_node_id[e.entry_id] = nid
                 lines.append(f'    {nid}["{_label(e.key)}\\n{e.entry_id}"]:::company')
             lines.append("  end")
         if industry:
@@ -145,6 +154,7 @@ def build_domain_mermaid(l1_id: str, l1_name: str, l2_names: list[str],
             lines.append("    direction TB")
             for i, e in enumerate(industry, start=1):
                 nid = _mmd_id("I", i)
+                sys_node_id[e.entry_id] = nid
                 lines.append(f'    {nid}["{_label(e.key)}\\n{e.entry_id}"]:::industry')
             lines.append("  end")
         if other:
@@ -152,11 +162,26 @@ def build_domain_mermaid(l1_id: str, l1_name: str, l2_names: list[str],
             lines.append("    direction TB")
             for i, e in enumerate(other, start=1):
                 nid = _mmd_id("O", i)
+                sys_node_id[e.entry_id] = nid
                 lines.append(f'    {nid}["{_label(e.key)}\\n{e.entry_id}"]:::other')
             lines.append("  end")
 
+    lines.append("")
+    edges = sorted(
+        (l2_node_id[l2], sys_node_id[sid])
+        for l2, sid in usage_edges
+        if l2 in l2_node_id and sid in sys_node_id
+    )
+    if edges:
+        lines.append("  %% Usage -- from data/processes.json, real generated content only")
+        for a, b in edges:
+            lines.append(f"  {a} --> {b}")
+    else:
+        lines.append("  %% No generated process yet cites a system in this domain -- no usage edges to draw")
+
     lines += [
         "",
+        "classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33",
         "classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407",
         "classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33",
         "classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348",
@@ -166,7 +191,15 @@ def build_domain_mermaid(l1_id: str, l1_name: str, l2_names: list[str],
 
 
 def render_page(l1_id: str, l1_name: str, mmd: str, n_company: int,
-                n_industry: int, n_other: int) -> str:
+                n_industry: int, n_other: int, n_edges: int) -> str:
+    edge_note = (
+        f"{n_edges} usage connector(s) drawn from processes actually generated "
+        f"for this domain." if n_edges else
+        "No processes generated for this domain yet, so no usage connectors -- "
+        "the L2 groups and the systems are drawn as two unconnected clusters "
+        "rather than a guessed connection. Connectors appear here as soon as a "
+        "process citing one of these systems is generated."
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -183,7 +216,7 @@ def render_page(l1_id: str, l1_name: str, mmd: str, n_company: int,
     <strong>Deterministic, registry-only.</strong> Built directly from
     registries/systems.json and data/taxonomy.json -- no model call, nothing
     inferred. A sparse or empty domain here means the registry has not been
-    sourced for it yet, not that a diagram is missing.
+    sourced for it yet, not that a diagram is missing. {html.escape(edge_note)}
   </div>
   <div class="breadcrumb"><a href="index.html">&larr; EA diagrams</a></div>
   <h1>{html.escape(l1_id)} &middot; {html.escape(l1_name)}</h1>
@@ -261,6 +294,20 @@ def main() -> int:
         if p["l2"] not in l2_by_domain[p["l1"]]:
             l2_by_domain[p["l1"]].append(p["l2"])
 
+    # Usage edges: (l2_name, system_source_id), grouped by L1 name, read
+    # ONLY from processes actually generated. This is real evidence, not an
+    # inferred "this L2 group probably uses this system" guess.
+    usage_by_l1: dict[str, set[tuple[str, str]]] = {}
+    procs_path = REPO / "data" / "processes.json"
+    if procs_path.exists():
+        procs = __import__("json").loads(procs_path.read_text(encoding="utf-8")).get("processes", {})
+        for p in procs.values():
+            edges = usage_by_l1.setdefault(p["l1"], set())
+            for s in p.get("systems") or []:
+                sid = s.get("source_id")
+                if sid:
+                    edges.add((p["l2"], sid))
+
     domains = taxonomy["_meta"]["domains"]
     MMD_DIR.mkdir(parents=True, exist_ok=True)
     HTML_DIR.mkdir(parents=True, exist_ok=True)
@@ -273,20 +320,24 @@ def main() -> int:
         systems = [e for e in r.all("systems") if e.domain.startswith(group)]
         l2_names = l2_by_domain.get(l1_name, [])
         slug = f"{l1_id.lower()}-{slugify(l1_name)}"
+        usage_edges = usage_by_l1.get(l1_name, set())
 
-        mmd = build_domain_mermaid(l1_id, l1_name, l2_names, systems)
+        mmd = build_domain_mermaid(l1_id, l1_name, l2_names, systems, usage_edges)
         (MMD_DIR / f"{slug}.mmd").write_text(mmd + "\n", encoding="utf-8")
 
         n_company = sum(1 for e in systems if e.scope == "company_specific")
         n_industry = sum(1 for e in systems if e.scope == "industry_typical")
         n_other = len(systems) - n_company - n_industry
-        page = render_page(l1_id, l1_name, mmd, n_company, n_industry, n_other)
+        n_edges = sum(1 for l2, sid in usage_edges
+                      if l2 in l2_names and sid in {e.entry_id for e in systems})
+        page = render_page(l1_id, l1_name, mmd, n_company, n_industry, n_other, n_edges)
         (HTML_DIR / f"{slug}.html").write_text(page, encoding="utf-8")
 
         rows.append({"slug": slug, "l1_id": l1_id, "l1_name": l1_name,
                     "n_systems": len(systems), "n_l2": len(l2_names)})
         flag = " (EMPTY — no sourced systems)" if not systems else ""
-        print(f"  {l1_id}  {len(systems):2d} systems, {len(l2_names):2d} L2 groups{flag}")
+        edge_flag = f", {n_edges} usage edge(s)" if n_edges else ""
+        print(f"  {l1_id}  {len(systems):2d} systems, {len(l2_names):2d} L2 groups{edge_flag}{flag}")
 
     (HTML_DIR / "index.html").write_text(render_index(rows), encoding="utf-8")
     print(f"\nwrote {len(rows)} .mmd files -> {MMD_DIR.relative_to(REPO)}/")

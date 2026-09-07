@@ -3,13 +3,13 @@ flowchart TB
 
   subgraph PROCS["Service Design & Network Planning — L2 process groups"]
     direction LR
-    G1["Operating Plan Design"]
-    G2["Train Symbol & Blocking Plan"]
-    G3["Car Trip Plan Management"]
-    G4["Terminal Mission Design"]
-    G5["Line Capacity & Route Planning"]
-    G6["Locomotive Power Distribution…"]
-    G7["Network Performance Metrics &…"]
+    G1["Operating Plan Design"]:::l2
+    G2["Train Symbol & Blocking Plan"]:::l2
+    G3["Car Trip Plan Management"]:::l2
+    G4["Terminal Mission Design"]:::l2
+    G5["Line Capacity & Route Planning"]:::l2
+    G6["Locomotive Power Distribution…"]:::l2
+    G7["Network Performance Metrics &…"]:::l2
   end
 
   subgraph COMPANY["Company-specific (UP-confirmed)"]
@@ -18,6 +18,11 @@ flowchart TB
     C2["NetControl service design use\nSYS-D01-02"]:::company
   end
 
+  %% Usage -- from data/processes.json, real generated content only
+  G1 --> C1
+  G1 --> C2
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

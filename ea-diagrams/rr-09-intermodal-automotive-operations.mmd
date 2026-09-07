@@ -3,19 +3,22 @@ flowchart TB
 
   subgraph PROCS["Intermodal & Automotive Operations — L2 process groups"]
     direction LR
-    G1["Intermodal Gate ingate/outgate"]
-    G2["Lift and Stack Operations"]
-    G3["Intermodal Train Build and…"]
-    G4["Drayage and Motor Carrier…"]
-    G5["Appointment and Terminal…"]
-    G6["Chassis and Container Pool…"]
-    G7["Port and International…"]
-    G8["Automotive Loading,…"]
-    G9["Transload and Bulk Terminal…"]
+    G1["Intermodal Gate ingate/outgate"]:::l2
+    G2["Lift and Stack Operations"]:::l2
+    G3["Intermodal Train Build and…"]:::l2
+    G4["Drayage and Motor Carrier…"]:::l2
+    G5["Appointment and Terminal…"]:::l2
+    G6["Chassis and Container Pool…"]:::l2
+    G7["Port and International…"]:::l2
+    G8["Automotive Loading,…"]:::l2
+    G9["Transload and Bulk Terminal…"]:::l2
   end
 
   NONE["No systems yet sourced in registries/systems.json\nfor Intermodal & Automotive Operations"]:::empty
 
+  %% No generated process yet cites a system in this domain -- no usage edges to draw
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348

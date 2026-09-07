@@ -3,15 +3,15 @@ flowchart TB
 
   subgraph PROCS["Terminal & Yard Operations — L2 process groups"]
     direction LR
-    G1["Inbound Train Processing &…"]
-    G2["Hump and Flat Classification"]
-    G3["Outbound Train Build &…"]
-    G4["Local and Industry Switching"]
-    G5["Air Brake Tests & Departure…"]
-    G6["Yard Planning & Dwell…"]
-    G7["Interchange Delivery and…"]
-    G8["Yardmaster Operations"]
-    G9["Yard Air, Utility and Ground…"]
+    G1["Inbound Train Processing &…"]:::l2
+    G2["Hump and Flat Classification"]:::l2
+    G3["Outbound Train Build &…"]:::l2
+    G4["Local and Industry Switching"]:::l2
+    G5["Air Brake Tests & Departure…"]:::l2
+    G6["Yard Planning & Dwell…"]:::l2
+    G7["Interchange Delivery and…"]:::l2
+    G8["Yardmaster Operations"]:::l2
+    G9["Yard Air, Utility and Ground…"]:::l2
   end
 
   subgraph COMPANY["Company-specific (UP-confirmed)"]
@@ -23,6 +23,11 @@ flowchart TB
     I1["Hump yard generic classification…\nSYS-D03-02"]:::industry
   end
 
+  %% Usage -- from data/processes.json, real generated content only
+  G5 --> C1
+  G5 --> I1
+
+classDef l2 fill:#2b2e33,color:#fff,stroke:#2b2e33
 classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
 classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
 classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
