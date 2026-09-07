@@ -348,9 +348,10 @@ already one coherent stretch of work. Each step is:
 
 Rules:
   - "step" ids are "1", "2", "3", ... in order, unique.
-  - "role_id", "system_id" and "kpi_id" are ids from the ENTITIES lists
-    above, exactly like a process-level field — never a name, never an
-    invented id. Use null (not an empty string) if none applies.
+  - "role_id", "system_id" and "kpi_id" are each a SINGLE id string from the
+    ENTITIES lists above (e.g. "ROLE-D06-01"), never a name, never an
+    invented id, and never a list even if more than one seems to fit — pick
+    the one that fits best. Use null (not an empty string) if none applies.
   - Exactly one of "decision_point" / "exception" may be "Y" on a given step;
     most steps are "N"/"N". At least {STEP_MIN_GATES} step across the whole
     list must be "Y" on one of them — a process with no real decision or
@@ -672,6 +673,17 @@ def check_steps_structure(reply: dict) -> tuple[bool, list[str], int]:
         for req in ("name", "role_id", "input", "output", "decision_point", "exception"):
             if not s.get(req):
                 problems.append(f"{loc} ({label}): missing \"{req}\"")
+        # id fields are a single id or null -- a live run returned a LIST of
+        # kpi ids for one step ('want both' read as 'give me a list'), which
+        # would otherwise sail through this structural gate and only fail
+        # later at validate_content.py, by which point Phase B has already
+        # "passed" and there is no retry left to fix it in.
+        for id_field in ("role_id", "system_id", "kpi_id", "pain_point_id"):
+            v = s.get(id_field)
+            if v is not None and not isinstance(v, str):
+                problems.append(
+                    f"{loc} ({label}): \"{id_field}\" must be a single id string or "
+                    f"null, got {v!r} -- pick ONE id, not a list")
 
         dp = str(s.get("decision_point", "")).strip().upper()
         exc = str(s.get("exception", "")).strip().upper()
