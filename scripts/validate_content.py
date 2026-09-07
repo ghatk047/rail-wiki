@@ -14,9 +14,13 @@ Checks
   3. regulatory_hook  every cite resolves in regulations.json
   4. actors[]         every role resolves in roles.json
   5. kpi_moved[]      every metric resolves in kpis.json
-  6. prose figures    every digit-bearing span and every date in free text is
-                      either inside a resolved registry surface form or is
-                      present in facts.json
+  6. prose figures    every digit-bearing span and every date in free text --
+                      including every steps[].name/input/output -- is either
+                      inside a resolved registry surface form or is present
+                      in facts.json
+  7. steps[]          (§3.1) each step's role/system/kpi resolves exactly like
+                      the process-level equivalents; a decision_point:"Y"
+                      step must carry a branch object
 
 Grounding is the loader's answer, unmodified. A None from the loader is a
 rejection; this module never softens one into a pass. The nearest-match
@@ -69,7 +73,8 @@ REQUIRED_FIELDS = [
     "systems", "regulatory_hook", "kpi_moved", "confidence", "sources",
 ]
 LIST_FIELDS = ["actors", "inputs", "outputs", "systems", "regulatory_hook",
-               "kpi_moved", "pain_points", "sources"]
+               "kpi_moved", "pain_points", "sources", "steps"]
+VALID_YN = {"Y", "N"}
 PROSE_FIELDS = ["name", "description", "inputs", "outputs", "pain_points",
                 "operating_rule_ref"]
 VALID_CONFIDENCE = {"high", "medium", "low"}
@@ -221,58 +226,128 @@ def check_structure(p: dict, f: list[Finding]) -> None:
         f.append(Finding("structure", "pid", pid, "must match RR-{L1}-{L2}-{NN}"))
 
 
+def _check_one_system(fld: str, s, r: RegistryLoader, f: list[Finding],
+                      check: str = "systems") -> None:
+    """One systems[] entry OR one steps[].system entry -- same object shape,
+    same rules, so both call sites share this."""
+    if not isinstance(s, dict):
+        f.append(Finding(check, fld, repr(s)[:60],
+                         "must be an object with name, scope, source_id"))
+        return
+    name, sid, scope = s.get("name"), s.get("source_id"), s.get("scope")
+
+    if not name:
+        f.append(Finding(check, fld + ".name", "<missing>", "required"))
+        return
+
+    denied = r.denial_for("systems", name)
+    if denied:
+        f.append(Finding(check, fld + ".name", name,
+                         "named on the systems.json DO-NOT-USE list: " + denied))
+        return
+
+    by_name = r.get_system_by_name(name)
+    by_id = r.get_system(sid) if sid else None
+
+    if by_name is None:
+        f.append(Finding(
+            check, fld + ".name", name,
+            "not found in registries/systems.json — no registry entry grounds "
+            "this system name, so it cannot be written into a process",
+            suggestions=near(name, r, "systems")))
+    if sid and by_id is None:
+        f.append(Finding(check, fld + ".source_id", str(sid),
+                         "no entry in systems.json carries this source_id"))
+    if not sid:
+        f.append(Finding(check, fld + ".source_id", "<missing>",
+                         "required — a system name must be bound to a registry id"))
+    if by_name is not None and by_id is not None and by_name.entry_id != by_id.entry_id:
+        # The name may be cross-registered; accept any candidate matching the id.
+        if not any(c.entry_id == by_id.entry_id
+                   for c in r.find_all("systems", name)):
+            f.append(Finding(
+                check, fld, f"{name} / {sid}",
+                f"name and source_id disagree: name resolves to "
+                f"{by_name.entry_id} ({by_name.key}), "
+                f"source_id resolves to {by_id.key}"))
+    resolved = by_id if by_id is not None else by_name
+    if scope is not None and scope not in VALID_SCOPE:
+        f.append(Finding(check, fld + ".scope", str(scope),
+                         f"must be one of {sorted(VALID_SCOPE)}"))
+    elif resolved is not None and scope and scope != resolved.scope:
+        f.append(Finding(
+            check, fld + ".scope", str(scope),
+            f"registry records this system as {resolved.scope!r}; "
+            f"the scope badge is the honesty mechanism and must agree"))
+
+
 def check_systems(p: dict, r: RegistryLoader, f: list[Finding]) -> None:
     for i, s in enumerate(p.get("systems") or []):
-        fld = f"systems[{i}]"
+        _check_one_system(f"systems[{i}]", s, r, f)
+
+
+def check_steps(p: dict, r: RegistryLoader, f: list[Finding]) -> None:
+    """§3.1: each step's role/system/kpi resolves exactly like the
+    process-level equivalents; a decision_point:"Y" step must carry a branch.
+    pain_point is not independently re-checked here, matching the top-level
+    pain_points[] policy -- it is trusted by construction (assemble() only
+    ever writes verbatim §7 text into it)."""
+    for i, s in enumerate(p.get("steps") or []):
+        fld = f"steps[{i}]"
         if not isinstance(s, dict):
-            f.append(Finding("systems", fld, repr(s)[:60],
-                             "must be an object with name, scope, source_id"))
-            continue
-        name, sid, scope = s.get("name"), s.get("source_id"), s.get("scope")
-
-        if not name:
-            f.append(Finding("systems", fld + ".name", "<missing>", "required"))
+            f.append(Finding("steps", fld, repr(s)[:60], "must be an object"))
             continue
 
-        denied = r.denial_for("systems", name)
-        if denied:
-            f.append(Finding("systems", fld + ".name", name,
-                             "named on the systems.json DO-NOT-USE list: " + denied))
-            continue
+        for req in ("step", "name", "role", "input", "output", "decision_point", "exception"):
+            if req not in s or s.get(req) in (None, ""):
+                f.append(Finding("steps", f"{fld}.{req}", "<missing>",
+                                 "required step field is absent"))
 
-        by_name = r.get_system_by_name(name)
-        by_id = r.get_system(sid) if sid else None
+        role = s.get("role")
+        if isinstance(role, str) and role:
+            denied = r.denial_for("roles", role)
+            if denied:
+                f.append(Finding("steps", f"{fld}.role", role,
+                                 "named on the roles.json DO-NOT-USE list: " + denied))
+            elif r.get_role(role) is None:
+                f.append(Finding("steps", f"{fld}.role", role,
+                                 "not found in registries/roles.json",
+                                 suggestions=near(role, r, "roles")))
+        elif role is not None and not isinstance(role, str):
+            f.append(Finding("steps", f"{fld}.role", repr(role)[:60], "must be a string"))
 
-        if by_name is None:
+        system = s.get("system")
+        if system is not None:
+            _check_one_system(f"{fld}.system", system, r, f, check="steps")
+
+        kpi = s.get("kpi")
+        if isinstance(kpi, str) and kpi:
+            denied = r.denial_for("kpis", kpi)
+            if denied:
+                f.append(Finding("steps", f"{fld}.kpi", kpi,
+                                 "named on the kpis.json DO-NOT-USE list: " + denied))
+            elif r.get_kpi(kpi) is None:
+                f.append(Finding("steps", f"{fld}.kpi", kpi,
+                                 "not found in registries/kpis.json",
+                                 suggestions=near(kpi, r, "kpis")))
+        elif kpi is not None and not isinstance(kpi, str):
+            f.append(Finding("steps", f"{fld}.kpi", repr(kpi)[:60], "must be a string"))
+
+        dp = str(s.get("decision_point", "")).strip().upper()
+        exc = str(s.get("exception", "")).strip().upper()
+        if s.get("decision_point") is not None and dp not in VALID_YN:
+            f.append(Finding("steps", f"{fld}.decision_point", str(s.get("decision_point")),
+                             'must be "Y" or "N"'))
+        if s.get("exception") is not None and exc not in VALID_YN:
+            f.append(Finding("steps", f"{fld}.exception", str(s.get("exception")),
+                             'must be "Y" or "N"'))
+
+        branch = s.get("branch")
+        if dp == "Y" and not (isinstance(branch, dict) and branch.get("label") and branch.get("to")):
             f.append(Finding(
-                "systems", fld + ".name", name,
-                "not found in registries/systems.json — no registry entry grounds "
-                "this system name, so it cannot be written into a process",
-                suggestions=near(name, r, "systems")))
-        if sid and by_id is None:
-            f.append(Finding("systems", fld + ".source_id", str(sid),
-                             "no entry in systems.json carries this source_id"))
-        if not sid:
-            f.append(Finding("systems", fld + ".source_id", "<missing>",
-                             "required — a system name must be bound to a registry id"))
-        if by_name is not None and by_id is not None and by_name.entry_id != by_id.entry_id:
-            # The name may be cross-registered; accept any candidate matching the id.
-            if not any(c.entry_id == by_id.entry_id
-                       for c in r.find_all("systems", name)):
-                f.append(Finding(
-                    "systems", fld, f"{name} / {sid}",
-                    f"name and source_id disagree: name resolves to "
-                    f"{by_name.entry_id} ({by_name.key}), "
-                    f"source_id resolves to {by_id.key}"))
-        resolved = by_id if by_id is not None else by_name
-        if scope is not None and scope not in VALID_SCOPE:
-            f.append(Finding("systems", fld + ".scope", str(scope),
-                             f"must be one of {sorted(VALID_SCOPE)}"))
-        elif resolved is not None and scope and scope != resolved.scope:
-            f.append(Finding(
-                "systems", fld + ".scope", str(scope),
-                f"registry records this system as {resolved.scope!r}; "
-                f"the scope badge is the honesty mechanism and must agree"))
+                "steps", f"{fld}.branch", repr(branch)[:60] if branch else "<missing>",
+                'decision_point:"Y" requires a branch object with "label" and '
+                '"to" -- a diamond with no alternate path is not a decision'))
 
 
 def _check_list(p: dict, key: str, registry: str, label: str, getter,
@@ -314,15 +389,25 @@ def check_prose_figures(p: dict, r: RegistryLoader, facts: FactIndex,
         key=len, reverse=True,
     )
 
+    chunk_sources: list[tuple[str, str]] = []
     for key in PROSE_FIELDS:
         if key not in p:
             continue
         val = p[key]
-        chunks = [(key, val)] if isinstance(val, str) else [
+        chunk_sources += [(key, val)] if isinstance(val, str) else [
             (f"{key}[{i}]", v) for i, v in enumerate(val) if isinstance(v, str)
         ] if isinstance(val, list) else []
+    # steps[].name / .input / .output are free prose too -- a fabricated
+    # figure can hide in a step exactly as easily as in the description.
+    for i, s in enumerate(p.get("steps") or []):
+        if not isinstance(s, dict):
+            continue
+        for sub in ("name", "input", "output"):
+            v = s.get(sub)
+            if isinstance(v, str) and v:
+                chunk_sources.append((f"steps[{i}].{sub}", v))
 
-        for fld, text in chunks:
+    for fld, text in chunk_sources:
             low = text.lower()
             covered: list[tuple[int, int]] = []
             for surf in surfaces:
@@ -396,19 +481,21 @@ def validate(p: dict, r: RegistryLoader, facts: FactIndex, words: bool = False,
     _check_list(p, "regulatory_hook", "regulations", "regulations", r.get_regulation, r, f)
     _check_list(p, "actors", "roles", "roles", r.get_role, r, f)
     _check_list(p, "kpi_moved", "kpis", "kpis", r.get_kpi, r, f)
+    check_steps(p, r, f)
     check_prose_figures(p, r, facts, f, words=words, grounded=grounded,
                         any_domain=any_domain)
     return f
 
 
 # --- reporting ----------------------------------------------------------------
-ORDER = ["structure", "systems", "regulations", "roles", "kpis", "figures"]
+ORDER = ["structure", "systems", "regulations", "roles", "kpis", "steps", "figures"]
 TITLES = {
     "structure": "SCHEMA",
     "systems": "UNGROUNDED SYSTEM",
     "regulations": "UNGROUNDED REGULATORY HOOK",
     "roles": "UNGROUNDED ROLE",
     "kpis": "UNGROUNDED KPI",
+    "steps": "STEP PROBLEM",
     "figures": "UNGROUNDED FIGURE OR DATE",
 }
 

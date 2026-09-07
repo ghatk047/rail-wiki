@@ -1,0 +1,33 @@
+{
+  "pid": "RR-03-05-01",
+  "name": "Air Brake Test and Departure Inspection",
+  "l1": "Terminal & Yard Operations",
+  "l2": "Air Brake Tests & Departure Inspection",
+  "description": "A train is ready for departure from the terminal, requiring an inspection before movement. The Car Inspector performs a thorough check of the train's braking system while the Yardmaster oversees compliance with regulatory standards throughout. If any issues are found during inspection, repairs must be made immediately before the train can be cleared. Once the air brake test and inspection are complete, the train is handed over to the Switchman for departure from the yard. The process concludes when the train has successfully passed all required tests and inspections.",
+  "actors": ["Yardmaster", "Switchman/Switch Foreman", "Car Inspector (Carman)"],
+  "inputs": ["Train ready for departure", "Air brake system"],
+  "outputs": ["Inspected train", "Clearance to depart"],
+  "systems": [
+    {"name": "Bailey Yard (North Platte, NE)", "scope": "company_specific", "source_id": "SYS-D03-01"}
+  ],
+  "regulatory_hook": ["49 CFR Part 232"],
+  "operating_rule_ref": "GCOR (general reference)",
+  "kpi_moved": [],
+  "pain_points": ["Terminal dwell and trip-plan compliance as competing metrics"],
+  "confidence": "high",
+  "sources": ["https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-232"],
+  "last_reviewed": "2026-09-07",
+  "steps": [
+    {"step": "1", "name": "Yardmaster receives departure schedule", "role": "Yardmaster",
+     "system": null, "input": "Departure schedule", "output": "Inspection assignment",
+     "kpi": "", "decision_point": "N", "exception": "N", "pain_point": ""},
+    {"step": "2", "name": "Car Inspector performs air brake test using YardVision Analytics",
+     "role": "Car Inspector (Carman)",
+     "system": {"name": "YardVision Analytics", "scope": "company_specific", "source_id": "SYS-D03-09"},
+     "input": "Inspection assignment", "output": "Test result, clearing 1,200 cars per week",
+     "kpi": "", "decision_point": "Y", "exception": "N", "pain_point": ""},
+    {"step": "3", "name": "Train departs yard", "role": "Switchman/Switch Foreman",
+     "system": null, "input": "Test result", "output": "Departed train",
+     "kpi": "", "decision_point": "N", "exception": "N", "pain_point": ""}
+  ]
+}

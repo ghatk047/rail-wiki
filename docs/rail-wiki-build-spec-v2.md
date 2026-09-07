@@ -146,6 +146,52 @@ Three fields are new and non-negotiable:
 
 `systems[].scope` must be `company_specific` or `industry_typical`, rendered as a visible badge on the page. That badge is the honesty mechanism for the whole wiki.
 
+### 3.1 Step-level detail (added Phase 4b)
+
+Every process also carries a `steps[]` array — a flat, ordered breakdown of the
+procedure, rendered as a table and a Mermaid flowchart on the process page:
+
+```json
+"steps": [
+  {"step": "1", "name": "Yardmaster receives departure schedule", "role": "Yardmaster",
+   "system": {"name": "Bailey Yard (North Platte, NE)", "scope": "company_specific", "source_id": "SYS-D03-01"},
+   "input": "Departure schedule", "output": "Inspection assignment", "kpi": "",
+   "decision_point": "N", "exception": "N", "pain_point": ""},
+  {"step": "2", "name": "Car Inspector conducts air brake test", "role": "Car Inspector (Carman)",
+   "system": null, "input": "Inspection assignment", "output": "Test result",
+   "kpi": "Cars classified per day / cars per minute at the hump",
+   "decision_point": "Y", "exception": "N",
+   "pain_point": "Terminal dwell and trip-plan compliance as competing metrics",
+   "branch": {"label": "Defect found", "to": "3"}}
+]
+```
+
+This deliberately does **not** mirror the Air Canada wiki's `phases` +
+`l4_steps` model one-for-one. AC's L3 processes are broad, end-to-end
+consulting artifacts that need 16–30 steps grouped into 5–8 phases to stay
+legible. A rail-wiki PID is already narrow — the taxonomy splits each L2
+cluster into 2–3 PIDs (e.g. *Air Brake Tests & Departure Inspection* is
+`RR-03-05-01/02/03`, not one process) — so a single process here is closer to
+one AC phase than to a whole AC process. Grouping 4–8 steps into artificial
+phases would be decoration, not structure, so `steps` is a flat list with no
+`phases` array.
+
+Field rules:
+
+- `role` and `system` (when present) must resolve against `roles.json` /
+  `systems.json`, exactly like the process-level `actors[]` / `systems[]`.
+  `system` is an object (name + scope + source_id) or `null`, never a bare
+  string — the scope badge must survive to step level too.
+- `kpi` (when present) must resolve against `kpis.json`.
+- `pain_point` (when present) must be verbatim text from the closed §7 list.
+- `decision_point` and `exception` are `"Y"` or `"N"`. A step with
+  `decision_point: "Y"` **must** carry a `branch` object (`label`, `to`) —
+  a diamond with no alternate path is not a decision. A `branch` on an
+  `exception: "Y"` step is encouraged, not mandatory.
+- Target 4–8 steps per process, with at least 1 gate (`decision_point` or
+  `exception` = `"Y"`) — proportioned to rail-wiki's narrower process scope,
+  not AC's 16–30/6-gate minimums.
+
 ---
 
 ## 4. Registry-first pipeline (the core architectural fix)

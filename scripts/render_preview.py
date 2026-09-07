@@ -20,12 +20,18 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import re
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 PROCESSES = REPO / "data" / "processes.json"
 OUT_DIR = REPO / "site" / "preview"
+
+# Pinned, not "latest" -- a page rendered today must still look the same in a
+# year. jsdelivr is an approved CDN host; only the script tag is external,
+# everything else on the page is inline.
+MERMAID_CDN = "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"
 
 STYLE = """
 :root {
@@ -85,6 +91,26 @@ li { margin-bottom: .3rem; }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; }
 .sources li a { color: var(--amber); word-break: break-all; }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: .82rem; white-space: nowrap; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); }
+th {
+  background: var(--panel); color: var(--muted); font-size: .68rem;
+  text-transform: uppercase; letter-spacing: .04em; position: sticky; top: 0;
+}
+tr:last-child td { border-bottom: none; }
+td.flag span { display: inline-block; width: 1.1rem; text-align: center; border-radius: 3px; }
+td.flag .yes { background: var(--badge-company-bg); color: var(--badge-company-ink); }
+td.flag .no { color: var(--muted); }
+.diagram-wrap {
+  border: 1px solid var(--rule); border-radius: 6px; padding: 1rem;
+  background: var(--panel); overflow-x: auto;
+}
+.diagram-fallback summary { cursor: pointer; color: var(--muted); font-size: .8rem; margin-top: .5rem; }
+.diagram-fallback pre {
+  font-size: .75rem; overflow-x: auto; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .75rem;
+}
 footer {
   margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
   font-size: .8rem; color: var(--muted);
@@ -108,6 +134,107 @@ def pill_list(items: list[str]) -> str:
     ) + "</div>"
 
 
+def _mmd_label(text: str, limit: int = 46) -> str:
+    """Mermaid-safe node/edge label: strip characters that break flowchart
+    syntax, collapse whitespace, truncate."""
+    t = re.sub(r'["\[\]{}()<>|]', "", str(text or ""))
+    t = re.sub(r"\s+", " ", t).strip()
+    if len(t) > limit:
+        cut = t[:limit].rsplit(" ", 1)[0]
+        t = (cut or t[:limit]).rstrip() + "…"
+    return t or "(untitled)"
+
+
+def _mmd_node_id(step_id: str) -> str:
+    return "S" + re.sub(r"[^0-9A-Za-z]", "_", str(step_id))
+
+
+def build_mermaid(steps: list[dict]) -> str:
+    """Deterministic flowchart from steps[] -- never authored or trusted from
+    the model, built the same way every time from the same validated list.
+    Node shape signals what kind of step it is: diamond = decision point,
+    rounded = exception, rectangle = ordinary step."""
+    if not steps:
+        return "flowchart TD\n  E[No steps recorded]"
+
+    by_id = {str(s.get("step")): s for s in steps}
+    lines = ["%%{init: {'flowchart': {'curve': 'basis'}}}%%", "flowchart TD"]
+    exits: list[tuple[str, str, str]] = []  # (from_node, edge_label, exit_node)
+    exit_n = 0
+
+    for i, s in enumerate(steps):
+        sid = str(s.get("step") or str(i + 1))
+        nid = _mmd_node_id(sid)
+        label = f"{sid}. {_mmd_label(s.get('name'))}"
+        dp = str(s.get("decision_point", "N")).upper() == "Y"
+        exc = str(s.get("exception", "N")).upper() == "Y"
+        if dp:
+            lines.append(f"  {nid}{{{label}}}")
+        elif exc:
+            lines.append(f"  {nid}({label})")
+        else:
+            lines.append(f"  {nid}[{label}]")
+
+        branch = s.get("branch")
+        branch_to = str(branch["to"]) if isinstance(branch, dict) and branch.get("to") else None
+
+        # Main path: sequential unless this is the last step, or the branch
+        # already draws a labelled edge to that same next step -- an
+        # unlabelled duplicate on top of it is confusing, not informative.
+        nxt = str(steps[i + 1].get("step") or str(i + 2)) if i + 1 < len(steps) else None
+        if nxt and nxt != branch_to:
+            lines.append(f"  {nid} --> {_mmd_node_id(nxt)}")
+
+        if branch_to:
+            edge_label = _mmd_label(branch.get("label", ""), limit=18)
+            if branch_to in by_id:
+                lines.append(f"  {nid} -- {edge_label} --> {_mmd_node_id(branch_to)}")
+            else:
+                exit_n += 1
+                ex_id = f"X{exit_n}"
+                lines.append(f'  {ex_id}(["{_mmd_label(branch_to, limit=40)}"])')
+                lines.append(f"  {nid} -- {edge_label} --> {ex_id}")
+
+    return "\n".join(lines)
+
+
+def render_steps_table(steps: list[dict]) -> str:
+    if not steps:
+        return '<p style="color:var(--muted); font-size:.85rem;">(no steps recorded)</p>'
+    rows = []
+    for s in steps:
+        dp = str(s.get("decision_point", "N")).upper() == "Y"
+        exc = str(s.get("exception", "N")).upper() == "Y"
+        sysinfo = s.get("system")
+        sys_cell = (
+            f'{html.escape(sysinfo["name"])} {scope_badge(sysinfo.get("scope"))}'
+            if isinstance(sysinfo, dict) and sysinfo.get("name") else
+            '<span style="color:var(--muted);">—</span>'
+        )
+        branch = s.get("branch")
+        branch_note = (
+            f' <span style="color:var(--muted); font-size:.78rem;">'
+            f'&rarr; {html.escape(str(branch.get("label","")))}: {html.escape(str(branch.get("to","")))}</span>'
+            if isinstance(branch, dict) else ""
+        )
+        rows.append(f"""<tr>
+<td>{html.escape(str(s.get('step','')))}</td>
+<td><b>{html.escape(s.get('name',''))}</b>{branch_note}</td>
+<td>{html.escape(s.get('role','') or '—')}</td>
+<td>{sys_cell}</td>
+<td>{html.escape(s.get('input','') or '—')}</td>
+<td>{html.escape(s.get('output','') or '—')}</td>
+<td>{html.escape(s.get('kpi','') or '—')}</td>
+<td class="flag"><span class="{'yes' if dp else 'no'}">{'Y' if dp else 'N'}</span></td>
+<td class="flag"><span class="{'yes' if exc else 'no'}">{'Y' if exc else 'N'}</span></td>
+<td>{html.escape(s.get('pain_point','') or '—')}</td>
+</tr>""")
+    return f"""<div class="tbl-wrap"><table>
+<thead><tr><th>Step</th><th>Activity</th><th>Role</th><th>System</th><th>Input</th>
+<th>Output</th><th>KPI</th><th>Dec</th><th>Exc</th><th>Pain point</th></tr></thead>
+<tbody>{"".join(rows)}</tbody></table></div>"""
+
+
 def render_one(p: dict) -> str:
     systems_html = "".join(
         f'<li><strong>{html.escape(s["name"])}</strong> '
@@ -121,6 +248,10 @@ def render_one(p: dict) -> str:
         for u in p.get("sources", [])
     ) or "<li>(none)</li>"
 
+    steps = p.get("steps") or []
+    mmd = build_mermaid(steps)
+    steps_table = render_steps_table(steps)
+
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -129,6 +260,7 @@ def render_one(p: dict) -> str:
 <meta name="robots" content="noindex">
 <title>{html.escape(p['pid'])} — {html.escape(p['name'])}</title>
 <style>{STYLE}</style>
+<script src="{MERMAID_CDN}"></script>
 </head>
 <body>
 <main>
@@ -149,6 +281,20 @@ def render_one(p: dict) -> str:
   <section>
     <h2>Description</h2>
     <p class="description">{html.escape(p.get('description',''))}</p>
+  </section>
+
+  <section>
+    <h2>Process Flow</h2>
+    <div class="diagram-wrap"><pre class="mermaid">{html.escape(mmd)}</pre></div>
+    <details class="diagram-fallback">
+      <summary>Mermaid source (if the diagram above didn't render)</summary>
+      <pre>{html.escape(mmd)}</pre>
+    </details>
+  </section>
+
+  <section>
+    <h2>Process Steps</h2>
+    {steps_table}
   </section>
 
   <section>
@@ -199,6 +345,15 @@ def render_one(p: dict) -> str:
     practice.
   </footer>
 </main>
+<script>
+  if (window.mermaid) {{
+    mermaid.initialize({{
+      startOnLoad: true,
+      theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default',
+      securityLevel: 'strict',
+    }});
+  }}
+</script>
 </body>
 </html>
 """
