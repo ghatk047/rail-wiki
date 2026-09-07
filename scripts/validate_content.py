@@ -147,18 +147,32 @@ def extract_keys(text: str) -> tuple[set[str], set[str]]:
     return nums, dates
 
 
+_CROSS_REF_RE = re.compile(r"CROSS-REFERENCE TO PILOT PROCESS (RR-\d{2}-\d{2}-\d{2})", re.I)
+
+
 class FactIndex:
     """Token-level view of facts.json, built from the loader's entries.
 
     Substring matching over concatenated digits is NOT safe: it lets "34" ride
     on a fact that only ever said "2034". Tokens are indexed individually and
     carry the domain group they came from.
+
+    A fact can also be explicitly cross-referenced to one PID regardless of
+    which domain it's filed under -- e.g. an air-brake-test fact sourced from
+    UP training materials lives under domain_14 (HR), but its text opens
+    "CROSS-REFERENCE TO PILOT PROCESS RR-03-05-01:" because that's the
+    process it actually describes. Domain-scoped grounding (own-domain-only
+    by default) would otherwise reject it as out-of-domain even though the
+    registry author's own words say exactly which process it grounds. That
+    named PID is honoured as in-domain for that PID only -- not a blanket
+    --any-domain, which would accept a fact from ANY domain.
     """
 
     def __init__(self, r: RegistryLoader):
         self.facts: tuple[Entry, ...] = r.all("facts")
         self.numbers: dict[str, list[int]] = {}
         self.dates: dict[str, list[int]] = {}
+        self.cross_ref: dict[int, str] = {}
         for i, e in enumerate(self.facts):
             text = f"{e.key} {e.as_of or ''}"
             nums, dates = extract_keys(text)
@@ -166,12 +180,18 @@ class FactIndex:
                 self.numbers.setdefault(k, []).append(i)
             for k in dates:
                 self.dates.setdefault(k, []).append(i)
+            m = _CROSS_REF_RE.search(e.key)
+            if m:
+                self.cross_ref[i] = m.group(1).upper()
 
     def domain(self, i: int) -> str:
         return self.facts[i].domain
 
     def text(self, i: int) -> str:
         return self.facts[i].key
+
+    def cross_referenced_to(self, i: int, pid: str) -> bool:
+        return self.cross_ref.get(i) == (pid or "").upper()
 
 
 # --- findings -----------------------------------------------------------------
@@ -499,7 +519,9 @@ def check_prose_figures(p: dict, r: RegistryLoader, facts: FactIndex,
                 if not cands and kind != "date" and k and re.fullmatch(r"(19|20)\d{2}", k):
                     cands = list(facts.dates.get(k, []))
 
-                own = [i for i in cands if facts.domain(i) == home]
+                pid = p.get("pid", "")
+                own = [i for i in cands
+                      if facts.domain(i) == home or facts.cross_referenced_to(i, pid)]
                 span_r = span.strip()
 
                 if own:
