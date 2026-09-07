@@ -1,6 +1,5 @@
 {
   "_readme": "KPIs used across the industry are reported weekly to AAR/STB. Domain-internal KPIs (e.g. specific engineering defect rates) are sourced individually; do not invent a metric name without a source.",
-
   "domain_01_service_design": [
     {
       "kpi": "Operating ratio (OR)",
@@ -15,7 +14,6 @@
       "source_url": "https://www.freightwaves.com/news/union-pacific-turns-to-precision-scheduled-railroading"
     }
   ],
-
   "domain_02_dispatching": [
     {
       "kpi": "Train speed by train type / terminal dwell / cars online",
@@ -24,7 +22,6 @@
       "source_url": "https://www.stb.gov"
     }
   ],
-
   "domain_03_terminal_yard": [
     {
       "kpi": "Cars classified per day / cars per minute at the hump",
@@ -39,12 +36,11 @@
       "source_url": "https://en.wikipedia.org/wiki/Bailey_Yard"
     }
   ],
-
   "domain_04_crew_management": [
     {
       "kpi": "Crew availability / extra board utilization",
       "scope": "industry_typical",
-      "source": "general_industry_knowledge — standard operating metric referenced across crew management vendor materials",
+      "source": "general_industry_knowledge \u2014 standard operating metric referenced across crew management vendor materials",
       "source_url": "https://rail.cloudmoyo.com/product-brief/crew-management-system/"
     },
     {
@@ -60,16 +56,26 @@
       "source_url": "https://www.forbes.com/sites/oracle/2018/09/10/railroads-roll-ahead-with-cloud-based-crew-management/"
     }
   ],
-
   "domain_05_mechanical": [
     {
-      "kpi": "Locomotive availability / bad order rate",
-      "scope": "industry_typical",
-      "source": "general_industry_knowledge",
-      "source_url": "https://www.rtands.com/freight/how-union-pacific-discovers-predicts-and-resolves-track-defects/"
+      "kpi": "Locomotive units rebuilt/overhauled per year",
+      "scope": "company_specific",
+      "source": "Jenks Shop dismantled and rebuilt 200 units in 2023",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/mechanical-team-goods-it-240506.htm"
+    },
+    {
+      "kpi": "Locomotive fleet reliability improvement (target)",
+      "scope": "company_specific",
+      "source": "Wabtec AC4400 modernization program targets an 80% reliability improvement via modular, digitally monitored control components",
+      "source_url": "https://megaproject.com/news/railway/union-pacific-invests-in-large-scale-locomotive-modernization"
+    },
+    {
+      "kpi": "Train inspection cadence (initial terminal + every 1,000 miles)",
+      "scope": "company_specific",
+      "source": "UP states employees are responsible for train inspections at the initial terminal and after every 1,000 miles of operation",
+      "source_url": "https://www.up.com/aboutup/environment/facilities/index.htm"
     }
   ],
-
   "domain_06_engineering": [
     {
       "kpi": "Track-caused defect rate (per mile inspected)",
@@ -86,12 +92,11 @@
     {
       "kpi": "Train speed by train type / terminal dwell / cars online",
       "scope": "industry_typical",
-      "source": "STB's public weekly rail service performance data — cross-domain metric, primary home is RR-01 Service Design, cited here only where Engineering slow orders affect it",
+      "source": "STB's public weekly rail service performance data \u2014 cross-domain metric, primary home is RR-01 Service Design, cited here only where Engineering slow orders affect it",
       "source_url": "https://www.stb.gov",
       "cross_domain_owner": "RR-01"
     }
   ],
-
   "domain_07_safety_regulatory": [
     {
       "kpi": "Train accidents (FRA-reportable) year-over-year",
@@ -100,7 +105,6 @@
       "source_url": "https://www.cslra.org/?p=2977"
     }
   ],
-
   "domain_08_hazmat_environmental": [
     {
       "kpi": "AskRail registered first-responder coverage",
@@ -109,11 +113,22 @@
       "source_url": "https://www.aar.org/issue/askrail-app/"
     }
   ],
-
-  "domain_09_intermodal_automotive": [],
-
-  "domain_10_commercial": [],
-
+  "domain_09_intermodal_automotive": [
+    {
+      "kpi": "Truck gate processing time",
+      "scope": "company_specific",
+      "source": "UP's driver scanning technology cut truck processing time from several minutes to as little as 60-90 seconds at intermodal facilities",
+      "source_url": "https://www.up.com/aboutup/environment/facilities/index.htm"
+    }
+  ],
+  "domain_10_commercial": [
+    {
+      "kpi": "Freight revenue by commodity group",
+      "scope": "company_specific",
+      "source": "UP's core disclosed commercial metric across all 10-K/10-Q filings; commodity grouping itself has changed over time (see facts.json caution)",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000143774923028607/unp20230930_10q.htm"
+    }
+  ],
   "domain_11_interline_equipment": [
     {
       "kpi": "Equipment registered in Umler",
@@ -128,20 +143,56 @@
       "source_url": "https://www.trains.com/trn/news-reviews/news-wire/with-two-key-mexico-rail-gateways-shut-down-cross-border-freight-begins-stacking-up/"
     }
   ],
-
   "domain_12_technology": [
     {
       "kpi": "Internal/external reporting measures driven by NetControl",
       "scope": "company_specific",
       "source": "NetControl's business logic drives 75 key internal and external reporting measures",
       "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm"
+    },
+    {
+      "kpi": "Autonomous track inspection coverage (miles/year)",
+      "scope": "company_specific",
+      "source": "PRIMARY SOURCE \u2014 UP's FY2025 10-K states its autonomous geometry car fleet inspects 500,000 miles of track annually. This is a more current, more authoritative figure than the 2024 trade-press description in RR-06's registry (10 locomotive-mounted + 3 boxcar-mounted systems, ~85% defect reduction) \u2014 treat both as valid, complementary sourced data points from different dates/framing, not a contradiction to resolve by picking one.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000037/unp-20251231.htm",
+      "cross_domain_owner": "RR-06"
     }
   ],
-
-  "domain_13_finance": [],
-
-  "domain_14_hr_labor": [],
-
+  "domain_13_finance": [
+    {
+      "kpi": "Average Revenue per Car (ARC)",
+      "scope": "company_specific",
+      "source": "UP's core disclosed freight-revenue driver metric, reported quarterly",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000143774923028607/unp20230930_10q.htm"
+    },
+    {
+      "kpi": "Fuel surcharge revenue (absolute $ and % of freight revenue)",
+      "scope": "company_specific",
+      "source": "UP discloses this every quarter; e.g. $976M in Q2 2022 vs $414M in Q2 2021",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000143774922017515/unp20220525_10q.htm"
+    },
+    {
+      "kpi": "Operating ratio (OR)",
+      "scope": "company_specific",
+      "source": "cross-referenced from RR-01; e.g. 60.2% Q2 2022, 58.7% most recent cited filing",
+      "source_url": "https://last10k.com/sec-filings/unp",
+      "cross_domain_owner": "RR-01"
+    }
+  ],
+  "domain_14_hr_labor": [
+    {
+      "kpi": "Training hours per employee",
+      "scope": "company_specific",
+      "source": "UP averaged nearly 47 hours of training per employee in 2022, a 62% year-over-year increase attributed to hiring volume",
+      "source_url": "https://www.up.com/news/safety/rail-safety-training-it-030823"
+    },
+    {
+      "kpi": "Skill-enhancement courses completed",
+      "scope": "company_specific",
+      "source": "~10,000 courses completed by team members in 2022 across topics including CPR, welding, ballast tamping, track inspection, locomotive maintenance",
+      "source_url": "https://www.up.com/news/safety/rail-safety-training-it-030823"
+    }
+  ],
   "domain_15_merger_integration": [
     {
       "kpi": "Projected annual capital synergies",
@@ -150,9 +201,8 @@
       "source_url": "https://investor.unionpacific.com/news-releases/news-release-details/creating-americas-first-transcontinental-railroad-union-pacific"
     }
   ],
-
   "not_yet_sourced_do_not_use": [
-    "Any specific numeric target or threshold for the above KPIs at UP beyond what is explicitly cited — do not fabricate a number.",
-    "Domain 09, 10, 13, 14 KPIs — no company-specific sourcing found yet; do not populate with invented metrics. Use STB weekly performance measures (cross-referenced from RR-01/RR-02) as the only safe generic fallback for commercial/service metrics."
+    "Any specific numeric target or threshold for the above KPIs at UP beyond what is explicitly cited \u2014 do not fabricate a number.",
+    "Domain 09, 10, 13, 14 KPIs \u2014 no company-specific sourcing found yet; do not populate with invented metrics. Use STB weekly performance measures (cross-referenced from RR-01/RR-02) as the only safe generic fallback for commercial/service metrics."
   ]
 }

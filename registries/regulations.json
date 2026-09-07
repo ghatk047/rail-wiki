@@ -1,21 +1,19 @@
 {
   "_readme": "Statutory/regulatory citations are stable historical facts and do not require a live source_url in the same way systems do, but each entry still lists the authoritative source. generate_rail_wiki.py may only cite a regulatory_hook value present here.",
-
   "domain_01_service_design": [
     {
       "cite": "49 CFR Part 1180 (cross-referenced)",
       "title": "STB oversight of major service changes",
-      "detail": "STB leadership formally requested UP provide updates on Unified Plan 2020's operating changes shortly after announcement — an example of STB's ongoing service-oversight role even outside a merger proceeding. Primary regulatory home is RR-15/RR-07.",
+      "detail": "STB leadership formally requested UP provide updates on Unified Plan 2020's operating changes shortly after announcement \u2014 an example of STB's ongoing service-oversight role even outside a merger proceeding. Primary regulatory home is RR-15/RR-07.",
       "source_url": "https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro",
       "as_of": "2018-09-21",
       "cross_domain_owner": "RR-07, RR-15"
     }
   ],
-
   "domain_02_dispatching": [
     {
       "cite": "49 CFR Part 217",
-      "title": "Railroad Operating Rules — periodic instruction, testing, operational monitoring",
+      "title": "Railroad Operating Rules \u2014 periodic instruction, testing, operational monitoring",
       "detail": "Requires each railroad to establish and maintain a program of periodic instruction, testing, and operational monitoring of employees involved in train operations to verify adherence to operating rules such as GCOR.",
       "source_url": "https://grokipedia.com/page/general_code_of_operating_rules",
       "as_of": "current"
@@ -28,7 +26,6 @@
       "as_of": "current"
     }
   ],
-
   "domain_03_terminal_yard": [
     {
       "cite": "49 CFR Part 232",
@@ -45,10 +42,9 @@
       "as_of": "2025-05-01"
     }
   ],
-
   "domain_04_crew_management": [
     {
-      "cite": "49 U.S.C. § 21103",
+      "cite": "49 U.S.C. \u00a7 21103",
       "title": "Hours of Service of Train Employees",
       "detail": "Statutory basis for train employee HOS: maximum 12 hours on duty, minimum 10 consecutive hours off duty (rest), limits on consecutive starts. Amended by the Rail Safety Improvement Act of 2008.",
       "source_url": "https://www.congress.gov/bill/110th-congress/house-bill/2095",
@@ -83,14 +79,13 @@
       "as_of": "2026-08-11"
     },
     {
-      "cite": "Railway Labor Act (45 U.S.C. § 151 et seq.)",
+      "cite": "Railway Labor Act (45 U.S.C. \u00a7 151 et seq.)",
       "title": "Railway Labor Act",
-      "detail": "Governs rail labor relations — Section 6 notices, National Mediation Board mediation, cooling-off periods, Presidential Emergency Boards. Distinct from the NLRA, which does not apply to railroads.",
+      "detail": "Governs rail labor relations \u2014 Section 6 notices, National Mediation Board mediation, cooling-off periods, Presidential Emergency Boards. Distinct from the NLRA, which does not apply to railroads.",
       "source_url": "https://www.nmb.gov/NMB_Resources/rla.html",
       "as_of": "current"
     }
   ],
-
   "domain_05_mechanical": [
     {
       "cite": "49 CFR Part 229",
@@ -114,7 +109,6 @@
       "as_of": "current"
     }
   ],
-
   "domain_06_engineering": [
     {
       "cite": "49 CFR Part 213",
@@ -124,15 +118,15 @@
       "as_of": "current"
     },
     {
-      "cite": "49 CFR § 213.233(c)",
-      "title": "Track Inspections — specific inspection frequency/method requirement",
+      "cite": "49 CFR \u00a7 213.233(c)",
+      "title": "Track Inspections \u2014 specific inspection frequency/method requirement",
       "detail": "The specific subsection UP petitioned FRA to temporarily suspend in 2020 to pilot autonomous track geometry measurement in place of traditional inspection methods on segments of the SPSCL and Sunset routes.",
       "source_url": "https://downloads.regulations.gov/FRA-2020-0031-0002/attachment_1.pdf",
       "as_of": "2020-04-28"
     },
     {
       "cite": "49 CFR Part 214",
-      "title": "Railroad Workplace Safety — Roadway Worker Protection",
+      "title": "Railroad Workplace Safety \u2014 Roadway Worker Protection",
       "detail": "On-track safety rules, including Form B track authority procedures and employee-in-charge protocols.",
       "source_url": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-II/part-214",
       "as_of": "current"
@@ -153,14 +147,13 @@
     },
     {
       "cite": "49 CFR Part 1180",
-      "title": "Surface Transportation Board — Rail Merger Procedures (cross-referenced from RR-15)",
+      "title": "Surface Transportation Board \u2014 Rail Merger Procedures (cross-referenced from RR-15)",
       "detail": "Referenced here only because Engineering capital planning intersects with merger-driven network integration; primary home is RR-15.",
       "source_url": "https://www.ecfr.gov/current/title-49/part-1180",
       "as_of": "current",
       "cross_domain_owner": "RR-15"
     }
   ],
-
   "domain_07_safety_regulatory": [
     {
       "cite": "GCOR (General Code of Operating Rules)",
@@ -199,7 +192,6 @@
       "cross_domain_owner": "RR-15"
     }
   ],
-
   "domain_08_hazmat_environmental": [
     {
       "cite": "49 CFR Parts 172-174",
@@ -224,19 +216,24 @@
       "as_of": "current"
     }
   ],
-
-  "domain_09_intermodal_automotive": [],
-
+  "domain_09_intermodal_automotive": [
+    {
+      "cite": "C-TPAT (Customs-Trade Partnership Against Terrorism)",
+      "title": "CBP voluntary supply-chain security partnership",
+      "detail": "UP states it is a partner in CBP's Customs-Trade Partnership Against Terrorism program, designed to develop, enhance, and maintain effective supply-chain security. Relevant to RR-09 international/cross-border intermodal and RR-11 cross-border interchange.",
+      "source_url": "https://investor.unionpacific.com/static-files/298c6a8f-fbca-4638-ac75-f80f2b9b7d10",
+      "as_of": "2025"
+    }
+  ],
   "domain_10_commercial": [
     {
-      "cite": "49 U.S.C. § 10101 et seq. (common carrier obligation)",
+      "cite": "49 U.S.C. \u00a7 10101 et seq. (common carrier obligation)",
       "title": "Common carrier obligation",
-      "detail": "Statutory basis for a railroad's obligation to provide transportation on reasonable request — foundational to RR-10 contract/demurrage process design. Cite generically; do not attach a specific UP tariff clause without sourcing.",
+      "detail": "Statutory basis for a railroad's obligation to provide transportation on reasonable request \u2014 foundational to RR-10 contract/demurrage process design. Cite generically; do not attach a specific UP tariff clause without sourcing.",
       "source_url": "https://www.stb.gov",
       "as_of": "current"
     }
   ],
-
   "domain_11_interline_equipment": [
     {
       "cite": "AAR Interchange Rules 90 and 93",
@@ -267,14 +264,36 @@
       "as_of": "2025-05-01"
     }
   ],
-
-  "domain_12_technology": [],
-
-  "domain_13_finance": [],
-
+  "domain_12_technology": [
+    {
+      "cite": "TSA Security Directive 1580/82-2022-01 series (freight + passenger rail cybersecurity)",
+      "title": "Rail Cybersecurity Mitigation Actions and Testing",
+      "detail": "Performance-based TSA cybersecurity requirements for rail 'Critical Cyber Systems,' first issued October 2022, renewed annually with revisions (current version 1580/82-2022-01C, effective May 2 2024, expires May 2 2025 per that revision \u2014 TSA has continued to renew this series annually; verify the current live revision number before citing). Applies to each freight railroad carrier identified in 49 CFR 1580.101. Requires designation of a Cybersecurity Coordinator available to TSA/CISA at all times, and a Cybersecurity Incident Response Plan. Directive 1580/82-2022-01C specifically requires PTC systems be included in the Critical Cyber Systems list \u2014 directly relevant to RR-06's PTC content.",
+      "source_url": "https://www.tsa.gov/sd-and-ea",
+      "as_of": "2024-05-02 (revision 01C); series renewed annually since Oct 2022 \u2014 check tsa.gov/sd-and-ea for the current live revision before citing a specific expiration date",
+      "cross_domain_owner": "RR-06 (PTC as a designated Critical Cyber System)"
+    },
+    {
+      "cite": "49 U.S.C. \u00a7 114(l)(2)(A)",
+      "title": "Statutory authority for TSA security directives",
+      "detail": "Statutory basis under which TSA issues rail cybersecurity security directives (originating authority also traces to the Aviation and Transportation Security Act).",
+      "source_url": "https://www.tsa.gov/sites/default/files/sd-1580-21-01b-enhancing-rail-cybersecurity.pdf",
+      "as_of": "current"
+    }
+  ],
+  "domain_13_finance": [
+    {
+      "cite": "STB fuel surcharge calculation decision (referenced in UP FY2006 10-K)",
+      "title": "STB limits on fuel surcharge calculation methodology",
+      "detail": "STB issued a decision limiting the manner in which US railroads can calculate fuel surcharges on STB-regulated traffic. UP stated it did not believe this would prevent it from using fuel surcharges on most/all traffic. Verify current status/docket number before citing specifics.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/0000100885/000119312507038387/d10k.htm",
+      "as_of": "2006-2007",
+      "caution": "verify current STB fuel-surcharge rule status before treating as UP's present practice"
+    }
+  ],
   "domain_14_hr_labor": [
     {
-      "cite": "Railway Labor Act (45 U.S.C. § 151 et seq.)",
+      "cite": "Railway Labor Act (45 U.S.C. \u00a7 151 et seq.)",
       "title": "Railway Labor Act",
       "detail": "Governs all rail labor relations, cross-referenced from RR-04. Section 6 notices, NMB mediation, cooling-off periods, Presidential Emergency Boards.",
       "source_url": "https://www.nmb.gov/NMB_Resources/rla.html",
@@ -282,7 +301,6 @@
       "cross_domain_owner": "RR-04"
     }
   ],
-
   "domain_15_merger_integration": [
     {
       "cite": "49 CFR Part 1180",
@@ -292,10 +310,9 @@
       "as_of": "2026-06-03"
     }
   ],
-
   "not_yet_sourced_do_not_use": [
     "Any state-specific PUC/DOT crossing regulations layered on top of federal rules.",
-    "Specific numeric FRA track class speed limits by class — pull directly from 49 CFR 213 subpart B table before citing numbers, do not reproduce from memory.",
-    "PHMSA-specific tank car phase-out deadlines (e.g., DOT-111 retirement dates) — confirm current status before citing a specific year."
+    "Specific numeric FRA track class speed limits by class \u2014 pull directly from 49 CFR 213 subpart B table before citing numbers, do not reproduce from memory.",
+    "PHMSA-specific tank car phase-out deadlines (e.g., DOT-111 retirement dates) \u2014 confirm current status before citing a specific year."
   ]
 }

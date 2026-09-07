@@ -1,6 +1,5 @@
 {
   "_readme": "Dated events and specific figures only. Every fact needs a source_url and as_of date. This is the registry that prevents the pipeline from inventing history.",
-
   "domain_01_service_design": [
     {
       "fact": "Union Pacific announced Unified Plan 2020 in September 2018, implementing Precision Scheduled Railroading (PSR) principles, with phased rollout beginning October 1, 2018 starting on the eastern North/South corridor between Wisconsin and Texas.",
@@ -13,17 +12,16 @@
       "as_of": "2022-05-02"
     },
     {
-      "fact": "UP's own initial 'Blend and Balance' PSR design did not perform reliably in the field — by CEO Lance Fritz's own account, by mid-2018 UP determined the transportation plan as originally conceived was 'virtually impossible to execute reliably and consistently,' leading to a redesign in August 2018 that became Unified Plan 2020.",
+      "fact": "UP's own initial 'Blend and Balance' PSR design did not perform reliably in the field \u2014 by CEO Lance Fritz's own account, by mid-2018 UP determined the transportation plan as originally conceived was 'virtually impossible to execute reliably and consistently,' leading to a redesign in August 2018 that became Unified Plan 2020.",
       "source_url": "https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940",
       "as_of": "2022-05-02"
     },
     {
-      "fact": "The STB sent a letter to UP CEO Lance Fritz shortly after the Unified Plan 2020 announcement, asking UP to provide updates on the operating changes — illustrating that even a non-merger service change draws STB oversight attention.",
+      "fact": "The STB sent a letter to UP CEO Lance Fritz shortly after the Unified Plan 2020 announcement, asking UP to provide updates on the operating changes \u2014 illustrating that even a non-merger service change draws STB oversight attention.",
       "source_url": "https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro",
       "as_of": "2018-09-21"
     }
   ],
-
   "domain_02_dispatching": [
     {
       "fact": "Union Pacific's Harriman Dispatching Center opened in Omaha in 1989, centralizing 10 regional dispatching centers into one location.",
@@ -31,7 +29,6 @@
       "as_of": "current"
     }
   ],
-
   "domain_03_terminal_yard": [
     {
       "fact": "Bailey Yard in North Platte, Nebraska is the largest railroad classification yard in the world: approximately 2,850 acres, about 8 miles long, 315 miles of track, named for former UP President Edd H. Bailey. It has 17 receiving and 16 departure tracks, two humps (eastbound ~34 ft, westbound ~20 ft), and 114 bowl tracks (49 westbound, 65 eastbound). It handles roughly 10,000-14,000 railcars and ~139 trains every 24 hours, sorting about 3,000 cars/day at up to 4 cars/minute. UP employs more than 2,600 people in North Platte.",
@@ -39,7 +36,6 @@
       "as_of": "2025"
     }
   ],
-
   "domain_04_crew_management": [
     {
       "fact": "PS Technology (PST) is a wholly-owned subsidiary of Union Pacific Railroad, building crew management/timekeeping software sold industry-wide.",
@@ -57,17 +53,41 @@
       "as_of": "2026-08"
     },
     {
-      "fact": "As part of the new Eagle Pass gateway process (effective Nov 20, 2025), Ferromex crews operating into the US have been 'trained and qualified by Union Pacific, including certification' — a concrete, sourced example of cross-border crew qualification process, relevant to RR-04 territory qualification content.",
+      "fact": "As part of the new Eagle Pass gateway process (effective Nov 20, 2025), Ferromex crews operating into the US have been 'trained and qualified by Union Pacific, including certification' \u2014 a concrete, sourced example of cross-border crew qualification process, relevant to RR-04 territory qualification content.",
       "source_url": "https://www.up.com/news/service/enhancing-safety-at-eagle-crossing-251121",
       "as_of": "2025-11-21"
     }
   ],
-
-  "domain_05_mechanical": [],
-
+  "domain_05_mechanical": [
+    {
+      "fact": "UP employees are responsible for train inspections at the initial terminal and after every 1,000 miles of operation, per UP's own facilities disclosure; detecting component defects before they reach the mainline is framed as avoiding derailments that affect safety, service reliability, and customer commitments.",
+      "source_url": "https://www.up.com/aboutup/environment/facilities/index.htm",
+      "as_of": "current"
+    },
+    {
+      "fact": "UP operates more than 50 locomotive and rail car facilities across its 23-state system. The Downing B. Jenks Shop in North Little Rock, Arkansas is the largest and is described as North America's foremost locomotive overhaul facility (1,000+ employees); it dismantled and rebuilt 200 locomotive units in 2023. North Platte, NE is historically UP's second-largest shop.",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/mechanical-team-goods-it-240506.htm",
+      "as_of": "2024-05-06"
+    },
+    {
+      "fact": "UP signed a $1.2 billion agreement with Wabtec to modernize its AC4400 locomotive fleet with Wabtec's Modular Control Architecture (a standardized computing/software platform), enabling condition-based maintenance via real-time fault/performance reporting instead of strictly time-based service intervals. The program targets an 80% reliability improvement and a 14% increase in tractive effort.",
+      "source_url": "https://megaproject.com/news/railway/union-pacific-invests-in-large-scale-locomotive-modernization",
+      "as_of": "current"
+    },
+    {
+      "fact": "At UP's Proviso Locomotive Shop (Illinois), the Mechanical team identified that winter condensation in low-horsepower locomotives' air brake systems could freeze components like the A-1 charging valve; the team's fix required changing an existing locomotive shutdown operating-rule policy to allow crews to leave units running under an accepted shutdown protocol.",
+      "source_url": "https://www.up.com/news/service/proviso-winter-weather-it-230111.htm",
+      "as_of": "2024-01-11"
+    },
+    {
+      "fact": "UP is developing a battery-electric locomotive fleet as a next step in emissions reduction, with mechanical engineering staff writing new technical specifications for it as of an October 2021 UP publication.",
+      "source_url": "https://www.up.com/aboutup/community/inside_track/low-emissions-loco-tech-211029.htm",
+      "as_of": "2021-10-29"
+    }
+  ],
   "domain_06_engineering": [
     {
-      "fact": "Union Pacific became the first Class I railroad to modernize all three core operating platforms — Positive Train Control, computer-aided dispatch, and transportation management — cutting over to NetControl on January 6, 2024, replacing the mainframe Transportation Control System (TCS) it had run for over 50 years.",
+      "fact": "Union Pacific became the first Class I railroad to modernize all three core operating platforms \u2014 Positive Train Control, computer-aided dispatch, and transportation management \u2014 cutting over to NetControl on January 6, 2024, replacing the mainframe Transportation Control System (TCS) it had run for over 50 years.",
       "source_url": "https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm",
       "as_of": "2024-03-18"
     },
@@ -92,12 +112,11 @@
       "as_of": "2011-06-01"
     },
     {
-      "fact": "NAMING CAVEAT — do not conflate: 'ATIP' (Automated Track Inspection Program) is the FRA's own government-run track inspection car fleet, which conducts compliance surveys of 50,000-100,000 miles of track per year across the network, including on UP track. It is not documented as UP's internal program name. CN separately operates its own branded 'Autonomous Track Inspection Program,' also abbreviated ATIP, which is a different company's program.",
+      "fact": "NAMING CAVEAT \u2014 do not conflate: 'ATIP' (Automated Track Inspection Program) is the FRA's own government-run track inspection car fleet, which conducts compliance surveys of 50,000-100,000 miles of track per year across the network, including on UP track. It is not documented as UP's internal program name. CN separately operates its own branded 'Autonomous Track Inspection Program,' also abbreviated ATIP, which is a different company's program.",
       "source_url": "https://railroads.dot.gov/railroad-safety/divisions/track/atip-overview",
       "as_of": "2024-07-05"
     }
   ],
-
   "domain_07_safety_regulatory": [
     {
       "fact": "GCOR (General Code of Operating Rules) is used by Class I railroads west of Chicago (including UP), most Class II railroads, and many short lines; railroads in the northeast US generally use NORAC instead. GCOR's 9th edition took effect September 23, 2025 per one trade summary, superseding prior editions and applying to BNSF, UP, and other adopters.",
@@ -110,7 +129,6 @@
       "as_of": "2026-08"
     }
   ],
-
   "domain_08_hazmat_environmental": [
     {
       "fact": "The AskRail app was launched in October 2014 as a joint effort of America's Class I freight railroads, Amtrak, the International Association of Fire Chiefs, AAR, and Railinc (which administers the app). It serves more than 2.3 million first responders across 49 states, the District of Columbia, and 8 Canadian provinces, available in English and French across the US, Canada, and Mexico.",
@@ -128,11 +146,50 @@
       "as_of": "current"
     }
   ],
-
-  "domain_09_intermodal_automotive": [],
-
-  "domain_10_commercial": [],
-
+  "domain_09_intermodal_automotive": [
+    {
+      "fact": "UP's Dallas Intermodal Terminal, a $100 million facility begun June 2004, was the first UP intermodal yard to introduce satellite-guided (GPS) crane technology allowing safer dual-crane operation on parallel tracks; it decreased truck processing time from 4 minutes to as little as 30-90 seconds and provided over 4,000 staging spaces for trailers/containers.",
+      "source_url": "https://www.uprr.com/newsinfo/releases/service/2005/0919_dallas_intermodal.shtml",
+      "as_of": "2005-09-19"
+    },
+    {
+      "fact": "UP's Joliet, Illinois Intermodal Terminal is 785 acres, opened to handle international shipment growth to/from Chicago; at the time of opening it had six tracks to stage rail cars, four cranes, two rubber-tired mobile 'packers,' GPS-guided lifting, and 3,400+ staging spaces.",
+      "source_url": "https://www.logisticsmgmt.com/article/union_pacific_opens_up_new_illinois_intermodal_terminal",
+      "as_of": "current"
+    },
+    {
+      "fact": "UP's ICTF (Intermodal Container Transfer Facility) in Long Beach, California installed the industry's first-ever hybrid electric crane to reduce emissions, and UP has upgraded lift equipment engines in California to more stringent emission levels.",
+      "source_url": "https://www.up.com/aboutup/environment/facilities/index.htm",
+      "as_of": "current"
+    },
+    {
+      "fact": "UP opened (expected Q1 2024) a new international intermodal terminal in Phoenix, owned and operated by UP at its downtown Phoenix rail yard, with drayage support from Duncan & Son Lines; serves as a connection between LA Basin ports and the US Southwest.",
+      "source_url": "https://www.freightwaves.com/news/union-pacific-to-operate-international-intermodal-terminal-in-phoenix",
+      "as_of": "2023-11-29"
+    },
+    {
+      "fact": "At UP's Global IV Intermodal Terminal outside Chicago, drayman/BCO complaints about container-pull wait times were diagnosed using gate-technology data, leading UP to work with select beneficial cargo owners on optimal pull times to improve driver efficiency \u2014 a concrete, sourced example of how UPGo/gate-data feedback loops actually function operationally.",
+      "source_url": "https://www.freightwaves.com/news/how-technology-is-helping-union-pacific-help-truckersand-rail-shippers",
+      "as_of": "2025-06-10"
+    }
+  ],
+  "domain_10_commercial": [
+    {
+      "fact": "Loup Logistics launched Nov 1, 2017 as a wholly-owned Union Pacific subsidiary, formed by merging four prior UP subsidiaries: Union Pacific Distribution Services (UPDS), Streamline, ShipCarsNow, and Insight Network Logistics (INL). The name 'Loup' (pronounced 'loop') references the logistics 'loop' and keeping customers 'in the loop'; the logo uses negative space to depict a rail crossing and the letters 'UP.'",
+      "source_url": "https://www.louplogistics.com/news/archives/articles/20171101-loup-launch.html",
+      "as_of": "2017-11-01"
+    },
+    {
+      "fact": "Loup's ShipmentVision platform provides 24/7 shipment track-and-trace across all rail carriers and modes, customizable dashboards, dynamic ETAs and transit-time calculators \u2014 available only to Loup customers.",
+      "source_url": "https://www.louplogistics.com/shipmentvision.html",
+      "as_of": "current"
+    },
+    {
+      "fact": "Loup's transload service bundles rail, transloading, and truck delivery under an all-inclusive 'One Plus' price, available by carload, truckload, or by weight.",
+      "source_url": "https://www.up.com/customers/all/transload/",
+      "as_of": "current"
+    }
+  ],
   "domain_11_interline_equipment": [
     {
       "fact": "Umler (Universal Machine Language Equipment Register) was established in 1968, originally using punch cards then magnetic tapes, moving to EDI/ANSI X12 standards in the 1980s. It is managed by Railinc for the AAR and registers over 2 million pieces of North American rail equipment with less than 1% error rate.",
@@ -160,24 +217,67 @@
       "as_of": "current"
     }
   ],
-
   "domain_12_technology": [
     {
-      "fact": "NetControl took approximately 10 years to develop (planning beginning around 2006) at a cost reported in trade coverage as approximately $200 million, replacing a 40+/50+ year old IBM mainframe-based transportation system (TCS). It is built on a service-oriented architecture supporting five major functions: resource, equipment, shipment, terminal, and train management. UP CIO at the time of cutover was Rahul Jalali.",
-      "source_url": "https://www.progressiverailroading.com/union_pacific/article/How-information-technology-helps-connect-the-strategic-dots-at-Union-Pacific-Railroad--36415",
-      "as_of": "current"
+      "fact": "PRIMARY SOURCE (UP FY2025 10-K): UP describes 'Physics Train Builder,' proprietary technology evaluating train and route characteristics to enable proactive derailment-prevention intervention by its 'Operating Practices Command Center.' The same filing states UP's autonomous geometry car fleet inspects 500,000 miles of track annually, and that this technology and data have helped significantly reduce track-caused derailments over the last 10 years.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000037/unp-20251231.htm",
+      "as_of": "FY2025 10-K"
     },
     {
-      "fact": "The NetControl cutover itself (switching from TCS) was completed within approximately three hours with minimal operational disruption on January 6, 2024.",
-      "source_url": "https://railroad.net/up-moves-off-tcs-onto-netcontrol-t176767.html",
-      "as_of": "2024-03-11"
+      "fact": "PRIMARY SOURCE (UP FY2025 10-K): UP runs 'COMMIT' (Situational Awareness Testing), a program that observes, tests, and coaches employees on work-rule compliance with emphasis on in-the-field training rather than traditional classroom learning, plus a 'Peer-to-Peer Engagement' program driving employee ownership of safety programs.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000037/unp-20251231.htm",
+      "as_of": "FY2025 10-K"
+    },
+    {
+      "fact": "As of a 2018 interview, then-CIO Lynden Tennison described UP's active pursuit of Big Data, predictive/video analytics, machine and deep learning, AI, and autonomous vehicles; UP had deployed some Machine Vision portals and stated a theoretical network-wide maximum of ~70 if deployed on all high-traffic mainlines, with no expansion plans at that time. Current CIO (2024-2026 sourcing) is Rahul Jalali, who has described UP's strategy as transforming it into a 'platform company' modeled on Apple/Google/Amazon-style integration, with a 'secure-by-design' cybersecurity approach and named future directions including generative AI and zero-trust cybersecurity.",
+      "source_url": "https://www.forbes.com/sites/peterhigh/2024/08/30/162-year-old-union-pacifics-cio-drives-an-innovative-digital-playbook/",
+      "as_of": "2024-08-30 (Jalali); 2018-03-27 (Tennison, historical)"
     }
   ],
-
-  "domain_13_finance": [],
-
-  "domain_14_hr_labor": [],
-
+  "domain_13_finance": [
+    {
+      "fact": "UP's own risk disclosure states fuel surcharge programs trail fluctuations in fuel price by approximately two months, which the company identifies as a significant source of quarter-over-quarter and year-over-year revenue volatility, particularly during rapid price changes.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000010088516000260/unp-20151231x10k.htm",
+      "as_of": "2015 (mechanism description; UP's 10-K risk-factor language on this point is stable across years)"
+    },
+    {
+      "fact": "In 2007, 20+ rail shippers (growing to 30 total complaints) filed antitrust lawsuits alleging Union Pacific and other Class I railroads engaged in price-fixing by establishing common fuel surcharges; the first suit was filed in US District Court in New Jersey on May 14, 2007. UPRR and three other Class I railroads remained named defendants per UP's own 10-K disclosure. This is a real, citable historical pain point for fuel-surcharge process design \u2014 not an invented one.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000010088516000260/unp-20151231x10k.htm",
+      "as_of": "2007-2015 (disclosed across multiple 10-Ks; verify current litigation status before citing as ongoing)"
+    },
+    {
+      "fact": "The STB issued a decision limiting how US railroads calculate fuel surcharges on STB-regulated traffic (referenced in UP's FY2006 10-K); UP stated at the time it did not believe the decision would prevent it from using fuel surcharges on most or all of its traffic.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/0000100885/000119312507038387/d10k.htm",
+      "as_of": "2006-2007 (verify current STB fuel-surcharge rule status before citing as UP's present practice)"
+    },
+    {
+      "fact": "CAUTION \u2014 commodity group count has changed over time: UP's FY2006/2007/2008 10-Ks describe 'six commodity groups.' By the 2022 and 2023 10-Q filings, UP describes 'three commodity groups.' Verify UP's current commodity-group structure directly before writing any RR-13 or RR-10 process that names a specific count or lists the groups by name \u2014 do not assume either the six-group or three-group structure without checking the most recent 10-K.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/100885/000143774923028607/unp20230930_10q.htm",
+      "as_of": "2023-Q3 vs 2007-2008 (structure has changed; re-verify before use)"
+    }
+  ],
+  "domain_14_hr_labor": [
+    {
+      "fact": "UP's TE&Y (Train, Engine & Yard) New Hire Training program is an 8-week 'sandbox' program using real equipment (locomotives, rail cars, track, switches) under instructor supervision, with learners spending ~85% of time in the field. It replaced an older process that took 18 weeks and emphasized classroom theory over hands-on training; the redesign was driven by feedback requesting more hands-on car-handling training. Recognized as a Training Top 100 Best Practice (Training magazine).",
+      "source_url": "https://trainingmag.com/training-top-100-best-practice-union-pacific-railroads-train-engine-and-yard-tey-new-hire-training/",
+      "as_of": "2021-05-11"
+    },
+    {
+      "fact": "As of June 2012, UP built a fleet of 5 mobile classroom trailers to bring operations/safety training and locomotive simulators to engineer and conductor locations across its 23-state system. Each trailer has 7 workstations (2 employees each); doors can be opened by employee ID entry or remotely by instructors based in Salt Lake City, Utah and Omaha, Nebraska, who can also assist trainees via webcam.",
+      "source_url": "https://www.uprr.com/newsinfo/releases/safety/2012/0612_training.htm",
+      "as_of": "2012-06-14"
+    },
+    {
+      "fact": "In 2022, UP averaged nearly 47 hours of training per employee, a 62% year-over-year increase attributed to robust hiring; team members completed approximately 10,000 skill-enhancement courses that year across topics including CPR, welding, ballast tamping, track inspection, and locomotive maintenance.",
+      "source_url": "https://www.up.com/news/safety/rail-safety-training-it-030823",
+      "as_of": "2022 data, published 2023-08-03"
+    },
+    {
+      "fact": "CROSS-REFERENCE TO PILOT PROCESS RR-03-05-01: UP's own training materials describe the hands-on portion of new-hire air brake training in specific procedural detail \u2014 after verifying 75 psi on the rear of the train with a handheld gauge or End-of-Train device, the engineer makes a 20-pound reduction, and students then conduct a safety inspection while rechecking a 100% set of the brakes, per a Class 1 Initial Terminal Air Brake Test. This is real, sourced procedural detail that could strengthen RR-03-05-01's description if you choose to regenerate it with a richer domain_03 registry.",
+      "source_url": "https://www.up.com/news/safety/rail-safety-training-it-030823",
+      "as_of": "2023-08-03"
+    }
+  ],
   "domain_15_merger_integration": [
     {
       "fact": "Union Pacific and Norfolk Southern filed their first STB major merger application in December 2025; the STB rejected it as incomplete in a unanimous decision on January 16, 2026, citing inconsistencies in market share projections. The companies filed a revised application on April 30, 2026.",

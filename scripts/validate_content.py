@@ -376,6 +376,60 @@ def home_domain(pid: str, facts: FactIndex) -> str | None:
     return next((e.domain for e in facts.facts if e.domain.startswith(want)), None)
 
 
+# facts.json domain_13 carries an explicit CAUTION: UP's FY2006-2008 10-Ks
+# describe "six commodity groups"; by 2022-2023 10-Q filings it's "three
+# commodity groups". The registry does not resolve which is current -- the
+# fact entry itself says to verify before writing either count. Grounding-by
+# -token would happily accept "three commodity groups" here, since "three"
+# genuinely appears inside that very fact; that would launder an explicit
+# warning into apparent support. So this is checked separately, by pattern,
+# not through the normal figure-grounding path.
+_COMMODITY_COUNT_RE = re.compile(
+    r"\b(one|two|three|four|five|six|seven|eight|nine|ten|\d{1,2})"
+    r"[\s-]*commodity[\s-]*group",
+    re.I,
+)
+
+
+def check_commodity_group_caution(p: dict, f: list[Finding]) -> None:
+    pid = p.get("pid") or ""
+    if not re.match(r"^RR-(10|13)-", pid):
+        return
+    for key in PROSE_FIELDS:
+        val = p.get(key)
+        chunks = [(key, val)] if isinstance(val, str) else (
+            [(f"{key}[{i}]", v) for i, v in enumerate(val) if isinstance(v, str)]
+            if isinstance(val, list) else [])
+        for fld, text in chunks:
+            m = _COMMODITY_COUNT_RE.search(text)
+            if m:
+                f.append(Finding(
+                    "caution", fld, m.group(0),
+                    "states a specific commodity-group count. facts.json "
+                    "(domain_13) flags this as unresolved: UP's FY2006-2008 "
+                    "10-Ks say six commodity groups, its 2022-2023 10-Qs say "
+                    "three -- the registry does not have a verified current "
+                    "answer. Either source the current figure into facts.json "
+                    "first, or drop the count and describe the mechanism "
+                    "without naming a number.",
+                    context=context_of(text, m.start(), m.end())))
+    for i, s in enumerate(p.get("steps") or []):
+        if not isinstance(s, dict):
+            continue
+        for sub in ("name", "input", "output"):
+            v = s.get(sub)
+            if not isinstance(v, str):
+                continue
+            m = _COMMODITY_COUNT_RE.search(v)
+            if m:
+                f.append(Finding(
+                    "caution", f"steps[{i}].{sub}", m.group(0),
+                    "states a specific commodity-group count -- see the "
+                    "same facts.json (domain_13) caution: the registry does "
+                    "not have a verified current figure.",
+                    context=context_of(v, m.start(), m.end())))
+
+
 def check_prose_figures(p: dict, r: RegistryLoader, facts: FactIndex,
                         f: list[Finding], words: bool = False,
                         grounded: list | None = None,
@@ -482,13 +536,14 @@ def validate(p: dict, r: RegistryLoader, facts: FactIndex, words: bool = False,
     _check_list(p, "actors", "roles", "roles", r.get_role, r, f)
     _check_list(p, "kpi_moved", "kpis", "kpis", r.get_kpi, r, f)
     check_steps(p, r, f)
+    check_commodity_group_caution(p, f)
     check_prose_figures(p, r, facts, f, words=words, grounded=grounded,
                         any_domain=any_domain)
     return f
 
 
 # --- reporting ----------------------------------------------------------------
-ORDER = ["structure", "systems", "regulations", "roles", "kpis", "steps", "figures"]
+ORDER = ["structure", "systems", "regulations", "roles", "kpis", "steps", "caution", "figures"]
 TITLES = {
     "structure": "SCHEMA",
     "systems": "UNGROUNDED SYSTEM",
@@ -496,6 +551,7 @@ TITLES = {
     "roles": "UNGROUNDED ROLE",
     "kpis": "UNGROUNDED KPI",
     "steps": "STEP PROBLEM",
+    "caution": "UNRESOLVED REGISTRY CAUTION",
     "figures": "UNGROUNDED FIGURE OR DATE",
 }
 
