@@ -63,11 +63,32 @@ li { margin-bottom: .3rem; }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; }
 .sources li a { color: var(--amber); word-break: break-all; }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: .82rem; white-space: nowrap; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); }
+th {
+  background: var(--panel); color: var(--muted); font-size: .68rem;
+  text-transform: uppercase; letter-spacing: .04em; position: sticky; top: 0;
+}
+tr:last-child td { border-bottom: none; }
+td.flag span { display: inline-block; width: 1.1rem; text-align: center; border-radius: 3px; }
+td.flag .yes { background: var(--badge-company-bg); color: var(--badge-company-ink); }
+td.flag .no { color: var(--muted); }
+.diagram-wrap {
+  border: 1px solid var(--rule); border-radius: 6px; padding: 1rem;
+  background: var(--panel); overflow-x: auto;
+}
+.diagram-fallback summary { cursor: pointer; color: var(--muted); font-size: .8rem; margin-top: .5rem; }
+.diagram-fallback pre {
+  font-size: .75rem; overflow-x: auto; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .75rem;
+}
 footer {
   margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
   font-size: .8rem; color: var(--muted);
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 </head>
 <body>
 <main>
@@ -88,6 +109,22 @@ footer {
   <section>
     <h2>Description</h2>
     <p class="description">A train is ready for departure from the terminal or yard, requiring an air brake test to ensure safety before movement. The Car Inspector performs a thorough inspection of the train&#x27;s braking system. The Yardmaster oversees the process and ensures compliance with regulatory standards. If any issues are found during the inspection, repairs must be made immediately; otherwise, the train is cleared for departure. Once the air brake test and inspection are complete, the train is handed over to the Switchman or Switch Foreman who will guide it out of the yard. The process is complete when the train has successfully passed all tests and inspections and leaves the terminal or yard under its own power.</p>
+  </section>
+
+  <section>
+    <h2>Process Flow</h2>
+    <div class="diagram-wrap"><pre class="mermaid">flowchart TD
+  E[No steps recorded]</pre></div>
+    <details class="diagram-fallback">
+      <summary>Mermaid source (if the diagram above didn't render)</summary>
+      <pre>flowchart TD
+  E[No steps recorded]</pre>
+    </details>
+  </section>
+
+  <section>
+    <h2>Process Steps</h2>
+    <p style="color:var(--muted); font-size:.85rem;">(no steps recorded)</p>
   </section>
 
   <section>
@@ -138,5 +175,14 @@ footer {
     practice.
   </footer>
 </main>
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default',
+      securityLevel: 'strict',
+    });
+  }
+</script>
 </body>
 </html>

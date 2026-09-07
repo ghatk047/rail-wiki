@@ -63,6 +63,26 @@ li { margin-bottom: .3rem; }
 .kv dt { color: var(--muted); }
 .kv dd { margin: 0; }
 .sources li a { color: var(--amber); word-break: break-all; }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: .82rem; white-space: nowrap; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); }
+th {
+  background: var(--panel); color: var(--muted); font-size: .68rem;
+  text-transform: uppercase; letter-spacing: .04em; position: sticky; top: 0;
+}
+tr:last-child td { border-bottom: none; }
+td.flag span { display: inline-block; width: 1.1rem; text-align: center; border-radius: 3px; }
+td.flag .yes { background: var(--badge-company-bg); color: var(--badge-company-ink); }
+td.flag .no { color: var(--muted); }
+.diagram-wrap {
+  border: 1px solid var(--rule); border-radius: 6px; padding: 1rem;
+  background: var(--panel); overflow-x: auto;
+}
+.diagram-fallback summary { cursor: pointer; color: var(--muted); font-size: .8rem; margin-top: .5rem; }
+.diagram-fallback pre {
+  font-size: .75rem; overflow-x: auto; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .75rem;
+}
 footer {
   margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
   font-size: .8rem; color: var(--muted);
