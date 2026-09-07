@@ -21,7 +21,7 @@ write would be discarded rather than trusted. The entity fields are then
     pain_points[]    <- the closed §7 list, chosen by index
 
 So those fields ground by construction. What the model genuinely authors is
-prose: description, inputs and outputs. That prose is exactly where a
+prose: the description and the inputs/outputs. That prose is exactly where a
 fabricated figure or date can still appear, and it is what validate_content.py
 scans before anything is written.
 
@@ -32,8 +32,24 @@ generator quietly dropping it. Nothing is written on a rejection.
 Description length is enforced here, not in validate_content.py. A rejection
 from the validator means exactly one thing — the registries do not ground
 something — and that single meaning is what makes it trustworthy as the §4
-gate. Length is a prose-quality condition, so it lives in Phase C with a
-bounded retry that tells the model what was wrong.
+gate. Length is a prose-quality condition, so it lives in Phase C.
+
+Five-field description
+-----------------------
+A single free-text "write 120-200 words" instruction undershot badly in
+practice (57 words on the first live run) — a length target stated as a range
+inside a JSON template value reads to a small model as a format hint, not a
+binding constraint, and it silently produced far less than asked. The model
+generates five short fields instead of one long one — trigger, sequence,
+judgement, handoff, done — each with its own word floor. Five 20-word floors
+are a much sharper target for a small model than one 120-word float, and each
+field can be checked and, on failure, named specifically in a retry note.
+
+assemble() concatenates the five fields into a single "description" string
+before anything downstream ever sees it. validate_content.py, the taxonomy
+schema and any future page renderer see one description field, exactly as
+before — the five-field split is purely a generation-time device and never
+appears in data/processes.json.
 
 Model
 -----
@@ -69,11 +85,29 @@ PREFERRED_MODEL = "qwen2.5:14b-instruct"
 FALLBACK_MODEL = "qwen2.5:latest"
 TIMEOUT = 180
 
-# Description length. The floor is a hard generator-side condition; the band is
-# advisory. Deliberately a floor and not the full band: a gate that demands 120
-# words gets 120 words, filler included, and padded prose is worse than short
-# prose for a wiki whose value is being recognisable to a rail person.
-DESC_FLOOR_WORDS = 100
+# The five description beats, in writing/concatenation order, each checked
+# independently. Floors sum to DESC_FLOOR_WORDS, which stays in place as a
+# backstop on the assembled whole — if the five pass individually the backstop
+# should pass automatically; it only fires if assembly itself misbehaves.
+FIELD_KEYS = ["trigger", "sequence", "judgement", "handoff", "done"]
+FIELD_LABELS = {k: k.upper() for k in FIELD_KEYS}
+FIELD_PROMPTS = {
+    "trigger": "What starts this work, and how the need becomes visible to "
+               "the people who act on it.",
+    "sequence": "Who does what, in order, from trigger through to completion.",
+    "judgement": "The decision or exception that makes this process "
+                 "non-trivial — the point where experience matters — and "
+                 "what happens on each branch.",
+    "handoff": "What leaves this process, and who picks it up next.",
+    "done": "The condition that means the work is complete and can be "
+            "closed out.",
+}
+FIELD_FLOOR_WORDS = 20
+FIELD_MAX_WORDS = 45
+
+# Backstop on the assembled whole (sum of the five floors). The band is
+# advisory, matching §3's "120-200 words" for the process record.
+DESC_FLOOR_WORDS = len(FIELD_KEYS) * FIELD_FLOOR_WORDS
 DESC_BAND = (120, 200)
 DEFAULT_RETRIES = 2
 
@@ -149,13 +183,22 @@ def build_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
                  retry_note: str | None = None) -> str:
     """The prompt sent to the model.
 
-    The description requirement lives in its own section, not as a value in
-    the output template: a template value reads as a format hint and gets
-    ignored. It is also kept apart from the "leave statistics out" guidance,
-    because a length target and a suppression instruction in one sentence
-    fight each other and the suppression wins.
+    Each description beat is its own JSON field with its own instruction, not
+    a value inside one long template string: a length target stated only as
+    prose inside a template value reads to a small model as a format hint and
+    gets ignored, which is exactly what happened with the single-field
+    version. Five short, separately-checked fields give the model five
+    concrete, individually-verifiable targets instead of one long float.
     """
     retry = f"\n{retry_note}\n" if retry_note else ""
+    field_instructions = "\n".join(
+        f"  {FIELD_LABELS[k]} ({FIELD_FLOOR_WORDS}-{FIELD_MAX_WORDS} words) — {FIELD_PROMPTS[k]}"
+        for k in FIELD_KEYS
+    )
+    field_template = ",\n".join(
+        f'  "{k}": "{FIELD_FLOOR_WORDS}-{FIELD_MAX_WORDS} words covering {FIELD_LABELS[k]} only"'
+        for k in FIELD_KEYS
+    )
     return f"""You are documenting one business process for a US Class I freight railroad.
 
 PROCESS
@@ -171,35 +214,36 @@ prose. Do not invent ids. If nothing in a list fits, return an empty list.
 {render_menu(menu, pains)}
 
 WRITING THE DESCRIPTION
-This is the main body of work in this task. Write 120-200 words, covering all
-five of the following, in this order, at roughly 25-40 words each:
+This is the main body of work in this task. The description is five separate
+fields, each covering one beat of the process, in this order:
 
-  1. TRIGGER    What starts this work, and how the need becomes visible to
-                the people who act on it.
-  2. SEQUENCE   Who does what, in order, from trigger through to completion.
-  3. JUDGEMENT  The decision or exception that makes this process non-trivial
-                — the point where experience matters — and what happens on
-                each branch.
-  4. HANDOFF    What leaves this process, and who picks it up next.
-  5. DONE       The condition that means the work is complete and can be
-                closed out.
+{field_instructions}
+
+Each field is checked on its own and must independently meet its word count.
+Do not write labels or headings inside the field text — the JSON key is the
+label. Write plain declarative sentences, one or two per field. No consulting
+register, no filler, no restating the process name.
 
 Write about mechanism rather than measurement: explain how the work is
 carried out and what governs it. Figures, percentages and dates are not what
-makes a description good here, and a description is better without them
-unless one is genuinely central to the process.
+makes these fields good, and they are better without them unless one is
+genuinely central to the process.
 
-Plain declarative sentences. No consulting register, no filler, no restating
-the process name back. If you find yourself short of 120 words, you have
-under-described one of the five elements above — go back and expand it rather
-than padding.
+If a field is coming in short, that means you have under-described that one
+beat specifically — expand what that beat covers, don't pad with filler, and
+don't borrow content that belongs in a different field.
 {retry}
+OTHER FIELDS
+"name": a specific process name, 4-12 words, no numbers.
+"inputs" / "outputs": 2-4 short noun phrases each — what feeds this process
+and what it produces, not a restatement of the five description fields.
+
 OUTPUT
 Return ONE JSON object, nothing else:
 
 {{
   "name": "specific process name, 4-12 words, no numbers",
-  "description": "the 120-200 word description specified above",
+{field_template},
   "inputs": ["2-4 short noun phrases"],
   "outputs": ["2-4 short noun phrases"],
   "system_ids": ["SYS-..."],
@@ -259,47 +303,62 @@ def call_ollama(prompt: str, host: str) -> tuple[dict, str]:
 
 
 # --- mock ---------------------------------------------------------------------
-MOCK_PROSE = {
-    "good": (
-        "The work runs on a scheduled cycle rather than on demand. A planned "
-        "cycle is published for each subdivision, the field team executes "
-        "against it, and the results are scored and routed for disposition "
-        "before the next cycle opens. Findings are classified by severity: the "
-        "most serious generate an immediate operating restriction, which is "
-        "placed into effect before any further movement is authorised over the "
-        "affected segment. Less serious findings are queued into the planned "
-        "maintenance programme and tracked to closure. Every restriction "
-        "imposed, changed or lifted is recorded so that the field condition, "
-        "the dispatching system and the onboard enforcement data stay "
-        "consistent with one another. Where a finding touches the physical "
-        "characteristics of the track, the change is carried through into the "
-        "downstream data files so that enforcement matches the railroad as "
-        "built. Disagreement between what the field recorded and what the "
-        "system holds is treated as a defect in its own right and is reconciled "
-        "before the cycle is closed out."
-    ),
-    "short": (
-        "The crew performs the required test before departure and records the "
-        "result. Any defect found is repaired or the equipment is set out."
-    ),
-    # Deliberately over the length floor, so that it reaches the validator and
-    # exercises the grounding path rather than being turned back on length.
-    "ungrounded-figure": (
-        "The work runs on a scheduled cycle rather than on demand. A planned "
-        "cycle is published for each subdivision, the field team executes "
-        "against it, and the results are scored and routed for disposition "
-        "before the next cycle opens. Automated classification cut triage time "
-        "by 34% and clears 1,200 exceptions per week across the region. Since "
-        "March 2019 the programme has run continuously on all main line track. "
-        "Findings are classified by severity: the most serious generate an "
-        "immediate operating restriction, which is placed into effect before "
-        "any further movement is authorised over the affected segment. Less "
-        "serious findings are queued into the planned maintenance programme and "
-        "tracked to closure. Every restriction imposed, changed or lifted is "
-        "recorded so that the field condition and the systems that govern "
-        "movement stay consistent with one another, and any disagreement "
-        "between them is reconciled before the cycle is closed out."
-    ),
+# Each profile supplies the five fields directly (dict keyed by FIELD_KEYS),
+# rather than one flat description, so the mock exercises the same shape the
+# real model now returns.
+MOCK_FIELDS = {
+    "good": {
+        "trigger": "A planned inspection cycle is published for each subdivision on a "
+                   "fixed schedule rather than in response to a specific complaint or "
+                   "event, so the need becomes visible through the calendar, not through "
+                   "an alert.",
+        "sequence": "The field team executes the published cycle in order, and every "
+                    "finding is scored and logged as it is made. Results are then routed "
+                    "for disposition before the next cycle opens, so nothing carries over "
+                    "unresolved and unassigned.",
+        "judgement": "Findings are classified by severity: the most serious generate an "
+                     "immediate operating restriction, which is placed into effect before "
+                     "any further movement is authorised over the affected segment, while "
+                     "less serious findings are queued into the planned maintenance "
+                     "programme instead of acted on immediately.",
+        "handoff": "Every restriction imposed, changed or lifted is recorded so that the "
+                   "field condition, the dispatching system and the onboard enforcement "
+                   "data stay consistent with one another, and downstream data files "
+                   "carrying the railroad's physical characteristics are updated to match.",
+        "done": "The cycle is closed out once every finding from it has either been "
+                "resolved or formally queued, and any disagreement between what the "
+                "field recorded and what the system holds has been reconciled rather "
+                "than left standing.",
+    },
+    "short": {
+        "trigger": "A train is ready for departure.",
+        "sequence": "The crew performs the required test.",
+        "judgement": "A defect is repaired or the car is set out.",
+        "handoff": "The train departs once cleared.",
+        "done": "The record is closed.",
+    },
+    # Deliberately over the per-field floor, so the attempt reaches the
+    # validator and exercises the grounding path rather than being turned
+    # back on length.
+    "ungrounded-figure": {
+        "trigger": "A planned inspection cycle is published for each subdivision on a "
+                   "fixed schedule, so the need becomes visible through the calendar "
+                   "rather than through a specific alert or complaint.",
+        "sequence": "The field team executes the cycle in order. Automated classification "
+                    "cut triage time by 34% and clears 1,200 exceptions per week across "
+                    "the region, and results are routed for disposition before the next "
+                    "cycle opens.",
+        "judgement": "Findings are classified by severity: the most serious generate an "
+                     "immediate operating restriction, placed into effect before any "
+                     "further movement is authorised, while less serious findings are "
+                     "queued into the planned maintenance programme instead.",
+        "handoff": "Every restriction imposed, changed or lifted is recorded so the field "
+                   "condition and the systems that govern movement stay consistent with "
+                   "one another, and the change is carried into the relevant data files.",
+        "done": "Since March 2019 the programme has run continuously on all main line "
+                "track, and the cycle is closed out once any disagreement between the "
+                "field record and the system has been reconciled.",
+    },
 }
 
 
@@ -316,12 +375,14 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
     if profile == "invented-role":
         role_ids = ["ROLE-D06-99"] + role_ids[:2]
 
-    prose_key = profile
+    fields_key = profile
     if profile == "short-then-good":
-        prose_key = "short" if attempt == 1 else "good"
+        fields_key = "short" if attempt == 1 else "good"
+    fields = MOCK_FIELDS.get(fields_key, MOCK_FIELDS["good"])
+
     reply = {
         "name": "Scheduled Inspection Cycle and Exception Disposition",
-        "description": MOCK_PROSE.get(prose_key, MOCK_PROSE["good"]),
+        **fields,
         "inputs": ["Published inspection cycle plan", "Prior exception history"],
         "outputs": ["Scored exception list", "Operating restriction request"],
         "system_ids": sys_ids,
@@ -334,9 +395,57 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
     return reply, json.dumps(reply, indent=2, ensure_ascii=False)
 
 
+# --- field-length gate ---------------------------------------------------------
+def field_word_counts(reply: dict) -> dict[str, int]:
+    return {k: len(str(reply.get(k) or "").split()) for k in FIELD_KEYS}
+
+
+def check_field_lengths(reply: dict) -> tuple[bool, dict[str, int], list[str], list[str]]:
+    """(all_pass, counts, weak_fields, over_max_fields). weak_fields is a hard
+    gate; over_max_fields is advisory only."""
+    counts = field_word_counts(reply)
+    weak = [k for k in FIELD_KEYS if counts[k] < FIELD_FLOOR_WORDS]
+    over = [k for k in FIELD_KEYS if counts[k] > FIELD_MAX_WORDS]
+    return (len(weak) == 0), counts, weak, over
+
+
+def field_retry_note(counts: dict[str, int], weak: list[str]) -> str:
+    """Names only the deficient fields, and tells the model to leave the rest
+    untouched -- a generic nudge is what the single-field version tried, and
+    it made every field shorter on every retry instead of longer."""
+    lines = ["PREVIOUS ATTEMPT REJECTED"]
+    for k in FIELD_KEYS:
+        if k in weak:
+            lines.append(
+                f"Your {FIELD_LABELS[k]} was {counts[k]} words, need at least "
+                f"{FIELD_FLOOR_WORDS} — expand only that beat.")
+    good = [FIELD_LABELS[k] for k in FIELD_KEYS if k not in weak]
+    if good:
+        verb = "meets" if len(good) == 1 else "meet"
+        lines.append(f"Leave {', '.join(good)} exactly as they are — "
+                     f"{'it' if len(good) == 1 else 'they'} already {verb} the requirement.")
+    return "\n".join(lines)
+
+
 # --- assembly -----------------------------------------------------------------
+def _terminate(sentence: str) -> str:
+    """Ensure a field's text ends with terminal punctuation before it is
+    concatenated with the next one, so two beats don't run together."""
+    s = sentence.strip()
+    if s and not s.endswith((".", "!", "?")):
+        s += "."
+    return s
+
+
 def assemble(node: dict, reply: dict, r, pains: list[str]) -> tuple[dict, list[str]]:
-    """Build the §3 process object from registry entries, not from model text."""
+    """Build the §3 process object from registry entries, not from model text.
+
+    The five description fields are concatenated here into one "description"
+    string with no labels or field boundaries visible. Everything downstream
+    of this function -- validate_content.py, data/processes.json, any future
+    page renderer -- sees exactly the shape it saw before the five-field
+    split existed.
+    """
     notes: list[str] = []
 
     def resolve(ids, getter, registry: str):
@@ -378,12 +487,16 @@ def assemble(node: dict, reply: dict, r, pains: list[str]) -> tuple[dict, list[s
             notes.append(f"model returned a free-text {key!r} field — ignored, "
                          f"entity fields are built from the registry")
 
+    description = " ".join(
+        _terminate(str(reply.get(k) or "")) for k in FIELD_KEYS if str(reply.get(k) or "").strip()
+    )
+
     proc = {
         "pid": node["pid"],
         "name": str(reply.get("name") or node["l2"]).strip(),
         "l1": node["l1"],
         "l2": node["l2"],
-        "description": str(reply.get("description") or "").strip(),
+        "description": description,
         "actors": [e.key if isinstance(e, Entry) else e for e in roles],
         "inputs": [str(x) for x in (reply.get("inputs") or [])],
         "outputs": [str(x) for x in (reply.get("outputs") or [])],
@@ -406,7 +519,11 @@ def assemble(node: dict, reply: dict, r, pains: list[str]) -> tuple[dict, list[s
 
 
 def check_description_length(proc: dict) -> tuple[bool, int, str | None]:
-    """(meets_floor, words, advisory). Below the floor is not writable."""
+    """(meets_floor, words, advisory) on the ASSEMBLED whole. This is a
+    backstop, not the primary gate -- the primary gate is check_field_lengths,
+    run on the five fields before assembly. If the five fields individually
+    clear their floors this should pass automatically; it exists to catch an
+    assembly bug, not to catch the model."""
     words = len((proc.get("description") or "").split())
     lo, hi = DESC_BAND
     if words < DESC_FLOOR_WORDS:
@@ -416,18 +533,6 @@ def check_description_length(proc: dict) -> tuple[bool, int, str | None]:
     if words > hi:
         return True, words, f"description is {words} words, over the §3 band of {lo}-{hi}"
     return True, words, None
-
-
-def retry_note(words: int) -> str:
-    lo, hi = DESC_BAND
-    return (
-        f"PREVIOUS ATTEMPT REJECTED\n"
-        f"Your last description was {words} words. The requirement is {lo}-{hi}.\n"
-        f"It was rejected for length alone, not for content. Do not pad it. Work\n"
-        f"through TRIGGER, SEQUENCE, JUDGEMENT, HANDOFF and DONE in turn and give\n"
-        f"each of the five 25-40 words of real detail — at least one of them was\n"
-        f"left thin or skipped entirely last time."
-    )
 
 
 def _by_id(r, registry: str, entry_id: str) -> Entry | None:
@@ -476,15 +581,16 @@ def main() -> int:
     ap.add_argument("--out", default=str(PROCESSES))
     ap.add_argument("--max-retries", type=int, default=DEFAULT_RETRIES,
                     dest="max_retries",
-                    help=f"retries when the description misses the "
-                         f"{DESC_FLOOR_WORDS}-word floor (default {DEFAULT_RETRIES})")
+                    help=f"retries when a description field misses its "
+                         f"{FIELD_FLOOR_WORDS}-word floor (default {DEFAULT_RETRIES})")
     ap.add_argument("--dry-run", action="store_true", help="validate but never write")
     ap.add_argument("--show-prompt", action="store_true",
                     help="print the prompt for this PID and exit — no model "
                          "call, no write. Ignores --mock.")
     ap.add_argument("--debug", action="store_true",
-                    help="dump the full raw model response and the full "
-                         "description text for every attempt, mock or live")
+                    help="dump the full raw model response, per-field word "
+                         "counts, and the assembled description for every "
+                         "attempt, mock or live")
     args = ap.parse_args()
 
     try:
@@ -530,44 +636,69 @@ def main() -> int:
             print(f"FATAL: {e}", file=sys.stderr)
             return 2
 
+        ok, counts_, weak, over = check_field_lengths(reply if isinstance(reply, dict) else {})
+
         if args.debug:
             print()
             print(f"  {'=' * 66}")
             print(f"  DEBUG: attempt {attempt}/{attempts} raw model response")
             print(f"  {'=' * 66}")
             print(raw)
-            desc = reply.get("description", "") if isinstance(reply, dict) else ""
             print(f"  {'-' * 66}")
-            print(f"  description ({len(str(desc).split())} words):")
-            print(f"  {desc}")
+            print("  per-field word counts:")
+            for k in FIELD_KEYS:
+                flag = " <- BELOW FLOOR" if k in weak else (" <- over advisory max" if k in over else "")
+                print(f"    {FIELD_LABELS[k]:10s} {counts_[k]:3d} words{flag}")
+                print(f"      {reply.get(k, '') if isinstance(reply, dict) else ''}")
+            if ok:
+                preview = " ".join(_terminate(str(reply.get(k) or "")) for k in FIELD_KEYS)
+                print(f"  {'-' * 66}")
+                print(f"  assembled description ({len(preview.split())} words):")
+                print(f"  {preview}")
             print(f"  {'=' * 66}")
             print()
+
+        if not ok:
+            print(f"  REJECTED (length): {len(weak)} field(s) below the "
+                  f"{FIELD_FLOOR_WORDS}-word floor: "
+                  f"{', '.join(FIELD_LABELS[k] for k in weak)}")
+            for k in weak:
+                print(f"    {FIELD_LABELS[k]}: {counts_[k]} words")
+            if attempt < attempts:
+                note = field_retry_note(counts_, weak)
+                print("  retrying with a corrective note naming the weak field(s)")
+                continue
+            print()
+            print(f"REJECT  {node['pid']}")
+            print(f"        {', '.join(FIELD_LABELS[k] for k in weak)} still below "
+                  f"the {FIELD_FLOOR_WORDS}-word floor after {attempts} attempt(s). "
+                  f"Surfacing for human review rather than looping — the prompt or "
+                  f"the registry coverage for this domain is the thing to look at, "
+                  f"not the retry count.")
+            print(f"\n  NOT WRITTEN. {Path(args.out).name} is unchanged.")
+            return 1
+        if over:
+            print(f"  note: {', '.join(FIELD_LABELS[k] for k in over)} over the "
+                  f"{FIELD_MAX_WORDS}-word advisory max (not a gate condition)")
 
         proc, notes = assemble(node, reply, r, pains)
         for n in notes:
             print(f"  note: {n}")
 
-        ok, words, advisory = check_description_length(proc)
-        if ok:
-            if advisory:
-                print(f"  note: {advisory} (advisory)")
-            else:
-                print(f"  description: {words} words")
-            break
-        print(f"  REJECTED (length): description is {words} words, "
-              f"floor is {DESC_FLOOR_WORDS}")
-        if attempt < attempts:
-            note = retry_note(words)
-            print("  retrying with a corrective note")
+        backstop_ok, words, advisory = check_description_length(proc)
+        if not backstop_ok:
+            # Should not happen if the five fields individually cleared their
+            # floors -- if it does, it is an assembly bug, not a model retry.
+            print(f"  FATAL: assembled description is {words} words, under the "
+                  f"{DESC_FLOOR_WORDS}-word backstop, despite every field clearing "
+                  f"its own floor. This indicates a bug in assemble(), not a model "
+                  f"problem — do not retry.")
+            return 2
+        if advisory:
+            print(f"  note: {advisory} (advisory)")
         else:
-            print()
-            print(f"REJECT  {node['pid']}")
-            print(f"        description did not reach {DESC_FLOOR_WORDS} words in "
-                  f"{attempts} attempt(s). Surfacing for human review rather than "
-                  f"looping — the prompt or the registry coverage for this domain "
-                  f"is the thing to look at, not the retry count.")
-            print(f"\n  NOT WRITTEN. {Path(args.out).name} is unchanged.")
-            return 1
+            print(f"  description: {words} words (5 fields, all >= {FIELD_FLOOR_WORDS})")
+        break
 
     print()
     facts = vc.FactIndex(r)
