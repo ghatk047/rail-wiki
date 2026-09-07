@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>RR-03-05-01 — Air Brake Test and Departure Inspection</title>
+<title>RR-03-05-01 — Air Brake Tests and Departure Inspection</title>
 <style>
 :root {
   --bg: #f7f7f5; --panel: #ffffff; --ink: #1c1d1f; --muted: #5c5f66;
@@ -137,27 +137,141 @@ footer.site-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px s
   <main class="content">
     <div class="breadcrumb"><a href="../../../index.html">Home</a> &rsaquo; <a href="../../index.html">Terminal &amp; Yard Operations</a> &rsaquo; <a href="../index.html">Air Brake Tests &amp; Departure Inspection</a> &rsaquo; <b>RR-03-05-01</b></div>
     <div class="pid-tag" style="font-size:.8rem;">RR-03-05-01</div>
-<h1>Air Brake Test and Departure Inspection</h1>
+<h1>Air Brake Tests and Departure Inspection</h1>
 <p class="lede">Terminal &amp; Yard Operations &rsaquo; Air Brake Tests &amp; Departure Inspection &middot; confidence: high</p>
 
 <section>
   <h2>Description</h2>
-  <p>A train is ready for departure from the terminal or yard, requiring an air brake test to ensure safety before movement. The Car Inspector performs a thorough inspection of the train&#x27;s braking system. The Yardmaster oversees the process and ensures compliance with regulatory standards. If any issues are found during the inspection, repairs must be made immediately; otherwise, the train is cleared for departure. Once the air brake test and inspection are complete, the train is handed over to the Switchman or Switch Foreman who will guide it out of the yard. The process is complete when the train has successfully passed all tests and inspections and leaves the terminal or yard under its own power.</p>
+  <p>The Yardmaster initiates the process upon receiving a train&#x27;s departure schedule, ensuring all necessary preparations are made for the air brake tests and inspection. The Car Inspector performs a thorough inspection of each car’s braking system to ensure compliance with safety standards. The Switchman assists by moving cars into position for testing and inspection. If any defects or issues are found during the inspection, they must be addressed immediately before proceeding; otherwise, the train is cleared for departure based on successful brake tests and a clean inspection report. Upon completion of air brake tests and inspection, the Yardmaster communicates with dispatch to confirm the train&#x27;s readiness for departure and updates the schedule accordingly. The process concludes when the train departs from the terminal or yard with all cars meeting safety requirements as verified by the Car Inspector and approved by the Yardmaster.</p>
 </section>
-
+<section>
+  <h2>Process Flow</h2>
+  <div class="diagram-wrap"><pre class="mermaid">%%{init: {&#x27;flowchart&#x27;: {&#x27;curve&#x27;: &#x27;basis&#x27;}}}%%
+flowchart TD
+  S1(1. Conduct initial air brake test)
+  S1 --&gt; S2
+  S2(2. Inspect train for compliance with AAR rules)
+  S2 --&gt; S3
+  S3{3. Review air brake test results for safety…}
+  S3 -- Corrective Action… --&gt; S4
+  S4(4. Perform corrective actions on train brakes)
+  S4 --&gt; S5
+  S5(5. Conduct final air brake test after corrections)
+  S5 --&gt; S6
+  S6(6. Notify Yardmaster of train readiness for…)
+  S6 --&gt; S7
+  S7(7. Receive departure clearance and prepare train…)
+  S7 --&gt; S8
+  S8(8. Move train out of yard for departure)</pre></div>
+</section>
+<section>
+  <h2>Process Steps &middot; 8 steps, 8 gates</h2>
+  <div class="tbl-wrap"><table>
+<thead><tr><th>Step</th><th>Activity</th><th>Role</th><th>System</th><th>Input</th>
+<th>Output</th><th>KPI</th><th>Dec</th><th>Exc</th><th>Pain point</th></tr></thead>
+<tbody><tr>
+<td>1</td>
+<td><b>Conduct initial air brake test</b></td>
+<td>Switchman/Switch Foreman</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Train to be tested</td>
+<td>Initial air brake test results</td>
+<td>—</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>PTC initialization failures and enroute cutouts consuming HOS</td>
+</tr><tr>
+<td>2</td>
+<td><b>Inspect train for compliance with AAR rules</b></td>
+<td>Car Inspector (Carman)</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Train and inspection checklist</td>
+<td>Compliance report</td>
+<td>—</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>First-mile/last-mile service consistency for carload shippers</td>
+</tr><tr>
+<td>3</td>
+<td><b>Review air brake test results for safety compliance</b> <span style="color:var(--muted); font-size:.78rem;">&rarr; Corrective Action Required: 4</span></td>
+<td>Switchman/Switch Foreman</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Initial air brake test results</td>
+<td>Safety compliance confirmation or corrective action plan</td>
+<td>Cars classified per day / cars per minute at the hump</td>
+<td class="flag"><span class="yes">Y</span></td>
+<td class="flag"><span class="no">N</span></td>
+<td>—</td>
+</tr><tr>
+<td>4</td>
+<td><b>Perform corrective actions on train brakes</b></td>
+<td>Switchman/Switch Foreman</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Corrective action plan</td>
+<td>Train with corrected air brake system</td>
+<td>—</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>PTC initialization failures and enroute cutouts consuming HOS</td>
+</tr><tr>
+<td>5</td>
+<td><b>Conduct final air brake test after corrections</b></td>
+<td>Switchman/Switch Foreman</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Train with corrected brakes</td>
+<td>Final air brake test results</td>
+<td>—</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>PTC initialization failures and enroute cutouts consuming HOS</td>
+</tr><tr>
+<td>6</td>
+<td><b>Notify Yardmaster of train readiness for departure</b></td>
+<td>Switchman/Switch Foreman</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Final air brake test results and compliance report</td>
+<td>Departure authorization from Yardmaster</td>
+<td>Trains handled per 24 hours</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>Terminal dwell and trip-plan compliance as competing metrics</td>
+</tr><tr>
+<td>7</td>
+<td><b>Receive departure clearance and prepare train for movement</b></td>
+<td>Yardmaster</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Departure authorization from Yardmaster</td>
+<td>Train ready to depart</td>
+<td>—</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>HOS unpredictability, attendance policies, and limbo time</td>
+</tr><tr>
+<td>8</td>
+<td><b>Move train out of yard for departure</b></td>
+<td>Yardmaster</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Train ready to depart</td>
+<td>Departing train</td>
+<td>—</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>Terminal dwell and trip-plan compliance as competing metrics</td>
+</tr></tbody></table></div>
+</section>
 <section>
   <h2>Actors</h2>
   <div class="pill-row"><span class="pill">Yardmaster</span><span class="pill">Switchman/Switch Foreman</span><span class="pill">Car Inspector (Carman)</span></div>
 </section>
 <section>
   <h2>Systems</h2>
-  <ul><li><strong>Bailey Yard (North Platte, NE)</strong> <span class="badge company">company-specific</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D03-01</span></li><li><strong>Hump yard (generic classification technology)</strong> <span class="badge industry">industry-typical</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D03-02</span></li></ul>
+  <ul><li><strong>Bailey Yard (North Platte, NE)</strong> <span class="badge company">company-specific</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D03-01</span></li></ul>
 </section>
 <section>
   <h2>Inputs / Outputs</h2>
   <div class="kv">
-    <dt>Inputs</dt><dd>Train ready for departure, Air brake system</dd>
-    <dt>Outputs</dt><dd>Inspected train, Clearance to depart</dd>
+    <dt>Inputs</dt><dd>Train departure schedule, Car inspection checklist</dd>
+    <dt>Outputs</dt><dd>Inspection report, Train clearance for departure</dd>
   </div>
 </section>
 <section>
@@ -173,7 +287,7 @@ footer.site-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px s
 </section>
 <section>
   <h2>Pain Points (spec &sect;7, closed list)</h2>
-  <ul><li>PSR-era headcount reductions and the resulting resilience debate</li><li>HOS unpredictability, attendance policies, and limbo time</li><li>Terminal dwell and trip-plan compliance as competing metrics</li></ul>
+  <ul><li>PSR-era headcount reductions and the resulting resilience debate</li></ul>
 </section>
 <section>
   <h2>Sources</h2>
@@ -181,6 +295,130 @@ footer.site-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px s
 </section>
 <p style="color:var(--muted); font-size:.8rem;">Last reviewed (machine): 2026-09-07
 &mdash; DRAFT, not yet human-reviewed per spec &sect;11.</p>
+<div id="dg-lightbox" class="dg-lightbox" hidden>
+  <div class="dg-lb-bar">
+    <button data-zoom="out" title="Zoom out">&minus;</button>
+    <button data-zoom="in" title="Zoom in">&plus;</button>
+    <button data-zoom="reset">Reset</button>
+    <span class="dg-lb-hint">Scroll to zoom &middot; drag to pan &middot; Esc to close</span>
+    <button class="dg-lb-close">&times; Close</button>
+  </div>
+  <div class="dg-lb-canvas"><div class="dg-lb-inner"></div></div>
+</div>
+<script>
+(function () {
+  var scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0;
+  var baseW = 0, baseH = 0;
+  var lb, inner, canvas, svgEl;
+
+  // Pan via translate (cheap, never blurs). Zoom via the SVG's own pixel
+  // width/height (forces real vector re-render, never blurs either) --
+  // see the module docstring for why a CSS transform: scale() blurred.
+  function apply() {
+    inner.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+    if (svgEl) {
+      svgEl.style.width = (baseW * scale) + 'px';
+      svgEl.style.height = (baseH * scale) + 'px';
+    }
+  }
+
+  function open(svg) {
+    // Reveal the lightbox BEFORE measuring canvas -- a [hidden] element has
+    // no layout box, so getBoundingClientRect() on it (or anything inside
+    // it) returns all zeros. That was the immediate cause of a 0x0 SVG.
+    lb.hidden = false;
+    inner.innerHTML = '';
+    var clone = svg.cloneNode(true);
+    inner.appendChild(clone);
+    svgEl = clone;
+
+    // Natural size: prefer the viewBox aspect ratio (always present on a
+    // Mermaid SVG) over the on-page rendered width, which is whatever the
+    // small container happened to constrain it to.
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    var canvasRect = canvas.getBoundingClientRect();
+    var targetW = Math.min(canvasRect.width * 0.9, (vb && vb.width) || canvasRect.width * 0.9);
+    if (vb && vb.width && vb.height) {
+      baseW = targetW;
+      baseH = targetW * (vb.height / vb.width);
+    } else {
+      var r = svg.getBoundingClientRect();
+      baseW = r.width || targetW;
+      baseH = r.height || targetW;
+    }
+    svgEl.removeAttribute('width');
+    svgEl.removeAttribute('height');
+
+    scale = 1;
+    // Centre the diagram in the canvas at its initial size.
+    tx = (canvasRect.width - baseW) / 2;
+    ty = (canvasRect.height - baseH) / 2;
+    apply();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    lb = document.getElementById('dg-lightbox');
+    if (!lb) return;
+    inner = lb.querySelector('.dg-lb-inner');
+    canvas = lb.querySelector('.dg-lb-canvas');
+
+    document.querySelectorAll('.diagram-wrap').forEach(function (wrap) {
+      wrap.addEventListener('click', function () {
+        var svg = wrap.querySelector('svg');
+        if (svg) open(svg);
+      });
+    });
+
+    lb.querySelector('.dg-lb-close').addEventListener('click', function () { lb.hidden = true; });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lb.hidden = true; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.hidden = true; });
+
+    lb.querySelectorAll('[data-zoom]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var z = btn.getAttribute('data-zoom');
+        var rect = canvas.getBoundingClientRect();
+        var cx = rect.width / 2, cy = rect.height / 2;
+        var before = scale;
+        if (z === 'in') scale = Math.min(scale * 1.25, 6);
+        else if (z === 'out') scale = Math.max(scale / 1.25, .2);
+        else { scale = 1; tx = (rect.width - baseW) / 2; ty = (rect.height - baseH) / 2; apply(); return; }
+        // Keep the canvas centre fixed under the cursor-free zoom buttons.
+        tx = cx - (cx - tx) * (scale / before);
+        ty = cy - (cy - ty) * (scale / before);
+        apply();
+      });
+    });
+
+    canvas.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      var before = scale;
+      var delta = e.deltaY < 0 ? 1.1 : .9;
+      scale = Math.min(6, Math.max(.2, scale * delta));
+      // Zoom toward the mouse position, not the canvas centre.
+      tx = mx - (mx - tx) * (scale / before);
+      ty = my - (my - ty) * (scale / before);
+      apply();
+    }, { passive: false });
+
+    canvas.addEventListener('mousedown', function (e) {
+      dragging = true; sx = e.clientX - tx; sy = e.clientY - ty;
+      canvas.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      tx = e.clientX - sx; ty = e.clientY - sy;
+      apply();
+    });
+    window.addEventListener('mouseup', function () {
+      dragging = false;
+      if (canvas) canvas.classList.remove('grabbing');
+    });
+  });
+})();
+</script>
+
     <footer class="site-footer">
       Independently compiled from public sources. Not affiliated with,
       sponsored by, or endorsed by any railroad. Illustrative of US Class I practice.

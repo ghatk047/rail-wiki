@@ -77,8 +77,8 @@ footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--r
   <div class="breadcrumb"><a href="index.html">&larr; EA diagrams</a></div>
   <h1>RR-09 &middot; Intermodal &amp; Automotive Operations</h1>
   <div class="legend">
-    <span><span class="sw" style="background:#c8791a"></span>company-specific (0)</span>
-    <span><span class="sw" style="background:#5c5f66"></span>industry-typical (0)</span>
+    <span><span class="sw" style="background:#c8791a"></span>company-specific (5)</span>
+    <span><span class="sw" style="background:#5c5f66"></span>industry-typical (1)</span>
     <span><span class="sw" style="background:#9a9da3"></span>other/unscoped (0)</span>
   </div>
   <div class="diagram-wrap"><pre class="mermaid">%%{init: {&#x27;flowchart&#x27;: {&#x27;curve&#x27;: &#x27;basis&#x27;}, &#x27;theme&#x27;:&#x27;base&#x27;}}%%
@@ -97,7 +97,18 @@ flowchart TB
     G9[&quot;Transload and Bulk Terminal…&quot;]:::l2
   end
 
-  NONE[&quot;No systems yet sourced in registries/systems.json\nfor Intermodal &amp; Automotive Operations&quot;]:::empty
+  subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
+    direction TB
+    C1[&quot;UPGo\nSYS-D09-01&quot;]:::company
+    C2[&quot;EMP and UMAX container fleets\nSYS-D09-02&quot;]:::company
+    C3[&quot;ICTF Intermodal Container Transfer…\nSYS-D09-04&quot;]:::company
+    C4[&quot;Joliet Intermodal Terminal\nSYS-D09-05&quot;]:::company
+    C5[&quot;Global IV Intermodal Terminal Chicago area\nSYS-D09-06&quot;]:::company
+  end
+  subgraph INDUSTRY[&quot;Industry-typical&quot;]
+    direction TB
+    I1[&quot;Driver scanning / gate technology generic…\nSYS-D09-03&quot;]:::industry
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 
@@ -124,7 +135,18 @@ flowchart TB
     G9[&quot;Transload and Bulk Terminal…&quot;]:::l2
   end
 
-  NONE[&quot;No systems yet sourced in registries/systems.json\nfor Intermodal &amp; Automotive Operations&quot;]:::empty
+  subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
+    direction TB
+    C1[&quot;UPGo\nSYS-D09-01&quot;]:::company
+    C2[&quot;EMP and UMAX container fleets\nSYS-D09-02&quot;]:::company
+    C3[&quot;ICTF Intermodal Container Transfer…\nSYS-D09-04&quot;]:::company
+    C4[&quot;Joliet Intermodal Terminal\nSYS-D09-05&quot;]:::company
+    C5[&quot;Global IV Intermodal Terminal Chicago area\nSYS-D09-06&quot;]:::company
+  end
+  subgraph INDUSTRY[&quot;Industry-typical&quot;]
+    direction TB
+    I1[&quot;Driver scanning / gate technology generic…\nSYS-D09-03&quot;]:::industry
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 

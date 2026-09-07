@@ -14,7 +14,11 @@ flowchart TB
     G9["Regulatory Financial Reporting"]:::l2
   end
 
-  NONE["No systems yet sourced in registries/systems.json\nfor Finance, Revenue Accounting &…"]:::empty
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["Fuel surcharge program\nSYS-D13-01"]:::company
+    C2["ARC Average Revenue per Car\nSYS-D13-02"]:::company
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 

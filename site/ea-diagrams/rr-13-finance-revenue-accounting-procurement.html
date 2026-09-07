@@ -77,7 +77,7 @@ footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--r
   <div class="breadcrumb"><a href="index.html">&larr; EA diagrams</a></div>
   <h1>RR-13 &middot; Finance, Revenue Accounting &amp; Procurement</h1>
   <div class="legend">
-    <span><span class="sw" style="background:#c8791a"></span>company-specific (0)</span>
+    <span><span class="sw" style="background:#c8791a"></span>company-specific (2)</span>
     <span><span class="sw" style="background:#5c5f66"></span>industry-typical (0)</span>
     <span><span class="sw" style="background:#9a9da3"></span>other/unscoped (0)</span>
   </div>
@@ -97,7 +97,11 @@ flowchart TB
     G9[&quot;Regulatory Financial Reporting&quot;]:::l2
   end
 
-  NONE[&quot;No systems yet sourced in registries/systems.json\nfor Finance, Revenue Accounting &amp;…&quot;]:::empty
+  subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
+    direction TB
+    C1[&quot;Fuel surcharge program\nSYS-D13-01&quot;]:::company
+    C2[&quot;ARC Average Revenue per Car\nSYS-D13-02&quot;]:::company
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 
@@ -124,7 +128,11 @@ flowchart TB
     G9[&quot;Regulatory Financial Reporting&quot;]:::l2
   end
 
-  NONE[&quot;No systems yet sourced in registries/systems.json\nfor Finance, Revenue Accounting &amp;…&quot;]:::empty
+  subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
+    direction TB
+    C1[&quot;Fuel surcharge program\nSYS-D13-01&quot;]:::company
+    C2[&quot;ARC Average Revenue per Car\nSYS-D13-02&quot;]:::company
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 

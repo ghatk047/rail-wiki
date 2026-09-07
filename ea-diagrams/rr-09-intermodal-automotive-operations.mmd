@@ -14,7 +14,18 @@ flowchart TB
     G9["Transload and Bulk Terminal…"]:::l2
   end
 
-  NONE["No systems yet sourced in registries/systems.json\nfor Intermodal & Automotive Operations"]:::empty
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["UPGo\nSYS-D09-01"]:::company
+    C2["EMP and UMAX container fleets\nSYS-D09-02"]:::company
+    C3["ICTF Intermodal Container Transfer…\nSYS-D09-04"]:::company
+    C4["Joliet Intermodal Terminal\nSYS-D09-05"]:::company
+    C5["Global IV Intermodal Terminal Chicago area\nSYS-D09-06"]:::company
+  end
+  subgraph INDUSTRY["Industry-typical"]
+    direction TB
+    I1["Driver scanning / gate technology generic…\nSYS-D09-03"]:::industry
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 

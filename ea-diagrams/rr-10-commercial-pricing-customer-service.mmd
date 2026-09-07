@@ -16,7 +16,13 @@ flowchart TB
     G11["Service Disruption…"]:::l2
   end
 
-  NONE["No systems yet sourced in registries/systems.json\nfor Commercial, Pricing & Customer Service"]:::empty
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["Loup Logistics\nSYS-D10-01"]:::company
+    C2["ShipmentVision\nSYS-D10-02"]:::company
+    C3["UP customer portal up.com secure portal\nSYS-D10-03"]:::company
+    C4["Transentric — historical, verify current…\nSYS-D10-04"]:::company
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 

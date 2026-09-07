@@ -12,7 +12,11 @@ flowchart TB
     G7["Attendance Policy…"]:::l2
   end
 
-  NONE["No systems yet sourced in registries/systems.json\nfor HR, Labor Relations & Training"]:::empty
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["TE&Y Train, Engine & Yard New Hire…\nSYS-D14-01"]:::company
+    C2["Mobile classroom training trailers\nSYS-D14-02"]:::company
+  end
 
   %% No generated process yet cites a system in this domain -- no usage edges to draw
 
