@@ -1,0 +1,35 @@
+%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%
+flowchart TB
+
+  subgraph PROCS["Interline, Equipment & Car Management — L2 process groups"]
+    direction LR
+    G1["Interchange Agreements and…"]
+    G2["Industry Equipment Registry…"]
+    G3["Car Hire and Per Diem…"]
+    G4["Empty Car Distribution and…"]
+    G5["Private and Foreign Car…"]
+    G6["Short Line and Regional…"]
+    G7["Trackage Rights and Haulage…"]
+    G8["Joint Facilities and Terminal…"]
+    G9["Interline EDI Messaging"]
+    G10["Cross-Border Interchange and…"]
+  end
+
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["Ferromex FXE interchange — Eagle Pass…\nSYS-D11-06"]:::company
+    C2["UP Mexico gateway network\nSYS-D11-07"]:::company
+  end
+  subgraph INDUSTRY["Industry-typical"]
+    direction TB
+    I1["Umler Universal Machine Language…\nSYS-D11-01"]:::industry
+    I2["CHARM Car Hire Accounting Rate Master\nSYS-D11-02"]:::industry
+    I3["TRAIN II Tele Rail Automated Information…\nSYS-D11-03"]:::industry
+    I4["EHMS Equipment Health Management System\nSYS-D11-04"]:::industry
+    I5["Interline Settlement System ISS /…\nSYS-D11-05"]:::industry
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3

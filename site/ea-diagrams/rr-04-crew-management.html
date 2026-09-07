@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>RR-04 EA Landscape — Crew Management</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --ink: #1c1d1f; --muted: #5c5f66;
+  --rule: #d9d9d4; --amber: #c8791a; --charcoal: #2b2e33;
+  --draft-bg: #fff4e5; --draft-border: #c8791a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17181a; --panel: #1f2124; --ink: #ececea; --muted: #9a9da3;
+    --rule: #33363b; --amber: #e0952f; --charcoal: #ececea;
+    --draft-bg: #2a2011; --draft-border: #e0952f;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  padding: 2rem 1.25rem;
+}
+main { max-width: 62rem; margin: 0 auto; }
+.draft {
+  background: var(--draft-bg); border: 1px solid var(--draft-border);
+  border-radius: 6px; padding: .75rem 1rem; margin-bottom: 1.5rem;
+  font-size: .85rem; line-height: 1.5;
+}
+.draft strong { color: var(--amber); }
+h1 { font-size: 1.4rem; margin: 0 0 .25rem; color: var(--charcoal); }
+.breadcrumb { color: var(--muted); font-size: .85rem; margin-bottom: 1.5rem; }
+.breadcrumb a { color: var(--amber); text-decoration: none; }
+.diagram-wrap {
+  border: 1px solid var(--rule); border-radius: 6px; padding: 1rem;
+  background: var(--panel); overflow-x: auto; margin-bottom: 1.5rem;
+}
+.legend { display: flex; gap: 1.25rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+.legend .sw { display: inline-block; width: .7rem; height: .7rem; border-radius: 2px; margin-right: .35rem; }
+ul.grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem,1fr)); gap: .6rem; }
+ul.grid li a {
+  display: block; border: 1px solid var(--rule); border-radius: 6px; padding: .75rem .9rem;
+  background: var(--panel); color: var(--ink); text-decoration: none; font-size: .9rem;
+}
+ul.grid li a b { color: var(--charcoal); }
+ul.grid li a .n { color: var(--muted); font-size: .78rem; }
+footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); font-size: .8rem; color: var(--muted); }
+
+.diagram-wrap { cursor: zoom-in; }
+.dg-lightbox { position: fixed; inset: 0; background: rgba(10,10,10,.88); z-index: 1000;
+  display: flex; flex-direction: column; }
+.dg-lightbox[hidden] { display: none; }
+.dg-lb-bar { display: flex; align-items: center; gap: .5rem; padding: .6rem 1rem; background: #14161a; }
+.dg-lb-bar button { background: #2b2e33; color: #fff; border: 1px solid #444; border-radius: 4px;
+  padding: .35rem .75rem; cursor: pointer; font-size: .85rem; }
+.dg-lb-bar button:hover { background: #3a3d43; }
+.dg-lb-bar .dg-lb-hint { color: #9a9da3; font-size: .78rem; }
+.dg-lb-bar .dg-lb-close { margin-left: auto; }
+.dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; display: flex; align-items: center; justify-content: center; }
+.dg-lb-canvas.grabbing { cursor: grabbing; }
+.dg-lb-inner { transform-origin: center center; will-change: transform; }
+.dg-lb-inner svg { max-width: none !important; height: auto !important; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+</head>
+<body>
+<main>
+  <div class="draft">
+    <strong>Deterministic, registry-only.</strong> Built directly from
+    registries/systems.json and data/taxonomy.json -- no model call, nothing
+    inferred. A sparse or empty domain here means the registry has not been
+    sourced for it yet, not that a diagram is missing.
+  </div>
+  <div class="breadcrumb"><a href="index.html">&larr; EA diagrams</a></div>
+  <h1>RR-04 &middot; Crew Management</h1>
+  <div class="legend">
+    <span><span class="sw" style="background:#c8791a"></span>company-specific (1)</span>
+    <span><span class="sw" style="background:#5c5f66"></span>industry-typical (4)</span>
+    <span><span class="sw" style="background:#9a9da3"></span>other/unscoped (0)</span>
+  </div>
+  <div class="diagram-wrap"><pre class="mermaid">%%{init: {&#x27;flowchart&#x27;: {&#x27;curve&#x27;: &#x27;basis&#x27;}, &#x27;theme&#x27;:&#x27;base&#x27;}}%%
+flowchart TB
+
+  subgraph PROCS[&quot;Crew Management — L2 process groups&quot;]
+    direction LR
+    G1[&quot;Crew Calling &amp; Extra Board&quot;]
+    G2[&quot;Crew District and CBA Rule…&quot;]
+    G3[&quot;Hours of Service Compliance &amp;…&quot;]
+    G4[&quot;Rest, Attendance and…&quot;]
+    G5[&quot;Deadhead and Limbo Time…&quot;]
+    G6[&quot;Engineer and Conductor…&quot;]
+    G7[&quot;Territory Qualification &amp;…&quot;]
+    G8[&quot;Crew Size Compliance&quot;]
+    G9[&quot;Tie-up, Lodging and Crew…&quot;]
+  end
+
+  subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
+    direction TB
+    C1[&quot;PS Technology PST\nSYS-D04-01&quot;]:::company
+  end
+  subgraph INDUSTRY[&quot;Industry-typical&quot;]
+    direction TB
+    I1[&quot;CrewPro\nSYS-D04-02&quot;]:::industry
+    I2[&quot;HASTUS\nSYS-D04-03&quot;]:::industry
+    I3[&quot;CloudMoyo Crew Management CCM\nSYS-D04-04&quot;]:::industry
+    I4[&quot;trackHOS-class HOS monitoring tools\nSYS-D04-05&quot;]:::industry
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3</pre></div>
+  <details>
+    <summary style="cursor:pointer; color:var(--muted); font-size:.8rem;">Mermaid source</summary>
+    <pre style="font-size:.75rem; overflow-x:auto; background:var(--panel); border:1px solid var(--rule); border-radius:6px; padding:.75rem;">%%{init: {&#x27;flowchart&#x27;: {&#x27;curve&#x27;: &#x27;basis&#x27;}, &#x27;theme&#x27;:&#x27;base&#x27;}}%%
+flowchart TB
+
+  subgraph PROCS[&quot;Crew Management — L2 process groups&quot;]
+    direction LR
+    G1[&quot;Crew Calling &amp; Extra Board&quot;]
+    G2[&quot;Crew District and CBA Rule…&quot;]
+    G3[&quot;Hours of Service Compliance &amp;…&quot;]
+    G4[&quot;Rest, Attendance and…&quot;]
+    G5[&quot;Deadhead and Limbo Time…&quot;]
+    G6[&quot;Engineer and Conductor…&quot;]
+    G7[&quot;Territory Qualification &amp;…&quot;]
+    G8[&quot;Crew Size Compliance&quot;]
+    G9[&quot;Tie-up, Lodging and Crew…&quot;]
+  end
+
+  subgraph COMPANY[&quot;Company-specific (UP-confirmed)&quot;]
+    direction TB
+    C1[&quot;PS Technology PST\nSYS-D04-01&quot;]:::company
+  end
+  subgraph INDUSTRY[&quot;Industry-typical&quot;]
+    direction TB
+    I1[&quot;CrewPro\nSYS-D04-02&quot;]:::industry
+    I2[&quot;HASTUS\nSYS-D04-03&quot;]:::industry
+    I3[&quot;CloudMoyo Crew Management CCM\nSYS-D04-04&quot;]:::industry
+    I4[&quot;trackHOS-class HOS monitoring tools\nSYS-D04-05&quot;]:::industry
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3</pre>
+  </details>
+  <footer>
+    Independently compiled from public sources. Not affiliated with,
+    sponsored by, or endorsed by any railroad. Illustrative of US Class I
+    practice.
+  </footer>
+</main>
+
+<div id="dg-lightbox" class="dg-lightbox" hidden>
+  <div class="dg-lb-bar">
+    <button data-zoom="out" title="Zoom out">&minus;</button>
+    <button data-zoom="in" title="Zoom in">&plus;</button>
+    <button data-zoom="reset">Reset</button>
+    <span class="dg-lb-hint">Scroll to zoom &middot; drag to pan &middot; Esc to close</span>
+    <button class="dg-lb-close">&times; Close</button>
+  </div>
+  <div class="dg-lb-canvas"><div class="dg-lb-inner"></div></div>
+</div>
+<script>
+(function () {
+  var scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0;
+  var lb, inner, canvas;
+
+  function apply() { inner.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')'; }
+
+  function open(svg) {
+    inner.innerHTML = '';
+    inner.appendChild(svg.cloneNode(true));
+    scale = 1; tx = 0; ty = 0;
+    apply();
+    lb.hidden = false;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    lb = document.getElementById('dg-lightbox');
+    if (!lb) return;
+    inner = lb.querySelector('.dg-lb-inner');
+    canvas = lb.querySelector('.dg-lb-canvas');
+
+    document.querySelectorAll('.diagram-wrap').forEach(function (wrap) {
+      wrap.addEventListener('click', function () {
+        var svg = wrap.querySelector('svg');
+        if (svg) open(svg);
+      });
+    });
+
+    lb.querySelector('.dg-lb-close').addEventListener('click', function () { lb.hidden = true; });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lb.hidden = true; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.hidden = true; });
+
+    lb.querySelectorAll('[data-zoom]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var z = btn.getAttribute('data-zoom');
+        if (z === 'in') scale = Math.min(scale * 1.25, 6);
+        else if (z === 'out') scale = Math.max(scale / 1.25, .2);
+        else { scale = 1; tx = 0; ty = 0; }
+        apply();
+      });
+    });
+
+    canvas.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      var delta = e.deltaY < 0 ? 1.1 : .9;
+      scale = Math.min(6, Math.max(.2, scale * delta));
+      apply();
+    }, { passive: false });
+
+    canvas.addEventListener('mousedown', function (e) {
+      dragging = true; sx = e.clientX - tx; sy = e.clientY - ty;
+      canvas.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      tx = e.clientX - sx; ty = e.clientY - sy;
+      apply();
+    });
+    window.addEventListener('mouseup', function () {
+      dragging = false;
+      if (canvas) canvas.classList.remove('grabbing');
+    });
+  });
+})();
+</script>
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({startOnLoad:true,
+      theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'base',
+      securityLevel: 'strict'});
+  }
+</script>
+</body>
+</html>

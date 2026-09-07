@@ -1,0 +1,26 @@
+%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%
+flowchart TB
+
+  subgraph PROCS["Technology, Data & Cybersecurity — L2 process groups"]
+    direction LR
+    G1["Transportation Management…"]
+    G2["Computer-Aided Dispatch…"]
+    G3["PTC Back Office Server…"]
+    G4["Enterprise Asset Management…"]
+    G5["Data Platform, Analytics and…"]
+    G6["Field and Mobile Technology"]
+    G7["Wayside Telecommunications…"]
+    G8["Cybersecurity and Rail…"]
+    G9["Integration, API and Partner…"]
+  end
+
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["NetControl\nSYS-D12-01"]:::company
+    C2["PS Technology PST\nSYS-D12-02"]:::company
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3

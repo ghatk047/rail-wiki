@@ -1,0 +1,24 @@
+%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%
+flowchart TB
+
+  subgraph PROCS["Service Design & Network Planning — L2 process groups"]
+    direction LR
+    G1["Operating Plan Design"]
+    G2["Train Symbol & Blocking Plan"]
+    G3["Car Trip Plan Management"]
+    G4["Terminal Mission Design"]
+    G5["Line Capacity & Route Planning"]
+    G6["Locomotive Power Distribution…"]
+    G7["Network Performance Metrics &…"]
+  end
+
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["Unified Plan 2020\nSYS-D01-01"]:::company
+    C2["NetControl service design use\nSYS-D01-02"]:::company
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3

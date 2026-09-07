@@ -1,0 +1,38 @@
+%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%
+flowchart TB
+
+  subgraph PROCS["Engineering: Track, Structures & Signals — L2 process groups"]
+    direction LR
+    G1["Visual and Walking Track…"]
+    G2["Automated Track Inspection…"]
+    G3["Maintenance-of-Way Programs…"]
+    G4["Track Authority and Roadway…"]
+    G5["Bridges and Structures"]
+    G6["Signal Design, Installation…"]
+    G7["PTC Wayside Assets and…"]
+    G8["Grade Crossing Signals and…"]
+    G9["Capital Program and Line…"]
+    G10["Right-of-Way, Real Estate and…"]
+    G11["Vegetation, Drainage and…"]
+    G12["Derailment Site Restoration"]
+  end
+
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["I-ETMS Interoperable Electronic Train…\nSYS-D06-01"]:::company
+    C2["PTC Back Office Server BOS\nSYS-D06-03"]:::company
+    C3["NetControl\nSYS-D06-04"]:::company
+    C4["UP automated/autonomous track inspection…\nSYS-D06-06"]:::company
+  end
+  subgraph INDUSTRY["Industry-typical"]
+    direction TB
+    I1["Wabtrax\nSYS-D06-02"]:::industry
+    I2["FRA Automated Track Inspection Program…\nSYS-D06-05"]:::industry
+    I3["Track geometry car generic\nSYS-D06-07"]:::industry
+    I4["RailAI Tetra Tech\nSYS-D06-08"]:::industry
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3

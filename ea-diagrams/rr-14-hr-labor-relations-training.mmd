@@ -1,0 +1,20 @@
+%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%
+flowchart TB
+
+  subgraph PROCS["HR, Labor Relations & Training — L2 process groups"]
+    direction LR
+    G1["Safety-Sensitive Hiring and…"]
+    G2["Training Academy and…"]
+    G3["Labor Relations under the…"]
+    G4["National and Local Bargaining"]
+    G5["Discipline and Investigation…"]
+    G6["Workforce Planning, Furlough…"]
+    G7["Attendance Policy…"]
+  end
+
+  NONE["No systems yet sourced in registries/systems.json\nfor HR, Labor Relations & Training"]:::empty
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3

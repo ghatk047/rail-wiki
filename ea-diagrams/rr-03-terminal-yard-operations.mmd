@@ -1,0 +1,29 @@
+%%{init: {'flowchart': {'curve': 'basis'}, 'theme':'base'}}%%
+flowchart TB
+
+  subgraph PROCS["Terminal & Yard Operations — L2 process groups"]
+    direction LR
+    G1["Inbound Train Processing &…"]
+    G2["Hump and Flat Classification"]
+    G3["Outbound Train Build &…"]
+    G4["Local and Industry Switching"]
+    G5["Air Brake Tests & Departure…"]
+    G6["Yard Planning & Dwell…"]
+    G7["Interchange Delivery and…"]
+    G8["Yardmaster Operations"]
+    G9["Yard Air, Utility and Ground…"]
+  end
+
+  subgraph COMPANY["Company-specific (UP-confirmed)"]
+    direction TB
+    C1["Bailey Yard North Platte, NE\nSYS-D03-01"]:::company
+  end
+  subgraph INDUSTRY["Industry-typical"]
+    direction TB
+    I1["Hump yard generic classification…\nSYS-D03-02"]:::industry
+  end
+
+classDef company fill:#fdecd8,stroke:#c8791a,color:#5a3407
+classDef industry fill:#e6e9ec,stroke:#5c5f66,color:#2b2e33
+classDef other fill:#f2f2f0,stroke:#9a9da3,color:#3d4348
+classDef empty fill:#fff4e5,stroke:#c8791a,color:#5a3407,stroke-dasharray: 4 3
