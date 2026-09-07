@@ -225,16 +225,35 @@ def render_menu(menu: dict[str, list[Entry]], pains: list[str]) -> str:
     return "\n".join(lines)
 
 
-def build_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
-                 retry_note: str | None = None) -> str:
-    """The prompt sent to the model.
+def _process_header(node: dict) -> str:
+    return f"""PROCESS
+  PID : {node['pid']}
+  L1  : {node['l1']}
+  L2  : {node['l2']}"""
 
-    Each description beat is its own JSON field with its own instruction, not
-    a value inside one long template string: a length target stated only as
-    prose inside a template value reads to a small model as a format hint and
-    gets ignored, which is exactly what happened with the single-field
-    version. Five short, separately-checked fields give the model five
-    concrete, individually-verifiable targets instead of one long float.
+
+def _entities_block(menu: dict[str, list[Entry]], pains: list[str]) -> str:
+    return f"""ENTITIES
+You may reference the entities below ONLY, and ONLY by their id. Do not write
+a system name, job title, regulation citation or metric name anywhere in your
+prose. Do not invent ids. If nothing in a list fits, return an empty list.
+
+{render_menu(menu, pains)}"""
+
+
+def build_description_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
+                             retry_note: str | None = None) -> str:
+    """Phase A: the five description fields, name, inputs/outputs and the
+    process-level entity ids. No steps here.
+
+    This used to be one prompt asking for the description AND the step list
+    in a single JSON object. Live testing found that combination genuinely
+    hard for a 14B model to converge on: fixing a step problem on retry would
+    regress a description field back below its floor, and vice versa,
+    because each retry regenerates the entire response from scratch rather
+    than patching just the flagged part. Splitting description and steps
+    into two independent generate-and-retry phases means a steps retry can
+    no longer disturb fields that already passed, and the reverse.
     """
     retry = f"\n{retry_note}\n" if retry_note else ""
     field_instructions = "\n".join(
@@ -247,17 +266,9 @@ def build_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
     )
     return f"""You are documenting one business process for a US Class I freight railroad.
 
-PROCESS
-  PID : {node['pid']}
-  L1  : {node['l1']}
-  L2  : {node['l2']}
+{_process_header(node)}
 
-ENTITIES
-You may reference the entities below ONLY, and ONLY by their id. Do not write
-a system name, job title, regulation citation or metric name anywhere in your
-prose. Do not invent ids. If nothing in a list fits, return an empty list.
-
-{render_menu(menu, pains)}
+{_entities_block(menu, pains)}
 
 WRITING THE DESCRIPTION
 This is the main body of work in this task. The description is five separate
@@ -283,6 +294,38 @@ OTHER FIELDS
 "name": a specific process name, 4-12 words, no numbers.
 "inputs" / "outputs": 2-4 short noun phrases each — what feeds this process
 and what it produces, not a restatement of the five description fields.
+{retry}
+OUTPUT
+Return ONE JSON object, nothing else. Do not include a "steps" field — that
+is a separate step, not part of this one.
+
+{{
+  "name": "specific process name, 4-12 words, no numbers",
+{field_template},
+  "inputs": ["2-4 short noun phrases"],
+  "outputs": ["2-4 short noun phrases"],
+  "system_ids": ["SYS-..."],
+  "role_ids": ["ROLE-..."],
+  "regulation_ids": ["REG-..."],
+  "kpi_ids": ["KPI-..."],
+  "pain_point_ids": ["P01"],
+  "confidence": "high | medium | low"
+}}"""
+
+
+def build_steps_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
+                       retry_note: str | None = None) -> str:
+    """Phase B: just the step list, run after the description phase has
+    already passed. Repeats the ENTITIES menu (steps need their own
+    role_id/system_id/kpi_id picks) but asks for nothing else."""
+    retry = f"\n{retry_note}\n" if retry_note else ""
+    return f"""You are documenting the step-by-step breakdown of one business process for
+a US Class I freight railroad. The process itself is already written; this is
+only the step list.
+
+{_process_header(node)}
+
+{_entities_block(menu, pains)}
 
 WRITING THE STEPS
 Break the process into {STEP_MIN}-{STEP_MAX} concrete steps, in order, as a
@@ -297,7 +340,7 @@ already one coherent stretch of work. Each step is:
 Rules:
   - "step" ids are "1", "2", "3", ... in order, unique.
   - "role_id", "system_id" and "kpi_id" are ids from the ENTITIES lists
-    above, exactly like the process-level fields — never a name, never an
+    above, exactly like a process-level field — never a name, never an
     invented id. Use null (not an empty string) if none applies.
   - Exactly one of "decision_point" / "exception" may be "Y" on a given step;
     most steps are "N"/"N". At least {STEP_MIN_GATES} step across the whole
@@ -312,16 +355,6 @@ OUTPUT
 Return ONE JSON object, nothing else:
 
 {{
-  "name": "specific process name, 4-12 words, no numbers",
-{field_template},
-  "inputs": ["2-4 short noun phrases"],
-  "outputs": ["2-4 short noun phrases"],
-  "system_ids": ["SYS-..."],
-  "role_ids": ["ROLE-..."],
-  "regulation_ids": ["REG-..."],
-  "kpi_ids": ["KPI-..."],
-  "pain_point_ids": ["P01"],
-  "confidence": "high | medium | low",
   "steps": [
     {{"step": "1", "name": "...", "role_id": "ROLE-...", "system_id": "SYS-... or null",
      "input": "...", "output": "...", "kpi_id": "KPI-... or null",
@@ -513,9 +546,10 @@ def _mock_steps(menu: dict[str, list[Entry]], quality: str = "good") -> list[dic
     return steps
 
 
-def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
-                  attempt: int = 1) -> tuple[dict, str]:
-    """A canned model reply. Opens no socket."""
+def mock_description_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
+                              attempt: int = 1) -> tuple[dict, str]:
+    """Phase A canned reply -- fields, name, inputs/outputs, process-level
+    entity ids. No steps. Opens no socket."""
     sys_ids = [e.entry_id for e in menu["systems"][:2]]
     role_ids = [e.entry_id for e in menu["roles"][:3]]
     reg_ids = [e.entry_id for e in menu["regulations"][:1]]
@@ -531,17 +565,6 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
         fields_key = "short" if attempt == 1 else "good"
     fields = MOCK_FIELDS.get(fields_key, MOCK_FIELDS["good"])
 
-    steps_quality = "good"
-    if profile == "bad-steps":
-        steps_quality = "bad"
-    if profile == "bad-steps-then-good":
-        steps_quality = "bad" if attempt == 1 else "good"
-    steps = _mock_steps(menu, steps_quality)
-    if profile == "invented-system" and steps:
-        steps[0]["system_id"] = "SYS-D06-09"
-    if profile == "invented-role" and steps:
-        steps[0]["role_id"] = "ROLE-D06-99"
-
     reply = {
         "name": "Scheduled Inspection Cycle and Exception Disposition",
         **fields,
@@ -553,8 +576,25 @@ def mock_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
         "kpi_ids": kpi_ids,
         "pain_point_ids": ["P07"] if len(pains) >= 7 else ([f"P{len(pains):02d}"] if pains else []),
         "confidence": "medium",
-        "steps": steps,
     }
+    return reply, json.dumps(reply, indent=2, ensure_ascii=False)
+
+
+def mock_steps_response(menu: dict[str, list[Entry]], profile: str,
+                        attempt: int = 1) -> tuple[dict, str]:
+    """Phase B canned reply -- just steps. Opens no socket."""
+    steps_quality = "good"
+    if profile == "bad-steps":
+        steps_quality = "bad"
+    if profile == "bad-steps-then-good":
+        steps_quality = "bad" if attempt == 1 else "good"
+    steps = _mock_steps(menu, steps_quality)
+    if profile == "invented-system" and steps:
+        steps[0]["system_id"] = "SYS-D06-09"
+    if profile == "invented-role" and steps:
+        steps[0]["role_id"] = "ROLE-D06-99"
+
+    reply = {"steps": steps}
     return reply, json.dumps(reply, indent=2, ensure_ascii=False)
 
 
@@ -876,15 +916,28 @@ def generate_one(
 ) -> dict:
     """The whole single-PID pipeline as a function, not a CLI wrapper.
 
+    Two independent generate-and-retry phases, not one combined call: Phase A
+    (the five description fields + name/inputs/outputs + process-level
+    entity ids) must pass before Phase B (the step list) is even attempted.
+    Live testing found the combined version genuinely hard for a 14B model to
+    converge on -- a retry aimed at fixing the steps would regress a
+    description field that had already passed, and vice versa, because each
+    retry regenerates the whole response from scratch rather than patching
+    the flagged part. Splitting them means a Phase B retry cannot touch
+    fields Phase A already locked in, and each phase gets its own full
+    `max_retries` budget rather than splitting one budget across two
+    unrelated kinds of failure.
+
     Returns a result dict rather than exiting, so scripts/run_batch.py can
     call this directly for many PIDs in one process instead of shelling out:
 
         {"pid", "status", "reason", "name", "confidence", "word_count",
          "step_count", "gate_count", "attempts", "sources"}
 
-    status is one of: written, updated, rejected_generation (length/step
-    structure exhausted its retries), rejected_validation (registry
-    grounding failed), error (setup/model/IO failure), dry_run.
+    attempts is the sum of both phases' attempt counts. status is one of:
+    written, updated, rejected_generation (a phase exhausted its retries),
+    rejected_validation (registry grounding failed), error (setup/model/IO
+    failure), dry_run.
     """
     def result(status: str, **extra) -> dict:
         return {"pid": pid, "status": status, **extra}
@@ -907,19 +960,22 @@ def generate_one(
     print(f"  registry menu ({group}): {counts}, {len(pains)} §7 pain points")
 
     attempts = 1 + max(0, max_retries)
-    note: str | None = None
-    proc: dict | None = None
-    exhausted_reason = ""
 
+    # --- Phase A: description ---------------------------------------------
+    print("  Phase A: description")
+    note: str | None = None
+    desc_reply: dict | None = None
+    phase_a_attempts = 0
     for attempt in range(1, attempts + 1):
-        prompt = build_prompt(node, menu, pains, retry_note=note)
+        phase_a_attempts = attempt
+        prompt = build_description_prompt(node, menu, pains, retry_note=note)
         try:
             if mock:
-                print(f"  MOCK: canned response, profile {mock_profile!r} "
+                print(f"    MOCK: canned response, profile {mock_profile!r} "
                       f"(attempt {attempt}/{attempts}, no network call)")
-                reply, raw = mock_response(menu, pains, mock_profile, attempt=attempt)
+                reply, raw = mock_description_response(menu, pains, mock_profile, attempt=attempt)
             else:
-                print(f"  attempt {attempt}/{attempts}")
+                print(f"    attempt {attempt}/{attempts}")
                 reply, raw = call_ollama(prompt, host)
         except GenerationError as e:
             print(f"FATAL: {e}", file=sys.stderr)
@@ -927,13 +983,11 @@ def generate_one(
 
         reply_d = reply if isinstance(reply, dict) else {}
         ok_fields, counts_, weak, over = check_field_lengths(reply_d)
-        ok_steps, step_problems, gate_count = check_steps_structure(reply_d)
-        ok = ok_fields and ok_steps
 
         if debug:
             print()
             print(f"  {'=' * 66}")
-            print(f"  DEBUG: attempt {attempt}/{attempts} raw model response")
+            print(f"  DEBUG: Phase A attempt {attempt}/{attempts} raw model response")
             print(f"  {'=' * 66}")
             print(raw)
             print(f"  {'-' * 66}")
@@ -942,77 +996,119 @@ def generate_one(
                 flag = " <- BELOW FLOOR" if k in weak else (" <- over advisory max" if k in over else "")
                 print(f"    {FIELD_LABELS[k]:10s} {counts_[k]:3d} words{flag}")
                 print(f"      {reply_d.get(k, '')}")
-            steps_raw = reply_d.get("steps")
-            n_steps = len(steps_raw) if isinstance(steps_raw, list) else 0
-            print(f"  {'-' * 66}")
-            print(f"  steps: {n_steps} returned, {gate_count} decision/exception gate(s)")
-            if step_problems:
-                for prob in step_problems:
-                    print(f"    <- {prob}")
-            if ok:
-                preview = " ".join(_terminate(str(reply_d.get(k) or "")) for k in FIELD_KEYS)
-                print(f"  {'-' * 66}")
-                print(f"  assembled description ({len(preview.split())} words):")
-                print(f"  {preview}")
             print(f"  {'=' * 66}")
             print()
 
-        if not ok:
-            if not ok_fields:
-                print(f"  REJECTED (length): {len(weak)} field(s) below the "
-                      f"{FIELD_FLOOR_WORDS}-word floor: "
-                      f"{', '.join(FIELD_LABELS[k] for k in weak)}")
-            if not ok_steps:
-                print(f"  REJECTED (steps): {len(step_problems)} problem(s)")
-                for prob in step_problems:
-                    print(f"    - {prob}")
+        if not ok_fields:
+            print(f"    REJECTED (length): {len(weak)} field(s) below the "
+                  f"{FIELD_FLOOR_WORDS}-word floor: "
+                  f"{', '.join(FIELD_LABELS[k] for k in weak)}")
             if attempt < attempts:
-                parts = []
-                if not ok_fields:
-                    parts.append(field_retry_note(counts_, weak))
-                if not ok_steps:
-                    parts.append(step_retry_note(step_problems))
-                note = "\n\n".join(parts)
-                print("  retrying with a corrective note")
+                note = field_retry_note(counts_, weak)
+                print("    retrying with a corrective note")
                 continue
-            bits = []
-            if not ok_fields:
-                bits.append(f"{', '.join(FIELD_LABELS[k] for k in weak)} below the "
-                           f"{FIELD_FLOOR_WORDS}-word floor")
-            if not ok_steps:
-                bits.append(f"{len(step_problems)} step problem(s)")
-            exhausted_reason = "; ".join(bits)
+            reason = (f"{', '.join(FIELD_LABELS[k] for k in weak)} below the "
+                     f"{FIELD_FLOOR_WORDS}-word floor")
             print()
-            print(f"REJECT  {pid}")
-            print(f"        {exhausted_reason}, after {attempts} attempt(s). Surfacing "
-                  f"for human review rather than looping — the prompt or the registry "
-                  f"coverage for this domain is the thing to look at, not the retry count.")
+            print(f"REJECT  {pid}  (Phase A: description)")
+            print(f"        {reason}, after {attempts} attempt(s). Surfacing for human "
+                  f"review rather than looping — the prompt or the registry coverage "
+                  f"for this domain is the thing to look at, not the retry count.")
             print(f"\n  NOT WRITTEN. {Path(out).name} is unchanged.")
-            return result("rejected_generation", reason=exhausted_reason, attempts=attempt)
+            return result("rejected_generation", reason=reason, attempts=attempt)
 
         if over:
-            print(f"  note: {', '.join(FIELD_LABELS[k] for k in over)} over the "
+            print(f"    note: {', '.join(FIELD_LABELS[k] for k in over)} over the "
                   f"{FIELD_MAX_WORDS}-word advisory max (not a gate condition)")
-
-        proc, notes = assemble(node, reply_d, r, pains)
-        for n in notes:
-            print(f"  note: {n}")
-
-        backstop_ok, words, advisory = check_description_length(proc)
-        if not backstop_ok:
-            msg = (f"assembled description is {words} words, under the "
-                  f"{DESC_FLOOR_WORDS}-word backstop, despite every field clearing "
-                  f"its own floor. This indicates a bug in assemble(), not a model "
-                  f"problem — do not retry.")
-            print(f"  FATAL: {msg}")
-            return result("error", reason=msg)
-        if advisory:
-            print(f"  note: {advisory} (advisory)")
-        else:
-            print(f"  description: {words} words (5 fields, all >= {FIELD_FLOOR_WORDS})")
+        desc_reply = reply_d
+        print(f"    passed on attempt {attempt}/{attempts} "
+              f"(all 5 fields >= {FIELD_FLOOR_WORDS} words)")
         break
 
-    assert proc is not None
+    assert desc_reply is not None
+
+    # --- Phase B: steps ------------------------------------------------------
+    print("  Phase B: steps")
+    note = None
+    steps_reply: dict | None = None
+    phase_b_attempts = 0
+    gate_count = 0
+    for attempt in range(1, attempts + 1):
+        phase_b_attempts = attempt
+        prompt = build_steps_prompt(node, menu, pains, retry_note=note)
+        try:
+            if mock:
+                print(f"    MOCK: canned response, profile {mock_profile!r} "
+                      f"(attempt {attempt}/{attempts}, no network call)")
+                reply, raw = mock_steps_response(menu, mock_profile, attempt=attempt)
+            else:
+                print(f"    attempt {attempt}/{attempts}")
+                reply, raw = call_ollama(prompt, host)
+        except GenerationError as e:
+            print(f"FATAL: {e}", file=sys.stderr)
+            return result("error", reason=str(e))
+
+        reply_d = reply if isinstance(reply, dict) else {}
+        ok_steps, step_problems, gate_count = check_steps_structure(reply_d)
+
+        if debug:
+            steps_raw = reply_d.get("steps")
+            n_steps = len(steps_raw) if isinstance(steps_raw, list) else 0
+            print()
+            print(f"  {'=' * 66}")
+            print(f"  DEBUG: Phase B attempt {attempt}/{attempts} raw model response")
+            print(f"  {'=' * 66}")
+            print(raw)
+            print(f"  {'-' * 66}")
+            print(f"  steps: {n_steps} returned, {gate_count} decision/exception gate(s)")
+            for prob in step_problems:
+                print(f"    <- {prob}")
+            print(f"  {'=' * 66}")
+            print()
+
+        if not ok_steps:
+            print(f"    REJECTED (steps): {len(step_problems)} problem(s)")
+            for prob in step_problems:
+                print(f"      - {prob}")
+            if attempt < attempts:
+                note = step_retry_note(step_problems)
+                print("    retrying with a corrective note")
+                continue
+            reason = f"{len(step_problems)} step problem(s)"
+            print()
+            print(f"REJECT  {pid}  (Phase B: steps — description already passed, "
+                  f"{phase_a_attempts} attempt(s), and is unaffected)")
+            print(f"        {reason}, after {attempts} attempt(s). Surfacing for human "
+                  f"review rather than looping — the prompt or the registry coverage "
+                  f"for this domain is the thing to look at, not the retry count.")
+            print(f"\n  NOT WRITTEN. {Path(out).name} is unchanged.")
+            return result("rejected_generation", reason=reason,
+                          attempts=phase_a_attempts + attempt)
+
+        steps_reply = reply_d
+        print(f"    passed on attempt {attempt}/{attempts} "
+              f"({len(reply_d.get('steps', []))} steps, {gate_count} gate(s))")
+        break
+
+    assert steps_reply is not None
+
+    proc, notes = assemble(node, {**desc_reply, "steps": steps_reply.get("steps", [])}, r, pains)
+    for n in notes:
+        print(f"  note: {n}")
+
+    backstop_ok, words, advisory = check_description_length(proc)
+    if not backstop_ok:
+        msg = (f"assembled description is {words} words, under the "
+              f"{DESC_FLOOR_WORDS}-word backstop, despite every field clearing "
+              f"its own floor. This indicates a bug in assemble(), not a model "
+              f"problem — do not retry.")
+        print(f"  FATAL: {msg}")
+        return result("error", reason=msg)
+    if advisory:
+        print(f"  note: {advisory} (advisory)")
+    else:
+        print(f"  description: {words} words (5 fields, all >= {FIELD_FLOOR_WORDS})")
+
     print()
     facts = vc.FactIndex(r)
     findings = vc.validate(proc, r, facts)
@@ -1022,7 +1118,7 @@ def generate_one(
         name=proc["name"], confidence=proc["confidence"],
         word_count=len(proc["description"].split()),
         step_count=len(proc["steps"]), gate_count=gate_count,
-        sources=len(proc["sources"]), attempts=attempt,
+        sources=len(proc["sources"]), attempts=phase_a_attempts + phase_b_attempts,
     )
 
     if findings:
@@ -1087,9 +1183,14 @@ def main() -> int:
         print(f"{args.pid}  {node['l1']}")
         print(f"          {node['l2']}")
         print(f"  registry menu ({group}): {counts}, {len(pains)} §7 pain points")
-        prompt = build_prompt(node, menu, pains)
-        print("\n" + "-" * 70 + "\n" + prompt + "\n" + "-" * 70)
-        print(f"\n  --show-prompt: preview only. No model call, "
+        desc_prompt = build_description_prompt(node, menu, pains)
+        steps_prompt = build_steps_prompt(node, menu, pains)
+        print("\n" + "-" * 70 + "\nPHASE A: DESCRIPTION\n" + "-" * 70)
+        print(desc_prompt)
+        print("\n" + "-" * 70 + "\nPHASE B: STEPS\n" + "-" * 70)
+        print(steps_prompt)
+        print("-" * 70)
+        print(f"\n  --show-prompt: preview only (both phases). No model call, "
               f"{Path(args.out).name} untouched.")
         return 0
 
