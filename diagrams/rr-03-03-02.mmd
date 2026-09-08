@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Build Order Receipt]
+    A([Start]) --> B[Receive train build order\nNetControl]
+    B --> C{Order valid?}
+    C -- No --> BadOrder([Bad Order])
+    C -- Yes --> D[Car Assembly\nUmler, PS Technology]
+  end
+
+  subgraph P2[Phase 2: Car Inspection and Preparation]
+    D --> E[Car Inspection\nEHMS, CHARM]
+    E --> F{Inspection passed?}
+    F -- No --> G[Reinspect car\nEHMS, CHARM]
+    F -- Yes --> H[Air Brake Test\nWabtrax, EHMS]
+  end
+
+  subgraph P3[Phase 3: Final Preparation and Departure Approval]
+    H --> I{Air brake test passed?}
+    I -- No --> G
+    I -- Yes --> J[Train Preparation\nNetControl, I-ETMS]
+    J --> K[Departure Approval\nNetControl, I-ETMS]
+    K --> L{Approval granted?}
+    L -- No --> Hold1([Hold])
+    L -- Yes --> M[Train Departure\nI-ETMS]
+  end
+
+  subgraph P4[Phase 4: Post-Departure Monitoring and Data Exchange]
+    M --> N[Post-Departure Monitoring\nI-ETMS, NetControl]
+    N --> O{FRA defect found?}
+    O -- Yes --> Hold2([Hold])
+    O -- No --> P[Settlement Data Exchange\nISS / SSDX / CHDX]
+  end
+
+  subgraph P5[Phase 5: Final Status Update and Confirmation]
+    P --> Q[Train Status Update\nI-ETMS, NetControl]
+    Q --> R[Final Inspection\nEHMS, CHARM]
+    R --> S{Inspection passed?}
+    S -- No --> G
+    S -- Yes --> T[Train Departure Confirmation\nNetControl, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Completion]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
