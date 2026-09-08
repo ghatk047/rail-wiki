@@ -1,0 +1,329 @@
+/* US Class I Freight Railroad Process Wiki — wiki.css
+   Ported from shipping-wiki/assets/css/wiki.css. Structure, layout, sidebar,
+   card system and lightbox are unchanged from that proven construct; only the
+   palette and the system-tag classes are rail-specific (BUILD-SPEC v2 §10:
+   rail-industry-appropriate derived palette, no railroad's own brand colours). */
+:root {
+  --navy:   #20242b;   /* header / chrome — charcoal, not a railroad's brand navy */
+  --ink-2:  #2b2e33;
+  --red:    #8a4b0a;   /* deep amber, used for accent counters */
+  --orange: #c8791a;   /* amber accent */
+  --accent: #c8791a;
+  --bg:     #ffffff;
+  --sidebar-w: 300px;
+  --topbar-h:  56px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+       background: #f7f7f5; color: #1c1d1f; font-size: 14px; line-height: 1.5; }
+a { color: var(--navy); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Topbar ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h);
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; gap: 12px; padding: 0 20px;
+  z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.topbar-brand { font-size: 17px; font-weight: 700; letter-spacing: 0.5px;
+                color: #fff; white-space: nowrap; }
+.topbar-brand .accent { color: var(--orange); }
+.topbar-sub   { font-size: 12px; color: rgba(255,255,255,0.65); white-space: nowrap; }
+.topbar-spacer { flex: 1; }
+
+/* Search box */
+.topbar-search, #searchBox {
+  width: 240px; height: 32px; padding: 0 12px;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  border-radius: 16px; background: rgba(255,255,255,0.12);
+  color: #fff; font-size: 13px; outline: none; transition: border 0.2s;
+}
+.topbar-search::placeholder, #searchBox::placeholder { color: rgba(255,255,255,0.55); }
+.topbar-search:focus, #searchBox:focus {
+  border-color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.2);
+}
+
+/* Mobile topbar hamburger */
+#topbarToggle {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px; padding: 4px;
+}
+#topbarToggle span { display: block; width: 22px; height: 2px;
+                     background: #fff; border-radius: 2px; }
+@media (max-width: 768px) {
+  #topbarToggle { display: flex; }
+  .topbar-sub   { display: none; }
+}
+
+/* ── Layout ── */
+.wiki-layout { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
+
+/* ── Sidebar ── */
+#sidebar {
+  width: var(--sidebar-w); min-height: calc(100vh - var(--topbar-h));
+  background: #1e2126; color: #c9ccd2;
+  flex-shrink: 0; position: sticky; top: var(--topbar-h);
+  height: calc(100vh - var(--topbar-h)); overflow-y: auto;
+  transition: width 0.25s ease; z-index: 100;
+}
+#sidebar.collapsed { width: 48px; overflow: hidden; }
+
+#sidebarToggle {
+  display: flex; align-items: center; justify-content: flex-end;
+  width: 100%; padding: 10px 14px; background: #14161a; border: none;
+  color: var(--orange); font-size: 18px; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+#sidebar.collapsed #sidebarToggle { justify-content: center; }
+
+/* Nav items */
+.nav-domain { border-bottom: 1px solid rgba(255,255,255,0.06); }
+.nav-l1 {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+  color: #e6e8ea; font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background 0.15s;
+}
+.nav-l1:hover { background: rgba(255,255,255,0.06); }
+.nav-l1-icon { font-size: 16px; flex-shrink: 0; }
+.nav-l1-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav-l1-caret { font-size: 11px; transition: transform 0.2s; margin-left: auto; }
+.nav-domain.open .nav-l1-caret { transform: rotate(90deg); }
+
+/* Family dot indicator */
+.nav-org-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.nav-org-dot.ops    { background: #c8791a; }
+.nav-org-dot.net    { background: #4a90a4; }
+.nav-org-dot.comm   { background: #b08324; }
+.nav-org-dot.corp   { background: #8a8f97; }
+
+/* L2 group */
+.nav-l2-list { display: none; }
+.nav-domain.open .nav-l2-list { display: block; }
+.nav-l2-group { border-top: 1px solid rgba(255,255,255,0.04); }
+.nav-l2-title {
+  display: block; padding: 7px 14px 7px 36px;
+  color: #9a9da3; font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;
+}
+.nav-l2-title:hover { color: #e6e8ea; }
+
+/* L3 links */
+.nav-l3-list { display: none; }
+.nav-l2-group.open .nav-l3-list { display: block; }
+.nav-l3 { display: block; padding: 5px 14px 5px 46px; color: #71757c; font-size: 12px; }
+.nav-l3:hover, .nav-l3.active { color: var(--orange); }
+.nav-l3.active { font-weight: 600; border-left: 2px solid var(--orange); }
+
+#sidebar.collapsed .nav-l1-text,
+#sidebar.collapsed .nav-l1-caret,
+#sidebar.collapsed .nav-l2-list,
+#sidebar.collapsed .nav-org-dot { display: none; }
+
+@media (max-width: 768px) {
+  #sidebar { position: fixed; left: -300px; top: var(--topbar-h);
+             height: calc(100vh - var(--topbar-h)); z-index: 150;
+             transition: left 0.25s ease; }
+  #sidebar.mobile-open { left: 0; }
+}
+
+/* ── Main content ── */
+.wiki-main { flex: 1; min-width: 0; padding: 32px 40px; max-width: 1200px; }
+@media (max-width: 900px) { .wiki-main { padding: 20px 16px; } }
+
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-size: 26px; color: var(--navy); font-weight: 700; }
+.page-header p  { color: #4b4f55; margin-top: 6px; font-size: 14px; }
+.breadcrumb { font-size: 12px; color: #9a9da3; margin-bottom: 8px; }
+.breadcrumb a { color: #6b6f76; }
+.breadcrumb a:hover { color: var(--navy); }
+
+/* PID badge */
+.pid-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 4px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px; margin-right: 8px;
+  vertical-align: middle;
+}
+.org-badge-ops    { background: #8a4b0a; color: #fff; }
+.org-badge-net    { background: #2f5d6b; color: #fff; }
+.org-badge-comm   { background: #7a5a12; color: #fff; }
+.org-badge-corp   { background: #4a4e55; color: #fff; }
+
+/* ── Cards ── */
+.card {
+  background: #fff; border-radius: 10px; margin-bottom: 24px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08); overflow: hidden;
+}
+.card-header {
+  background: var(--navy); color: #fff; padding: 12px 20px;
+  font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+}
+.card-header.alt-header { background: var(--red); }
+.card-body { padding: 20px; }
+
+/* ── Domain cards ── */
+.domain-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px; margin-top: 24px;
+}
+.domain-card {
+  background: #fff; border-radius: 10px; padding: 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08); border-top: 3px solid var(--navy);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.domain-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+.domain-card.org-ops    { border-top-color: #c8791a; }
+.domain-card.org-net    { border-top-color: #4a90a4; }
+.domain-card.org-comm   { border-top-color: #b08324; }
+.domain-card.org-corp   { border-top-color: #8a8f97; }
+.domain-card h3 { font-size: 15px; color: var(--navy); margin-bottom: 6px; }
+.domain-card .card-meta { font-size: 12px; color: #6b6f76; margin-bottom: 10px; }
+.domain-card .card-count { font-size: 12px; color: #9a9da3; }
+
+/* ── Registry provenance panel ── */
+.dedup-panel {
+  background: #fff4e5; border: 1px solid #c8791a; border-radius: 6px;
+  padding: 16px; margin-bottom: 20px;
+}
+.dedup-panel h4 { color: #8a4b0a; margin-bottom: 8px; font-size: 14px; }
+.dedup-panel ul { margin-left: 16px; font-size: 13px; color: #5a3407; line-height: 1.7; }
+.dedup-panel a  { color: #8a4b0a; font-weight: 600; }
+
+/* ── Attribute table ── */
+.attr-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.attr-table th, .attr-table td { padding: 8px 12px; border: 1px solid #e3e3df;
+                                   text-align: left; vertical-align: top; }
+.attr-table th { background: #f2f2f0; font-weight: 600; width: 30%; color: #33363b; }
+.attr-table td { color: #1c1d1f; }
+
+/* ── L4 steps table ── */
+.l4-table-wrap { overflow-x: auto; }
+.l4-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 900px; }
+.l4-table th {
+  background: var(--navy); color: #fff; padding: 8px 10px;
+  font-weight: 600; text-align: left; white-space: nowrap;
+}
+.l4-table td { padding: 7px 10px; border-bottom: 1px solid #e3e3df; vertical-align: top; }
+.l4-table tr:hover td { background: #faf9f7; }
+.l4-table tr:nth-child(even) td { background: #faf9f7; }
+.l4-table tr:nth-child(even):hover td { background: #f2f2f0; }
+.step-num { font-weight: 700; color: var(--navy); white-space: nowrap; }
+.decision-y { background: #fdecd8; color: #8a4b0a; font-weight: 700;
+              padding: 1px 6px; border-radius: 3px; font-size: 11px; }
+.exception-y { background: #fbe3e3; color: #8f1f1f; font-weight: 700;
+               padding: 1px 6px; border-radius: 3px; font-size: 11px; }
+
+/* ── System tags ── */
+.sys-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; margin: 1px 2px; white-space: nowrap;
+}
+/* ── RAIL WIKI SYSTEM TAGS — every class maps to a registries/systems.json entry ── */
+.netcontrol  { background:#fdecd8; color:#8a4b0a; }  /* NetControl / CADx dispatch */
+.ietms       { background:#dbeafe; color:#1d4ed8; }  /* I-ETMS, PTC Back Office Server */
+.pst         { background:#e6f4ea; color:#1a6b3c; }  /* PS Technology, CrewPro, HASTUS, CCM */
+.umler       { background:#f3e8ff; color:#6b21a8; }  /* Umler, CHARM, TRAIN II, EHMS, ISS */
+.unified     { background:#fff1e0; color:#9a4d0c; }  /* Unified Plan 2020 */
+.loup        { background:#e0f2fe; color:#0369a1; }  /* Loup Logistics, ShipmentVision, up.com */
+.upgo        { background:#e8f5e9; color:#1b6b34; }  /* UPGo, EMP and UMAX fleets */
+.wabtec      { background:#eef2ff; color:#3730a3; }  /* Wabtec MCA, NEXSYS III-i */
+.wayside     { background:#f0f9ff; color:#075985; }  /* detectors, machine vision, RailAI, ATIP */
+.gcor        { background:#f2f2f0; color:#3d4348; }  /* GCOR, C3RS, COMMIT */
+.askrail     { background:#fbe3e3; color:#8f1f1f; }  /* AskRail, TRANSCAER, SERTC */
+.facility    { background:#20242b; color:#ffffff; }  /* Bailey Yard, HDC, shops, terminals */
+.wabtrax     { background:#fdf4ff; color:#7e22ce; }  /* Wabtrax MOW planning */
+.finance     { background:#fef9c3; color:#713f12; }  /* fuel surcharge, ARC */
+.training    { background:#ecfdf5; color:#065f46; }  /* TE&Y training, mobile classrooms */
+.custom      { background:#f2f2f0; color:#4a4e55; }  /* not matched to a tag family */
+.sys-generic { background:#f2f2f0; color:#4a4e55; }
+
+/* Unregistered system — flagged visibly, matches the registry-first rule */
+.sys-unregistered { background:#fbe3e3; color:#8f1f1f; border:1px dashed #8f1f1f; }
+
+/* ── BPMN / EA diagram ── */
+.diagram-wrap { text-align: center; padding: 12px 0; }
+.diagram-wrap img { max-width: 100%; width: 100%; height: auto;
+                    border: 1px solid #e3e3df; border-radius: 6px; cursor: zoom-in; }
+.diagram-wrap p { font-size: 12px; color: #9a9da3; margin-top: 6px; }
+
+/* ── KPI / risk pills ── */
+.kpi-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.kpi-pill {
+  background: #fdecd8; color: #8a4b0a; border-radius: 20px;
+  padding: 4px 14px; font-size: 12px; font-weight: 600;
+}
+.risk-pill {
+  background: #fbe3e3; color: #8f1f1f; border-radius: 20px;
+  padding: 4px 14px; font-size: 12px; font-weight: 600;
+}
+
+/* ── Lightbox overlay ── */
+#lightbox {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+  z-index: 999; overflow: hidden;
+}
+#lightbox.active { display: block; }
+
+#lightboxImg {
+  position: absolute; top: 0; left: 0;
+  max-width: 92vw; max-height: 92vh; border-radius: 4px;
+  object-fit: contain; cursor: zoom-in; user-select: none;
+  transform-origin: 0 0;
+  /* No will-change and no scale() transform: both make the browser cache one
+     raster and magnify it, which is what blurs an SVG. Zoom is applied to the
+     layout width in wiki.js so the vector re-rasterises at the new size.
+     The image is absolutely positioned (not flex-centred) so a growing width
+     cannot drift it sideways on each zoom step. */
+  image-rendering: auto;
+}
+#lbControls {
+  position: absolute; top: 12px; right: 12px;
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(0,0,0,0.55); border-radius: 8px; padding: 6px 10px;
+}
+#lbControls button {
+  background: rgba(255,255,255,0.15); border: none; color: #fff;
+  width: 28px; height: 28px; border-radius: 4px; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+#lbControls button:hover { background: rgba(255,255,255,0.3); }
+#lbScale { color: rgba(255,255,255,0.7); font-size: 12px; min-width: 38px; text-align: center; }
+
+/* ── EA diagram pages ── */
+.ea-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.ea-card {
+  background: #fff; border-radius: 10px; padding: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08); border-left: 4px solid var(--orange);
+}
+.ea-card h4 { font-size: 14px; color: var(--navy); margin-bottom: 6px; }
+.ea-card p  { font-size: 12px; color: #6b6f76; }
+
+/* ── Search page ── */
+.search-result { padding: 14px; border-bottom: 1px solid #e3e3df; }
+.search-result:hover { background: #faf9f7; }
+.search-result h4 { font-size: 14px; color: var(--navy); }
+.search-result p  { font-size: 12px; color: #6b6f76; margin-top: 3px; }
+.search-result .highlight { background: #fff4e5; padding: 0 2px; border-radius: 2px; }
+.search-count { font-size: 13px; color: #6b6f76; margin-bottom: 16px; }
+
+/* ── Home page stats ── */
+.stats-bar { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+.stat-card {
+  background: #fff; border-radius: 8px; padding: 14px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07); min-width: 140px; text-align: center;
+}
+.stat-card .stat-num { font-size: 28px; font-weight: 700; color: var(--navy); }
+.stat-card .stat-num.accent { color: var(--orange); }
+.stat-card .stat-label { font-size: 12px; color: #6b6f76; margin-top: 2px; }
+
+/* ── Footer — BUILD-SPEC v2 §10 non-affiliation notice ── */
+.wiki-footer { margin-top: 48px; padding: 20px 0; border-top: 1px solid #e3e3df;
+               font-size: 12px; color: #9a9da3; }
+
+/* ── Utility ── */
+.mt-16 { margin-top: 16px; }
+.mb-8  { margin-bottom: 8px; }
+.text-sm { font-size: 12px; }
+.text-muted { color: #9a9da3; }

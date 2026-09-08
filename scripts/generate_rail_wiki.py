@@ -1,1237 +1,1590 @@
 #!/usr/bin/env python3
-"""Phase C — constrained generation (BUILD-SPEC-v2 §4).
+"""
+generate_rail_wiki.py — US Class I Freight Railroad Process Wiki generator.
 
-    python3 scripts/generate_rail_wiki.py --pid RR-06-02-01 [--mock]
+Reference archetype: Union Pacific. Repo: https://github.com/ghatk047/rail-wiki
+Pages: https://ghatk047.github.io/rail-wiki/
 
-The model fills slots. It does not invent entities.
+This is a port of shipping-wiki/scripts/generate_shipping_wiki.py. Everything
+that file learned the hard way is carried over deliberately and is marked below
+with "PORTED FIX" — do not simplify those without re-reading why they exist:
 
-How that is enforced
---------------------
-The prompt offers a menu of registry entries for the process's own domain,
-each with an id. The model answers with **ids only** — it never writes a
-system name, job title, citation or metric as free text, and any name it did
-write would be discarded rather than trusted. The entity fields are then
-*constructed* from the registry:
+  1. Content and diagram are two SEPARATE model calls. Mermaid never travels
+     inside a JSON string, so a 14B model never has to escape \\n correctly.
+  2. Two separate system prompts. The JSON prompt forbids diagram syntax; only
+     the Mermaid prompt recites Mermaid rules.
+  3. extract_json() strips %%{init}%% and flowchart lines first, then walks every
+     balanced object and returns the first that parses AND carries the required
+     key. Unparseable responses land in data/raw/ for diagnosis.
+  4. The label sanitiser stashes label and edge-label text before the
+     digit.digit -> S1_1 node-ID rewrite, so 49 CFR 213.9, GCOR 6.28 and
+     FRA Class 4.0 survive intact. Label cleaning covers [..], (..) AND {..}.
+  5. One canonical %%{init}%% with a system-resident font stack. An SVG loaded
+     through <img> cannot fetch webfonts and silently falls back to serif.
+  6. Diagrams are scored before publishing; 3 drafts, keep the best, publish
+     under the floor rather than blocking, but log a WARNing naming the PID.
+  7. finalize_svg() rewrites width="100%" to the real viewBox pixel width and
+     strips mmdc's inline max-width, which otherwise caps the vector and makes
+     zoom look like a magnified bitmap.
+  8. Every page carries <!-- template-v1 --> so pages built under old code stay
+     greppable.
 
-    systems[]        <- registry name, scope and source_id for each chosen id
-    actors[]         <- registry role text
-    regulatory_hook  <- registry cite text
-    kpi_moved        <- registry KPI text
-    sources[]        <- source_url of the entries actually used
-    pain_points[]    <- the closed §7 list, chosen by index
-    steps[]          <- same registry ids, resolved per step (§3.1)
+DEVIATION FROM THE REFERENCE: the reference pushes file-by-file through the
+GitHub Contents API with a GITHUB_TOKEN. rail-wiki is a real local clone with a
+working `gh` credential helper, so this uses git add/commit/push instead — one
+commit, one Pages build, and no token ever passes through Python. Nothing else
+about the pipeline changes.
 
-So those fields ground by construction. What the model genuinely authors is
-prose: the description, the inputs/outputs, and each step's name/input/output.
-That prose is exactly where a fabricated figure or date can still appear, and
-it is what validate_content.py scans before anything is written.
-
-An id the model invents does not resolve, and the process is assembled with
-the unresolved id left visible so the gate rejects it rather than the
-generator quietly dropping it. Nothing is written on a rejection.
-
-Description length and step-list shape are enforced here, not in
-validate_content.py. A rejection from the validator means exactly one thing —
-the registries do not ground something — and that single meaning is what
-makes it trustworthy as the §4 gate. Length and structure are generation
-quality conditions, so they live in Phase C with a bounded, self-describing
-retry.
-
-Five-field description
------------------------
-A single free-text "write 120-200 words" instruction undershot badly in
-practice (57 words on the first live run) — a length target stated as a range
-inside a JSON template value reads to a small model as a format hint, not a
-binding constraint. The model generates five short fields instead of one long
-one — trigger, sequence, judgement, handoff, done — each with its own word
-floor. assemble() concatenates them into a single "description" string before
-anything downstream ever sees it; validate_content.py, data/processes.json
-and any page renderer see one description field, exactly as before.
-
-Step list (§3.1, Phase 4b)
----------------------------
-A flat, ordered `steps[]` list — 4-8 steps, at least one decision/exception
-gate, a branch object required on every decision_point:"Y" step. Deliberately
-smaller than the Air Canada wiki's 16-30-step/5-8-phase model: a rail-wiki PID
-is already narrow (the taxonomy splits each L2 cluster into 2-3 PIDs), so one
-process here is closer to one AC *phase* than a whole AC process — see spec
-§3.1 for the full reasoning. Each step's role/system/kpi is chosen by id from
-the same per-domain menu as the process-level fields, and resolved by
-assemble() the same way.
-
-Model
------
-Ollama REST at http://localhost:11434, model qwen2.5:14b-instruct, falling
-back to qwen2.5:latest if the preferred tag is not pulled. --mock replaces the
-call entirely with a canned response and never opens a socket. --show-prompt
-prints the prompt and exits before either path is reached.
-
-A live run observed the backend process (llama-server) get killed and
-respawned by Ollama's own supervisor mid-session -- on this machine, by
-macOS's wakeups-limit power management, which will kill any process that
-wakes the CPU too aggressively, and GPU inference does exactly that. The
-symptom was a script that sat silently for tens of minutes: a bare
-urllib.request.urlopen(timeout=180) does apply a socket timeout, but nothing
-distinguished "the model is thinking" from "the backend died and Ollama is
-still routing the request somewhere." call_ollama() now retries a connection
--level failure on its own, a bounded and VISIBLE number of times (see
-CONNECT_RETRY_DELAYS), separately from and prior to the content-quality retry
-loop in generate_one() -- a dead backend should cost a retry-with-backoff,
-not the whole PID, and it should never again look identical to silence.
-
-Reuse
------
-generate_one() is the whole single-PID pipeline as a plain function returning
-a result dict, not a CLI wrapper around sys.exit -- scripts/run_batch.py calls
-it directly, in-process, for many PIDs in one run, rather than shelling out.
+Flags
+  --pid PID         single process
+  --count N         next N incomplete processes
+  --full            all incomplete processes
+  --start PID       resume from PID in catalogue order
+  --force           regenerate even if the tracker says Complete
+  --bootstrap       push shell only (css, js, search, home, all indexes) and exit
+  --rebuild-nav     regenerate every index + search index, no model calls
+  --no-verify       skip the live-page check
+  --no-push         build locally, do not commit or push
 """
 
-from __future__ import annotations
-
 import argparse
-import http.client
+import html as _html
 import json
 import re
-import socket
+import subprocess
 import sys
 import time
-import urllib.error
-import urllib.request
-from datetime import date
+from datetime import datetime
 from pathlib import Path
+
+import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import validate_content as vc  # noqa: E402
-from registry_loader import REGISTRY_DIR, Entry, RegistryError, load  # noqa: E402
+# ─────────────────────────────────────────────────────────────────────────────
+# CONFIG
+# ─────────────────────────────────────────────────────────────────────────────
 
-REPO = Path(__file__).resolve().parent.parent
-SPEC = REPO / "docs" / "rail-wiki-build-spec-v2.md"
-TAXONOMY = REPO / "data" / "taxonomy.json"
-PROCESSES = REPO / "data" / "processes.json"
+REPO_OWNER = "ghatk047"
+REPO_NAME = "rail-wiki"
+BRANCH = "main"
+PAGES_BASE = f"https://{REPO_OWNER}.github.io/{REPO_NAME}"
 
-OLLAMA_HOST = "http://localhost:11434"
-PREFERRED_MODEL = "qwen2.5:14b-instruct"
+SITE_TITLE = "US Class I Freight Railroad Process Wiki"
+SITE_SUB = "Union Pacific archetype &mdash; independently compiled"
+
+OLLAMA_URL = "http://localhost:11434"
+PRIMARY_MODEL = "qwen2.5:14b-instruct"
 FALLBACK_MODEL = "qwen2.5:latest"
-TIMEOUT = 180
-# Bounded, visible retries for a connection-level failure (the backend
-# process died and is being respawned) -- NOT for a slow-but-alive model.
-# Delays sit under the ~4-5 min respawn cycle observed live, so two full
-# cycles fit inside the total backoff budget before giving up.
-CONNECT_RETRY_DELAYS = [10, 30, 90]
-CONNECT_ERRORS = (urllib.error.URLError, ConnectionError, TimeoutError,
-                  socket.timeout, http.client.RemoteDisconnected)
+OLLAMA_TIMEOUT = 900
 
-# The five description beats, in writing/concatenation order, each checked
-# independently. Floors sum to DESC_FLOOR_WORDS, which stays in place as a
-# backstop on the assembled whole — if the five pass individually the backstop
-# should pass automatically; it only fires if assembly itself misbehaves.
-FIELD_KEYS = ["trigger", "sequence", "judgement", "handoff", "done"]
-FIELD_LABELS = {k: k.upper() for k in FIELD_KEYS}
-FIELD_PROMPTS = {
-    "trigger": "What starts this work, and how the need becomes visible to "
-               "the people who act on it.",
-    "sequence": "Who does what, in order, from trigger through to completion.",
-    "judgement": "The decision or exception that makes this process "
-                 "non-trivial — the point where experience matters — and "
-                 "what happens on each branch.",
-    "handoff": "What leaves this process, and who picks it up next.",
-    "done": "The condition that means the work is complete and can be "
-            "closed out.",
-}
-FIELD_FLOOR_WORDS = 20
-FIELD_MAX_WORDS = 45
+ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT / "data"
+DIAGRAM_DIR = ROOT / "diagrams"
+IMG_DIR = ROOT / "assets" / "img"
+REGISTRY_DIR = ROOT / "registries"
+TAXONOMY_PATH = DATA_DIR / "taxonomy.json"
+TRACKER = DATA_DIR / "processes.json"          # gitignored, per CLAUDE.md
+EXCEL_PATH = DATA_DIR / "rail_wiki_progress.xlsx"
 
-# Backstop on the assembled whole (sum of the five floors). The band is
-# advisory, matching §3's "120-200 words" for the process record.
-DESC_FLOOR_WORDS = len(FIELD_KEYS) * FIELD_FLOOR_WORDS
-DESC_BAND = (120, 200)
-DEFAULT_RETRIES = 2
+TEMPLATE_VERSION = "template-v1"
 
-# §3.1 step list. Smaller than AC's 16-30/6-gate model — see module docstring.
-STEP_MIN = 4
-STEP_MAX = 8
-# Was 1; a real process with only 1 gate produces a visibly sparse diagram
-# once every gate gets a labelled branch (rendering can label what exists,
-# it cannot invent gates the model never generated). 3 gives the diagram
-# enough real branch points to read as a workflow rather than a checklist.
-STEP_MIN_GATES = 3
+# PORTED FIX 5 — one canonical init line. The font stack is system-resident on
+# every platform mmdc and the browser run on; an <img>-loaded SVG cannot fetch
+# a webfont and falls back to serif without this.
+INIT_LINE = ("%%{init: {'theme':'base','themeVariables':"
+             "{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%")
 
-MENU_REGISTRIES = ("systems", "roles", "regulations", "kpis")
+PID_W, PID_H = 2400, 1400
+EA_W, EA_H = 3840, 2160
+MMDC_SCALE = 2
+VERIFY_WAIT = 75
 
+# ─────────────────────────────────────────────────────────────────────────────
+# TAXONOMY — 15 L1 domains, 136 L2 groups, 290 processes, from data/taxonomy.json
+# ─────────────────────────────────────────────────────────────────────────────
 
-class GenerationError(RuntimeError):
-    pass
-
-
-# --- inputs -------------------------------------------------------------------
-def load_taxonomy_full() -> dict:
-    if not TAXONOMY.exists():
-        raise GenerationError(
-            f"{TAXONOMY.relative_to(REPO)} not found — run scripts/build_taxonomy.py first")
-    return json.loads(TAXONOMY.read_text(encoding="utf-8"))
-
-
-def load_taxonomy(pid: str) -> dict:
-    doc = load_taxonomy_full()
-    for p in doc["processes"]:
-        if p["pid"] == pid:
-            return p
-    raise GenerationError(
-        f"{pid} is not in the taxonomy. It is not a PID this build emits — "
-        f"check scripts/build_taxonomy.py --domain {pid.split('-')[1] if '-' in pid else '??'}")
-
-
-def spec_pain_points() -> list[str]:
-    """The closed §7 list. The spec forbids model-invented pain points."""
-    text = SPEC.read_text(encoding="utf-8")
-    i = text.find("## 7. Pain points")
-    j = text.find("## 8.", i)
-    if i < 0:
-        raise GenerationError("could not locate §7 in the spec")
-    return [m.group(1).strip()
-            for m in re.finditer(r"^-\s+(.+)$", text[i:j], re.M)]
-
-
-def domain_group(pid: str, r) -> str | None:
-    m = re.match(r"^RR-(\d{2})-", pid)
-    if not m:
-        return None
-    want = f"domain_{m.group(1)}_"
-    for reg in MENU_REGISTRIES + ("facts",):
-        for e in r.all(reg):
-            if e.domain.startswith(want):
-                return e.domain
-    return None
-
-
-def build_menu(r, group: str) -> dict[str, list[Entry]]:
-    """Registry entries available to this domain, keyed by registry."""
-    return {reg: [e for e in r.all(reg) if e.domain == group] for reg in MENU_REGISTRIES}
-
-
-# --- prompt -------------------------------------------------------------------
-def render_menu(menu: dict[str, list[Entry]], pains: list[str]) -> str:
-    lines: list[str] = []
-    labels = {"systems": "SYSTEMS", "roles": "ROLES (actors)",
-              "regulations": "REGULATORY HOOKS", "kpis": "KPIs"}
-    for reg in MENU_REGISTRIES:
-        lines.append(f"{labels[reg]}:")
-        if not menu[reg]:
-            lines.append("  (none registered for this domain — select none)")
-        for e in menu[reg]:
-            extra = f" [scope: {e.scope}]" if reg == "systems" and e.scope else ""
-            lines.append(f"  {e.entry_id} = {e.key}{extra}")
-        lines.append("")
-    lines.append("PAIN POINTS (choose by number, spec §7 — this list is closed):")
-    for i, p in enumerate(pains, start=1):
-        lines.append(f"  P{i:02d} = {p}")
-    return "\n".join(lines)
-
-
-def _process_header(node: dict) -> str:
-    return f"""PROCESS
-  PID : {node['pid']}
-  L1  : {node['l1']}
-  L2  : {node['l2']}"""
-
-
-def _entities_block(menu: dict[str, list[Entry]], pains: list[str]) -> str:
-    return f"""ENTITIES
-Select entities below ONLY by their id, and put that id ONLY in an id field
-of the OUTPUT JSON (system_ids, role_ids, regulation_ids, kpi_ids,
-pain_point_ids, or a step's role_id/system_id/kpi_id/pain_point_id) -- never
-inside prose. Do not invent ids. If nothing in a list fits, return an empty
-list.
-
-You may still describe roles and systems in prose using ordinary words --
-"the Yardmaster", "the inspection system" -- that is normal and expected. The
-one thing that must never appear inside prose is the id CODE ITSELF, things
-like "SYS-D06-01" or "ROLE-D06-02" or "P04" typed as text in a sentence. If
-you need to refer to an entity in prose, use its plain name or role, never
-its id string.
-
-{render_menu(menu, pains)}"""
-
-
-def build_description_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
-                             retry_note: str | None = None) -> str:
-    """Phase A: the five description fields, name, inputs/outputs and the
-    process-level entity ids. No steps here.
-
-    This used to be one prompt asking for the description AND the step list
-    in a single JSON object. Live testing found that combination genuinely
-    hard for a 14B model to converge on: fixing a step problem on retry would
-    regress a description field back below its floor, and vice versa,
-    because each retry regenerates the entire response from scratch rather
-    than patching just the flagged part. Splitting description and steps
-    into two independent generate-and-retry phases means a steps retry can
-    no longer disturb fields that already passed, and the reverse.
-    """
-    retry = f"\n{retry_note}\n" if retry_note else ""
-    field_instructions = "\n".join(
-        f"  {FIELD_LABELS[k]} ({FIELD_FLOOR_WORDS}-{FIELD_MAX_WORDS} words) — {FIELD_PROMPTS[k]}"
-        for k in FIELD_KEYS
-    )
-    field_template = ",\n".join(
-        f'  "{k}": "{FIELD_FLOOR_WORDS}-{FIELD_MAX_WORDS} words covering {FIELD_LABELS[k]} only"'
-        for k in FIELD_KEYS
-    )
-    return f"""You are documenting one business process for a US Class I freight railroad.
-
-{_process_header(node)}
-
-{_entities_block(menu, pains)}
-
-WRITING THE DESCRIPTION
-This is the main body of work in this task. The description is five separate
-fields, each covering one beat of the process, in this order:
-
-{field_instructions}
-
-Each field is checked on its own and must independently meet its word count.
-Do not write labels or headings inside the field text — the JSON key is the
-label. Write plain declarative sentences, one or two per field. No consulting
-register, no filler, no restating the process name.
-
-Write about mechanism rather than measurement: explain how the work is
-carried out and what governs it. Figures, percentages and dates are not what
-makes these fields good, and they are better without them unless one is
-genuinely central to the process.
-
-If a field is coming in short, that means you have under-described that one
-beat specifically — expand what that beat covers, don't pad with filler, and
-don't borrow content that belongs in a different field.
-
-OTHER FIELDS
-"name": a specific process name, 4-12 words, no numbers.
-"inputs" / "outputs": 2-4 short noun phrases each — what feeds this process
-and what it produces, not a restatement of the five description fields.
-{retry}
-OUTPUT
-Return ONE JSON object, nothing else. Do not include a "steps" field — that
-is a separate step, not part of this one.
-
-{{
-  "name": "specific process name, 4-12 words, no numbers",
-{field_template},
-  "inputs": ["2-4 short noun phrases"],
-  "outputs": ["2-4 short noun phrases"],
-  "system_ids": ["SYS-..."],
-  "role_ids": ["ROLE-..."],
-  "regulation_ids": ["REG-..."],
-  "kpi_ids": ["KPI-..."],
-  "pain_point_ids": ["P01"],
-  "confidence": "high | medium | low"
-}}"""
-
-
-def build_steps_prompt(node: dict, menu: dict[str, list[Entry]], pains: list[str],
-                       retry_note: str | None = None) -> str:
-    """Phase B: just the step list, run after the description phase has
-    already passed. Repeats the ENTITIES menu (steps need their own
-    role_id/system_id/kpi_id picks) but asks for nothing else."""
-    retry = f"\n{retry_note}\n" if retry_note else ""
-    return f"""You are documenting the step-by-step breakdown of one business process for
-a US Class I freight railroad. The process itself is already written; this is
-only the step list.
-
-{_process_header(node)}
-
-{_entities_block(menu, pains)}
-
-WRITING THE STEPS
-Break the process into {STEP_MIN}-{STEP_MAX} concrete steps, in order, as a
-flat list — not grouped into phases, because a process this specific is
-already one coherent stretch of work. Each step is:
-
-  {{"step": "1", "name": "short action phrase", "role_id": "ROLE-...",
-   "system_id": "SYS-... or null", "input": "...", "output": "...",
-   "kpi_id": "KPI-... or null", "decision_point": "Y or N",
-   "exception": "Y or N", "pain_point_id": "P.. or null"}}
-
-Rules:
-  - "step" ids are "1", "2", "3", ... in order, unique.
-  - "role_id", "system_id" and "kpi_id" are each a SINGLE id string from the
-    ENTITIES lists above (e.g. "ROLE-D06-01"), never a name, never an
-    invented id, and never a list even if more than one seems to fit — pick
-    the one that fits best. Use null (not an empty string) if none applies.
-  - Exactly one of "decision_point" / "exception" may be "Y" on a given step;
-    most steps are "N"/"N". At least {STEP_MIN_GATES} steps across the whole
-    list must be "Y" on one of them, spread across different points in the
-    sequence rather than clustered together — a process with no real decision or
-    exception in it is being under-described, not genuinely simple.
-  - A step with "decision_point": "Y" MUST also carry:
-      "branch": {{"label": "short label", "to": "<step id or early-exit phrase>"}}
-    naming the alternate path. A decision with no branch is not a decision.
-    A "branch" on an "exception": "Y" step is welcome but not required.
-{retry}
-OUTPUT
-Return ONE JSON object, nothing else:
-
-{{
-  "steps": [
-    {{"step": "1", "name": "...", "role_id": "ROLE-...", "system_id": "SYS-... or null",
-     "input": "...", "output": "...", "kpi_id": "KPI-... or null",
-     "decision_point": "Y or N", "exception": "Y or N", "pain_point_id": "P.. or null"}}
-  ]
-}}"""
-
-
-# --- model call ---------------------------------------------------------------
-def _http_json(url: str, payload: dict | None = None, timeout: int = TIMEOUT) -> dict:
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode() if payload is not None else None,
-        headers={"Content-Type": "application/json"},
-        method="POST" if payload is not None else "GET",
-    )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.loads(resp.read().decode())
-
-
-def pick_model(host: str) -> str:
-    try:
-        tags = _http_json(f"{host}/api/tags", timeout=10)
-    except (urllib.error.URLError, OSError) as e:
-        raise GenerationError(
-            f"cannot reach Ollama at {host} ({e}). Start it, or use --mock.") from e
-    have = {m.get("name", "") for m in tags.get("models", [])}
-    if PREFERRED_MODEL in have:
-        return PREFERRED_MODEL
-    if FALLBACK_MODEL in have:
-        print(f"  note: {PREFERRED_MODEL} not pulled, falling back to {FALLBACK_MODEL}")
-        return FALLBACK_MODEL
-    raise GenerationError(
-        f"neither {PREFERRED_MODEL} nor {FALLBACK_MODEL} is pulled on {host}. "
-        f"Available: {sorted(have) or 'none'}")
-
-
-def call_ollama(prompt: str, host: str) -> tuple[dict, str]:
-    """Returns (parsed reply, raw response text) -- the raw text is what --debug shows.
-
-    A connection-level failure (backend killed and respawning) retries here,
-    bounded and printed at every step, rather than the caller having no way
-    to tell "the model is thinking" from "the process under it just died."
-    """
-    model = pick_model(host)
-    print(f"  model: {model} @ {host}")
-
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "format": "json",
-        "stream": False,
-        "options": {"temperature": 0.2},
-    }
-    last_err: Exception | None = None
-    out = None
-    for i, delay in enumerate([0] + CONNECT_RETRY_DELAYS):
-        if delay:
-            print(f"  connection problem ({last_err}); retrying in {delay}s "
-                  f"(reconnect {i}/{len(CONNECT_RETRY_DELAYS)})")
-            time.sleep(delay)
-        try:
-            out = _http_json(f"{host}/api/generate", payload)
-            break
-        except CONNECT_ERRORS as e:
-            last_err = e
-    if out is None:
-        raise GenerationError(
-            f"lost connection to Ollama at {host} and it did not come back "
-            f"within {sum(CONNECT_RETRY_DELAYS)}s of retrying ({last_err}). "
-            f"This usually means the backend process died mid-request and is "
-            f"slow to restart. Check it is actually up (curl {host}/api/tags) "
-            f"before retrying this PID.")
-
-    raw = out.get("response", "")
-    try:
-        return json.loads(raw), raw
-    except json.JSONDecodeError as e:
-        raise GenerationError(f"model did not return JSON: {e}\n---\n{raw[:800]}") from e
-
-
-# --- mock ---------------------------------------------------------------------
-# Each profile supplies the five fields directly (dict keyed by FIELD_KEYS),
-# rather than one flat description, so the mock exercises the same shape the
-# real model now returns.
-MOCK_FIELDS = {
-    "good": {
-        "trigger": "A planned inspection cycle is published for each subdivision on a "
-                   "fixed schedule rather than in response to a specific complaint or "
-                   "event, so the need becomes visible through the calendar, not through "
-                   "an alert.",
-        "sequence": "The field team executes the published cycle in order, and every "
-                    "finding is scored and logged as it is made. Results are then routed "
-                    "for disposition before the next cycle opens, so nothing carries over "
-                    "unresolved and unassigned.",
-        "judgement": "Findings are classified by severity: the most serious generate an "
-                     "immediate operating restriction, which is placed into effect before "
-                     "any further movement is authorised over the affected segment, while "
-                     "less serious findings are queued into the planned maintenance "
-                     "programme instead of acted on immediately.",
-        "handoff": "Every restriction imposed, changed or lifted is recorded so that the "
-                   "field condition, the dispatching system and the onboard enforcement "
-                   "data stay consistent with one another, and downstream data files "
-                   "carrying the railroad's physical characteristics are updated to match.",
-        "done": "The cycle is closed out once every finding from it has either been "
-                "resolved or formally queued, and any disagreement between what the "
-                "field recorded and what the system holds has been reconciled rather "
-                "than left standing.",
-    },
-    "short": {
-        "trigger": "A train is ready for departure.",
-        "sequence": "The crew performs the required test.",
-        "judgement": "A defect is repaired or the car is set out.",
-        "handoff": "The train departs once cleared.",
-        "done": "The record is closed.",
-    },
-    # Deliberately over the per-field floor, so the attempt reaches the
-    # validator and exercises the grounding path rather than being turned
-    # back on length.
-    "ungrounded-figure": {
-        "trigger": "A planned inspection cycle is published for each subdivision on a "
-                   "fixed schedule, so the need becomes visible through the calendar "
-                   "rather than through a specific alert or complaint.",
-        "sequence": "The field team executes the cycle in order. Automated classification "
-                    "cut triage time by 34% and clears 1,200 exceptions per week across "
-                    "the region, and results are routed for disposition before the next "
-                    "cycle opens.",
-        "judgement": "Findings are classified by severity: the most serious generate an "
-                     "immediate operating restriction, placed into effect before any "
-                     "further movement is authorised, while less serious findings are "
-                     "queued into the planned maintenance programme instead.",
-        "handoff": "Every restriction imposed, changed or lifted is recorded so the field "
-                   "condition and the systems that govern movement stay consistent with "
-                   "one another, and the change is carried into the relevant data files.",
-        "done": "Since March 2019 the programme has run continuously on all main line "
-                "track, and the cycle is closed out once any disagreement between the "
-                "field record and the system has been reconciled.",
-    },
+# icon, family. Names and ordering come from data/taxonomy.json, which is built
+# from BUILD-SPEC v2 §2 — never retyped here, so the two cannot drift.
+L1_EXTRA = {
+    "RR-01": ("\U0001F5FA", "net"),    # Service Design & Network Planning
+    "RR-02": ("\U0001F6A6", "net"),    # Dispatching & Train Movement
+    "RR-03": ("\U0001F3ED", "ops"),    # Terminal & Yard Operations
+    "RR-04": ("\U0001F468", "ops"),    # Crew Management
+    "RR-05": ("\U0001F527", "ops"),    # Mechanical & Rolling Stock
+    "RR-06": ("\U0001F6E4", "ops"),    # Engineering: Track, Structures & Signals
+    "RR-07": ("\U0001F6E1", "corp"),   # Safety & Regulatory Compliance
+    "RR-08": ("☣", "corp"),       # Hazardous Materials & Environmental
+    "RR-09": ("\U0001F4E6", "ops"),    # Intermodal & Automotive Operations
+    "RR-10": ("\U0001F4B0", "comm"),   # Commercial, Pricing & Customer Service
+    "RR-11": ("\U0001F517", "net"),    # Interline, Equipment & Car Management
+    "RR-12": ("\U0001F5A5", "corp"),   # Technology, Data & Cybersecurity
+    "RR-13": ("\U0001F4CA", "comm"),   # Finance, Revenue Accounting & Procurement
+    "RR-14": ("\U0001F465", "corp"),   # HR, Labor Relations & Training
+    "RR-15": ("\U0001F91D", "corp"),   # Merger & Network Integration
 }
 
-MOCK_STEP_NAMES = [
-    "Work item is received and logged",
-    "Field or desk check is performed",
-    "Result is classified for disposition",
-    "Exception path is escalated if needed",
-    "Outcome is recorded against the record",
+FAMILY_LABEL = {"ops": "OPERATIONS", "net": "NETWORK & PLANNING",
+                "comm": "COMMERCIAL", "corp": "CORPORATE"}
+
+
+def slugify(text):
+    text = str(text).replace("&", " ").replace("/", " ")
+    text = re.sub(r"[^A-Za-z0-9]+", "-", text).strip("-").lower()
+    return re.sub(r"-+", "-", text)
+
+
+def _load_taxonomy():
+    """Build L1_META, TAXONOMY and PROCESSES from data/taxonomy.json.
+
+    Structures mirror the reference exactly so build_sidebar, the index builders
+    and the search index are line-for-line ports.
+    """
+    tx = json.loads(TAXONOMY_PATH.read_text(encoding="utf-8"))
+    domains = tx["_meta"]["domains"]
+    procs = tx["processes"]
+
+    l1_meta = {}
+    for d in domains:
+        code = d["l1_id"]                       # RR-01
+        icon, fam = L1_EXTRA[code]
+        num = code.split("-")[1]
+        l1_meta[code] = (icon, d["l1"], f"rr-{num}-{slugify(d['l1'])}", fam)
+
+    # ordered L2 groups per L1, preserving taxonomy.json order
+    taxonomy, seen = [], {}
+    for p in procs:
+        l1_name, l2_name = p["l1"], p["l2"]
+        code = next(c for c, m in l1_meta.items() if m[1] == l1_name)
+        key = (code, l2_name)
+        if key not in seen:
+            l2_num = f"{sum(1 for c, _ in seen if c == code) + 1:02d}"
+            seen[key] = {"l1": code, "l2": l2_num, "l2_name": l2_name,
+                         "l2_slug": slugify(l2_name), "names": []}
+            taxonomy.append(seen[key])
+        seen[key]["names"].append(p["pid"])
+
+    catalogue = []
+    for g in taxonomy:
+        icon, l1_name, l1_slug, fam = l1_meta[g["l1"]]
+        for pid in g["names"]:
+            catalogue.append({
+                "pid": pid,
+                "slug": pid.lower(),
+                "l1": g["l1"], "l1_name": l1_name, "l1_icon": icon,
+                "l1_slug": l1_slug, "family": fam,
+                "l2": g["l2"], "l2_name": g["l2_name"], "l2_slug": g["l2_slug"],
+                # L3 process name: the spec fixes L1/L2 names and PID counts but
+                # not L3 titles, so the L3 title is the L2 group plus its index.
+                # The model is told the real L1/L2/L3 context either way.
+                "name": f"{g['l2_name']} — Process {pid.split('-')[-1]}",
+                "path": f"{l1_slug}/{g['l2_slug']}/{pid.lower()}/index.html",
+            })
+    return l1_meta, taxonomy, catalogue
+
+
+L1_META, TAXONOMY, PROCESSES = _load_taxonomy()
+BY_PID = {p["pid"]: p for p in PROCESSES}
+FAMILY = {code: meta[3] for code, meta in L1_META.items()}
+
+assert len(L1_META) == 15, f"{len(L1_META)} L1 domains, expected 15"
+assert len(TAXONOMY) == 136, f"{len(TAXONOMY)} L2 groups, expected 136"
+assert len(PROCESSES) == 290, f"{len(PROCESSES)} processes, expected 290"
+
+# One EA landscape per L1 domain. ea-NN maps to RR-NN.
+EA_DIR_SLUG = "ea-diagrams"
+EA_DIAGRAMS = [
+    (f"ea-{code.split('-')[1]}", f"{L1_META[code][1]} Architecture",
+     f"System landscape and data flows across {L1_META[code][1]} for a US Class I "
+     f"freight railroad, Union Pacific archetype")
+    for code in L1_META
 ]
+EA_TO_L1 = {f"ea-{c.split('-')[1]}": c for c in L1_META}
 
 
-def _mock_steps(menu: dict[str, list[Entry]], quality: str = "good") -> list[dict]:
-    """Deterministic step list for mocks, built from whatever this domain's
-    menu actually contains (some domains have zero systems/kpis)."""
-    sys_ids = [e.entry_id for e in menu["systems"]]
-    role_ids = [e.entry_id for e in menu["roles"]] or [None]
-    kpi_ids = [e.entry_id for e in menu["kpis"]]
+# ─────────────────────────────────────────────────────────────────────────────
+# MERMAID SANITISER  (PORTED FIX 4 + 5 — battle-tested, extend with care)
+# ─────────────────────────────────────────────────────────────────────────────
 
-    def cyc(lst: list, i: int):
-        return lst[i % len(lst)] if lst else None
-
-    if quality == "bad":
-        # Too few steps (violates STEP_MIN) AND a decision step with no
-        # branch, to exercise both structural checks in one profile.
-        return [
-            {"step": "1", "name": "First action", "role_id": cyc(role_ids, 0),
-             "system_id": None, "input": "Input A", "output": "Output A",
-             "kpi_id": None, "decision_point": "Y", "exception": "N"},
-            {"step": "2", "name": "Second action", "role_id": cyc(role_ids, 1),
-             "system_id": None, "input": "Output A", "output": "Output B",
-             "kpi_id": None, "decision_point": "N", "exception": "N"},
-        ]
-
-    steps = []
-    for i in range(5):
-        # 3 gates spread across the sequence (index 0, 2, 4), matching
-        # STEP_MIN_GATES=3 and its "spread across different points" rule --
-        # not clustered together, same as real generated output should be.
-        dp = i == 2
-        exc = i in (0, 4)
-        step = {
-            "step": str(i + 1),
-            "name": MOCK_STEP_NAMES[i],
-            "role_id": cyc(role_ids, i),
-            "system_id": cyc(sys_ids, i),
-            "input": "Initiating input" if i == 0 else "Prior step output",
-            "output": "Final record" if i == 4 else "Next step input",
-            "kpi_id": cyc(kpi_ids, i),
-            "decision_point": "Y" if dp else "N",
-            "exception": "Y" if exc else "N",
-        }
-        if dp:
-            step["branch"] = {"label": "No", "to": str(i + 2)}
-        steps.append(step)
-    return steps
-
-
-def mock_description_response(menu: dict[str, list[Entry]], pains: list[str], profile: str,
-                              attempt: int = 1) -> tuple[dict, str]:
-    """Phase A canned reply -- fields, name, inputs/outputs, process-level
-    entity ids. No steps. Opens no socket."""
-    sys_ids = [e.entry_id for e in menu["systems"][:2]]
-    role_ids = [e.entry_id for e in menu["roles"][:3]]
-    reg_ids = [e.entry_id for e in menu["regulations"][:1]]
-    kpi_ids = [e.entry_id for e in menu["kpis"][:1]]
-
-    if profile == "invented-system":
-        sys_ids = ["SYS-D06-09"] + sys_ids[:1]
-    if profile == "invented-role":
-        role_ids = ["ROLE-D06-99"] + role_ids[:2]
-
-    fields_key = profile
-    if profile == "short-then-good":
-        fields_key = "short" if attempt == 1 else "good"
-    fields = MOCK_FIELDS.get(fields_key, MOCK_FIELDS["good"])
-
-    reply = {
-        "name": "Scheduled Inspection Cycle and Exception Disposition",
-        **fields,
-        "inputs": ["Published inspection cycle plan", "Prior exception history"],
-        "outputs": ["Scored exception list", "Operating restriction request"],
-        "system_ids": sys_ids,
-        "role_ids": role_ids,
-        "regulation_ids": reg_ids,
-        "kpi_ids": kpi_ids,
-        "pain_point_ids": ["P07"] if len(pains) >= 7 else ([f"P{len(pains):02d}"] if pains else []),
-        "confidence": "medium",
-    }
-    return reply, json.dumps(reply, indent=2, ensure_ascii=False)
-
-
-def mock_steps_response(menu: dict[str, list[Entry]], profile: str,
-                        attempt: int = 1) -> tuple[dict, str]:
-    """Phase B canned reply -- just steps. Opens no socket."""
-    steps_quality = "good"
-    if profile == "bad-steps":
-        steps_quality = "bad"
-    if profile == "bad-steps-then-good":
-        steps_quality = "bad" if attempt == 1 else "good"
-    steps = _mock_steps(menu, steps_quality)
-    if profile == "invented-system" and steps:
-        steps[0]["system_id"] = "SYS-D06-09"
-    if profile == "invented-role" and steps:
-        steps[0]["role_id"] = "ROLE-D06-99"
-
-    reply = {"steps": steps}
-    return reply, json.dumps(reply, indent=2, ensure_ascii=False)
-
-
-# --- field-length gate ---------------------------------------------------------
-def field_word_counts(reply: dict) -> dict[str, int]:
-    return {k: len(str(reply.get(k) or "").split()) for k in FIELD_KEYS}
-
-
-def check_field_lengths(reply: dict) -> tuple[bool, dict[str, int], list[str], list[str]]:
-    """(all_pass, counts, weak_fields, over_max_fields). weak_fields is a hard
-    gate; over_max_fields is advisory only."""
-    counts = field_word_counts(reply)
-    weak = [k for k in FIELD_KEYS if counts[k] < FIELD_FLOOR_WORDS]
-    over = [k for k in FIELD_KEYS if counts[k] > FIELD_MAX_WORDS]
-    return (len(weak) == 0), counts, weak, over
-
-
-def field_retry_note(counts: dict[str, int], weak: list[str]) -> str:
-    """Names only the deficient fields, and tells the model to leave the rest
-    untouched -- a generic nudge is what the single-field version tried, and
-    it made every field shorter on every retry instead of longer."""
-    lines = ["PREVIOUS ATTEMPT REJECTED — DESCRIPTION FIELDS"]
-    for k in FIELD_KEYS:
-        if k in weak:
-            lines.append(
-                f"Your {FIELD_LABELS[k]} was {counts[k]} words, need at least "
-                f"{FIELD_FLOOR_WORDS} — expand only that beat.")
-    good = [FIELD_LABELS[k] for k in FIELD_KEYS if k not in weak]
-    if good:
-        verb = "meets" if len(good) == 1 else "meet"
-        lines.append(f"Leave {', '.join(good)} exactly as they are — "
-                     f"{'it' if len(good) == 1 else 'they'} already {verb} the requirement.")
-    return "\n".join(lines)
-
-
-# --- step-structure gate --------------------------------------------------------
-def check_steps_structure(reply: dict) -> tuple[bool, list[str], int]:
-    """(ok, problems, gate_count). Structural checks only, before assembly --
-    registry grounding of role_id/system_id/kpi_id happens later, in
-    validate_content.py, exactly like the process-level fields."""
-    steps = reply.get("steps") if isinstance(reply, dict) else None
-    problems: list[str] = []
-    if not isinstance(steps, list):
-        got = type(steps).__name__ if steps is not None else "missing"
-        return False, [f'"steps" must be a list, got {got}'], 0
-
-    n = len(steps)
-    if not (STEP_MIN <= n <= STEP_MAX):
-        problems.append(f"{n} steps returned, need {STEP_MIN}-{STEP_MAX}")
-
-    seen_ids: set[str] = set()
-    gate_count = 0
-    for i, s in enumerate(steps):
-        loc = f"step {i + 1}"
-        if not isinstance(s, dict):
-            problems.append(f"{loc}: not an object")
-            continue
-        sid = s.get("step")
-        label = sid if isinstance(sid, str) and sid else str(i + 1)
-        if not sid or not isinstance(sid, str):
-            problems.append(f"{loc}: missing \"step\" id")
-        elif sid in seen_ids:
-            problems.append(f"{loc} ({label}): duplicate step id")
-        else:
-            seen_ids.add(sid)
-        for req in ("name", "role_id", "input", "output", "decision_point", "exception"):
-            if not s.get(req):
-                problems.append(f"{loc} ({label}): missing \"{req}\"")
-        # id fields are a single id or null -- a live run returned a LIST of
-        # kpi ids for one step ('want both' read as 'give me a list'), which
-        # would otherwise sail through this structural gate and only fail
-        # later at validate_content.py, by which point Phase B has already
-        # "passed" and there is no retry left to fix it in.
-        for id_field in ("role_id", "system_id", "kpi_id", "pain_point_id"):
-            v = s.get(id_field)
-            if v is not None and not isinstance(v, str):
-                problems.append(
-                    f"{loc} ({label}): \"{id_field}\" must be a single id string or "
-                    f"null, got {v!r} -- pick ONE id, not a list")
-
-        dp = str(s.get("decision_point", "")).strip().upper()
-        exc = str(s.get("exception", "")).strip().upper()
-        if s.get("decision_point") is not None and dp not in ("Y", "N"):
-            problems.append(f"{loc} ({label}): decision_point must be \"Y\" or \"N\"")
-        if s.get("exception") is not None and exc not in ("Y", "N"):
-            problems.append(f"{loc} ({label}): exception must be \"Y\" or \"N\"")
-        if dp == "Y" or exc == "Y":
-            gate_count += 1
-        if dp == "Y":
-            br = s.get("branch")
-            if not (isinstance(br, dict) and br.get("label") and br.get("to")):
-                problems.append(
-                    f"{loc} ({label}): decision_point is \"Y\" but has no branch "
-                    f"object with \"label\" and \"to\"")
-
-    if n >= STEP_MIN and gate_count < STEP_MIN_GATES:
-        problems.append(f"only {gate_count} decision/exception gate(s) across "
-                         f"{n} steps, need at least {STEP_MIN_GATES}")
-
-    return (len(problems) == 0), problems, gate_count
-
-
-def step_retry_note(problems: list[str]) -> str:
-    lines = ["PREVIOUS ATTEMPT REJECTED — STEP LIST"]
-    for p in problems:
-        lines.append(f"  - {p}")
-    lines.append("Fix only the problem(s) listed above. Leave every step not "
-                 "mentioned exactly as it is.")
-    return "\n".join(lines)
-
-
-# --- assembly -----------------------------------------------------------------
-def _terminate(sentence: str) -> str:
-    """Ensure a field's text ends with terminal punctuation before it is
-    concatenated with the next one, so two beats don't run together."""
-    s = sentence.strip()
-    if s and not s.endswith((".", "!", "?")):
-        s += "."
-    return s
-
-
-def _by_id(r, registry: str, entry_id: str) -> Entry | None:
-    if not isinstance(entry_id, str):
+def sanitise_mermaid(mmd_str):
+    if not mmd_str:
         return None
-    want = entry_id.strip().upper()
-    return next((e for e in r.all(registry) if e.entry_id.upper() == want), None)
+    # 1. Strip markdown fences
+    mmd_str = re.sub(r'^```[a-z]*\n?', '', mmd_str, flags=re.MULTILINE)
+    mmd_str = re.sub(r'```$', '', mmd_str, flags=re.MULTILINE)
+    # 2. Remove YAML frontmatter
+    mmd_str = re.sub(r'^---.*?---\s*', '', mmd_str, flags=re.DOTALL)
+    # 3. Fix HTML-encoded arrows
+    mmd_str = mmd_str.replace('--gt;', '-->').replace('--&gt;', '-->').replace('--&gt', '-->')
+    # 3b. HTML line breaks would lose their angle brackets in step 5
+    for _tag in ('<br/>', '<br />', '<br>'):
+        mmd_str = mmd_str.replace(_tag, '\\n')
+    # 4. Fix digit-start node IDs: 1.1 -> S1_1.
+    #    PORTED FIX 4: every piece of *text* is stashed before the rewrite, so a
+    #    real citation is never mangled. Rail content is dense with these —
+    #    49 CFR 213.9, GCOR 6.28, FRA Class 4.0, AAR Rule 1.2 — and the naive
+    #    rewrite would turn 49 CFR 213.9 into 49 CFR S213_9.
+    #    Beyond the reference's [..] {..} |".."| set this also stashes bare
+    #    |..| pipe labels and `-- text -->` edge labels, which rail diagrams use
+    #    constantly to carry the branch wording.
+    stash = []
 
+    def _hold(m):
+        stash.append(m.group(0))
+        return f'\x00{len(stash) - 1}\x00'
 
-def assemble_steps(reply: dict, r, pains: list[str], notes: list[str]) -> list[dict]:
-    """§3.1: resolve each step's role_id/system_id/kpi_id/pain_point_id from
-    the registry, exactly like the process-level fields. An id that does not
-    resolve is left in place (as the raw id string, or a bare system stub) so
-    validate_content.py rejects it visibly instead of this function hiding
-    the gap."""
-    out: list[dict] = []
-    for i, s in enumerate(reply.get("steps") or []):
-        if not isinstance(s, dict):
+    mmd_str = re.sub(
+        r'\[[^\]]*\]'          # [node label]
+        r'|\{[^}]*\}'          # {decision label}
+        r'|\|[^|]*\|'          # |edge label| (quoted or bare)
+        r'|--\s*[^->|\n]+?\s*-->',   # -- edge label -->
+        _hold, mmd_str)
+    mmd_str = re.sub(r'\b(\d+)\.(\d+)\b', r'S\1_\2', mmd_str)
+    mmd_str = re.sub(r'\x00(\d+)\x00', lambda m: stash[int(m.group(1))], mmd_str)
+    # 5. Remove special chars from inside node labels [ ], ( ) and { }
+    def clean_label(m):
+        text = m.group(2)
+        text = re.sub(r'[()&<>]', '', text)
+        text = re.sub(r'  +', ' ', text).strip()
+        return f'{m.group(1)}{text}{m.group(3)}'
+    mmd_str = re.sub(r'(\[)([^\]]+)(\])', clean_label, mmd_str)
+    mmd_str = re.sub(r'(\{)([^}]+)(\})', clean_label, mmd_str)
+    mmd_str = re.sub(r'(\()([^)]+)(\))', clean_label, mmd_str)
+    # 6. Force one canonical %%{init}%% carrying the system font stack.
+    mmd_str = re.sub(r'^\s*%%\{init.*?\}%%\s*\n?', '', mmd_str, flags=re.DOTALL | re.MULTILINE)
+    mmd_str = INIT_LINE + "\n" + mmd_str.lstrip()
+    # 7. Remove blank lines between %%{init}%% and the flowchart directive
+    lines = mmd_str.strip().split('\n')
+    cleaned = []
+    for line in lines:
+        if cleaned and cleaned[-1].strip().startswith('%%{init') and line.strip() == '':
             continue
+        cleaned.append(line)
+    return '\n'.join(cleaned).strip()
 
-        role_id = s.get("role_id")
-        role_e = _by_id(r, "roles", role_id) if role_id else None
-        if role_id and role_e is None:
-            notes.append(f"steps[{i}].role: model selected id {role_id!r}, which "
-                         f"is not in the registry — left unresolved for the gate")
-        role_text = role_e.key if role_e else (role_id or "")
 
-        sys_id = s.get("system_id")
-        system_obj = None
-        if sys_id:
-            sys_e = r.get_system(sys_id)
-            if sys_e is None:
-                notes.append(f"steps[{i}].system: model selected id {sys_id!r}, "
-                             f"which is not in the registry — left unresolved "
-                             f"for the gate")
-                system_obj = {"name": sys_id, "scope": "company_specific", "source_id": sys_id}
-            else:
-                system_obj = {"name": sys_e.key, "scope": sys_e.scope, "source_id": sys_e.entry_id}
+# ─────────────────────────────────────────────────────────────────────────────
+# LOGGING
+# ─────────────────────────────────────────────────────────────────────────────
 
-        kpi_id = s.get("kpi_id")
-        kpi_e = _by_id(r, "kpis", kpi_id) if kpi_id else None
-        if kpi_id and kpi_e is None:
-            notes.append(f"steps[{i}].kpi: model selected id {kpi_id!r}, which "
-                         f"is not in the registry — left unresolved for the gate")
-        kpi_text = kpi_e.key if kpi_e else (kpi_id or "")
+def log(msg, level="INFO"):
+    stamp = datetime.now().strftime("%H:%M:%S")
+    print(f"[{stamp}] {level:<5} {msg}", flush=True)
 
-        pain_text = ""
-        pt = s.get("pain_point_id")
-        if pt:
-            m = re.fullmatch(r"P(\d{1,2})", str(pt).strip(), re.I)
-            if m and 1 <= int(m.group(1)) <= len(pains):
-                pain_text = pains[int(m.group(1)) - 1]
-            else:
-                notes.append(f"steps[{i}].pain_point: {pt!r} is not in the "
-                             f"closed §7 list — dropped")
 
-        step_obj = {
-            "step": str(s.get("step") or str(i + 1)),
-            "name": str(s.get("name") or "").strip(),
-            "role": role_text,
-            "system": system_obj,
-            "input": str(s.get("input") or "").strip(),
-            "output": str(s.get("output") or "").strip(),
-            "kpi": kpi_text,
-            "decision_point": str(s.get("decision_point") or "N").strip().upper(),
-            "exception": str(s.get("exception") or "N").strip().upper(),
-            "pain_point": pain_text,
-        }
-        branch = s.get("branch")
-        if isinstance(branch, dict) and branch.get("label") and branch.get("to"):
-            step_obj["branch"] = {"label": str(branch["label"]), "to": str(branch["to"])}
-        out.append(step_obj)
+def dump_raw(tag, raw):
+    """PORTED FIX 3 — keep every unparseable response so a bad run is diagnosable."""
+    try:
+        d = DATA_DIR / "raw"
+        d.mkdir(parents=True, exist_ok=True)
+        f = d / f"{tag}.txt"
+        f.write_text(raw or "(empty response)", encoding="utf-8")
+        log(f"  raw response saved to {f}", "WARN")
+    except Exception:
+        pass
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REGISTRY (registry-first rule, CLAUDE.md + BUILD-SPEC v2 §4)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _load_registry(name):
+    data = json.loads((REGISTRY_DIR / f"{name}.json").read_text(encoding="utf-8"))
+    out = []
+    for key, entries in data.items():
+        if key.startswith("_") or key == "not_yet_sourced_do_not_use":
+            continue
+        for e in entries:
+            if isinstance(e, dict):
+                e = dict(e)
+                e["_domain"] = key
+                out.append(e)
     return out
 
 
-def assemble(node: dict, reply: dict, r, pains: list[str]) -> tuple[dict, list[str]]:
-    """Build the §3 process object from registry entries, not from model text.
+REG_SYSTEMS = _load_registry("systems")
+REG_ROLES = _load_registry("roles")
+REG_REGS = _load_registry("regulations")
+REG_KPIS = _load_registry("kpis")
+REG_FACTS = _load_registry("facts")
 
-    The five description fields are concatenated here into one "description"
-    string with no labels or field boundaries visible. Everything downstream
-    of this function -- validate_content.py, data/processes.json, any future
-    page renderer -- sees exactly the shape it saw before the five-field
-    split existed, plus the new steps[] array (§3.1).
+
+def _dom_key(l1_code):
+    """RR-03 -> the domain_03_* key used inside every registry file."""
+    num = l1_code.split("-")[1]
+    for e in REG_SYSTEMS + REG_ROLES + REG_REGS + REG_KPIS + REG_FACTS:
+        if e["_domain"].startswith(f"domain_{num}_"):
+            return e["_domain"]
+    return None
+
+
+def registry_systems_for(l1_code):
+    """Systems registered to this domain first, then the rest of the estate.
+
+    A single domain can hold as few as one sourced system (domain_15), which is
+    why the whole 61-entry estate is offered — an EA landscape or a process
+    legitimately touches systems owned by other domains (Umler, I-ETMS,
+    NetControl), and every one of those names is still registry-sourced.
     """
-    notes: list[str] = []
-
-    def resolve(ids, getter, registry: str):
-        out: list[Entry | str] = []
-        for i in ids or []:
-            if not isinstance(i, str):
-                notes.append(f"{registry}: non-string id {i!r} discarded")
-                continue
-            e = getter(i)
-            if e is None:
-                notes.append(f"{registry}: model selected id {i!r}, which is not "
-                             f"in the registry — left unresolved for the gate")
-                out.append(i)
-            else:
-                out.append(e)
-        return out
-
-    systems = resolve(reply.get("system_ids"), r.get_system, "systems")
-    roles = resolve(reply.get("role_ids"), lambda i: _by_id(r, "roles", i), "roles")
-    regs = resolve(reply.get("regulation_ids"), lambda i: _by_id(r, "regulations", i), "regulations")
-    kpis = resolve(reply.get("kpi_ids"), lambda i: _by_id(r, "kpis", i), "kpis")
-
-    sources: list[str] = []
-    for e in systems + roles + regs + kpis:
-        if isinstance(e, Entry) and e.source_url and e.source_url not in sources:
-            sources.append(e.source_url)
-
-    chosen_pains: list[str] = []
-    for tag in reply.get("pain_point_ids") or []:
-        m = re.fullmatch(r"P(\d{1,2})", str(tag).strip(), re.I)
-        if m and 1 <= int(m.group(1)) <= len(pains):
-            chosen_pains.append(pains[int(m.group(1)) - 1])
-        else:
-            notes.append(f"pain_points: {tag!r} is not in the closed §7 list — dropped")
-
-    # Any entity name the model wrote in prose is ignored; only ids were read.
-    for key in ("systems", "actors", "regulatory_hook", "kpi_moved", "pain_points"):
-        if key in reply:
-            notes.append(f"model returned a free-text {key!r} field — ignored, "
-                         f"entity fields are built from the registry")
-
-    description = " ".join(
-        _terminate(str(reply.get(k) or "")) for k in FIELD_KEYS if str(reply.get(k) or "").strip()
-    )
-
-    proc = {
-        "pid": node["pid"],
-        "name": str(reply.get("name") or node["l2"]).strip(),
-        "l1": node["l1"],
-        "l2": node["l2"],
-        "description": description,
-        "actors": [e.key if isinstance(e, Entry) else e for e in roles],
-        "inputs": [str(x) for x in (reply.get("inputs") or [])],
-        "outputs": [str(x) for x in (reply.get("outputs") or [])],
-        "systems": [
-            {"name": e.key, "scope": e.scope, "source_id": e.entry_id}
-            if isinstance(e, Entry) else
-            {"name": e, "scope": "company_specific", "source_id": e}
-            for e in systems
-        ],
-        "regulatory_hook": [e.key if isinstance(e, Entry) else e for e in regs],
-        "operating_rule_ref": "GCOR (general reference)",
-        "kpi_moved": [e.key if isinstance(e, Entry) else e for e in kpis],
-        "pain_points": chosen_pains,
-        "confidence": str(reply.get("confidence") or "low").strip().lower(),
-        "sources": sources,
-        "last_reviewed": date.today().isoformat(),
-        "steps": assemble_steps(reply, r, pains, notes),
-    }
-
-    return proc, notes
+    dom = _dom_key(l1_code)
+    own = [s for s in REG_SYSTEMS if s["_domain"] == dom]
+    other = [s for s in REG_SYSTEMS if s["_domain"] != dom]
+    return own, other
 
 
-def check_description_length(proc: dict) -> tuple[bool, int, str | None]:
-    """(meets_floor, words, advisory) on the ASSEMBLED whole. This is a
-    backstop, not the primary gate -- the primary gate is check_field_lengths,
-    run on the five fields before assembly. If the five fields individually
-    clear their floors this should pass automatically; it exists to catch an
-    assembly bug, not to catch the model."""
-    words = len((proc.get("description") or "").split())
-    lo, hi = DESC_BAND
-    if words < DESC_FLOOR_WORDS:
-        return False, words, None
-    if words < lo:
-        return True, words, f"description is {words} words, under the §3 band of {lo}-{hi}"
-    if words > hi:
-        return True, words, f"description is {words} words, over the §3 band of {lo}-{hi}"
-    return True, words, None
+def _norm(s):
+    return re.sub(r"[^a-z0-9]+", " ", str(s or "").lower()).strip()
 
 
-# --- output -------------------------------------------------------------------
-def write_process(proc: dict, path: Path) -> str:
-    doc = {"_meta": {}, "processes": {}}
-    if path.exists():
-        try:
-            existing = json.loads(path.read_text(encoding="utf-8"))
-            if isinstance(existing, dict) and isinstance(existing.get("processes"), dict):
-                doc = existing
-        except json.JSONDecodeError:
-            raise GenerationError(f"{path} exists but is not valid JSON — refusing to overwrite")
-    action = "updated" if proc["pid"] in doc["processes"] else "written"
-    doc["processes"][proc["pid"]] = proc
-    doc["_meta"] = {
-        "generated_by": "scripts/generate_rail_wiki.py",
-        "note": "gitignored per spec §8 — never commit this file",
-        "process_count": len(doc["processes"]),
-        "last_write": date.today().isoformat(),
-    }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    tmp.replace(path)
-    return action
+def _registry_names(entries, key):
+    names = set()
+    for e in entries:
+        v = e.get(key)
+        if not v:
+            continue
+        names.add(_norm(v))
+        # a parenthetical or slash alias counts as the same entry
+        base = re.sub(r"\s*\(.*?\)\s*", " ", str(v))
+        names.add(_norm(base))
+        for part in re.split(r"\s*/\s*", base):
+            if len(part.strip()) > 2:
+                names.add(_norm(part))
+    return {n for n in names if n}
 
 
-# --- reusable pipeline ----------------------------------------------------------
-def generate_one(
-    pid: str, *,
-    mock: bool = False,
-    mock_profile: str = "good",
-    host: str = OLLAMA_HOST,
-    registries: str = str(REGISTRY_DIR),
-    out: str = str(PROCESSES),
-    max_retries: int = DEFAULT_RETRIES,
-    dry_run: bool = False,
-    debug: bool = False,
-) -> dict:
-    """The whole single-PID pipeline as a function, not a CLI wrapper.
+SYS_NAMES = _registry_names(REG_SYSTEMS, "name")
+ROLE_NAMES = _registry_names(REG_ROLES, "role")
+REG_CITES = _registry_names(REG_REGS, "cite")
 
-    Two independent generate-and-retry phases, not one combined call: Phase A
-    (the five description fields + name/inputs/outputs + process-level
-    entity ids) must pass before Phase B (the step list) is even attempted.
-    Live testing found the combined version genuinely hard for a 14B model to
-    converge on -- a retry aimed at fixing the steps would regress a
-    description field that had already passed, and vice versa, because each
-    retry regenerates the whole response from scratch rather than patching
-    the flagged part. Splitting them means a Phase B retry cannot touch
-    fields Phase A already locked in, and each phase gets its own full
-    `max_retries` budget rather than splitting one budget across two
-    unrelated kinds of failure.
 
-    Returns a result dict rather than exiting, so scripts/run_batch.py can
-    call this directly for many PIDs in one process instead of shelling out:
+def in_registry(value, pool):
+    """Exact-or-contained match against a registry name pool. No fuzzy matching."""
+    n = _norm(value)
+    if not n:
+        return False
+    if n in pool:
+        return True
+    return any(r in n or n in r for r in pool if len(r) > 4)
 
-        {"pid", "status", "reason", "name", "confidence", "word_count",
-         "step_count", "gate_count", "attempts", "sources"}
 
-    attempts is the sum of both phases' attempt counts. status is one of:
-    written, updated, rejected_generation (a phase exhausted its retries),
-    rejected_validation (registry grounding failed), error (setup/model/IO
-    failure), dry_run.
-    """
-    def result(status: str, **extra) -> dict:
-        return {"pid": pid, "status": status, **extra}
-
-    try:
-        r = load(registries)
-        node = load_taxonomy(pid)
-        pains = spec_pain_points()
-        group = domain_group(pid, r)
-        if group is None:
-            raise GenerationError(f"no registry domain group for {pid}")
-        menu = build_menu(r, group)
-    except (GenerationError, RegistryError) as e:
-        print(f"FATAL: {e}", file=sys.stderr)
-        return result("error", reason=str(e))
-
-    counts = ", ".join(f"{len(menu[k])} {k}" for k in MENU_REGISTRIES)
-    print(f"{pid}  {node['l1']}")
-    print(f"          {node['l2']}")
-    print(f"  registry menu ({group}): {counts}, {len(pains)} §7 pain points")
-
-    attempts = 1 + max(0, max_retries)
-
-    # --- Phase A: description ---------------------------------------------
-    print("  Phase A: description")
-    note: str | None = None
-    desc_reply: dict | None = None
-    phase_a_attempts = 0
-    for attempt in range(1, attempts + 1):
-        phase_a_attempts = attempt
-        prompt = build_description_prompt(node, menu, pains, retry_note=note)
-        try:
-            if mock:
-                print(f"    MOCK: canned response, profile {mock_profile!r} "
-                      f"(attempt {attempt}/{attempts}, no network call)")
-                reply, raw = mock_description_response(menu, pains, mock_profile, attempt=attempt)
-            else:
-                print(f"    attempt {attempt}/{attempts}")
-                reply, raw = call_ollama(prompt, host)
-        except GenerationError as e:
-            print(f"FATAL: {e}", file=sys.stderr)
-            return result("error", reason=str(e))
-
-        reply_d = reply if isinstance(reply, dict) else {}
-        ok_fields, counts_, weak, over = check_field_lengths(reply_d)
-
-        if debug:
-            print()
-            print(f"  {'=' * 66}")
-            print(f"  DEBUG: Phase A attempt {attempt}/{attempts} raw model response")
-            print(f"  {'=' * 66}")
-            print(raw)
-            print(f"  {'-' * 66}")
-            print("  per-field word counts:")
-            for k in FIELD_KEYS:
-                flag = " <- BELOW FLOOR" if k in weak else (" <- over advisory max" if k in over else "")
-                print(f"    {FIELD_LABELS[k]:10s} {counts_[k]:3d} words{flag}")
-                print(f"      {reply_d.get(k, '')}")
-            print(f"  {'=' * 66}")
-            print()
-
-        if not ok_fields:
-            print(f"    REJECTED (length): {len(weak)} field(s) below the "
-                  f"{FIELD_FLOOR_WORDS}-word floor: "
-                  f"{', '.join(FIELD_LABELS[k] for k in weak)}")
-            if attempt < attempts:
-                note = field_retry_note(counts_, weak)
-                print("    retrying with a corrective note")
-                continue
-            reason = (f"{', '.join(FIELD_LABELS[k] for k in weak)} below the "
-                     f"{FIELD_FLOOR_WORDS}-word floor")
-            print()
-            print(f"REJECT  {pid}  (Phase A: description)")
-            print(f"        {reason}, after {attempts} attempt(s). Surfacing for human "
-                  f"review rather than looping — the prompt or the registry coverage "
-                  f"for this domain is the thing to look at, not the retry count.")
-            print(f"\n  NOT WRITTEN. {Path(out).name} is unchanged.")
-            return result("rejected_generation", reason=reason, attempts=attempt)
-
-        if over:
-            print(f"    note: {', '.join(FIELD_LABELS[k] for k in over)} over the "
-                  f"{FIELD_MAX_WORDS}-word advisory max (not a gate condition)")
-        desc_reply = reply_d
-        print(f"    passed on attempt {attempt}/{attempts} "
-              f"(all 5 fields >= {FIELD_FLOOR_WORDS} words)")
-        break
-
-    assert desc_reply is not None
-
-    # --- Phase B: steps ------------------------------------------------------
-    print("  Phase B: steps")
-    note = None
-    steps_reply: dict | None = None
-    phase_b_attempts = 0
-    gate_count = 0
-    for attempt in range(1, attempts + 1):
-        phase_b_attempts = attempt
-        prompt = build_steps_prompt(node, menu, pains, retry_note=note)
-        try:
-            if mock:
-                print(f"    MOCK: canned response, profile {mock_profile!r} "
-                      f"(attempt {attempt}/{attempts}, no network call)")
-                reply, raw = mock_steps_response(menu, mock_profile, attempt=attempt)
-            else:
-                print(f"    attempt {attempt}/{attempts}")
-                reply, raw = call_ollama(prompt, host)
-        except GenerationError as e:
-            print(f"FATAL: {e}", file=sys.stderr)
-            return result("error", reason=str(e))
-
-        reply_d = reply if isinstance(reply, dict) else {}
-        ok_steps, step_problems, gate_count = check_steps_structure(reply_d)
-
-        if debug:
-            steps_raw = reply_d.get("steps")
-            n_steps = len(steps_raw) if isinstance(steps_raw, list) else 0
-            print()
-            print(f"  {'=' * 66}")
-            print(f"  DEBUG: Phase B attempt {attempt}/{attempts} raw model response")
-            print(f"  {'=' * 66}")
-            print(raw)
-            print(f"  {'-' * 66}")
-            print(f"  steps: {n_steps} returned, {gate_count} decision/exception gate(s)")
-            for prob in step_problems:
-                print(f"    <- {prob}")
-            print(f"  {'=' * 66}")
-            print()
-
-        if not ok_steps:
-            print(f"    REJECTED (steps): {len(step_problems)} problem(s)")
-            for prob in step_problems:
-                print(f"      - {prob}")
-            if attempt < attempts:
-                note = step_retry_note(step_problems)
-                print("    retrying with a corrective note")
-                continue
-            reason = f"{len(step_problems)} step problem(s)"
-            print()
-            print(f"REJECT  {pid}  (Phase B: steps — description already passed, "
-                  f"{phase_a_attempts} attempt(s), and is unaffected)")
-            print(f"        {reason}, after {attempts} attempt(s). Surfacing for human "
-                  f"review rather than looping — the prompt or the registry coverage "
-                  f"for this domain is the thing to look at, not the retry count.")
-            print(f"\n  NOT WRITTEN. {Path(out).name} is unchanged.")
-            return result("rejected_generation", reason=reason,
-                          attempts=phase_a_attempts + attempt)
-
-        steps_reply = reply_d
-        print(f"    passed on attempt {attempt}/{attempts} "
-              f"({len(reply_d.get('steps', []))} steps, {gate_count} gate(s))")
-        break
-
-    assert steps_reply is not None
-
-    proc, notes = assemble(node, {**desc_reply, "steps": steps_reply.get("steps", [])}, r, pains)
-    for n in notes:
-        print(f"  note: {n}")
-
-    backstop_ok, words, advisory = check_description_length(proc)
-    if not backstop_ok:
-        msg = (f"assembled description is {words} words, under the "
-              f"{DESC_FLOOR_WORDS}-word backstop, despite every field clearing "
-              f"its own floor. This indicates a bug in assemble(), not a model "
-              f"problem — do not retry.")
-        print(f"  FATAL: {msg}")
-        return result("error", reason=msg)
-    if advisory:
-        print(f"  note: {advisory} (advisory)")
-    else:
-        print(f"  description: {words} words (5 fields, all >= {FIELD_FLOOR_WORDS})")
-
-    print()
-    facts = vc.FactIndex(r)
-    findings = vc.validate(proc, r, facts)
-    vc.report(pid, findings)
-
-    common = dict(
-        name=proc["name"], confidence=proc["confidence"],
-        word_count=len(proc["description"].split()),
-        step_count=len(proc["steps"]), gate_count=gate_count,
-        sources=len(proc["sources"]), attempts=phase_a_attempts + phase_b_attempts,
-    )
-
+def registry_audit(pid, data, mmd=None):
+    """PHASE 2 REQUIREMENT — log every system/role/regulation the model produced
+    that does not resolve to a registries/ entry. Advisory: it reports, it does
+    not block, because blocking here would silently drop otherwise good content
+    and hide the miss. Findings are what make the registry-first design real."""
+    findings = []
+    for s in data.get("systems", []) or []:
+        if not in_registry(s, SYS_NAMES):
+            findings.append(("system", s))
+    for step in data.get("l4_steps", []) or []:
+        if step.get("system") and not in_registry(step["system"], SYS_NAMES):
+            findings.append(("step.system", step["system"]))
+        if step.get("role") and not in_registry(step["role"], ROLE_NAMES):
+            findings.append(("step.role", step["role"]))
+    for c in re.findall(r'\b\d{2}\s*CFR\s*(?:Part\s*)?[\d.]+\b', json.dumps(data)):
+        if not in_registry(c, REG_CITES):
+            findings.append(("regulation", c))
     if findings:
-        print()
-        print(f"  NOT WRITTEN. {Path(out).name} is unchanged.")
-        return result("rejected_validation",
-                      reason=f"{len(findings)} ungrounded item(s)", **common)
+        log(f"  registry audit {pid}: {len(findings)} unregistered name(s)", "WARN")
+        for kind, val in findings[:20]:
+            log(f"    UNREGISTERED {kind}: {val}", "WARN")
+    else:
+        log(f"  registry audit {pid}: all systems, roles and citations resolve")
+    return findings
 
-    if dry_run:
-        print("\n  --dry-run: validation passed, nothing written.")
-        return result("dry_run", **common)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# PROMPTS  (PORTED FIX 1 + 2 — two calls, two system prompts)
+# ─────────────────────────────────────────────────────────────────────────────
+
+SYSTEM_PROMPT_JSON = """You are a senior rail operations consultant documenting business
+processes for a US Class I freight railroad, using Union Pacific as the reference
+archetype. You have deep knowledge of:
+- Class I freight railroad operations: dispatching, terminal and yard operations,
+  road and yard crews, mechanical, engineering (MOW), intermodal and interline
+- US rail regulation: 49 CFR (FRA Parts 213 track, 214 roadway worker, 215 freight
+  car safety, 217/218 operating rules, 219 drug and alcohol, 220 radio, 228 hours
+  of service, 229 locomotive, 232 brake system, 236 signal and PTC, 172/174 hazmat),
+  the Surface Transportation Board (49 CFR Part 1180 and Part 1244), and the
+  Railway Labor Act
+- Industry rulebooks and standards: GCOR, AAR Interchange Rules, AAR Field Manual,
+  Umler, the AAR Circular OT-55 key train protocol
+
+Real systems in this estate: NetControl and CADx computer-aided dispatch, the
+Harriman Dispatching Center, I-ETMS positive train control with its Back Office
+Server, PS Technology crew systems, CrewPro, HASTUS, CloudMoyo Crew Management,
+Umler, CHARM car hire accounting, TRAIN II, EHMS equipment health, the Interline
+Settlement System, wayside defect detector networks, machine vision portals,
+RailAI, Wabtrax, the FRA Automated Track Inspection Program, track geometry cars,
+Wabtec Modular Control Architecture, NEXSYS III-i, UPGo, EMP and UMAX container
+fleets, Loup Logistics, ShipmentVision, the up.com customer portal, AskRail,
+TRANSCAER, SERTC, GCOR, C3RS, Bailey Yard at North Platte, and the Unified
+Plan 2020 operating plan.
+
+Return ONLY valid JSON with no markdown fences, no preamble, no trailing text and
+absolutely no Mermaid or diagram syntax anywhere in the response."""
+
+MERMAID_RULES = """MERMAID CRITICAL RULES (violations cause mmdc parse errors):
+- NO YAML frontmatter
+- Node IDs MUST start with a LETTER such as NodeA, StepB or S1_1 — never a digit
+- Arrows are ALWAYS --> and never --gt or --&gt;
+- Node labels contain NO parentheses, no ampersand, no angle brackets"""
+
+SYSTEM_PROMPT = SYSTEM_PROMPT_JSON + "\n\n" + MERMAID_RULES
+
+JSON_SHAPE = """{
+  "description": "3-4 sentence operational description in the US Class I railroad context",
+  "trigger": "what initiates this process",
+  "outcome": "what successful completion produces",
+  "l4_steps": [
+    {
+      "step": "1.1",
+      "name": "Step name",
+      "role": "Exact rail craft or management role such as Yardmaster, Locomotive Engineer, Conductor, Train Dispatcher, Carman, Track Inspector",
+      "system": "Exact system such as NetControl, I-ETMS, Umler, PS Technology",
+      "input": "Input document or data",
+      "output": "Output document or deliverable",
+      "kpi": "Measurable metric with target",
+      "decision_point": "Y or N",
+      "exception": "Y or N",
+      "pain_point": "Real operational challenge at this step"
+    }
+  ],
+  "swim_lanes": [{"role": "Role Title", "color": "#hex", "steps": ["1.1", "1.2"]}],
+  "systems": ["NetControl", "I-ETMS"],
+  "kpis": ["Terminal dwell under 24 hours", "Train speed above 20 mph"],
+  "risks": ["Air brake test defect released to the road"],
+  "regulations": ["49 CFR 232.205", "GCOR 6.28"]
+}"""
+
+CONTENT_RULES = """CONTENT RULES:
+- 10 to 12 l4_steps spread across 4 to 6 phases
+- At least 3 steps must be genuine decision points with decision_point Y
+- At least 2 steps must have exception Y
+- Real rail roles only: Train Dispatcher, Chief Dispatcher, Yardmaster, Conductor,
+  Locomotive Engineer, Carman, Car Inspector, Track Inspector, Roadway Worker in
+  Charge, Signal Maintainer, Trainmaster, Manager of Train Operations, Crew Caller,
+  Mechanical Foreman, Hazmat Specialist, Corridor Manager
+- 4 to 6 systems per process, named exactly as listed in the system prompt
+- 4 to 6 KPIs with measurable targets
+- 3 to 5 rail-specific risks covering regulatory, safety, service and commercial
+- 2 to 4 regulations, cited exactly, e.g. 49 CFR 232.205, 49 CFR 218.99, GCOR 6.28
+- Write role and system NAMES, never internal ID codes such as ROLE-D01-02
+- Do NOT include a mermaid field. The diagram is requested separately.
+- JSON ONLY — no markdown, no preamble"""
+
+# PORTED FIX 6 — form reference for the BPMN diagram. Deliberately from a
+# different industry (maritime) so the model copies the CONSTRUCT and none of
+# the subject matter. Measured against the airline reference repo's 149 real
+# .mmd files, whose averages are the floor this has to clear:
+#   30.6 nodes | 6.2 decision diamonds | 12.4 labelled branches
+#   5.4 subgraphs | 8.5 style/classDef lines | 2.4 terminators
+BPMN_FORM_EXAMPLE = """flowchart LR
+  subgraph P1[Phase 1: Booking Intake and Screening]
+    A([Start]) --> B[Receive booking request\\nCarrier booking portal]
+    B --> C{Cargo within\\nvessel capacity?}
+    C -- No --> B
+    C -- Yes --> D[Allocate slot and\\nconfirm sailing]
+  end
+
+  subgraph P2[Phase 2: Cargo Verification]
+    D --> E[Verify declared gross mass\\nshipper VGM feed]
+    E --> F{VGM received\\nbefore cut-off?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Screen dangerous goods\\nIMDG segregation table]
+    G --> H{DG declaration\\napproved?}
+    H -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Stow and Release]
+    H -- Yes --> I[Assign bay and tier\\nstowage planner]
+    I --> J{Stability within\\nlimits?}
+    J -- No --> I
+    J -- Yes --> K[Issue loading instruction\\nterminal operating system]
+    K --> L([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a"""
+
+
+def ollama_call(prompt, model, temperature=0.35):
+    r = requests.post(
+        f"{OLLAMA_URL}/api/generate",
+        json={"model": model, "prompt": prompt, "stream": False,
+              "options": {"temperature": temperature, "num_ctx": 8192}},
+        timeout=OLLAMA_TIMEOUT,
+    )
+    r.raise_for_status()
+    return r.json().get("response", "")
+
+
+def extract_json(raw, required=None):
+    """PORTED FIX 3 — find the first balanced object that parses AND carries the
+    expected keys. Small models often prepend a Mermaid block whose
+    %%{init: {...}}%% braces are the first thing a naive scanner finds, so those
+    are stripped before scanning and every remaining candidate is tried in turn.
+    """
+    if not raw:
+        return None
+    text = re.sub(r'^```[a-z]*\n?', '', raw.strip(), flags=re.MULTILINE)
+    text = re.sub(r'```$', '', text, flags=re.MULTILINE)
+    text = re.sub(r'%%\{.*?\}%%', '', text, flags=re.DOTALL)      # mermaid init blocks
+    text = re.sub(r'^\s*(flowchart|graph)\s+\w+.*$', '', text, flags=re.MULTILINE)
+
+    def candidates(s):
+        depth = start = 0
+        in_str = esc = False
+        for i, ch in enumerate(s):
+            if in_str:
+                if esc:
+                    esc = False
+                elif ch == "\\":
+                    esc = True
+                elif ch == '"':
+                    in_str = False
+                continue
+            if ch == '"':
+                in_str = True
+            elif ch == "{":
+                if depth == 0:
+                    start = i
+                depth += 1
+            elif ch == "}":
+                if depth:
+                    depth -= 1
+                    if depth == 0:
+                        yield s[start:i + 1]
+
+    best = None
+    for blob in candidates(text):
+        for attempt in (blob, blob.replace("\n", " "), re.sub(r',\s*([}\]])', r'\1', blob)):
+            try:
+                data = json.loads(attempt)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(data, dict):
+                break
+            if required and not any(data.get(k) for k in required):
+                best = best or data
+                break
+            return data
+    return best
+
+
+def generate_process_content(proc):
+    """Call 1 — JSON only. No Mermaid rules in this prompt (PORTED FIX 2)."""
+    own, other = registry_systems_for(proc["l1"])
+    sys_menu = ", ".join(s["name"] for s in own) or "none registered for this domain"
+    prompt = (
+        f"{SYSTEM_PROMPT_JSON}\n\n"
+        f"Document this business process for a US Class I freight railroad:\n"
+        f"  Process ID : {proc['pid']}\n"
+        f"  L1 Domain  : {proc['l1_name']}\n"
+        f"  L2 Group   : {proc['l2_name']}\n"
+        f"  L3 Process : {proc['name']}\n\n"
+        f"Systems specifically sourced for this domain, prefer these: {sys_menu}\n\n"
+        f"Return exactly this JSON shape:\n{JSON_SHAPE}\n\n{CONTENT_RULES}\n"
+    )
+    for i, model in enumerate((PRIMARY_MODEL, PRIMARY_MODEL, FALLBACK_MODEL)):
+        try:
+            raw = ollama_call(prompt, model, temperature=0.3 + 0.1 * i)
+            data = extract_json(raw, required=("l4_steps",))
+            if not data:
+                dump_raw(f"{proc['pid']}-json-{i+1}", raw)
+            if data and data.get("l4_steps"):
+                for k in ("systems", "kpis", "risks", "regulations", "swim_lanes"):
+                    data.setdefault(k, [])
+                return data
+            log(f"{proc['pid']}: unusable JSON from {model} (try {i+1}/3)", "WARN")
+        except Exception as exc:
+            log(f"{proc['pid']}: Ollama error on {model} — {exc}", "WARN")
+        time.sleep(2)
+    return None
+
+
+def generate_process_mermaid(proc, data, attempt=0):
+    """Call 2 — raw Mermaid only, so a multi-line label never has to survive JSON
+    escaping (PORTED FIX 1)."""
+    steps = "\n".join(
+        f"  {s.get('step','')} {s.get('name','')} "
+        f"[role: {s.get('role','')} | system: {s.get('system','')} | "
+        f"decision: {s.get('decision_point','N')} | exception: {s.get('exception','N')}]"
+        for s in data.get("l4_steps", [])
+    )
+    prompt = (
+        f"{SYSTEM_PROMPT}\n\n"
+        f"Draw the BPMN process flow for US Class I railroad process {proc['pid']} — "
+        f"{proc['name']}\nin the {proc['l1_name']} domain.\n\n"
+        f"These are the L4 steps it must cover:\n{steps}\n\n"
+        "STRUCTURE — copy this construct exactly. It is from a different industry, so take\n"
+        "the FORM and none of the content:\n\n"
+        f"{BPMN_FORM_EXAMPLE}\n\n"
+        "REQUIREMENTS:\n"
+        "- flowchart LR with 5 or 6 phase subgraphs named P1 to P6, each titled\n"
+        "  Phase N: short phase name.\n"
+        "- One ([Start]) terminator and one ([End]) terminator. Add 1 or 2 more terminators\n"
+        "  for exception exits such as ([Bad Order]), ([Hold]), ([Reject]) or ([Escalate]).\n"
+        "- 5 to 8 decision diamonds using curly braces. EVERY decision has at least two\n"
+        "  labelled outbound branches written as X -- Yes --> Y and X -- No --> Z.\n"
+        "  Use real rail decision language: air brake test passed, FRA defect found,\n"
+        "  interchange accepted, PTC initialised, hours of service remaining, track\n"
+        "  authority granted, hazmat placard verified, car bad ordered.\n"
+        "- At least 2 rework loops that route a failed decision BACK to an earlier task node\n"
+        "  rather than straight to an exit. This is what makes the flow multi-path.\n"
+        "- 22 to 30 nodes overall. Every task label is two lines: what happens, then a\n"
+        "  literal backslash-n, then the system or document involved.\n"
+        "  Example: ABT[Perform Class I air brake test\\\\nFRA 49 CFR 232.205 record]\n"
+        "- Flow must cross subgraph boundaries: a node in P2 connects to nodes in P3 and,\n"
+        "  where there is rework, back to P1.\n"
+        "- Close with style lines. Terminators fill:#20242b,color:#fff,stroke:#20242b and\n"
+        "  every decision diamond fill:#c8791a,color:#fff,stroke:#c8791a.\n"
+        "- Node IDs start with a letter. No parentheses, ampersands or angle brackets inside\n"
+        "  any label. Never use <br/>. Arrows are --> only.\n\n"
+        "Output the raw Mermaid and nothing else. No JSON, no fences, no commentary.\n"
+    )
+    models = [PRIMARY_MODEL, PRIMARY_MODEL, FALLBACK_MODEL]
+    model = models[min(attempt, len(models) - 1)]
     try:
-        action = write_process(proc, Path(out))
-    except GenerationError as e:
-        print(f"FATAL: {e}", file=sys.stderr)
-        return result("error", reason=str(e), **common)
-    print(f"\n  {action}: {pid} -> {Path(out).relative_to(REPO)}")
-    return result(action, **common)
+        return sanitise_mermaid(ollama_call(prompt, model, temperature=0.2 + 0.1 * attempt))
+    except Exception as exc:
+        log(f"{proc['pid']}: mermaid call failed on {model} — {exc}", "WARN")
+        return None
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description="Generate one registry-constrained process.")
-    ap.add_argument("--pid", required=True, help="e.g. RR-06-02-01")
-    ap.add_argument("--mock", action="store_true",
-                    help="use a canned response instead of calling Ollama (opens no socket)")
-    ap.add_argument("--mock-profile", default="good",
-                    choices=["good", "ungrounded-figure", "invented-system",
-                             "invented-role", "short", "short-then-good",
-                             "bad-steps", "bad-steps-then-good"],
-                    help="which canned response to use with --mock")
-    ap.add_argument("--host", default=OLLAMA_HOST)
-    ap.add_argument("--registries", default=str(REGISTRY_DIR))
-    ap.add_argument("--out", default=str(PROCESSES))
-    ap.add_argument("--max-retries", type=int, default=DEFAULT_RETRIES,
-                    dest="max_retries",
-                    help=f"retries when a description field or the step list "
-                         f"misses its requirement (default {DEFAULT_RETRIES})")
-    ap.add_argument("--dry-run", action="store_true", help="validate but never write")
-    ap.add_argument("--show-prompt", action="store_true",
-                    help="print the prompt for this PID and exit — no model "
-                         "call, no write. Ignores --mock.")
-    ap.add_argument("--debug", action="store_true",
-                    help="dump the full raw model response, per-field word "
-                         "counts, the step-list summary, and the assembled "
-                         "description for every attempt, mock or live")
+def diagram_richness(mmd):
+    """PORTED FIX 6 — structural score. Floors are the airline reference repo's
+    measured averages across 149 real .mmd files, rounded down."""
+    if not mmd:
+        return 0, {}
+    m = {
+        "nodes":     len(re.findall(r'^\s*\w+[\[\({]', mmd, flags=re.MULTILINE)),
+        "decisions": len(re.findall(r'\w+\{[^}]+\}', mmd)),
+        "branches":  len(re.findall(r'--\s*[A-Za-z][\w \-]*\s*-->', mmd)),
+        "subgraphs": mmd.count("subgraph"),
+        "styles":    len(re.findall(r'^\s*(style|classDef)\s', mmd, flags=re.MULTILINE)),
+        "terminals": len(re.findall(r'\(\[', mmd)),
+    }
+    score = ((m["decisions"] >= 5) + (m["branches"] >= 10) + (m["subgraphs"] >= 5)
+             + (m["styles"] >= 8) + (m["nodes"] >= 22) + (m["terminals"] >= 2))
+    return score, m
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MMDC RENDERING
+# ─────────────────────────────────────────────────────────────────────────────
+
+def render_mermaid(mmd_text, mmd_path, out_path, width, height, scale=MMDC_SCALE):
+    mmd_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    mmd_path.write_text(mmd_text, encoding="utf-8")
+    is_svg = out_path.suffix.lower() == ".svg"
+    cmd = ["mmdc", "-i", str(mmd_path), "-o", str(out_path),
+           "-w", str(width), "-H", str(height), "--backgroundColor", "white"]
+    if not is_svg:
+        cmd += ["--scale", str(scale)]
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        return False, "mmdc timed out"
+    except FileNotFoundError:
+        return False, "mmdc not on PATH — npm i -g @mermaid-js/mermaid-cli"
+    if res.returncode != 0:
+        return False, (res.stderr or res.stdout or "mmdc failed").strip()[:400]
+    floor = 1024 if is_svg else 4096
+    if not out_path.exists() or out_path.stat().st_size < floor:
+        return False, f"mmdc produced no usable {out_path.suffix.lstrip('.')}"
+    size_mb = out_path.stat().st_size / (1024 * 1024)
+    if not is_svg and size_mb > 90 and scale > 1:
+        log(f"{out_path.name}: {size_mb:.1f}MB — re-rendering at lower scale", "WARN")
+        return render_mermaid(mmd_text, mmd_path, out_path, int(width * 0.75),
+                              int(height * 0.75), scale=scale - 1)
+    return True, f"{size_mb:.2f}MB"
+
+
+def finalize_svg(path):
+    """PORTED FIX 7 — mmdc emits width="100%" plus an inline max-width on the
+    root <svg>. Both are hostile to zooming: the max-width caps how large the
+    vector will ever render, so the browser rasterises at that ceiling and scales
+    the bitmap up — which looks exactly like a blurry PNG even though the file is
+    genuinely vector. Replacing them with the viewBox dimensions gives the file a
+    real intrinsic size and no ceiling.
+    Verify on the output file, not in code: grep -c 'max-width' file.svg == 0.
+    """
+    try:
+        svg = path.read_text(encoding="utf-8")
+    except Exception:
+        return False
+    m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
+    if not m:
+        return False
+    w, h = m.group(1), m.group(2)
+    svg = svg.replace('width="100%"', f'width="{w}" height="{h}"', 1)
+    svg = re.sub(r'max-width:\s*[\d.]+px;?\s*', '', svg)
+    if 'height=' not in svg.split('>', 1)[0]:
+        svg = svg.replace('<svg ', f'<svg height="{h}" ', 1)
+    path.write_text(svg, encoding="utf-8")
+    remaining = svg.count("max-width")
+    log(f"  svg finalised — intrinsic {w}x{h}, max-width occurrences remaining: {remaining}")
+    return remaining == 0
+
+
+def build_diagram(proc, data):
+    """Generate, score, sanitise and render. 3 drafts, best wins."""
+    mmd_path = DIAGRAM_DIR / f"{proc['slug']}.mmd"
+    svg_path = IMG_DIR / f"{proc['slug']}.svg"
+    best, best_score = None, -1
+
+    for attempt in range(3):
+        candidate = generate_process_mermaid(proc, data, attempt=attempt)
+        score, metrics = diagram_richness(candidate)
+        if candidate and score > best_score:
+            best, best_score = candidate, score
+        log(f"  diagram draft {attempt+1}: score {score}/6 {metrics}")
+        if score >= 5:
+            break
+
+    if not best:
+        return None
+    if best_score < 4:
+        log(f"  {proc['pid']}: diagram is thin (score {best_score}/6) — publishing anyway, "
+            f"re-run with --pid {proc['pid']} --force to try again", "WARN")
+
+    for attempt in range(1, 4):
+        ok, info = render_mermaid(best, mmd_path, svg_path, PID_W, PID_H)
+        if ok:
+            finalize_svg(svg_path)
+            log(f"  diagram rendered as SVG ({info}) on render attempt {attempt}")
+            return svg_path
+        log(f"  mmdc attempt {attempt}/3 failed: {info}", "WARN")
+        retry = generate_process_mermaid(proc, data, attempt=attempt)
+        if retry:
+            best = retry
+    return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GIT TRANSPORT  (deviation from the reference — see module docstring)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def git(*args, check=True):
+    res = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+    if check and res.returncode != 0:
+        log(f"git {' '.join(args)} failed: {res.stderr.strip()[:300]}", "ERROR")
+    return res
+
+
+def commit_and_push(message, no_push=False):
+    """One commit, one Pages build. The token never enters this process: git uses
+    the `gh` credential helper already configured on this machine."""
+    git("add", "-A")
+    status = git("status", "--porcelain").stdout.strip()
+    if not status:
+        log("nothing to commit — working tree clean")
+        return True
+    res = git("commit", "-m", message + "\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>")
+    if res.returncode != 0:
+        return False
+    log(f"committed: {message}")
+    if no_push:
+        log("--no-push set — stopping before push", "WARN")
+        return True
+    res = git("push", "origin", BRANCH)
+    if res.returncode != 0:
+        return False
+    log("pushed to origin/main — Pages rebuild triggered")
+    return True
+
+
+def verify_live(url, wait=VERIFY_WAIT, needle="assets/img"):
+    log(f"  waiting {wait}s for the Pages build …")
+    time.sleep(wait)
+    for attempt in range(4):
+        try:
+            r = requests.get(url, timeout=45)
+            if r.status_code == 200 and needle in r.text:
+                return True
+            log(f"  verify attempt {attempt+1}: HTTP {r.status_code}"
+                f"{'' if r.status_code != 200 else ' (page served, marker not present yet)'}",
+                "WARN")
+        except Exception as exc:
+            log(f"  verify attempt {attempt+1} error: {exc}", "WARN")
+        time.sleep(25)
+    return False
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOCAL TRACKER  (data/processes.json — gitignored, never committed)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def load_tracker():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if TRACKER.exists():
+        try:
+            return json.loads(TRACKER.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            log("processes.json unreadable — starting a fresh tracker", "WARN")
+    return {}
+
+
+def save_tracker(tr):
+    TRACKER.write_text(json.dumps(tr, indent=2), encoding="utf-8")
+
+
+def is_complete(pid, tr):
+    return tr.get(pid, {}).get("status") == "Complete"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# EXCEL  (local only, gitignored)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def excel_record(proc, data, url):
+    try:
+        from openpyxl import Workbook, load_workbook
+        from openpyxl.utils import get_column_letter
+    except ImportError:
+        log("openpyxl not installed — skipping the Excel row", "WARN")
+        return
+    if EXCEL_PATH.exists():
+        wb = load_workbook(EXCEL_PATH)
+    else:
+        wb = Workbook()
+        idx = wb.active
+        idx.title = "Index"
+        idx.append(["PID", "Process Name", "L1 Domain", "L2 Group",
+                    "Status", "GitHub Pages URL", "Completed At"])
+        for p in PROCESSES:
+            idx.append([p["pid"], p["name"], p["l1_name"], p["l2_name"],
+                        "Queued", f"{PAGES_BASE}/{p['path']}", ""])
+        cat = wb.create_sheet("Master Catalog")
+        cat.append(["PID", "Step", "Step Name", "Role", "System", "Input", "Output",
+                    "KPI", "Decision", "Exception", "Pain Point"])
+
+    for row in wb["Index"].iter_rows(min_row=2):
+        if row[0].value == proc["pid"]:
+            row[4].value = "Complete"
+            row[6].value = datetime.now().strftime("%Y-%m-%d %H:%M")
+            break
+
+    cat = wb["Master Catalog"]
+    for s in data.get("l4_steps", []):
+        cat.append([proc["pid"], s.get("step", ""), s.get("name", ""), s.get("role", ""),
+                    s.get("system", ""), s.get("input", ""), s.get("output", ""),
+                    s.get("kpi", ""), s.get("decision_point", "N"),
+                    s.get("exception", "N"), s.get("pain_point", "")])
+
+    tab = proc["pid"][:31]
+    if tab in wb.sheetnames:
+        del wb[tab]
+    ws = wb.create_sheet(tab)
+    for label, value in (("Process ID", proc["pid"]), ("Process Name", proc["name"]),
+                         ("L1 Domain", proc["l1_name"]), ("L2 Group", proc["l2_name"]),
+                         ("Trigger", data.get("trigger", "")),
+                         ("Outcome", data.get("outcome", "")),
+                         ("Description", data.get("description", "")),
+                         ("Systems", ", ".join(map(str, data.get("systems", [])))),
+                         ("KPIs", " | ".join(map(str, data.get("kpis", [])))),
+                         ("Risks", " | ".join(map(str, data.get("risks", [])))),
+                         ("Regulations", " | ".join(map(str, data.get("regulations", [])))),
+                         ("URL", url)):
+        ws.append([label, value])
+    ws.append([])
+    ws.append(["Step", "Name", "Role", "System", "Input", "Output",
+               "KPI", "Decision", "Exception", "Pain Point"])
+    for s in data.get("l4_steps", []):
+        ws.append([s.get("step", ""), s.get("name", ""), s.get("role", ""),
+                   s.get("system", ""), s.get("input", ""), s.get("output", ""),
+                   s.get("kpi", ""), s.get("decision_point", "N"),
+                   s.get("exception", "N"), s.get("pain_point", "")])
+    for col, width in enumerate([10, 34, 26, 24, 26, 26, 30, 10, 10, 40], start=1):
+        ws.column_dimensions[get_column_letter(col)].width = width
+    wb.save(EXCEL_PATH)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HTML BUILDING
+# ─────────────────────────────────────────────────────────────────────────────
+
+DEPTH_PROCESS = 3      # l1/l2/pid/index.html
+DEPTH_L2 = 2           # l1/l2/index.html
+DEPTH_L1 = 1           # l1/index.html
+DEPTH_EA = 2           # ea-diagrams/ea-NN/index.html
+DEPTH_EA_IDX = 1       # ea-diagrams/index.html
+DEPTH_ROOT = 0         # index.html
+
+# Every class below maps to a registries/systems.json family — nothing invented.
+SYS_TAG_MAP = [
+    ("netcontrol", "netcontrol"), ("cadx", "netcontrol"),
+    ("computer-aided dispatch", "netcontrol"), ("computer aided dispatch", "netcontrol"),
+    ("i-etms", "ietms"), ("ietms", "ietms"), ("back office server", "ietms"),
+    ("positive train control", "ietms"), ("ptc", "ietms"),
+    ("ps technology", "pst"), ("pst", "pst"), ("crewpro", "pst"),
+    ("hastus", "pst"), ("cloudmoyo", "pst"), ("trackhos", "pst"),
+    ("umler", "umler"), ("charm", "umler"), ("train ii", "umler"),
+    ("ehms", "umler"), ("equipment health", "umler"),
+    ("interline settlement", "umler"), ("switching settlement", "umler"),
+    ("unified plan", "unified"),
+    ("loup", "loup"), ("shipmentvision", "loup"), ("up.com", "loup"),
+    ("customer portal", "loup"), ("transentric", "loup"),
+    ("upgo", "upgo"), ("emp", "upgo"), ("umax", "upgo"),
+    ("wabtec", "wabtec"), ("nexsys", "wabtec"),
+    ("wabtrax", "wabtrax"),
+    ("wayside", "wayside"), ("detector", "wayside"), ("machine vision", "wayside"),
+    ("railai", "wayside"), ("atip", "wayside"), ("track geometry", "wayside"),
+    ("automated track inspection", "wayside"),
+    ("gcor", "gcor"), ("c3rs", "gcor"), ("close call", "gcor"), ("commit", "gcor"),
+    ("operating practices command", "gcor"),
+    ("askrail", "askrail"), ("transcaer", "askrail"), ("sertc", "askrail"),
+    ("bailey yard", "facility"), ("harriman", "facility"), ("shop", "facility"),
+    ("yard", "facility"), ("terminal", "facility"), ("ictf", "facility"),
+    ("joliet", "facility"), ("global iv", "facility"),
+    ("fuel surcharge", "finance"), ("arc", "finance"),
+    ("te&y", "training"), ("training", "training"), ("classroom", "training"),
+]
+
+
+def sys_tag_class(name):
+    low = (name or "").lower()
+    for needle, cls in SYS_TAG_MAP:
+        if needle in low:
+            return cls
+    return "custom"
+
+
+def sys_tags(systems):
+    """Registered systems get their family colour; anything the registry does not
+    know is rendered with .sys-unregistered so a registry miss is visible on the
+    page instead of blending in."""
+    out = []
+    for s in systems or []:
+        s = str(s).strip()
+        if not s or s.lower() in ("none", "n/a"):
+            continue
+        cls = sys_tag_class(s) if in_registry(s, SYS_NAMES) else "sys-unregistered"
+        out.append(f'<span class="sys-tag {cls}">{esc(s)}</span>')
+    return " ".join(out) or '<span class="sys-tag custom">Not specified</span>'
+
+
+def esc(text):
+    return _html.escape(str(text if text is not None else ""), quote=False)
+
+
+def prefix(depth):
+    return "../" * depth if depth else "./"
+
+
+def trunc(text, n=52):
+    text = str(text)
+    return text if len(text) <= n else text[: n - 1].rstrip() + "…"
+
+
+def build_sidebar(depth, active_pid=None, active_ea=None):
+    """Full navigation: every L1, every L2, every process, plus the EA section."""
+    p = prefix(depth)
+    active = BY_PID.get(active_pid) if active_pid else None
+    parts = ['<nav class="wiki-nav">']
+
+    for l1_code, (icon, l1_name, l1_slug, fam) in L1_META.items():
+        groups = [g for g in TAXONOMY if g["l1"] == l1_code]
+        open_l1 = " open" if active and active["l1"] == l1_code else ""
+        parts.append(f'<div class="nav-domain{open_l1}">')
+        parts.append(
+            f'  <a class="nav-l1" href="{p}{l1_slug}/index.html">'
+            f'<span class="nav-l1-icon">{icon}</span>'
+            f'<span class="nav-org-dot {fam}"></span>'
+            f'<span class="nav-l1-text">{esc(l1_name)}</span>'
+            f'<span class="nav-l1-caret">&#9654;</span></a>'
+        )
+        parts.append('  <div class="nav-l2-list">')
+        for g in groups:
+            open_l2 = (" open" if active and active["l1"] == l1_code
+                       and active["l2"] == g["l2"] else "")
+            parts.append(f'    <div class="nav-l2-group{open_l2}">')
+            parts.append(
+                f'      <a class="nav-l2-title" href="{p}{l1_slug}/{g["l2_slug"]}/index.html">'
+                f'{esc(g["l2_name"])}</a>'
+            )
+            parts.append('      <div class="nav-l3-list">')
+            for pid in g["names"]:
+                cls = "nav-l3 active" if pid == active_pid else "nav-l3"
+                parts.append(
+                    f'        <a class="{cls}" '
+                    f'href="{p}{l1_slug}/{g["l2_slug"]}/{pid.lower()}/index.html">'
+                    f'{pid}</a>'
+                )
+            parts.append('      </div>')
+            parts.append('    </div>')
+        parts.append('  </div>')
+        parts.append('</div>')
+
+    open_ea = " open" if active_ea else ""
+    parts.append(f'<div class="nav-domain{open_ea}">')
+    parts.append(
+        f'  <a class="nav-l1" href="{p}{EA_DIR_SLUG}/index.html">'
+        f'<span class="nav-l1-icon">\U0001F5FA</span>'
+        f'<span class="nav-org-dot corp"></span>'
+        f'<span class="nav-l1-text">Enterprise Architecture</span>'
+        f'<span class="nav-l1-caret">&#9654;</span></a>'
+    )
+    parts.append('  <div class="nav-l2-list">')
+    parts.append(f'    <div class="nav-l2-group{open_ea}">')
+    parts.append(f'      <a class="nav-l2-title" href="{p}{EA_DIR_SLUG}/index.html">EA Diagrams</a>')
+    parts.append('      <div class="nav-l3-list">')
+    for ea_id, ea_title, _ in EA_DIAGRAMS:
+        cls = "nav-l3 active" if ea_id == active_ea else "nav-l3"
+        parts.append(
+            f'        <a class="{cls}" href="{p}{EA_DIR_SLUG}/{ea_id}/index.html">'
+            f'{ea_id.upper()} &mdash; {esc(trunc(ea_title, 34))}</a>'
+        )
+    parts.append('      </div>')
+    parts.append('    </div>')
+    parts.append('  </div>')
+    parts.append('</div>')
+    parts.append('</nav>')
+    return "\n".join(parts)
+
+
+FOOTER = """      <div class="wiki-footer">
+        Independently compiled from public sources. Not affiliated with, sponsored by,
+        or endorsed by Union Pacific or any other railroad. Illustrative of US Class I
+        practice; every system, regulation, role and metric named here traces to a
+        sourced entry in <code>registries/</code>.
+      </div>"""
+
+
+def page_shell(title, topbar_sub, depth, main_html, active_pid=None, active_ea=None):
+    """PORTED FIX 8 — the template stamp goes in every page, right after the
+    doctype, so a page built under older code stays greppable."""
+    p = prefix(depth)
+    return f"""<!DOCTYPE html>
+<!-- {TEMPLATE_VERSION} -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{title} &mdash; {SITE_TITLE}</title>
+  <link rel="stylesheet" href="{p}assets/css/wiki.css">
+</head>
+<body>
+  <div class="topbar">
+    <button id="topbarToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a class="topbar-brand" href="{p}index.html">US Class I <span class="accent">Rail</span> Process Wiki</a>
+    <span class="topbar-sub">{topbar_sub}</span>
+    <span class="topbar-spacer"></span>
+  </div>
+  <div class="wiki-layout">
+    <nav id="sidebar">
+      <button id="sidebarToggle" title="Collapse sidebar">&#9664;</button>
+{build_sidebar(depth, active_pid, active_ea)}
+    </nav>
+    <main class="wiki-main">
+{main_html}
+{FOOTER}
+    </main>
+  </div>
+  <div id="lightbox"><img id="lightboxImg" src="" alt=""></div>
+  <script src="{p}assets/js/wiki.js"></script>
+</body>
+</html>
+"""
+
+
+def build_process_page(proc, data):
+    p = prefix(DEPTH_PROCESS)
+    fam = proc["family"]
+    rows = []
+    for s in data.get("l4_steps", []):
+        dec = ('<span class="decision-y">Y</span>'
+               if str(s.get("decision_point", "N")).upper().startswith("Y") else "N")
+        exc = ('<span class="exception-y">Y</span>'
+               if str(s.get("exception", "N")).upper().startswith("Y") else "N")
+        rows.append(f"""        <tr>
+          <td class="step-num">{esc(s.get('step',''))}</td>
+          <td>{esc(s.get('name',''))}</td>
+          <td>{esc(s.get('role',''))}</td>
+          <td>{sys_tags([s.get('system')])}</td>
+          <td>{esc(s.get('input',''))}</td>
+          <td>{esc(s.get('output',''))}</td>
+          <td>{esc(s.get('kpi',''))}</td>
+          <td>{esc(s.get('pain_point',''))}</td>
+          <td>{dec}</td>
+          <td>{exc}</td>
+        </tr>""")
+
+    kpis = " ".join(f'<span class="kpi-pill">{esc(k)}</span>' for k in data.get("kpis", []))
+    risks = " ".join(f'<span class="risk-pill">{esc(r)}</span>' for r in data.get("risks", []))
+    regs = " ".join(f'<span class="sys-tag gcor">{esc(r)}</span>'
+                    for r in data.get("regulations", []))
+    lanes = " ".join(
+        f'<span class="kpi-pill" style="background:#f2f2f0;color:#33363b">'
+        f'{esc(l.get("role",""))} &middot; {esc(", ".join(map(str, l.get("steps", []))))}</span>'
+        for l in data.get("swim_lanes", []) if isinstance(l, dict)
+    )
+
+    main = f"""      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="{p}index.html">Home</a> &rsaquo;
+          <a href="{p}{proc['l1_slug']}/index.html">{esc(proc['l1_name'])}</a> &rsaquo;
+          <a href="{p}{proc['l1_slug']}/{proc['l2_slug']}/index.html">{esc(proc['l2_name'])}</a>
+        </div>
+        <h1>
+          <span class="pid-badge org-badge-{fam}">{proc['l1']}</span>
+          {proc['pid']} &mdash; {esc(proc['l2_name'])}
+        </h1>
+        <p>{esc(data.get('description',''))}</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">&#x1F5FA; BPMN Process Flow</div>
+        <div class="card-body">
+          <div class="diagram-wrap">
+            <a href="{p}assets/img/{proc['slug']}.svg" data-lightbox data-title="{proc['pid']} BPMN">
+              <img src="{p}assets/img/{proc['slug']}.svg" alt="{proc['pid']} BPMN Diagram">
+            </a>
+            <p>Click diagram to zoom &amp; pan &bull; Scroll to zoom &bull; Drag to pan &bull;
+               <a href="{p}assets/img/{proc['slug']}.svg" download>Download SVG</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">&#x1F4CB; Process Attributes</div>
+        <div class="card-body">
+          <table class="attr-table">
+            <tr><th>Process ID</th><td>{proc['pid']}</td></tr>
+            <tr><th>Domain Family</th><td>{FAMILY_LABEL[fam]}</td></tr>
+            <tr><th>L1 Domain</th><td>{esc(proc['l1_name'])}</td></tr>
+            <tr><th>L2 Process Group</th><td>{esc(proc['l2_name'])}</td></tr>
+            <tr><th>Trigger</th><td>{esc(data.get('trigger',''))}</td></tr>
+            <tr><th>Outcome</th><td>{esc(data.get('outcome',''))}</td></tr>
+            <tr><th>Systems</th><td>{sys_tags(data.get('systems'))}</td></tr>
+            <tr><th>Regulatory Hooks</th><td>{regs or '<span class="text-muted">None captured</span>'}</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">&#x1F4CB; L4 Process Steps</div>
+        <div class="card-body">
+          <div class="l4-table-wrap">
+            <table class="l4-table">
+              <thead>
+                <tr>
+                  <th>Step</th><th>Name</th><th>Role</th><th>System</th>
+                  <th>Input</th><th>Output</th><th>KPI</th><th>Pain Point / Risk</th>
+                  <th>Decision?</th><th>Exception?</th>
+                </tr>
+              </thead>
+              <tbody>
+{chr(10).join(rows)}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">&#x1F4CA; KPIs &amp; Risk Register</div>
+        <div class="card-body">
+          <p class="mb-8"><strong>KPIs</strong></p>
+          <div class="kpi-list mb-8">{kpis or '<span class="text-muted">None captured</span>'}</div>
+          <p class="mb-8" style="margin-top:16px"><strong>Key Risks</strong></p>
+          <div class="kpi-list">{risks or '<span class="text-muted">None captured</span>'}</div>
+          {'<p class="mb-8" style="margin-top:16px"><strong>Swim Lanes</strong></p><div class="kpi-list">' + lanes + '</div>' if lanes else ''}
+        </div>
+      </div>
+"""
+    return page_shell(f"{proc['pid']}", f"{esc(proc['l1_name'])} &rsaquo; {esc(proc['l2_name'])}",
+                      DEPTH_PROCESS, main, active_pid=proc["pid"])
+
+
+def group_processes(l1_code, l2_code):
+    return [p for p in PROCESSES if p["l1"] == l1_code and p["l2"] == l2_code]
+
+
+def status_cell(pid, tr):
+    if is_complete(pid, tr):
+        return '<span style="color:#1a7f37;font-weight:700">&#x2705; Complete</span>'
+    return '<span style="color:#9a9da3">Queued</span>'
+
+
+def build_l2_index(l1_code, l2_code, tr):
+    icon, l1_name, l1_slug, fam = L1_META[l1_code]
+    g = next(x for x in TAXONOMY if x["l1"] == l1_code and x["l2"] == l2_code)
+    procs = group_processes(l1_code, l2_code)
+    done = sum(1 for x in procs if is_complete(x["pid"], tr))
+    p = prefix(DEPTH_L2)
+    rows = "\n".join(
+        f'<tr><td><a href="{x["slug"]}/index.html">{x["pid"]}</a></td>'
+        f'<td>{esc(g["l2_name"])}</td><td>{status_cell(x["pid"], tr)}</td></tr>'
+        for x in procs
+    )
+    main = f"""      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="{p}index.html">Home</a> &rsaquo;
+          <a href="../index.html">{esc(l1_name)}</a>
+        </div>
+        <h1>{icon} {esc(g['l2_name'])}</h1>
+        <p>{done} of {len(procs)} processes complete</p>
+      </div>
+      <div class="card">
+        <div class="card-header">Process List</div>
+        <div class="card-body">
+          <table class="l4-table" style="min-width:500px">
+            <thead><tr><th>PID</th><th>L2 Process Group</th><th>Status</th></tr></thead>
+            <tbody>{rows}</tbody>
+          </table>
+        </div>
+      </div>
+"""
+    return page_shell(esc(g["l2_name"]), f"{esc(l1_name)} &rsaquo; {esc(g['l2_name'])}",
+                      DEPTH_L2, main, active_pid=procs[0]["pid"] if procs else None)
+
+
+def build_l1_index(l1_code, tr):
+    icon, l1_name, l1_slug, fam = L1_META[l1_code]
+    groups = [g for g in TAXONOMY if g["l1"] == l1_code]
+    all_procs = [p for p in PROCESSES if p["l1"] == l1_code]
+    done = sum(1 for p in all_procs if is_complete(p["pid"], tr))
+    p = prefix(DEPTH_L1)
+    ea_id = f"ea-{l1_code.split('-')[1]}"
+
+    cards = []
+    for g in groups:
+        gp = group_processes(l1_code, g["l2"])
+        gdone = sum(1 for x in gp if is_complete(x["pid"], tr))
+        cards.append(f"""    <div class="domain-card org-{fam}">
+      <h3><a href="{g['l2_slug']}/index.html">{esc(g['l2_name'])}</a></h3>
+      <p class="card-meta">{gdone}/{len(gp)} processes complete</p>
+    </div>""")
+
+    main = f"""      <div class="page-header">
+        <div class="breadcrumb"><a href="{p}index.html">Home</a></div>
+        <h1>{icon} {esc(l1_name)}</h1>
+        <p>{done} of {len(all_procs)} processes complete across {len(groups)} process groups &middot;
+           <a href="{p}{EA_DIR_SLUG}/{ea_id}/index.html">{ea_id.upper()} architecture diagram</a></p>
+      </div>
+      <div class="domain-grid">
+{chr(10).join(cards)}
+      </div>
+"""
+    return page_shell(esc(l1_name), esc(l1_name), DEPTH_L1, main,
+                      active_pid=all_procs[0]["pid"] if all_procs else None)
+
+
+def build_home(tr):
+    done = sum(1 for p in PROCESSES if is_complete(p["pid"], tr))
+    cards = []
+    for l1_code, (icon, l1_name, l1_slug, fam) in L1_META.items():
+        procs = [p for p in PROCESSES if p["l1"] == l1_code]
+        d = sum(1 for x in procs if is_complete(x["pid"], tr))
+        cards.append(f"""    <div class="domain-card org-{fam}">
+      <h3><a href="{l1_slug}/index.html">{icon} {esc(l1_name)}</a></h3>
+      <p class="card-meta">
+        <span class="nav-org-dot {fam}" style="display:inline-block;margin-right:4px"></span>
+        {FAMILY_LABEL[fam]}
+      </p>
+      <p class="card-count">{d} / {len(procs)} processes complete</p>
+    </div>""")
+    cards.append(f"""    <div class="domain-card org-corp">
+      <h3><a href="{EA_DIR_SLUG}/index.html">\U0001F5FA Enterprise Architecture</a></h3>
+      <p class="card-meta"><span class="nav-org-dot corp" style="display:inline-block;margin-right:4px"></span>CORPORATE</p>
+      <p class="card-count">{len(EA_DIAGRAMS)} EA diagrams</p>
+    </div>""")
+
+    n_sys = len(REG_SYSTEMS)
+    main = f"""      <div class="page-header">
+        <h1>{SITE_TITLE}</h1>
+        <p>End-to-end business process reference for US Class I freight railroading,
+           modelled on the Union Pacific archetype.</p>
+      </div>
+
+      <div class="dedup-panel">
+        <h4>Registry-first</h4>
+        <ul>
+          <li>No system, CFR citation, role or metric appears in a process unless it
+              resolves to a sourced entry in <code>registries/</code> &mdash;
+              {n_sys} systems, {len(REG_ROLES)} roles, {len(REG_REGS)} regulations,
+              {len(REG_KPIS)} KPIs and {len(REG_FACTS)} facts, each with a source URL.</li>
+          <li>Any name the model produces that does not resolve is logged at generation
+              time and rendered on the page in a dashed red tag rather than silently accepted.</li>
+        </ul>
+      </div>
+
+      <div class="stats-bar">
+        <div class="stat-card"><div class="stat-num">{done}</div><div class="stat-label">Processes Complete</div></div>
+        <div class="stat-card"><div class="stat-num">{len(PROCESSES)}</div><div class="stat-label">Total Processes</div></div>
+        <div class="stat-card"><div class="stat-num">{len(L1_META)}</div><div class="stat-label">L1 Domains</div></div>
+        <div class="stat-card"><div class="stat-num">{len(TAXONOMY)}</div><div class="stat-label">L2 Process Groups</div></div>
+        <div class="stat-card"><div class="stat-num accent">{len(EA_DIAGRAMS)}</div><div class="stat-label">EA Diagrams</div></div>
+      </div>
+
+      <div class="domain-grid">
+{chr(10).join(cards)}
+      </div>
+"""
+    return page_shell(SITE_TITLE, "Business Process Reference", DEPTH_ROOT, main)
+
+
+def build_search_page():
+    return """<!DOCTYPE html>
+<!-- """ + TEMPLATE_VERSION + """ -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Search &mdash; """ + SITE_TITLE + """</title>
+  <link rel="stylesheet" href="assets/css/wiki.css">
+</head>
+<body>
+  <div class="topbar">
+    <button id="topbarToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a class="topbar-brand" href="index.html">US Class I <span class="accent">Rail</span> Process Wiki</a>
+    <span class="topbar-sub">Search Results</span>
+    <span class="topbar-spacer"></span>
+  </div>
+  <div class="wiki-layout">
+    <nav id="sidebar">
+      <button id="sidebarToggle" title="Collapse sidebar">&#9664;</button>
+""" + build_sidebar(DEPTH_ROOT) + """
+    </nav>
+    <main class="wiki-main">
+      <div class="page-header">
+        <h1>&#x1F50D; Search</h1>
+        <p id="searchQueryDisplay"></p>
+      </div>
+      <div id="searchResults" class="card">
+        <div class="card-body">
+          <div class="search-count" id="resultCount">Loading&hellip;</div>
+          <div id="resultList"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="lightbox"><img id="lightboxImg" src="" alt=""></div>
+  <script src="assets/js/wiki.js"></script>
+  <script>
+  (function(){
+    var params = new URLSearchParams(window.location.search);
+    var q = (params.get('q') || '').trim().toLowerCase();
+    var qDisplay = document.getElementById('searchQueryDisplay');
+    var countEl  = document.getElementById('resultCount');
+    var listEl   = document.getElementById('resultList');
+    if (!q) { countEl.textContent = 'Enter a search term.'; return; }
+    qDisplay.textContent = 'Query: "' + params.get('q') + '"';
+
+    fetch('search-index.json')
+      .then(function(r){ return r.json(); })
+      .then(function(idx){
+        var tokens = q.split(/\\s+/).filter(Boolean);
+        var results = idx.filter(function(item){
+          var hay = (item.pid + ' ' + item.l1 + ' ' + item.l2 + ' ' +
+                     item.l3 + ' ' + (item.systems||'')).toLowerCase();
+          return tokens.every(function(t){ return hay.indexOf(t) >= 0; });
+        });
+        countEl.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '') +
+                              ' for "' + params.get('q') + '"';
+        if (!results.length) {
+          listEl.innerHTML = '<p class="text-muted mt-16">No processes matched your search.</p>';
+          return;
+        }
+        listEl.innerHTML = results.map(function(r){
+          return '<div class="search-result"><h4><a href="' + r.url + '">' +
+                 r.pid + ' &mdash; ' + r.l3 + '</a></h4>' +
+                 '<p>' + r.l1 + ' &rsaquo; ' + r.l2 + '</p></div>';
+        }).join('');
+      })
+      .catch(function(){ countEl.textContent = 'Search index not yet available.'; });
+  })();
+  </script>
+</body>
+</html>
+"""
+
+
+def build_search_index(tr):
+    items = []
+    for p in PROCESSES:
+        rec = tr.get(p["pid"], {})
+        if rec.get("status") != "Complete":
+            continue
+        items.append({"pid": p["pid"], "l1": p["l1_name"], "l2": p["l2_name"],
+                      "l3": p["l2_name"], "url": p["path"],
+                      "systems": rec.get("systems", "")})
+    for ea_id, ea_title, ea_desc in EA_DIAGRAMS:
+        items.append({"pid": ea_id.upper(), "l1": "Enterprise Architecture",
+                      "l2": "EA Diagrams", "l3": ea_title,
+                      "url": f"{EA_DIR_SLUG}/{ea_id}/index.html", "systems": ea_desc})
+    return json.dumps(items, ensure_ascii=False)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PIPELINE
+# ─────────────────────────────────────────────────────────────────────────────
+
+def write(rel_path, content):
+    path = ROOT / rel_path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if isinstance(content, bytes):
+        path.write_bytes(content)
+    else:
+        path.write_text(content, encoding="utf-8")
+    return path
+
+
+def rebuild_nav(tr):
+    """Regenerate home, every L1 index, every L2 index, search page and index."""
+    log("rebuilding navigation …")
+    write("index.html", build_home(tr))
+    write("search.html", build_search_page())
+    write("search-index.json", build_search_index(tr))
+    n = 0
+    for l1_code, (_, _, l1_slug, _) in L1_META.items():
+        write(f"{l1_slug}/index.html", build_l1_index(l1_code, tr))
+        n += 1
+        for g in [x for x in TAXONOMY if x["l1"] == l1_code]:
+            write(f"{l1_slug}/{g['l2_slug']}/index.html", build_l2_index(l1_code, g["l2"], tr))
+            n += 1
+    log(f"  {n} index pages + home + search rebuilt")
+
+
+def push_shell(tr, no_push=False):
+    css = ROOT / "assets" / "css" / "wiki.css"
+    js = ROOT / "assets" / "js" / "wiki.js"
+    for f in (css, js):
+        if not f.exists():
+            sys.exit(f"Missing {f}. wiki.css and wiki.js must exist before running.")
+    write(".nojekyll", "")
+    rebuild_nav(tr)
+    commit_and_push("Rebuild site shell to the reference standard", no_push=no_push)
+
+
+def process_one(proc, tr):
+    log(f"── {proc['pid']} — {proc['l1_name']} / {proc['l2_name']}")
+    data = generate_process_content(proc)
+    if not data:
+        log(f"{proc['pid']}: no usable content from Ollama — skipped", "ERROR")
+        return None
+    log(f"  content: {len(data.get('l4_steps', []))} steps, "
+        f"{len(data.get('systems', []))} systems, {len(data.get('kpis', []))} KPIs")
+    registry_audit(proc["pid"], data)
+
+    svg = build_diagram(proc, data)
+    if not svg:
+        log(f"{proc['pid']}: diagram failed after 3 attempts — skipped", "ERROR")
+        return None
+
+    write(proc["path"], build_process_page(proc, data))
+    log(f"  wrote {proc['path']}")
+    return data
+
+
+def select_targets(args, tr):
+    if args.pid:
+        pid = args.pid.upper()
+        if pid not in BY_PID:
+            sys.exit(f"Unknown PID {pid}")
+        return [BY_PID[pid]]
+    pool = PROCESSES
+    if args.start:
+        start = args.start.upper()
+        if start not in BY_PID:
+            sys.exit(f"Unknown PID {start}")
+        idx = next(i for i, p in enumerate(PROCESSES) if p["pid"] == start)
+        pool = PROCESSES[idx:]
+    incomplete = pool if args.force else [p for p in pool if not is_complete(p["pid"], tr)]
+    if args.count:
+        return incomplete[: args.count]
+    if args.full or args.start:
+        return incomplete
+    return incomplete[:1]
+
+
+def main():
+    ap = argparse.ArgumentParser(description="US Class I Rail Process Wiki generator")
+    ap.add_argument("--pid", help="single process")
+    ap.add_argument("--count", type=int, help="run exactly N incomplete processes")
+    ap.add_argument("--full", action="store_true", help="all incomplete processes")
+    ap.add_argument("--start", help="resume from this PID")
+    ap.add_argument("--force", action="store_true",
+                    help="regenerate even if the tracker says Complete")
+    ap.add_argument("--bootstrap", action="store_true",
+                    help="push assets, home and every index only, then exit")
+    ap.add_argument("--rebuild-nav", action="store_true",
+                    help="regenerate all index pages and the search index, no model calls")
+    ap.add_argument("--no-verify", action="store_true", help="skip the live check")
+    ap.add_argument("--no-push", action="store_true", help="build locally, do not push")
     args = ap.parse_args()
 
-    if args.show_prompt:
-        try:
-            r = load(args.registries)
-            node = load_taxonomy(args.pid)
-            pains = spec_pain_points()
-            group = domain_group(args.pid, r)
-            if group is None:
-                raise GenerationError(f"no registry domain group for {args.pid}")
-            menu = build_menu(r, group)
-        except (GenerationError, RegistryError) as e:
-            print(f"FATAL: {e}", file=sys.stderr)
-            return 2
-        counts = ", ".join(f"{len(menu[k])} {k}" for k in MENU_REGISTRIES)
-        print(f"{args.pid}  {node['l1']}")
-        print(f"          {node['l2']}")
-        print(f"  registry menu ({group}): {counts}, {len(pains)} §7 pain points")
-        desc_prompt = build_description_prompt(node, menu, pains)
-        steps_prompt = build_steps_prompt(node, menu, pains)
-        print("\n" + "-" * 70 + "\nPHASE A: DESCRIPTION\n" + "-" * 70)
-        print(desc_prompt)
-        print("\n" + "-" * 70 + "\nPHASE B: STEPS\n" + "-" * 70)
-        print(steps_prompt)
-        print("-" * 70)
-        print(f"\n  --show-prompt: preview only (both phases). No model call, "
-              f"{Path(args.out).name} untouched.")
-        return 0
+    for d in (DATA_DIR, DIAGRAM_DIR, IMG_DIR):
+        d.mkdir(parents=True, exist_ok=True)
 
-    res = generate_one(
-        args.pid, mock=args.mock, mock_profile=args.mock_profile, host=args.host,
-        registries=args.registries, out=args.out, max_retries=args.max_retries,
-        dry_run=args.dry_run, debug=args.debug,
-    )
-    return 0 if res["status"] in ("written", "updated", "dry_run") else \
-        (2 if res["status"] == "error" else 1)
+    tr = load_tracker()
+
+    if args.bootstrap:
+        push_shell(tr, no_push=args.no_push)
+        log("bootstrap complete")
+        return
+    if args.rebuild_nav:
+        rebuild_nav(tr)
+        commit_and_push("Rebuild navigation and search index", no_push=args.no_push)
+        return
+
+    targets = select_targets(args, tr)
+    if not targets:
+        log("nothing to do — everything selected is already complete")
+        return
+    log(f"{len(targets)} process(es) queued | force={args.force}")
+
+    done_now = []
+    try:
+        for i, proc in enumerate(targets, start=1):
+            if is_complete(proc["pid"], tr) and not args.force:
+                log(f"skip {proc['pid']} — already complete (use --force to rebuild)")
+                continue
+            data = process_one(proc, tr)
+            if data:
+                done_now.append((proc, data))
+            log(f"progress: {i}/{len(targets)}")
+    except KeyboardInterrupt:
+        log("interrupted — publishing what is done", "WARN")
+
+    if not done_now:
+        log("no process produced usable output", "ERROR")
+        return
+
+    for proc, data in done_now:
+        tr[proc["pid"]] = {
+            "status": "Complete",
+            "url": f"{PAGES_BASE}/{proc['path']}",
+            "completed_at": datetime.now().isoformat(timespec="seconds"),
+            "systems": ", ".join(str(s) for s in data.get("systems", [])),
+        }
+    save_tracker(tr)
+    rebuild_nav(tr)
+    ok = commit_and_push(
+        f"Generate {', '.join(p['pid'] for p, _ in done_now)} under {TEMPLATE_VERSION}",
+        no_push=args.no_push)
+
+    for proc, data in done_now:
+        excel_record(proc, data, f"{PAGES_BASE}/{proc['path']}")
+    log(f"  {len(done_now)} process(es) recorded in the tracker and Excel")
+
+    if ok and not args.no_verify and not args.no_push:
+        url = f"{PAGES_BASE}/{done_now[-1][0]['path']}"
+        log("verified live: " + url if verify_live(url) else f"could not verify {url}")
+    log(f"run complete — {sum(1 for p in PROCESSES if is_complete(p['pid'], tr))}"
+        f"/{len(PROCESSES)} processes live at {PAGES_BASE}/")
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
