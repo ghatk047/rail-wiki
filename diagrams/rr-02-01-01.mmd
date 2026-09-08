@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive and Verify]
+    A([Start]) --> B[Receive Train Manifest\nNetControl / CADx]
+    B --> C{Train within schedule?}
+    C -- No --> D[Update Train Schedule\nNetControl / CADx]
+    C -- Yes --> E[Verify Train Status\nNetControl / CADx]
+  end
+
+  subgraph P2[Phase 2: Pre-Departure Inspection]
+    E --> F[Conduct Pre-Departure Inspection\nEHMS]
+    F --> G{Inspection Passed?}
+    G -- No --> H([Bad Order])
+    G -- Yes --> I[Assign Crew\nPS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Prepare for Departure]
+    I --> J{Crew Assigned?}
+    J -- No --> K([Hold])
+    J -- Yes --> L[Prepare Train for Departure\nNetControl / CADx]
+  end
+
+  subgraph P4[Phase 4: Conduct Air Brake Test]
+    L --> M[Conduct Air Brake Test\nNetControl / CADx]
+    M --> N{Air Brake Test Passed?}
+    N -- No --> O([Reject])
+    N -- Yes --> P[Finalize Departure\nNetControl / CADx]
+  end
+
+  subgraph P5[Phase 5: Monitor Train Movement]
+    P --> Q[Monitor Train Movement\nNetControl / CADx]
+    Q --> R{Train on Track?}
+    R -- No --> S([Escalate])
+    R -- Yes --> T[Update Train Position\nNetControl / CADx]
+  end
+
+  subgraph P6[Phase 6: Post-Departure Inspection]
+    T --> U[Conduct Post-Departure Inspection\nEHMS]
+    U --> V{Inspection Passed?}
+    V -- No --> W([Reject])
+    V -- Yes --> X[Update Train Status\nNetControl / CADx]
+    X --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
