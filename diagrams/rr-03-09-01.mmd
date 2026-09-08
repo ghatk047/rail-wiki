@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Train on schedule?}
+    C -- Yes --> D[Assign Crew and Equipment\\PS Technology PST]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Pre-Departure Inspection]
+    D --> E[Conduct Pre-Departure Inspection\\EHMS Equipment Health Management System]
+    E --> F{Inspection passed?}
+    F -- Yes --> G[Perform Air Brake Test\\Wabtrax]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Utility Services]
+    G --> H{Air brake test passed?}
+    H -- Yes --> I[Provide Utility Services\\NetControl]
+    H -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Car Hire Accounting]
+    I --> J[Update Car Hire Accounting\\CHARM Car Hire Accounting Rate Master]
+    J --> K{Accounting update successful?}
+    K -- Yes --> L[Prepare for Departure\\NetControl]
+    K -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Post-Departure Review]
+    L --> M[Conduct Post-Departure Review\\NetControl]
+    M --> N{Review passed?}
+    N -- Yes --> O[Update Interline Settlement System\\Interline Settlement System ISS]
+    N -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Finalize Ground Support Activities]
+    O --> P[Finalize Ground Support Activities\\NetControl]
+    P --> Q([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
