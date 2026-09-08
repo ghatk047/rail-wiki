@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Arrival Notification]
+    A([Start]) --> B[Receive Train Arrival Notification\nNetControl]
+    B --> C{Train on schedule?}
+    C -- No --> D[Reschedule train\nYardmaster]
+    C -- Yes --> E[Review Train Manifest and Classification Plan\nUmler, CHARM]
+  end
+
+  subgraph P2[Phase 2: Assign Yard Crews and Equipment]
+    E --> F{Crews available?}
+    F -- No --> G[Wait for crew availability\nYardmaster]
+    F -- Yes --> H[Assign Yard Crews and Equipment\nPS Technology PST, EHMS]
+  end
+
+  subgraph P3[Phase 3: Conduct Pre-Departure Inspections]
+    H --> I{Inspection passed?}
+    I -- No --> J[Reinspect cars\nCar Inspector Carman]
+    I -- Yes --> K[Perform Air Brake Tests\nEHMS, Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Prepare for Departure]
+    K --> L{Air brake test passed?}
+    L -- No --> M[Retest air brakes\nCar Inspector Carman]
+    L -- Yes --> N[Prepare for Departure\nYardmaster, Switchman/Switch Foreman]
+  end
+
+  subgraph P5[Phase 5: Initiate Train Departure]
+    N --> O{Train ready to depart?}
+    O -- No --> P[Wait for readiness\nYardmaster]
+    O -- Yes --> Q[Initiate Train Departure\nNetControl, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Monitor and Update Yard Schedule]
+    Q --> R{Train departed successfully?}
+    R -- No --> S[Escalate issue\nChief Dispatcher]
+    R -- Yes --> T[Monitor Train Movement\nI-ETMS, NetControl]
+    T --> U{Track authority granted?}
+    U -- No --> V[Request track authority\nYardmaster]
+    U -- Yes --> W[Update Yard Schedule\nNetControl, Umler]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
