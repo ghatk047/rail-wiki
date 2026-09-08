@@ -36,7 +36,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from diagram_lightbox import LIGHTBOX_CSS, LIGHTBOX_HTML  # noqa: E402
+from diagram_lightbox import LIGHTBOX_CSS, LIGHTBOX_HTML, POST_RENDER_FIX_JS  # noqa: E402
 from render_preview import (  # noqa: E402
     MERMAID_CDN,
     build_mermaid,
@@ -47,6 +47,12 @@ from render_preview import (  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 TAXONOMY = REPO / "data" / "taxonomy.json"
+
+# Stamped into every generated page as an HTML comment so a stale page (one
+# from before a template/rendering change) is greppable across all 290+
+# pages, rather than discoverable only by noticing something looks off.
+# Bump this whenever page_shell()'s HTML/CSS shape changes.
+TEMPLATE_VERSION = "template-v1"
 PROCESSES = REPO / "data" / "processes.json"
 OLD_PREVIEW_DIR = REPO / "site" / "preview"
 
@@ -188,6 +194,7 @@ def sidebar(idx: dict, active_l1: str | None, active_l2: str | None, prefix: str
 def page_shell(title: str, breadcrumb: str, sidebar_html: str, body: str,
               prefix: str, extra_head: str = "") -> str:
     return f"""<!doctype html>
+<!-- {TEMPLATE_VERSION} -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -397,10 +404,12 @@ def render_l3_complete(l1_key: str, dom: dict, l2_name: str, l2: dict, p: dict) 
                       body + (LIGHTBOX_HTML if steps else ""),
                       "../../../", extra_head=extra_head)
     page = page.replace("</body>", f"""<script>
+{POST_RENDER_FIX_JS}
   if (window.mermaid) {{
-    mermaid.initialize({{startOnLoad:true,
+    mermaid.initialize({{startOnLoad:false,
       theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default',
       securityLevel: 'strict'}});
+    mermaid.run().then(function () {{ stripSvgCaps(); }});
   }}
 </script>
 </body>""")

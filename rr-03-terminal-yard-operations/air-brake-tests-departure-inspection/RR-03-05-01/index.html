@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- template-v1 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -105,7 +106,7 @@ footer.site-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px s
 .dg-lb-bar .dg-lb-close { margin-left: auto; }
 .dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; position: relative; }
 .dg-lb-canvas.grabbing { cursor: grabbing; }
-.dg-lb-inner { position: absolute; will-change: transform; }
+.dg-lb-inner { position: absolute; }
 .dg-lb-inner svg { display: block; max-width: none !important; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
@@ -148,21 +149,30 @@ footer.site-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px s
   <h2>Process Flow</h2>
   <div class="diagram-wrap"><pre class="mermaid">%%{init: {&#x27;flowchart&#x27;: {&#x27;curve&#x27;: &#x27;basis&#x27;}}}%%
 flowchart TD
-  S1(1. Conduct initial air brake test)
-  S1 --&gt; S2
-  S2(2. Inspect train for compliance with AAR rules)
-  S2 --&gt; S3
-  S3{3. Review air brake test results for safety…}
+  subgraph PH1[&quot;Phase 1&quot;]
+    S1(1. Conduct initial air brake test)
+    S2(2. Inspect train for compliance with AAR rules)
+  end
+  subgraph PH2[&quot;Phase 2&quot;]
+    S3{3. Review air brake test results for safety compliance}
+    S4(4. Perform corrective actions on train brakes)
+  end
+  subgraph PH3[&quot;Phase 3&quot;]
+    S5(5. Conduct final air brake test after corrections)
+    S6(6. Notify Yardmaster of train readiness for departure)
+  end
+  subgraph PH4[&quot;Phase 4&quot;]
+    S7(7. Receive departure clearance and prepare train for movement)
+    S8(8. Move train out of yard for departure)
+  end
+
+  S1 -- Cleared --&gt; S2
+  S2 -- Cleared --&gt; S3
   S3 -- Corrective Action… --&gt; S4
-  S4(4. Perform corrective actions on train brakes)
-  S4 --&gt; S5
-  S5(5. Conduct final air brake test after corrections)
-  S5 --&gt; S6
-  S6(6. Notify Yardmaster of train readiness for…)
-  S6 --&gt; S7
-  S7(7. Receive departure clearance and prepare train…)
-  S7 --&gt; S8
-  S8(8. Move train out of yard for departure)</pre></div>
+  S4 -- Cleared --&gt; S5
+  S5 -- Cleared --&gt; S6
+  S6 -- Cleared --&gt; S7
+  S7 -- Cleared --&gt; S8</pre></div>
 </section>
 <section>
   <h2>Process Steps &middot; 8 steps, 8 gates</h2>
@@ -426,10 +436,27 @@ flowchart TD
   </main>
 </div>
 <script>
+
+function stripSvgCaps(root) {
+  (root || document).querySelectorAll('.diagram-wrap svg').forEach(function (svg) {
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    if (vb && vb.width) {
+      svg.style.maxWidth = 'none';
+      svg.setAttribute('width', Math.round(vb.width));
+      if (vb.height) svg.setAttribute('height', Math.round(vb.height));
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+    } else {
+      svg.style.maxWidth = 'none';
+    }
+  });
+}
+
   if (window.mermaid) {
-    mermaid.initialize({startOnLoad:true,
+    mermaid.initialize({startOnLoad:false,
       theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default',
       securityLevel: 'strict'});
+    mermaid.run().then(function () { stripSvgCaps(); });
   }
 </script>
 </body>

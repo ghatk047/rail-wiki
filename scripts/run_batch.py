@@ -55,7 +55,13 @@ TERMINAL_STATUSES = {"written", "updated", "rejected_generation",
                      "rejected_validation", "error"}
 
 
-def pending_pids(count: int, out: Path) -> list[str]:
+def pending_pids(count: int, out: Path, force: bool = False) -> list[str]:
+    """force=True includes already-done PIDs in the queue -- e.g. after a
+    template/rendering change, when the point is to regenerate what already
+    exists, not to resume past it. Without this there was no way to bulk
+    re-run anything through run_batch.py once it had a Complete row; --pid
+    always worked one at a time, but that's not what "roll out a template
+    change" means at 290-process scale."""
     taxonomy = gen.load_taxonomy_full()
     all_pids = [p["pid"] for p in taxonomy["processes"]]
     done = set()
@@ -63,7 +69,7 @@ def pending_pids(count: int, out: Path) -> list[str]:
         import json
         doc = json.loads(out.read_text(encoding="utf-8"))
         done = set(doc.get("processes", {}))
-    remaining = [pid for pid in all_pids if pid not in done]
+    remaining = all_pids if force else [pid for pid in all_pids if pid not in done]
     return remaining[:count], len(all_pids), len(done), len(remaining)
 
 
@@ -168,9 +174,22 @@ def push_progress(new_pids: list[str], total: int, done_before: int, out: Path) 
     return True
 
 
+def _flush(run_log: list[dict], since_push: list[str], total: int, done_before: int,
+          out_path: Path, args: argparse.Namespace, done_count: int) -> None:
+    """Push whatever's unpushed. Shared by the normal end-of-run path and the
+    KeyboardInterrupt handler -- an interrupt must not be able to leave
+    already-generated, already-validated work sitting unpublished just
+    because the loop never reached its normal exit."""
+    if since_push and not args.mock and not args.dry_run and not args.no_push:
+        render_status_page(run_log, total, done_before)
+        push_progress(since_push, total, done_before + done_count, out_path)
+    elif args.mock or args.dry_run or args.no_push:
+        print("  (no push: --mock, --dry-run or --no-push was set)")
+
+
 def run(args: argparse.Namespace) -> int:
     out_path = Path(args.out)
-    queue, total, done_before, remaining_before = pending_pids(args.count, out_path)
+    queue, total, done_before, remaining_before = pending_pids(args.count, out_path, force=args.force)
     if not queue:
         print(f"Nothing to do: all {total} taxonomy PIDs already exist in "
               f"{out_path.relative_to(REPO) if out_path.is_relative_to(REPO) else out_path}.")
@@ -179,56 +198,62 @@ def run(args: argparse.Namespace) -> int:
     print(f"Batch: {len(queue)} PID(s) queued "
         f"({done_before} already generated, {remaining_before} remaining "
         f"including this batch, {total} total)")
+    if args.force:
+        print("  --force: including already-complete PIDs (re-templating, not resuming).")
     if args.mock:
         print("  --mock: loop mechanics only. Forcing --no-render and --no-push.")
     print()
 
     run_log: list[dict] = []
     since_push: list[str] = []
+    i = 0
 
-    for i, pid in enumerate(queue, start=1):
-        print(f"[{i}/{len(queue)}] {pid}")
-        res = gen.generate_one(
-            pid, mock=args.mock, mock_profile=args.mock_profile, host=args.host,
-            registries=args.registries, out=args.out, max_retries=args.max_retries,
-            dry_run=args.dry_run, debug=False,
-        )
-        run_log.append(res)
-
-        try:
-            we.update_row(
-                pid, res["status"], path=Path(args.excel),
-                name=res.get("name"), confidence=res.get("confidence"),
-                word_count=res.get("word_count"), step_count=res.get("step_count"),
-                gate_count=res.get("gate_count"), sources=res.get("sources"),
-                attempts=res.get("attempts"),
+    try:
+        for i, pid in enumerate(queue, start=1):
+            print(f"[{i}/{len(queue)}] {pid}")
+            res = gen.generate_one(
+                pid, mock=args.mock, mock_profile=args.mock_profile, host=args.host,
+                registries=args.registries, out=args.out, max_retries=args.max_retries,
+                dry_run=args.dry_run, debug=False,
             )
-        except we.ExcelError as e:
-            print(f"  WARNING: could not update {args.excel}: {e}", file=sys.stderr)
+            run_log.append(res)
 
-        print(f"  -> {res['status']}" + (f" ({res['reason']})" if res.get("reason") else ""))
-        print()
+            try:
+                we.update_row(
+                    pid, res["status"], path=Path(args.excel),
+                    name=res.get("name"), confidence=res.get("confidence"),
+                    word_count=res.get("word_count"), step_count=res.get("step_count"),
+                    gate_count=res.get("gate_count"), sources=res.get("sources"),
+                    attempts=res.get("attempts"),
+                )
+            except we.ExcelError as e:
+                print(f"  WARNING: could not update {args.excel}: {e}", file=sys.stderr)
 
-        if res["status"] in ("written", "updated") and not args.dry_run:
-            since_push.append(pid)
+            print(f"  -> {res['status']}" + (f" ({res['reason']})" if res.get("reason") else ""))
+            print()
 
-        do_push = (not args.mock and not args.dry_run and not args.no_push
-                  and len(since_push) >= args.push_every)
-        if do_push:
-            render_status_page(run_log, total, done_before)
-            if push_progress(since_push, total, done_before + i, out_path):
-                since_push = []
+            if res["status"] in ("written", "updated") and not args.dry_run:
+                since_push.append(pid)
+
+            do_push = (not args.mock and not args.dry_run and not args.no_push
+                      and len(since_push) >= args.push_every)
+            if do_push:
+                render_status_page(run_log, total, done_before)
+                if push_progress(since_push, total, done_before + i, out_path):
+                    since_push = []
+    except KeyboardInterrupt:
+        print(f"\nInterrupted after {i}/{len(queue)}. Flushing what completed "
+            f"({len(run_log)} attempted, {len(since_push)} unpushed) before exiting.")
+        _flush(run_log, since_push, total, done_before, out_path, args, i)
+        print("Flushed. Nothing generated so far was lost or left unpublished.")
+        return 130  # conventional SIGINT exit code
 
     ok = sum(1 for r in run_log if r["status"] in ("written", "updated"))
     bad = len(run_log) - ok
     print(f"Batch complete: {ok} written/updated, {bad} rejected or errored, "
         f"{len(run_log)} attempted.")
 
-    if since_push and not args.mock and not args.dry_run and not args.no_push:
-        render_status_page(run_log, total, done_before)
-        push_progress(since_push, total, done_before + len(run_log), out_path)
-    elif args.mock or args.dry_run or args.no_push:
-        print("  (no push: --mock, --dry-run or --no-push was set)")
+    _flush(run_log, since_push, total, done_before, out_path, args, len(run_log))
 
     return 0 if bad == 0 else 1
 
@@ -253,6 +278,9 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true",
                     help="validate but never write, and never push")
     ap.add_argument("--no-push", action="store_true", help="never push, even on a live run")
+    ap.add_argument("--force", action="store_true",
+                    help="include already-complete PIDs in the queue (bulk re-run after "
+                         "a template/rendering change) instead of only picking up new ones")
     args = ap.parse_args()
     if args.out is None:
         args.out = str(REPO / "data" / "processes.mock.json") if args.mock else str(gen.PROCESSES)

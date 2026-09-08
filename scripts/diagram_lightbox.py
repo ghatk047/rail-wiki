@@ -17,6 +17,17 @@ never the blur source and is untouched.
 CSS: append LIGHTBOX_CSS into the page's <style>.
 HTML: append LIGHTBOX_HTML once, anywhere in <body>.
 Behaviour: every element matching `.diagram-wrap` becomes click-to-zoom.
+
+POST_RENDER_FIX_JS strips a second, unrelated cap: Mermaid's own root <svg>
+ships with `width="100%"` and an inline `style="max-width: <viewBox width>px"`.
+That caps the on-page diagram at its first-render size forever, no matter how
+wide its container grows -- the browser then rasterises up to fill any extra
+space, which looks exactly like the blur the lightbox already had to fix, just
+on the inline (non-zoomed) diagram instead. Call it once, after Mermaid has
+actually rendered (`mermaid.run().then(...)`, NOT the fire-and-forget
+`startOnLoad: true` -- there is no reliable hook to run this after
+`startOnLoad` finishes, since it returns no promise you can chain from
+outside).
 """
 
 LIGHTBOX_CSS = """
@@ -32,8 +43,31 @@ LIGHTBOX_CSS = """
 .dg-lb-bar .dg-lb-close { margin-left: auto; }
 .dg-lb-canvas { flex: 1; overflow: hidden; cursor: grab; position: relative; }
 .dg-lb-canvas.grabbing { cursor: grabbing; }
-.dg-lb-inner { position: absolute; will-change: transform; }
+.dg-lb-inner { position: absolute; }
 .dg-lb-inner svg { display: block; max-width: none !important; }
+"""
+
+# Not needed: the element is only ever translated (pan), never scaled, so
+# there is nothing here for will-change to usefully pre-composite -- and its
+# mere presence matches the exact anti-pattern that caused the original
+# blur bug (will-change + transform: scale() rasterises the layer once at
+# on-screen size, then stretches that cached bitmap). Left out deliberately,
+# not just omitted by oversight.
+POST_RENDER_FIX_JS = """
+function stripSvgCaps(root) {
+  (root || document).querySelectorAll('.diagram-wrap svg').forEach(function (svg) {
+    var vb = svg.viewBox && svg.viewBox.baseVal;
+    if (vb && vb.width) {
+      svg.style.maxWidth = 'none';
+      svg.setAttribute('width', Math.round(vb.width));
+      if (vb.height) svg.setAttribute('height', Math.round(vb.height));
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+    } else {
+      svg.style.maxWidth = 'none';
+    }
+  });
+}
 """
 
 LIGHTBOX_HTML = """

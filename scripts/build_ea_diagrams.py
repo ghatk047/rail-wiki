@@ -34,10 +34,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from diagram_lightbox import LIGHTBOX_CSS, LIGHTBOX_HTML  # noqa: E402
+from diagram_lightbox import LIGHTBOX_CSS, LIGHTBOX_HTML, POST_RENDER_FIX_JS  # noqa: E402
 from registry_loader import REGISTRY_DIR, load  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
+TEMPLATE_VERSION = "template-v1"  # shared with build_site.py -- same page shell family
 TAXONOMY = REPO / "data" / "taxonomy.json"
 MMD_DIR = REPO / "ea-diagrams"
 HTML_DIR = REPO / "site" / "ea-diagrams"
@@ -201,6 +202,7 @@ def render_page(l1_id: str, l1_name: str, mmd: str, n_company: int,
         "process citing one of these systems is generated."
     )
     return f"""<!doctype html>
+<!-- {TEMPLATE_VERSION} -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -238,10 +240,12 @@ def render_page(l1_id: str, l1_name: str, mmd: str, n_company: int,
 </main>
 {LIGHTBOX_HTML}
 <script>
+{POST_RENDER_FIX_JS}
   if (window.mermaid) {{
-    mermaid.initialize({{startOnLoad:true,
+    mermaid.initialize({{startOnLoad:false,
       theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'base',
       securityLevel: 'strict'}});
+    mermaid.run().then(function () {{ stripSvgCaps(); }});
   }}
 </script>
 </body>
@@ -257,6 +261,7 @@ def render_index(rows: list[dict]) -> str:
         for r in rows
     )
     return f"""<!doctype html>
+<!-- {TEMPLATE_VERSION} -->
 <html lang="en">
 <head>
 <meta charset="utf-8">

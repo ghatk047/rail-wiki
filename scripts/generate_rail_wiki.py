@@ -151,7 +151,11 @@ DEFAULT_RETRIES = 2
 # §3.1 step list. Smaller than AC's 16-30/6-gate model — see module docstring.
 STEP_MIN = 4
 STEP_MAX = 8
-STEP_MIN_GATES = 1
+# Was 1; a real process with only 1 gate produces a visibly sparse diagram
+# once every gate gets a labelled branch (rendering can label what exists,
+# it cannot invent gates the model never generated). 3 gives the diagram
+# enough real branch points to read as a workflow rather than a checklist.
+STEP_MIN_GATES = 3
 
 MENU_REGISTRIES = ("systems", "roles", "regulations", "kpis")
 
@@ -353,8 +357,9 @@ Rules:
     invented id, and never a list even if more than one seems to fit — pick
     the one that fits best. Use null (not an empty string) if none applies.
   - Exactly one of "decision_point" / "exception" may be "Y" on a given step;
-    most steps are "N"/"N". At least {STEP_MIN_GATES} step across the whole
-    list must be "Y" on one of them — a process with no real decision or
+    most steps are "N"/"N". At least {STEP_MIN_GATES} steps across the whole
+    list must be "Y" on one of them, spread across different points in the
+    sequence rather than clustered together — a process with no real decision or
     exception in it is being under-described, not genuinely simple.
   - A step with "decision_point": "Y" MUST also carry:
       "branch": {{"label": "short label", "to": "<step id or early-exit phrase>"}}
@@ -538,7 +543,11 @@ def _mock_steps(menu: dict[str, list[Entry]], quality: str = "good") -> list[dic
 
     steps = []
     for i in range(5):
-        dp = "Y" if i == 2 else "N"
+        # 3 gates spread across the sequence (index 0, 2, 4), matching
+        # STEP_MIN_GATES=3 and its "spread across different points" rule --
+        # not clustered together, same as real generated output should be.
+        dp = i == 2
+        exc = i in (0, 4)
         step = {
             "step": str(i + 1),
             "name": MOCK_STEP_NAMES[i],
@@ -547,10 +556,10 @@ def _mock_steps(menu: dict[str, list[Entry]], quality: str = "good") -> list[dic
             "input": "Initiating input" if i == 0 else "Prior step output",
             "output": "Final record" if i == 4 else "Next step input",
             "kpi_id": cyc(kpi_ids, i),
-            "decision_point": dp,
-            "exception": "N",
+            "decision_point": "Y" if dp else "N",
+            "exception": "Y" if exc else "N",
         }
-        if dp == "Y":
+        if dp:
             step["branch"] = {"label": "No", "to": str(i + 2)}
         steps.append(step)
     return steps

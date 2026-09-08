@@ -13,6 +13,11 @@ __pycache__/
 venv/
 .env
 
+# Contains a live credential -- never commit. See docs/RAIL_WIKI_DEFECT_CHECKER.md
+# §11's token-leak audit finding. The token itself still needs to be revoked/
+# rotated by hand; this only stops it from ever reaching a commit.
+docs/RAILROAD_WIKI_FIX_HANDOFF.md
+
 # OS / editor
 .DS_Store
 Thumbs.db

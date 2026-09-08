@@ -134,7 +134,7 @@ def pill_list(items: list[str]) -> str:
     ) + "</div>"
 
 
-def _mmd_label(text: str, limit: int = 46) -> str:
+def _mmd_label(text: str, limit: int = 80) -> str:
     """Mermaid-safe node/edge label: strip characters that break flowchart
     syntax, collapse whitespace, truncate."""
     t = re.sub(r'["\[\]{}()<>|]', "", str(text or ""))
@@ -149,51 +149,106 @@ def _mmd_node_id(step_id: str) -> str:
     return "S" + re.sub(r"[^0-9A-Za-z]", "_", str(step_id))
 
 
+def _phase_groups(n: int, target: int = 4) -> list[int]:
+    """How many steps in each phase group, evenly split with the remainder
+    distributed from the top -- same allocation rule as build_taxonomy.py.
+    Positional groups, not model-authored phase names: there is no phases[]
+    field in the generation schema (a real one is a separate, larger change
+    -- see the module docstring). This gets the diagram's structural
+    richness -- multiple labelled clusters, not a flat wall of steps --
+    without asking the model for anything it doesn't already produce."""
+    groups = min(target, n)
+    base, rem = divmod(n, groups)
+    return [base + (1 if k < rem else 0) for k in range(groups)]
+
+
 def build_mermaid(steps: list[dict]) -> str:
     """Deterministic flowchart from steps[] -- never authored or trusted from
     the model, built the same way every time from the same validated list.
     Node shape signals what kind of step it is: diamond = decision point,
-    rounded = exception, rectangle = ordinary step."""
+    rounded = exception, rectangle = ordinary step.
+
+    Steps are wrapped in positional phase subgraphs (Phase 1, Phase 2, ...)
+    purely for visual structure -- there is no per-phase name in the
+    generation schema, unlike a fuller phased pipeline would carry. Every
+    gate (decision_point or exception) labels BOTH the alternate branch and
+    the expected continuation ("Yes" / "Cleared"), not just the alternate --
+    a diagram with only branch labels reads as sparse even when the gate
+    count is real.
+    """
     if not steps:
         return "flowchart TD\n  E[No steps recorded]"
 
     by_id = {str(s.get("step")): s for s in steps}
     lines = ["%%{init: {'flowchart': {'curve': 'basis'}}}%%", "flowchart TD"]
-    exits: list[tuple[str, str, str]] = []  # (from_node, edge_label, exit_node)
     exit_n = 0
 
-    for i, s in enumerate(steps):
+    group_sizes = _phase_groups(len(steps))
+    phase_of: dict[int, int] = {}
+    idx = 0
+    for phase_i, size in enumerate(group_sizes, start=1):
+        for _ in range(size):
+            if idx < len(steps):
+                phase_of[idx] = phase_i
+            idx += 1
+
+    def step_lines(i: int, s: dict) -> list[str]:
+        out = []
         sid = str(s.get("step") or str(i + 1))
         nid = _mmd_node_id(sid)
         label = f"{sid}. {_mmd_label(s.get('name'))}"
         dp = str(s.get("decision_point", "N")).upper() == "Y"
         exc = str(s.get("exception", "N")).upper() == "Y"
         if dp:
-            lines.append(f"  {nid}{{{label}}}")
+            out.append(f"    {nid}{{{label}}}")
         elif exc:
-            lines.append(f"  {nid}({label})")
+            out.append(f"    {nid}({label})")
         else:
-            lines.append(f"  {nid}[{label}]")
+            out.append(f"    {nid}[{label}]")
+        return out
+
+    edge_lines: list[str] = []
+    for i, s in enumerate(steps):
+        sid = str(s.get("step") or str(i + 1))
+        nid = _mmd_node_id(sid)
+        dp = str(s.get("decision_point", "N")).upper() == "Y"
+        exc = str(s.get("exception", "N")).upper() == "Y"
 
         branch = s.get("branch")
         branch_to = str(branch["to"]) if isinstance(branch, dict) and branch.get("to") else None
 
-        # Main path: sequential unless this is the last step, or the branch
-        # already draws a labelled edge to that same next step -- an
-        # unlabelled duplicate on top of it is confusing, not informative.
         nxt = str(steps[i + 1].get("step") or str(i + 2)) if i + 1 < len(steps) else None
+        main_label = "Yes" if dp else ("Cleared" if exc else None)
         if nxt and nxt != branch_to:
-            lines.append(f"  {nid} --> {_mmd_node_id(nxt)}")
+            if main_label:
+                edge_lines.append(f"  {nid} -- {main_label} --> {_mmd_node_id(nxt)}")
+            else:
+                edge_lines.append(f"  {nid} --> {_mmd_node_id(nxt)}")
 
         if branch_to:
             edge_label = _mmd_label(branch.get("label", ""), limit=18)
             if branch_to in by_id:
-                lines.append(f"  {nid} -- {edge_label} --> {_mmd_node_id(branch_to)}")
+                edge_lines.append(f"  {nid} -- {edge_label} --> {_mmd_node_id(branch_to)}")
             else:
                 exit_n += 1
                 ex_id = f"X{exit_n}"
-                lines.append(f'  {ex_id}(["{_mmd_label(branch_to, limit=40)}"])')
-                lines.append(f"  {nid} -- {edge_label} --> {ex_id}")
+                edge_lines.append(f'  {ex_id}(["{_mmd_label(branch_to, limit=40)}"])')
+                edge_lines.append(f"  {nid} -- {edge_label} --> {ex_id}")
+
+    current_phase = None
+    for i, s in enumerate(steps):
+        p = phase_of.get(i, 1)
+        if p != current_phase:
+            if current_phase is not None:
+                lines.append("  end")
+            lines.append(f"  subgraph PH{p}[\"Phase {p}\"]")
+            current_phase = p
+        lines.extend(step_lines(i, s))
+    if current_phase is not None:
+        lines.append("  end")
+
+    lines.append("")
+    lines.extend(edge_lines)
 
     return "\n".join(lines)
 
