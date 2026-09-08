@@ -1,0 +1,68 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Define Objectives]
+    A([Start]) --> B[Define Operating Objectives\nUnified Plan 2020]
+    B --> C{Objectives aligned with\ncompany strategy?}
+    C -- No --> B
+    C -- Yes --> D[Develop Train Schedules\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Schedule and Assign]
+    D --> E{Schedules feasible?\nResource availability?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Assign Crews and Equipment\nPS Technology PST]
+    F --> G{Crews and equipment assigned?}
+    G -- No --> F
+    G -- Yes --> H[Conduct Pre-Departure Inspections\nEHMS]
+  end
+
+  subgraph P3[Phase 3: Monitor Performance]
+    H --> I{Inspection passed?\nFRA defect found?}
+    I -- No --> J[Implement Positive Train Control PTC\nI-ETMS]
+    I -- Yes --> Rej1([Reject])
+    J --> K{PTC initialised?}
+    K -- No --> J
+    K -- Yes --> L[Monitor Train Performance\nI-ETMS]
+  end
+
+  subgraph P4[Phase 4: Monitor Wayside Defects]
+    L --> M{Train performance within\ntolerances?}
+    M -- No --> N[Review and Approve Changes\nVP Network Planning Operations]
+    M -- Yes --> O[Monitor Wayside Defects\nWayside defect detector network]
+    O --> P{Defect detected?\nTrack authority granted?}
+    P -- No --> L
+    P -- Yes --> Q([Bad Order])
+  end
+
+  subgraph P5[Phase 5: Update Plan and Communicate]
+    N --> R[Update Operating Plan\nUnified Plan 2020]
+    R --> S{Plan updated?\nCompliance with regulations?}
+    S -- No --> N
+    S -- Yes --> T[Communicate Changes to Crews\nPS Technology PST]
+  end
+
+  subgraph P6[Phase 6: Review and Report]
+    T --> U{Crews notified?\nHours of service remaining?}
+    U -- No --> T
+    U -- Yes --> V[Monitor Compliance with Regulations\nNetControl]
+    V --> W{Compliance met?\nHazmat placard verified?}
+    W -- No --> V
+    W -- Yes --> X[Review and Report Performance\nUnified Plan 2020]
+    X --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
