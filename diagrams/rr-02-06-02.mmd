@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Traffic Updates]
+    A([Start]) --> B[Receive Traffic Updates\nNetControl/CADx]
+    B --> C{Traffic within capacity?}
+    C -- No --> B
+    C -- Yes --> D[Review Train Schedules\nNetControl/CADx]
+  end
+
+  subgraph P2[Phase 2: Assign Trains to Crews]
+    D --> E[Assign Trains to Crews\nPS Technology PST]
+    E --> F{Crew assigned successfully?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Conduct Pre-Departure Checks\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P3[Phase 3: Monitor Train Movements]
+    G --> H{Pre-departure checks passed?}
+    H -- No --> E
+    H -- Yes --> I[Monitor Train Movements\nNetControl/CADx, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Adjust Schedules Based on Real-Time Data]
+    I --> J{Train movements monitored?}
+    J -- No --> I
+    J -- Yes --> K[Adjust Schedules Based on Real-Time Data\nNetControl/CADx, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Ensure Compliance with Regulations]
+    K --> L{Schedules adjusted?}
+    L -- No --> J
+    L -- Yes --> M[Ensure Compliance with Regulations\nNetControl/CADx, EHMS]
+  end
+
+  subgraph P6[Phase 6: Optimize Train Routes and Final Checks]
+    M --> N{Compliance ensured?}
+    N -- No --> K
+    N -- Yes --> O[Coordinate Interline Operations\nInterline Settlement System ISS, Switching Settlement Data Exchange SSDX]
+    O --> P{Interline operations coordinated?}
+    P -- No --> M
+    P -- Yes --> Q[Monitor Terminal Operations\nNetControl/CADx, HASTUS]
+    Q --> R{Terminal operations monitored?}
+    R -- No --> O
+    R -- Yes --> S[Optimize Train Routes\nNetControl/CADx, I-ETMS]
+    S --> T{Routes optimized?}
+    T -- No --> P
+    T -- Yes --> U[Ensure Train Safety\nEHMS, I-ETMS]
+    U --> V{Train safety ensured?}
+    V -- No --> Q
+    V -- Yes --> W[Report and Document Process\nNetControl/CADx, TRAIN II]
+    W --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
