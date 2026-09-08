@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Notify Yardmaster of train arrival\\NetControl]
+    B --> C{Train arrival confirmed?}
+    C -- Yes --> D[Pre-Classification Inspection\\EHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Pre-Classification Inspection]
+    D --> E{Car inspection passed?}
+    E -- Yes --> F[Hump Yard Setup\\I-ETMS]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Hump Yard Setup]
+    F --> G{Hump yard setup complete?}
+    G -- Yes --> H[Train Classification\\Hump yard generic classification technology]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Train Classification]
+    H --> I{Classification completed?}
+    I -- Yes --> J[Post-Classification Inspection\\EHMS]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Post-Classification Inspection]
+    J --> K{Car inspection passed?}
+    K -- Yes --> L[Train Departure Notification\\NetControl]
+    K -- No --> Rej2([Reject])
+  end
+
+  subgraph P6[Phase 6: Update Systems]
+    L --> M[Update Interline Settlement System ISS\\ISS / SSDX / CHDX]
+    M --> N[Update Car Hire Accounting Rate Master CHARM\\CHARM]
+    N --> O[Update Universal Machine Language Equipment Register Umler\\Umler]
+    O --> P[Update Tele Rail Automated Information Network Phase 2 TRAIN II\\TRAIN II]
+    P --> Q[Update Wayside Defect Detector Network hot bearing / wheel impact / acoustic\\Wayside defect detector network]
+    Q --> R[Update Machine Vision Portals\\Machine Vision portals]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
