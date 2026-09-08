@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Assignment Review]
+    A([Start]) --> B[Review Crew Assignments\nPS Technology PST]
+    B --> C{Crew assignments valid?}
+    C -- No --> D[Exception Handling\nManual Review]
+    C -- Yes --> E[Verify CBA Compliance\nCloudMoyo Crew Management CCM]
+  end
+
+  subgraph P2[Phase 2: CBA Compliance Verification]
+    E --> F{CBA compliance verified?}
+    F -- No --> G[Escalate to Union Chairman\nManual Review]
+    F -- Yes --> H[Update Crew Districts\nHASTUS]
+  end
+
+  subgraph P3[Phase 3: Hours of Service Monitoring]
+    H --> I[Monitor Hours of Service HOS\ntrackHOS-class HOS monitoring tools]
+    I --> J{Hours of service remaining?}
+    J -- No --> K[Exception Handling\nManual Adjustment]
+    J -- Yes --> L[Conduct Crew Training\nTRAIN II Tele Rail Automated Information Network Phase 2]
+  end
+
+  subgraph P4[Phase 4: Regulatory Updates Review]
+    L --> M[Review Regulatory Updates\nNetControl service design use]
+    M --> N{Regulatory updates reviewed?}
+    N -- No --> O[Exception Handling\nManual Update]
+    N -- Yes --> P[Update Crew Rosters\nPS Technology PST]
+  end
+
+  subgraph P5[Phase 5: Equipment Compliance Check]
+    P --> Q[Ensure Equipment Compliance\nEHMS Equipment Health Management System]
+    Q --> R{Equipment compliance verified?}
+    R -- No --> S[Exception Handling\nManual Inspection]
+    R -- Yes --> T[Review Crew Performance\nCloudMoyo Crew Management CCM]
+  end
+
+  subgraph P6[Phase 6: Finalization and Safety Audit]
+    T --> U{Crew performance reviewed?}
+    U -- No --> V[Exception Handling\nPerformance Review]
+    U -- Yes --> W[Update Crew District Boundaries\nHASTUS]
+    W --> X[Conduct Safety Audits\nEHMS Equipment Health Management System]
+    X --> Y{Safety audits completed?}
+    Y -- No --> Z[Exception Handling\nSafety Audit]
+    Y -- Yes --> AA[Finalize Crew Assignments\nPS Technology PST]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AA fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#20242b,color:#fff,stroke:#20242b
+  style G fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
