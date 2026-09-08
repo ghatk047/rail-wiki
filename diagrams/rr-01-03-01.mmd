@@ -1,0 +1,68 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Car Trip Plan Creation]
+    A([Start]) --> B[Create car trip plan\nUnified Plan 2020; NetControl]
+    B --> C{Plan meets regulatory standards?}
+    C -- No --> D[Adjust plan to meet regulations\nNetControl]
+    C -- Yes --> E[Submit for dispatcher approval\nNetControl / CADx]
+  end
+
+  subgraph P2[Phase 2: Regulatory Compliance Review]
+    E --> F[Review compliance with 49 CFR\nUnified Plan 2020; NetControl]
+    F --> G{Compliance issues found?}
+    G -- Yes --> H[Correct compliance issues\nNetControl]
+    G -- No --> I[Notify dispatcher of approval\nNetControl / CADx]
+  end
+
+  subgraph P3[Phase 3: Train Dispatcher Approval]
+    I --> J[Dispatcher approves plan\nNetControl / CADx]
+    J --> K{Approval granted?}
+    K -- No --> L[Revise car trip plan\nUnified Plan 2020; NetControl]
+    K -- Yes --> M[Assign crew to train\nNetControl / CADx; PS Technology]
+  end
+
+  subgraph P4[Phase 4: Crew Assignment]
+    M --> N{Crew assigned successfully?}
+    N -- No --> O[Reassign crew\nNetControl / CADx; PS Technology]
+    N -- Yes --> P[Conduct equipment health check\nEHMS Equipment Health Management System; TRAIN II]
+  end
+
+  subgraph P5[Phase 5: Equipment Health Check]
+    P --> Q{All checks passed?}
+    Q -- No --> R[Repair or replace faulty equipment\nEHMS; TRAIN II]
+    Q -- Yes --> S[Prepare train for departure\nNetControl / CADx]
+  end
+
+  subgraph P6[Phase 6: En Route Monitoring and Post-Arrival]
+    S --> T[Monitor train en route\nI-ETMS Interoperable Electronic Train Management System; NetControl / CADx]
+    T --> U{En route issues detected?}
+    U -- Yes --> V[Resolve en route issues\nNetControl / CADx; I-ETMS]
+    U -- No --> W[Arrive at terminal\nNetControl / CADx]
+    W --> X[Manage dwell time\nNetControl / CADx]
+    X --> Y{Dwell time managed?}
+    Y -- No --> Z[Adjust dwell time plan\nNetControl / CADx]
+    Y -- Yes --> AA[Inspect and maintain cars post-arrival\nEHMS; TRAIN II]
+    AA --> AB{Inspection complete?}
+    AB -- No --> AC[Repair or replace faulty cars\nEHMS]
+    AB -- Yes --> AD[Review car trip plan\nUnified Plan 2020; NetControl]
+    AD --> AE{Plan adjustments needed?}
+    AE -- Yes --> AF[Adjust car trip plan\nUnified Plan 2020; NetControl]
+    AE -- No --> AG[Exchange interline settlement data\nISS Interline Settlement System / SSDX Switching Settlement Data Exchange]
+    AG --> AH[Implement final car trip plan\nNetControl / CADx; PS Technology]
+    AH --> AI{Implementation successful?}
+    AI -- No --> AJ[Revise and re-implement plan\nNetControl / CADx; PS Technology]
+    AI -- Yes --> AK([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AK fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
+  style AB fill:#c8791a,color:#fff,stroke:#c8791a
+  style AE fill:#c8791a,color:#fff,stroke:#c8791a
+  style AI fill:#c8791a,color:#fff,stroke:#c8791a
