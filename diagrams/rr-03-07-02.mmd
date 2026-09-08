@@ -1,0 +1,45 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Arrival Notification]
+    A([Start]) --> B[Receive Arrival Notification\\nHarriman Dispatching Center HDC]
+    B --> C{Track Authority Granted?}
+    C -- No --> B
+    C -- Yes --> D[Assign Yard Crew and Equipment\\nPS Technology PST]
+  end
+
+  subgraph P2[Phase 2: Prepare for Arrival]
+    D --> E[Prepare for Arrival\\nNetControl]
+    E --> F{Hours of Service Remaining?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Conduct Initial Inspection\\nEHMS]
+    G --> H{FRA Defect Found?}
+    H -- No --> I[Sort Cars Using Hump Yard Technology\\nHump yard generic classification technology]
+  end
+
+  subgraph P3[Phase 3: Conduct Final Inspection]
+    I --> J[Conduct Final Inspection\\nEHMS]
+    J --> K{FRA Defect Found?}
+    K -- No --> L[Prepare for Departure\\nNetControl]
+  end
+
+  subgraph P4[Phase 4: Update Car Hire Accounting]
+    L --> M[Update Car Hire Accounting\\nCHARM]
+    M --> N{Car Bad Ordered?}
+    N -- Yes --> Rej1([Reject])
+    N -- No --> O[Report to Harriman Dispatching Center\\nHarriman Dispatching Center HDC]
+  end
+
+  subgraph P5[Phase 5: Exception Handling]
+    Hold1 --> B
+    Rej1 --> A
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
