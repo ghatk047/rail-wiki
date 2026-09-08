@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Arrival]
+    A([Start]) --> B[Receive Train Arrival Notification\nNetControl]
+    B --> C{Train on schedule?}
+    C -- No --> D[Reschedule train\nYardmaster]
+    C -- Yes --> E[Assign Yard Crew\nPS Technology]
+  end
+
+  subgraph P2[Phase 2: Pre-Departure Inspection]
+    E --> F[Conduct Pre-Departure Inspection\nEHMS]
+    F --> G{Air brake test passed?}
+    G -- No --> H[Perform Class I air brake test\nFRA 49 CFR 232.205 record]
+    G -- Yes --> I[Prepare for Classification\nHump yard classification technology]
+  end
+
+  subgraph P3[Phase 3: Classification]
+    I --> J{Track authority granted?}
+    J -- No --> K[Request track authority\nYardmaster]
+    J -- Yes --> L[Execute Classification\nHump yard classification technology]
+  end
+
+  subgraph P4[Phase 4: Post-Classification Inspection]
+    L --> M[Conduct Post-Classification Inspection\nEHMS]
+    M --> N{FRA defect found?}
+    N -- No --> O[Prepare for Departure\nNetControl]
+    N -- Yes --> P[Repair or replace defective cars\nMOW]
+  end
+
+  subgraph P5[Phase 5: Departure]
+    O --> Q[Conduct Departure Inspection\nEHMS]
+    Q --> R{Hazmat placard verified?}
+    R -- No --> S[Verify hazmat placards\nCar Inspector Carman]
+    R -- Yes --> T[Notify Dispatching Center of Departure\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Finalize Operations]
+    T --> U[Update Train Manifest and Accounting\nCHARM]
+    U --> V{Review yard operations complete?}
+    V -- No --> W[Review and Adjust Yard Operations\nNetControl]
+    V -- Yes --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
