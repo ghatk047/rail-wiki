@@ -120,7 +120,7 @@ def ea_prompt(ea_id, title, scope, l1_code):
         "  one emoji. Use rail layer names, for example: External and Interline, Planning and\n"
         "  Service Design, Dispatch and Movement Control, Terminal and Yard Execution,\n"
         "  Mechanical and Engineering, Commercial and Billing, Data and Analytics.\n"
-        "- 22 to 30 nodes. EVERY node label is two lines: the real system or facility name,\n"
+        "- 22 to 30 nodes TOTAL, and every subgraph must contain AT LEAST 4 nodes. A layer\n  with only two boxes in it is not an architecture layer — split it or fill it.\n  EVERY node label is two lines: the real system or facility name,\n"
         "  then a literal backslash-n, then 2 or 3 capabilities separated by hyphens.\n"
         "  Example: NC[\"NetControl\\nTrain sheet - Authority - Movement planning\"]\n"
         "- EVERY arrow carries a label naming the data that flows, in the form\n"
@@ -215,8 +215,20 @@ def ea_richness(mmd):
 
 def ea_registry_audit(ea_id, mmd, data):
     """Log every node label that does not resolve to registries/systems.json."""
-    labels = re.findall(r'\w+\["([^"\\]+)', mmd or "")
-    findings = [l.strip() for l in labels if not in_registry(l, SYS_NAMES)]
+    # Only node labels are checked. A subgraph title is an architecture layer
+    # name ("Terminal and Yard Execution"), not a system, so scanning those
+    # produced nine false "unregistered" findings on the first EA-03 run and
+    # made the audit useless as a signal.
+    body = "\n".join(l for l in (mmd or "").splitlines()
+                     if not l.strip().startswith("subgraph"))
+    labels = re.findall(r'\w+\["([^"\\]+)', body)
+    # The prompt deliberately allows descriptive generics where no product
+    # exists; they are not registry misses.
+    ALLOWED_GENERIC = ("interline partner", "shipper", "partner railroad",
+                       "customer", "regulator", "fra", "stb", "aar")
+    findings = [l.strip() for l in labels
+                if not in_registry(l, SYS_NAMES)
+                and not any(g in l.lower() for g in ALLOWED_GENERIC)]
     for s in data.get("systems", []) or []:
         if not in_registry(s, SYS_NAMES):
             findings.append(str(s))

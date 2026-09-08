@@ -1,6 +1,11 @@
 # Generated process content — never committed (BUILD-SPEC-v2 §8)
 data/processes.json
 
+# Local generation state — trackers, backups and raw model responses
+data/ea_diagrams.json
+data/processes.*.bak
+data/raw/
+
 # Generated build artefacts
 data/*.xlsx
 data/*.pptx

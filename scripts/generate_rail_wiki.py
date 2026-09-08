@@ -321,18 +321,55 @@ def _dom_key(l1_code):
     return None
 
 
-def registry_systems_for(l1_code):
-    """Systems registered to this domain first, then the rest of the estate.
+SYSTEM_MENU_LIMIT = 15
 
-    A single domain can hold as few as one sourced system (domain_15), which is
-    why the whole 61-entry estate is offered — an EA landscape or a process
-    legitimately touches systems owned by other domains (Umler, I-ETMS,
-    NetControl), and every one of those names is still registry-sourced.
+
+def registry_systems_for(l1_code, limit=SYSTEM_MENU_LIMIT):
+    """Systems registered to this domain first, then a top-up from the estate.
+
+    A single domain can hold as few as one sourced system (domain_15), so the
+    menu is topped up from other domains — an EA landscape or a process
+    legitimately touches systems owned elsewhere (Umler, I-ETMS, NetControl),
+    and every one of those names is still registry-sourced.
+
+    The total is capped at `limit` names. Handing the model all 61 entries made
+    the prompt long enough to slow generation badly without improving the
+    output: the first EA-03 run spent 12 minutes on one Mermaid call and still
+    came back with 16 nodes. Cross-domain systems are ranked so the ones that
+    genuinely reach into every domain come first, rather than taking whatever
+    order the registry file happens to use.
     """
     dom = _dom_key(l1_code)
     own = [s for s in REG_SYSTEMS if s["_domain"] == dom]
     other = [s for s in REG_SYSTEMS if s["_domain"] != dom]
-    return own, other
+
+    # Systems that show up across the whole railroad, most broadly-used first.
+    CROSS_DOMAIN_RANK = [
+        "netcontrol", "i-etms", "umler", "ps technology", "ehms", "train ii",
+        "charm", "interline settlement", "harriman", "gcor", "wabtrax",
+        "wayside defect", "machine vision", "back office server", "crewpro",
+    ]
+
+    def rank(entry):
+        low = entry["name"].lower()
+        for i, needle in enumerate(CROSS_DOMAIN_RANK):
+            if needle in low:
+                return i
+        return len(CROSS_DOMAIN_RANK)
+
+    # Dedupe by canonical name before ranking. Several systems are legitimately
+    # cross-registered — NetControl appears under domains 01, 02, 06, 12 and 15 —
+    # and without this they burn five of the fifteen menu slots on one product.
+    seen, deduped = set(), []
+    for e in sorted(other, key=rank):
+        key = _norm(re.sub(r"\s*\(.*?\)\s*", " ", e["name"]).split("/")[0])
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(e)
+
+    room = max(0, limit - len(own))
+    return own[:limit], deduped[:room]
 
 
 def _norm(s):
@@ -517,9 +554,11 @@ BPMN_FORM_EXAMPLE = """flowchart LR
   style J fill:#c8791a,color:#fff,stroke:#c8791a"""
 
 
-def ollama_call(prompt, model, temperature=0.35, num_ctx=16384):
-    # The EA prompt carries a 61-name allowed-systems list plus a worked form
-    # example, so 8192 is not enough headroom to also emit a 30-node diagram.
+def ollama_call(prompt, model, temperature=0.35, num_ctx=8192):
+    # 8192, not 16384. The wider window cost roughly 12 minutes for a single
+    # Mermaid call on this machine, which is unusable across 290 processes. The
+    # prompt now fits comfortably because the allowed-systems list is capped at
+    # SYSTEM_MENU_LIMIT names instead of the full 61-entry estate.
     r = requests.post(
         f"{OLLAMA_URL}/api/generate",
         json={"model": model, "prompt": prompt, "stream": False,
@@ -587,7 +626,12 @@ def extract_json(raw, required=None):
 def generate_process_content(proc):
     """Call 1 — JSON only. No Mermaid rules in this prompt (PORTED FIX 2)."""
     own, other = registry_systems_for(proc["l1"])
-    sys_menu = ", ".join(s["name"] for s in own) or "none registered for this domain"
+    # Domain-owned systems named first so the model reaches for those, then the
+    # cross-domain top-up. Some domains have only one or two sourced systems of
+    # their own, and offering just those produced processes that named the same
+    # box at every step.
+    sys_menu = "; ".join(x["name"] for x in own) or "none sourced for this domain"
+    other_menu = "; ".join(x["name"] for x in other)
     prompt = (
         f"{SYSTEM_PROMPT_JSON}\n\n"
         f"Document this business process for a US Class I freight railroad:\n"
@@ -595,7 +639,10 @@ def generate_process_content(proc):
         f"  L1 Domain  : {proc['l1_name']}\n"
         f"  L2 Group   : {proc['l2_name']}\n"
         f"  L3 Process : {proc['name']}\n\n"
-        f"Systems specifically sourced for this domain, prefer these: {sys_menu}\n\n"
+        f"Systems sourced for this domain, prefer these: {sys_menu}\n"
+        f"Other sourced systems you may use where the process genuinely touches "
+        f"them: {other_menu}\n"
+        f"Do not name any system outside these two lists.\n\n"
         f"Return exactly this JSON shape:\n{JSON_SHAPE}\n\n{CONTENT_RULES}\n"
     )
     for i, model in enumerate((PRIMARY_MODEL, PRIMARY_MODEL, FALLBACK_MODEL)):
@@ -1556,6 +1603,9 @@ def main():
                     help="push assets, home and every index only, then exit")
     ap.add_argument("--rebuild-nav", action="store_true",
                     help="regenerate all index pages and the search index, no model calls")
+    ap.add_argument("--push-every", type=int, default=1,
+                    help="commit and push after every N processes (default 1) so a long "
+                         "terminal run shows progress on Pages instead of going dark")
     ap.add_argument("--no-verify", action="store_true", help="skip the live check")
     ap.add_argument("--no-push", action="store_true", help="build locally, do not push")
     args = ap.parse_args()
@@ -1580,7 +1630,31 @@ def main():
         return
     log(f"{len(targets)} process(es) queued | force={args.force}")
 
-    done_now = []
+    all_done, pending, ok = [], [], True
+
+    def flush():
+        """Record, rebuild nav and push whatever is pending. Safe to call empty."""
+        nonlocal ok
+        if not pending:
+            return
+        for proc, data in pending:
+            tr[proc["pid"]] = {
+                "status": "Complete",
+                "url": f"{PAGES_BASE}/{proc['path']}",
+                "completed_at": datetime.now().isoformat(timespec="seconds"),
+                "systems": ", ".join(str(s) for s in data.get("systems", [])),
+            }
+        save_tracker(tr)
+        rebuild_nav(tr)
+        ok = commit_and_push(
+            f"Generate {', '.join(p['pid'] for p, _ in pending)} under {TEMPLATE_VERSION}",
+            no_push=args.no_push)
+        for proc, data in pending:
+            excel_record(proc, data, f"{PAGES_BASE}/{proc['path']}")
+        log(f"  {len(pending)} process(es) recorded in the tracker and Excel")
+        all_done.extend(pending)
+        pending.clear()
+
     try:
         for i, proc in enumerate(targets, start=1):
             if is_complete(proc["pid"], tr) and not args.force:
@@ -1588,34 +1662,20 @@ def main():
                 continue
             data = process_one(proc, tr)
             if data:
-                done_now.append((proc, data))
+                pending.append((proc, data))
+            if len(pending) >= max(1, args.push_every):
+                flush()
             log(f"progress: {i}/{len(targets)}")
     except KeyboardInterrupt:
         log("interrupted — publishing what is done", "WARN")
+    flush()
 
-    if not done_now:
+    if not all_done:
         log("no process produced usable output", "ERROR")
         return
 
-    for proc, data in done_now:
-        tr[proc["pid"]] = {
-            "status": "Complete",
-            "url": f"{PAGES_BASE}/{proc['path']}",
-            "completed_at": datetime.now().isoformat(timespec="seconds"),
-            "systems": ", ".join(str(s) for s in data.get("systems", [])),
-        }
-    save_tracker(tr)
-    rebuild_nav(tr)
-    ok = commit_and_push(
-        f"Generate {', '.join(p['pid'] for p, _ in done_now)} under {TEMPLATE_VERSION}",
-        no_push=args.no_push)
-
-    for proc, data in done_now:
-        excel_record(proc, data, f"{PAGES_BASE}/{proc['path']}")
-    log(f"  {len(done_now)} process(es) recorded in the tracker and Excel")
-
     if ok and not args.no_verify and not args.no_push:
-        url = f"{PAGES_BASE}/{done_now[-1][0]['path']}"
+        url = f"{PAGES_BASE}/{all_done[-1][0]['path']}"
         log("verified live: " + url if verify_live(url) else f"could not verify {url}")
     log(f"run complete — {sum(1 for p in PROCESSES if is_complete(p['pid'], tr))}"
         f"/{len(PROCESSES)} processes live at {PAGES_BASE}/")
