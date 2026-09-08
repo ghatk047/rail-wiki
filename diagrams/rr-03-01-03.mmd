@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Arrival Notification]
+    A([Start]) --> B[Receive Arrival Notification\\nHarriman Dispatching Center HDC]
+    B --> C{Track Authority Granted?}
+    C -- No --> B
+    C -- Yes --> D[Assign Yard Crew\\nPS Technology PST]
+  end
+
+  subgraph P2[Phase 2: Track Preparation]
+    D --> E[Prepare Track for Inbound Train\\nNetControl]
+    E --> F{Track Ready?}
+    F -- No --> E
+    F -- Yes --> G[Conduct Pre-arrival Inspection\\nMachine Vision portals]
+  end
+
+  subgraph P3[Phase 3: Classification]
+    G --> H{FRA Defect Found?}
+    H -- Yes --> I[Hold Train for Repair\\nHarriman Dispatching Center HDC]
+    H -- No --> J[Classify Cars Using Hump Yard\\nHump yard generic classification technology]
+  end
+
+  subgraph P4[Phase 4: Post-classification Inspection]
+    J --> K[Conduct Post-classification Inspection\\nMachine Vision portals]
+    K --> L{FRA Defect Found?}
+    L -- Yes --> I
+    L -- No --> M[Update Car Hire Accounting\\nCHARM car hire accounting]
+  end
+
+  subgraph P5[Phase 5: Outbound Preparation]
+    M --> N[Prepare Train for Outbound Movement\\nNetControl]
+    N --> O{Track Authority Granted?}
+    O -- No --> N
+    O -- Yes --> P[Conduct Final Air Brake Test\\nWabtrax]
+  end
+
+  subgraph P6[Phase 6: Departure and Settlement]
+    P --> Q{Air Brake Test Passed?}
+    Q -- No --> R[Escalate to Maintenance\\nHarriman Dispatching Center HDC]
+    Q -- Yes --> S[Update Interline Settlement System\\nInterline Settlement System ISS]
+    S --> T[Notify HDC of Departure\\nHarriman Dispatching Center HDC]
+    T --> U[Update Equipment Health Management System\\nEHMS equipment health]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
