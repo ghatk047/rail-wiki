@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Arrival]
+    A([Start]) --> B[Receive Train Arrival Notification\nNetControl]
+    B --> C{Train on schedule?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Review Train Manifest and Classification Plan\nTRAIN II]
+  end
+
+  subgraph P2[Phase 2: Assign Crews and Equipment]
+    D --> E[Assign Yard Crews and Equipment\nPS Technology PST]
+    E --> F{Crews assigned?}
+    F -- No --> E
+    F -- Yes --> G[Conduct Pre-Departure Inspections\nCar Inspector Carman, EHMS]
+  end
+
+  subgraph P3[Phase 3: Prepare Hump Yard]
+    G --> H{Inspection passed?}
+    H -- No --> Hold2([Hold])
+    H -- Yes --> I[Prepare Hump Yard for Classification\nSwitchman/Switch Foreman, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Classify and Switch Cars]
+    I --> J[Classify and Switch Cars\nSwitchman/Switch Foreman, I-ETMS]
+    J --> K{Classification complete?}
+    K -- No --> J
+    K -- Yes --> L[Perform Post-Classification Inspections\nCar Inspector Carman, EHMS]
+  end
+
+  subgraph P5[Phase 5: Final Train Inspection]
+    L --> M{Inspection passed?}
+    M -- No --> Hold3([Hold])
+    M -- Yes --> N[Update Train Manifest and Classification Data\nYardmaster, TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Departure Preparation]
+    N --> O[Conduct Final Train Inspection\nCar Inspector Carman, EHMS]
+    O --> P{Inspection passed?}
+    P -- No --> Hold4([Hold])
+    P -- Yes --> Q[Prepare Train for Departure\nYardmaster, I-ETMS]
+    Q --> R[Notify Harriman Dispatching Center of Departure\nNetControl]
+    R --> S[Update Interline Settlement System ISS\nYardmaster, ISS / SSDX / CHDX]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
