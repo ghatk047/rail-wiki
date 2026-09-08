@@ -1,0 +1,63 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Service Design]
+    A([Start]) --> B[Review Service Design Requirements\nUnified Plan 2020]
+    B --> C{Requirements met?}
+    C -- No --> D[Identify Terminal Locations\nNetControl]
+    C -- Yes --> E[Conduct Feasibility Study\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Develop Mission Plan]
+    E --> F{Feasibility study complete?}
+    F -- No --> G[Review Service Design Requirements\nUnified Plan 2020]
+    F -- Yes --> H[Develop Terminal Mission Plan\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Approval and Implementation]
+    H --> I{Plan developed?}
+    I -- No --> J[Conduct Feasibility Study\nNetControl]
+    I -- Yes --> K[Review and Approve Plan\nVP Network Planning Operations]
+  end
+
+  subgraph P4[Phase 4: Monitor and Adjust]
+    K --> L{Plan approved?}
+    L -- No --> M[Develop Terminal Mission Plan\nNetControl]
+    L -- Yes --> N[Implement Terminal Mission Plan\nNetControl / CADx]
+  end
+
+  subgraph P5[Phase 5: Final Monitoring]
+    N --> O[Monitor Terminal Operations\nNetControl / CADx]
+    O --> P{Operations within plan?}
+    P -- No --> Q[Adjust Terminal Mission Plan\nService Design / Network Planning Analyst]
+    P -- Yes --> R[Update Terminal Mission Plan\nUnified Plan 2020]
+  end
+
+  subgraph P6[Phase 6: Final Review and Implementation]
+    R --> S{Plan updated?}
+    S -- No --> T[Adjust Terminal Mission Plan\nService Design / Network Planning Analyst]
+    S -- Yes --> U[Review and Approve Updated Plan\nVP Network Planning Operations]
+  end
+
+  subgraph P7[Phase 7: Final Implementation]
+    U --> V{Updated plan approved?}
+    V -- No --> W[Adjust Terminal Mission Plan\nService Design / Network Planning Analyst]
+    V -- Yes --> X[Implement Updated Terminal Mission Plan\nNetControl / CADx]
+  end
+
+  subgraph P8[Phase 8: Reporting]
+    X --> Y[Final Monitoring and Reporting\nNetControl / CADx]
+    Y --> Z{Reporting complete?}
+    Z -- No --> X
+    Z -- Yes --> L1([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style Z fill:#c8791a,color:#fff,stroke:#c8791a
