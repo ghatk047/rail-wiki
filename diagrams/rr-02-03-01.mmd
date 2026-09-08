@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Movement Request]
+    A([Start]) --> B[Receive Movement Request\nNetControl / CADx]
+    B --> C{Track Available?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Verify Track Conditions\nWabtrax / Wayside defect detector network]
+  end
+
+  subgraph P2[Phase 2: Verify Track Conditions]
+    D --> E{FRA Defect Found?}
+    E -- Yes --> Hold2([Hold])
+    E -- No --> F[Coordinate Roadway Workers\nNetControl / CADx]
+  end
+
+  subgraph P3[Phase 3: Coordinate Roadway Workers]
+    F --> G{Roadway Worker Completion?}
+    G -- No --> H[Monitor Train Movement\nNetControl / CADx]
+    G -- Yes --> I[Issue Authority for Movement\nNetControl / CADx]
+  end
+
+  subgraph P4[Phase 4: Monitor Train Movement]
+    I --> J[Conduct Air Brake Test\nEHMS]
+    J --> K{Air Brake Test Passed?}
+    K -- No --> L[Adjust for Variations\nNetControl / CADx]
+    K -- Yes --> M[Verify Roadway Worker Completion\nNetControl / CADx]
+  end
+
+  subgraph P5[Phase 5: Verify Roadway Worker Completion]
+    M --> N{Roadway Worker Completion Verified?}
+    N -- No --> O[Monitor Train Movement\nNetControl / CADx]
+    N -- Yes --> P[Update Train Schedule\nNetControl / CADx]
+  end
+
+  subgraph P6[Phase 6: Review and Finalize Process]
+    P --> Q[Review and Document Process\nNetControl / CADx]
+    Q --> R{Process Reviewed?}
+    R -- No --> S[Adjust for Variations\nNetControl / CADx]
+    R -- Yes --> T[Notify Stakeholders\nNetControl / CADx]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
