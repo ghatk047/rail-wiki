@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiate Response]
+    A([Start]) --> B[Initiate Emergency Response Protocol\\nNetControl/CADx]
+    B --> C{Incident reported?}
+    C -- Yes --> D[Notify Relevant Personnel and Authorities\\nNetControl/CADx, I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Assess Impact]
+    D --> E[Assess Incident Impact and Safety Risks\\nNetControl/CADx, I-ETMS, Umler]
+    E --> F{Safety risks identified?}
+    F -- Yes --> G[Implement Safety Measures and Evacuation Plans\\nNetControl/CADx, I-ETMS]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Coordinate with Authorities]
+    G --> H[Coordinate with Local Authorities and Emergency Services\\nNetControl/CADx, I-ETMS]
+    H --> I{Coordination complete?}
+    I -- Yes --> J[Assess Track and Equipment Damage\\nWayside defect detector network, Machine Vision portals]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Plan Repair]
+    J --> K{Damage assessed?}
+    K -- Yes --> L[Plan for Track Repair and Equipment Replacement\\nNetControl/CADx, I-ETMS, Umler]
+    K -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Restore Operations]
+    L --> M[Restore Normal Operations\\nNetControl/CADx, I-ETMS]
+    M --> N{Operations restored?}
+    N -- Yes --> O[Conduct Post-Incident Review and Analysis\\nNetControl/CADx, I-ETMS, Umler]
+    N -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Update Procedures]
+    O --> P[Update Emergency Response Plan and Procedures\\nNetControl/CADx, I-ETMS]
+    P --> Q{Plan updated?}
+    Q -- Yes --> R[Communicate with Stakeholders and Customers\\nNetControl/CADx, I-ETMS, up.com customer portal]
+    Q -- No --> Hold6([Hold])
+  end
+
+  subgraph P7[Phase 7: Monitor Recovery]
+    R --> S[Monitor and Report Incident Recovery Progress\\nNetControl/CADx, I-ETMS]
+    S --> T{Recovery complete?}
+    T -- Yes --> U([End])
+    T -- No --> Hold7([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold7 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
