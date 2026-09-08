@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Analyze Terminal Capacity]
+    A([Start]) --> B[Analyze terminal capacity\\Unified Plan 2020]
+    B --> C{Capacity sufficient?}
+    C -- No --> D[Request additional resources\\Unified Plan 2020]
+    C -- Yes --> E[Design terminal layout\\Unified Plan 2020]
+  end
+
+  subgraph P2[Phase 2: Design Terminal Layout]
+    E --> F{Layout feasible?}
+    F -- No --> G[Revise layout\\Unified Plan 2020]
+    F -- Yes --> H[Develop train schedule\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Develop Train Schedule]
+    H --> I{Schedule valid?}
+    I -- No --> J[Adjust schedule\\NetControl]
+    I -- Yes --> K[Assign crews and equipment\\PS Technology PST]
+  end
+
+  subgraph P4[Phase 4: Assign Crews and Equipment]
+    K --> L{Crews assigned?}
+    L -- No --> M[Reassign crews\\PS Technology PST]
+    L -- Yes --> N[Conduct pre-departure inspections\\EHMS Equipment Health Management System]
+  end
+
+  subgraph P5[Phase 5: Conduct Pre-Departure Inspections]
+    N --> O{Inspection passed?}
+    O -- No --> P[Reinspect cars\\EHMS Equipment Health Management System]
+    O -- Yes --> Q[Monitor train operations\\NetControl / CADx]
+  end
+
+  subgraph P6[Phase 6: Evaluate and Adjust Terminal Operations]
+    Q --> R[Evaluate terminal performance\\Unified Plan 2020]
+    R --> S{Performance satisfactory?}
+    S -- No --> T[Adjust terminal operations\\Unified Plan 2020]
+    S -- Yes --> U[Review regulatory compliance\\Unified Plan 2020]
+    U --> V{Compliance met?}
+    V -- No --> W[Implement changes\\NetControl / CADx]
+    V -- Yes --> X[Monitor post-change performance\\NetControl / CADx]
+    X --> Y{Performance improved?}
+    Y -- No --> Z[Reimplement changes\\NetControl / CADx]
+    Y -- Yes --> AA[Update terminal mission plan\\Unified Plan 2020]
+    AA --> L([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
