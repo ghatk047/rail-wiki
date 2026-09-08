@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Traffic Forecasts]
+    A([Start]) --> B[Review traffic forecasts\nUnified Plan 2020]
+    B --> C{Forecast within acceptable range?}
+    C -- No --> D[Adjust forecast parameters\nUnified Plan 2020]
+    C -- Yes --> E[Define train symbols\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Define Train Symbols]
+    E --> F{Symbols defined correctly?}
+    F -- No --> G[Review and correct symbols\nNetControl]
+    F -- Yes --> H[Create blocking plans\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Create Blocking Plans]
+    H --> I{Blocking plan valid?}
+    I -- No --> J[Adjust blocking parameters\nNetControl]
+    I -- Yes --> K[Review and approve plans\nVP Network Planning Operations]
+  end
+
+  subgraph P4[Phase 4: Review and Approve Plans]
+    K --> L{Plan approved?}
+    L -- No --> M[Escalate for review\nVP Network Planning Operations]
+    L -- Yes --> N[Communicate plans to crews\nNetControl / CADx]
+  end
+
+  subgraph P5[Phase 5: Monitor Train Operations]
+    N --> O[Monitor train operations\nNetControl / CADx]
+    O --> P{Operations within plan?}
+    P -- No --> Q[Adjust blocking plans as needed\nNetControl / CADx]
+    P -- Yes --> R[Conduct post-operation review\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Update and Document Changes]
+    R --> S{Changes required?}
+    S -- No --> T([End])
+    S -- Yes --> U[Update train symbols and blocking plans\nUnified Plan 2020]
+    U --> V[Document changes\nUnified Plan 2020]
+    V --> W[Review and approve changes\nVP Network Planning Operations]
+    W --> X{Changes approved?}
+    X -- No --> Y[Escalate for review\nVP Network Planning Operations]
+    X -- Yes --> Z[Implement changes\nNetControl / CADx]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
