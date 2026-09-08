@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Exception Detection and Reporting]
+    A([Start]) --> B[Detect exception\\NetControl]
+    B --> C{Exception detected?}
+    C -- Yes --> D[Report to dispatcher\\Harriman Dispatching Center HDC]
+    C -- No --> E[Continue normal operation\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Initial Assessment and Decision]
+    D --> F[Assess exception\\Harriman Dispatching Center HDC]
+    F --> G{Exception requires action?}
+    G -- Yes --> H[Initiate communication\\NetControl, I-ETMS]
+    G -- No --> E
+  end
+
+  subgraph P3[Phase 3: Communication and Instruction]
+    H --> I[Communicate instructions\\NetControl, I-ETMS]
+    I --> J{Instructions understood?}
+    J -- Yes --> K[Crew responds to instructions\\NetControl]
+    J -- No --> H
+  end
+
+  subgraph P4[Phase 4: Crew Response and Action]
+    K --> L[Perform crew action\\NetControl]
+    L --> M{Action successful?}
+    M -- Yes --> N[Safety checks required?]
+    M -- No --> O[Report failure to dispatcher\\Harriman Dispatching Center HDC]
+  end
+
+  subgraph P5[Phase 5: Safety Checks and Inspections]
+    N --> P[Conduct safety checks\\EHMS, TRAIN II]
+    P --> Q{Safety checks passed?}
+    Q -- Yes --> R[Decision on further action\\Harriman Dispatching Center HDC]
+    Q -- No --> S[Report check failure to dispatcher\\Harriman Dispatching Center HDC]
+  end
+
+  subgraph P6[Phase 6: Final Decision and Closure]
+    R --> T[Communicate final decision\\NetControl, I-ETMS]
+    T --> U{Decision understood?}
+    U -- Yes --> V[Crew executes final instructions\\NetControl]
+    U -- No --> T
+    V --> W[Post-exception review\\Harriman Dispatching Center HDC, TRAIN II]
+    W --> X{Review complete?}
+    X -- Yes --> Y[Update train status\\NetControl, I-ETMS]
+    X -- No --> W
+    Y --> Z[Notify affected parties\\NetControl, I-ETMS]
+    Z --> AA[Close exception case\\Harriman Dispatching Center HDC, TRAIN II]
+    AA --> AB([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
