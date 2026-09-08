@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection Initiation]
+    A([Start]) --> B[Initiate data collection\\NetControl]
+    B --> C{Data collection complete?}
+    C -- No --> B
+    C -- Yes --> D[Train speed monitoring\\I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Train Speed Monitoring]
+    D --> E{Speed within limits?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Terminal dwell time analysis\\NetControl / CADx]
+  end
+
+  subgraph P3[Phase 3: Terminal Dwell Time Analysis]
+    F --> G{Dwell time acceptable?}
+    G -- No --> F
+    G -- Yes --> H[Safety incident review\\Wabtrax / Wayside defect detector network]
+  end
+
+  subgraph P4[Phase 4: Safety Incident Review]
+    H --> I{Incident found?}
+    I -- Yes --> Hold2([Hold])
+    I -- No --> J[Regulatory compliance check\\Umler / EHMS]
+  end
+
+  subgraph P5[Phase 5: Regulatory Compliance Check]
+    J --> K{Compliance met?}
+    K -- No --> J
+    K -- Yes --> L[Interline settlement data exchange\\ISS / SSDX / CHDX]
+  end
+
+  subgraph P6[Phase 6: Network Performance Dashboard Update and Reporting]
+    L --> M[Network performance dashboard update\\NetControl]
+    M --> N[STB report preparation\\NetControl / I-ETMS]
+    N --> O{Report ready?}
+    O -- No --> N
+    O -- Yes --> P[STB report submission\\NetControl]
+    P --> Q[Post-submission review\\NetControl]
+    Q --> R{Review complete?}
+    R -- No --> Q
+    R -- Yes --> S[Implementation of improvements\\NetControl / CADx]
+    S --> T{Improvements implemented?}
+    T -- No --> S
+    T -- Yes --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
