@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Request]
+    A([Start]) --> B[Receive Crew Request\nPS Technology PST]
+    B --> C{Crew Available?}
+    C -- Yes --> D[Assign Crew\nPS Technology PST]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Verification]
+    D --> E[Verify Crew Availability\nCloudMoyo Crew Management CCM]
+    E --> F{Crew Available?}
+    F -- Yes --> G[Notify Crew Members\nPS Technology PST]
+    F -- No --> Hold1
+  end
+
+  subgraph P3[Phase 3: Readiness]
+    G --> H[Confirm Crew Readiness\nEHMS Equipment Health Management System]
+    H --> I{Crew Ready?}
+    I -- Yes --> J[Update Crew Schedule\nCloudMoyo Crew Management CCM]
+    I -- No --> Hold1
+  end
+
+  subgraph P4[Phase 4: Deployment]
+    J --> K[Monitor Crew Performance\nNetControl service design use]
+    K --> L{Performance Satisfactory?}
+    L -- Yes --> M[Conduct Crew Briefing\nPS Technology PST]
+    L -- No --> Hold1
+  end
+
+  subgraph P5[Phase 5: Feedback]
+    M --> N[Review Crew Feedback\nPS Technology PST]
+    N --> O{Feedback Positive?}
+    O -- Yes --> P[Adjust Crew Assignments\nPS Technology PST]
+    O -- No --> Hold1
+  end
+
+  subgraph P6[Phase 6: Finalization]
+    P --> Q[Update Crew Records\nCloudMoyo Crew Management CCM]
+    Q --> R{Records Updated?}
+    R -- Yes --> S[Finalize Crew Deployment\nPS Technology PST]
+    R -- No --> Hold1
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
