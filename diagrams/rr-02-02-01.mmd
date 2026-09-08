@@ -1,0 +1,69 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Request]
+    A([Start]) --> B[Receive Train Request\nNetControl / CADx]
+    B --> C{Train request valid?}
+    C -- No --> A
+    C -- Yes --> D[Verify Track Conditions\nWabtrax, Wayside defect detector network]
+  end
+
+  subgraph P2[Phase 2: Verify Track Conditions]
+    D --> E{Track conditions safe?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Prepare Track Warrant\nNetControl / CADx, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Prepare Track Warrant]
+    F --> G{Warrant prepared successfully?}
+    G -- No --> D
+    G -- Yes --> H[Authorize Train Movement\nNetControl / CADx, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Authorize Train Movement]
+    H --> I{Track warrant granted?}
+    I -- No --> Hold1
+    I -- Yes --> J[Conduct Pre-Movement Inspection\nMachine Vision portals, EHMS]
+  end
+
+  subgraph P5[Phase 5: Conduct Pre-Movement Inspection]
+    J --> K{Inspection passed?}
+    K -- No --> D
+    K -- Yes --> L[Dispatch Train\nNetControl / CADx, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Monitor and Update]
+    L --> M[Monitor Train Movement\nI-ETMS, NetControl / CADx]
+    M --> N{Train on schedule?}
+    N -- No --> Hold1
+    N -- Yes --> O[Review Train Arrival\nNetControl / CADx, I-ETMS]
+    O --> P{Arrival verified?}
+    P -- No --> Hold1
+    P -- Yes --> Q[Update Track Warrant Status\nNetControl / CADx, I-ETMS]
+    Q --> R{Status updated?}
+    R -- No --> D
+    R -- Yes --> S[Notify Yardmaster of Completion\nNetControl / CADx, I-ETMS]
+    S --> T{Notification sent?}
+    T -- No --> Hold1
+    T -- Yes --> U[Review and Document Process\nNetControl / CADx, I-ETMS]
+    U --> V{Process documented?}
+    V -- No --> D
+    V -- Yes --> W[Update Train Schedule\nNetControl / CADx, I-ETMS]
+    W --> X{Schedule updated?}
+    X -- No --> Hold1
+    X -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
