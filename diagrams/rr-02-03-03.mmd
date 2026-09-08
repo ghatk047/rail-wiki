@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Notify Control Operator\\NetControl]
+    B --> C{Train arrived?}
+    C -- Yes --> D[Prepare Authority Request\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Authority Request Preparation]
+    D --> E[Review Authority Request\\Chief Dispatcher]
+    E --> F{Authority granted?}
+    F -- Yes --> G[Coordinate Roadway Workers\\Train Dispatcher]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Roadway Worker Coordination]
+    G --> H[Notify Control Operator\\NetControl]
+    H --> I{Workers coordinated?}
+    I -- Yes --> J[Departure Notification\\NetControl]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Train Departure Notification]
+    J --> K[Monitor Post-Departure\\Train Dispatcher]
+    K --> L{Post-departure safe?}
+    L -- Yes --> M[Check Roadway Worker Safety\\Car Inspector]
+    L -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Final Departure and Audit]
+    M --> N[Prepare Authority Revocation\\Train Dispatcher]
+    N --> O[Review Authority Revocation\\Chief Dispatcher]
+    O --> P{Revocation approved?}
+    P -- Yes --> Q[Confirm Final Departure\\Control Operator]
+    P -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement Planning]
+    Q --> R[Audit Post-Departure\\Train Dispatcher]
+    R --> S{Audit successful?}
+    S -- Yes --> T[Plan Continuous Improvement\\Service Design / Network Planning Analyst]
+    S -- No --> Hold6([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
