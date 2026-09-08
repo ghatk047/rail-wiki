@@ -1,0 +1,75 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Meet/Pass Conflict]
+    A([Start]) --> B[Identify Meet/Pass Conflict\\NetControl / CADx]
+    B --> C{Conflict Detected?}
+    C -- Yes --> D[Prioritize Trains\\NetControl / CADx]
+    C -- No --> E[Monitor Train Movements\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Prioritize Trains]
+    D --> F{Prioritization Complete?}
+    F -- Yes --> G[Notify Affected Trains\\NetControl / CADx, PST]
+    F -- No --> H[Prioritize Trains\\NetControl / CADx]
+  end
+
+  subgraph P3[Phase 3: Notify Affected Trains]
+    G --> I{Notifications Sent?}
+    I -- Yes --> J[Adjust Train Speeds\\NetControl / CADx, I-ETMS]
+    I -- No --> K[Notify Affected Trains\\NetControl / CADx, PST]
+  end
+
+  subgraph P4[Phase 4: Adjust Train Speeds]
+    J --> L{Speed Adjustments Complete?}
+    L -- Yes --> M[Monitor Train Movements\\NetControl / CADx, I-ETMS]
+    L -- No --> N[Adjust Train Speeds\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Monitor Train Movements]
+    M --> O{Train Movements Monitored?}
+    O -- Yes --> P[Resolve Conflicts\\NetControl / CADx, I-ETMS]
+    O -- No --> Q[Monitor Train Movements\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Resolve Conflicts]
+    P --> R{Conflicts Resolved?}
+    R -- Yes --> S[Update Train Schedules\\NetControl / CADx, PST]
+    R -- No --> T[Resolve Conflicts\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P7[Phase 7: Update Train Schedules]
+    S --> U{Schedules Updated?}
+    U -- Yes --> V[Verify Train Status\\NetControl / CADx, I-ETMS]
+    U -- No --> W[Update Train Schedules\\NetControl / CADx, PST]
+  end
+
+  subgraph P8[Phase 8: Verify Train Status]
+    V --> X{Status Verified?}
+    X -- Yes --> Y[Notify Crews of Final Adjustments\\NetControl / CADx, PST]
+    X -- No --> Z[Verify Train Status\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P9[Phase 9: Notify Crews and Document Process]
+    Y --> AA{Notifications Sent?}
+    AA -- Yes --> AB[Document Process\\NetControl / CADx, PST]
+    AA -- No --> AC[Notify Crews of Final Adjustments\\NetControl / CADx, PST]
+  end
+
+  subgraph P10[Phase 10: Review and Close Process]
+    AB --> AD{Review Complete?}
+    AD -- Yes --> AE([End])
+    AD -- No --> AF[Review and Adjust\\NetControl / CADx, PST]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AE fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
+  style AA fill:#c8791a,color:#fff,stroke:#c8791a
+  style AD fill:#c8791a,color:#fff,stroke:#c8791a
