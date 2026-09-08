@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Notification]
+    A([Start]) --> B[Receive Train Notification\\Harriman Dispatching Center HDC]
+    B --> C{Train notification received?}
+    C -- No --> B
+    C -- Yes --> D[Prepare Yard for Arrival\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Pre-arrival Inspection]
+    D --> E[Conduct Pre-arrival Inspection\\Wabtrax]
+    E --> F{FRA defect found?}
+    F -- No --> G[Direct Train into Yard\\I-ETMS]
+    F -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Classification and Inspection]
+    G --> H[Classify Cars Using Hump Yard Technology\\Hump yard generic classification technology]
+    H --> I{Interchange accepted?}
+    I -- No --> E
+    I -- Yes --> J[Perform Post-classification Inspection\\Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Car Hire Accounting and Preparation for Departure]
+    J --> K{Car bad ordered?}
+    K -- No --> L[Update Car Hire Accounting\\CHARM car hire accounting]
+    K -- Yes --> Hold2([Hold])
+    L --> M[Prepare for Departure\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Final Train Inspection and Dispatch]
+    M --> N[Conduct Final Train Inspection\\Wabtrax]
+    N --> O{FRA defect found?}
+    O -- No --> P[Dispatch Train from Yard\\I-ETMS]
+    O -- Yes --> J
+  end
+
+  subgraph P6[Phase 6: Post-Departure Actions and Reporting]
+    P --> Q[Update Equipment Health Records\\EHMS equipment health]
+    Q --> R[Report Train Departure to Dispatch Center\\Harriman Dispatching Center HDC]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
