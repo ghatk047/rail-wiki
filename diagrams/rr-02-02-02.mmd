@@ -1,0 +1,45 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive and Verify Request]
+    A([Start]) --> B[Receive Track Warrant Request\nNetControl / CADx]
+    B --> C{Track Conditions Verified?}
+    C -- No --> D[Verify Track Conditions\nI-ETMS]
+    C -- Yes --> E[Review Train Schedule\nNetControl / CADx]
+  end
+
+  subgraph P2[Phase 2: Issue and Notify]
+    E --> F{Schedule Confirmed?}
+    F -- No --> G[Adjust Schedule\nNetControl / CADx]
+    F -- Yes --> H[Issue Track Warrant\nNetControl / CADx]
+    H --> I[Notify Train Crew\nNetControl / CADx]
+  end
+
+  subgraph P3[Phase 3: Monitor and Conduct Test]
+    I --> J[Monitor Train Movement\nI-ETMS]
+    J --> K{Train in Dark Territory?}
+    K -- No --> L([End])
+    K -- Yes --> M[Conduct Air Brake Test\nEHMS]
+  end
+
+  subgraph P4[Phase 4: Update and Review]
+    M --> N{Air Brake Test Passed?}
+    N -- No --> O[Reissue Track Warrant\nNetControl / CADx]
+    N -- Yes --> P[Update Track Warrant Status\nNetControl / CADx]
+    P --> Q[Review and Adjust Schedule\nNetControl / CADx]
+  end
+
+  subgraph P5[Phase 5: Finalize Control]
+    Q --> R{Schedule Adjusted?}
+    R -- No --> S[Adjust Schedule Again\nNetControl / CADx]
+    R -- Yes --> T[Finalize Track Warrant Control\nNetControl / CADx]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
