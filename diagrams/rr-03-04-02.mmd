@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival]
+    A([Start]) --> B[Train Arrival Notification\nNetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Pre-Switching Inspection\nEHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Switching Plan]
+    D --> E{Interchange Accepted?}
+    E -- Yes --> F[Switching Plan Preparation\nNetControl]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Train Movement]
+    F --> G[Train Movement Execution\nNetControl]
+    G --> H{Air Brake Test Passed?}
+    H -- Yes --> I[Post-Switching Inspection\nEHMS]
+    H -- No --> D
+  end
+
+  subgraph P4[Phase 4: Defect Handling]
+    I --> J{FRA Defect Found?}
+    J -- Yes --> K[Defect Handling\nEHMS]
+    J -- No --> L[Train Departure Notification\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Settlement Data Preparation]
+    L --> M{Settlement Data Ready?}
+    M -- Yes --> N[Settlement Data Preparation\nInterline Settlement System ISS]
+    M -- No --> I
+  end
+
+  subgraph P6[Phase 6: Submission and Review]
+    N --> O[Settlement Data Submission\nInterline Settlement System ISS]
+    O --> P{Submission Successful?}
+    P -- Yes --> Q[Post-Process Review\nNetControl]
+    P -- No --> M
+    Q --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
