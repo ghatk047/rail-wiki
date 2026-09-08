@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Arrival Notification]
+    A([Start]) --> B[Receive Train Arrival Notification\\nHarriman Dispatching Center HDC]
+    B --> C{Train on schedule?}
+    C -- No --> D[Reschedule train\\nHarriman Dispatching Center HDC]
+    C -- Yes --> E[Assign Yard Track\\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Air Brake Test]
+    E --> F[Initiate Air Brake Test\\nEHMS Equipment Health Management System]
+    F --> G{Air brake test passed?}
+    G -- No --> H[Retest air brakes\\nEHMS Equipment Health Management System]
+    G -- Yes --> I[Review Air Brake Test Results\\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P3[Phase 3: Yard Preparation]
+    I --> J{FRA defect found?}
+    J -- No --> K[Prepare for Yard Operations\\nPS Technology PST]
+    J -- Yes --> L[Report FRA defect\\nNetControl]
+    L --> M[Escalate to Maintenance\\nMOW]
+  end
+
+  subgraph P4[Phase 4: Execute Yard Operations]
+    K --> N[Execute Yard Operations\\nPS Technology PST]
+    N --> O{Interchange accepted?}
+    O -- No --> P[Reject interchange\\nYardmaster]
+    O -- Yes --> Q[Monitor Train Dwell Time\\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Final Inspection and Release]
+    Q --> R{Hours of service remaining?}
+    R -- No --> S[Update Yard Schedule\\nHarriman Dispatching Center HDC]
+    R -- Yes --> T[Conduct Final Inspection\\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P6[Phase 6: Update Systems and Record]
+    T --> U{Car bad ordered?}
+    U -- No --> V[Release Train from Yard\\nNetControl]
+    U -- Yes --> W[Report car issue\\nNetControl]
+    V --> X[Update Interline Settlement System\\nInterline Settlement System ISS / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX]
+    X --> Y[Record Dwell Time in CHARM\\nCHARM Car Hire Accounting Rate Master]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
