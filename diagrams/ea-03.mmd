@@ -1,0 +1,78 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    IETMS["I-ETMS\nTrain control - PTC - Authority"]
+    UMLER["Umler\nEquipment register - Car hire - Interchange"]
+    INTERCHANGE_PARTNER["Interchange partner railroad\nInterchange event - Bad order card - Waybill"]
+  end
+
+  subgraph PLANNING["📅 Planning"]
+    direction TB
+    NETCONTROL_PLANNING["NetControl\nTrain sheet - Authority - Movement planning"]
+    UP_GO["UPGo\nYard planning - Dwell management - Switching"]
+    GCOR["GCOR\nOperating rules - Key train protocol - Interchange"]
+  end
+
+  subgraph EXECUTION_CONTROL["🔧 Execution Control"]
+    direction TB
+    HARRIMAN["Harriman Dispatching Center\nDispatching - Movement control - Track authority"]
+    CREWPRO["CrewPro\nCrew call - Hours of service - Train sheet"]
+    BAILEY_YARD["Bailey Yard North Platte, NE\nInbound processing - Yarding - Outbound build"]
+  end
+
+  subgraph DATA_AND_ANALYTICS["📊 Data and Analytics"]
+    direction TB
+    WABTRAX["Wabtrax\nTrain location - Performance data - Analytics"]
+    TRACK_GEOMETRY["Track geometry car\nTrack inspection - Maintenance planning - Defect detection"]
+    RAILAI["RailAI\nMachine vision - Predictive analytics - Safety monitoring"]
+  end
+
+  subgraph MECHANICAL_ENGINEERING["🛠️ Mechanical and Engineering"]
+    direction TB
+    DOWNING_SHOP["Downing B. Jenks Shop North Little Rock, AR\nLocomotive repair - Maintenance - Overhaul"]
+    NORTH_PLATTE_SHOP["North Platte, NE locomotive shop\nLocomotive repair - Maintenance - Overhaul"]
+    PROVISO_SHOP["Proviso Locomotive Shop Illinois\nLocomotive repair - Maintenance - Overhaul"]
+  end
+
+  subgraph COMMERCIAL_BILLING["💰 Commercial and Billing"]
+    direction TB
+    CHARM["CHARM\nCar hire accounting - Rate master - Settlements"]
+    ISS["Interline Settlement System\nSwitching settlement - Car hire data exchange - Interchange"]
+    UP_PORTAL["UP customer portal up.com secure portal\nCustomer access - Shipment tracking - Billing"]
+  end
+
+  subgraph SECURITY_CYBERSECURITY["🔒 Security and Cybersecurity"]
+    direction TB
+    SERTC["SERTC\nSecurity training - Emergency response - Compliance"]
+    CYBERSECURITY["Cybersecurity\nSecure-by-design approach - Threat detection - Incident response"]
+  end
+
+  IETMS -->|"track authority"| HARRIMAN
+  UMLER -->|"car hire event"| CREWPRO
+  INTERCHANGE_PARTNER -->|"interchange event"| BAILEY_YARD
+  NETCONTROL_PLANNING -->|"train sheet"| HARRIMAN
+  UP_GO -->|"yard planning"| BAILEY_YARD
+  GCOR -->|"operating rules"| EXECUTION_CONTROL
+  HARRIMAN -->|"movement control"| BAILEY_YARD
+  CREWPRO -->|"hours of service"| BAILEY_YARD
+  BAILEY_YARD -->|"inbound processing"| WABTRAX
+  TRACK_GEOMETRY -->|"defect detector alarm"| DOWNING_SHOP
+  RAILAI -->|"safety monitoring"| SERTC
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef planning fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef execution fill:#e8eaf6,stroke:#3f51b5,color:#3f51b5
+  classDef data fill:#f4f9f9,stroke:#00bcd4,color:#00bcd4
+  classDef mechanical fill:#ffe0b2,stroke:#ff9800,color:#ff9800
+  classDef commercial fill:#dcedc8,stroke:#7cb342,color:#7cb342
+  classDef security fill:#ffcdd2,stroke:#e53935,color:#e53935
+
+  class IETMS,UMLER,INTERCHANGE_PARTNER ext
+  class NETCONTROL_PLANNING,UP_GO,GCOR planning
+  class HARRIMAN,CREWPRO,BAILEY_YARD execution
+  class WABTRAX,TRACK_GEOMETRY,RAILAI data
+  class DOWNING_SHOP,NORTH_PLATTE_SHOP,PROVISO_SHOP mechanical
+  class CHARM,ISS,UP_PORTAL commercial
+  class SERTC,CYBERSECURITY security

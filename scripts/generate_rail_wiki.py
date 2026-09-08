@@ -74,8 +74,11 @@ SITE_TITLE = "US Class I Freight Railroad Process Wiki"
 SITE_SUB = "Union Pacific archetype &mdash; independently compiled"
 
 OLLAMA_URL = "http://localhost:11434"
-PRIMARY_MODEL = "qwen2.5:14b-instruct"
-FALLBACK_MODEL = "qwen2.5:latest"
+# Same primary model the reference repo uses. A coder-tuned model holds Mermaid
+# structure far better than a general instruct model: the first EA draft from
+# qwen2.5:14b-instruct scored 0/4 with 8 nodes against a 22-node floor.
+PRIMARY_MODEL = "qwen2.5-coder:14b"
+FALLBACK_MODEL = "qwen2.5:14b-instruct"
 OLLAMA_TIMEOUT = 900
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -514,11 +517,14 @@ BPMN_FORM_EXAMPLE = """flowchart LR
   style J fill:#c8791a,color:#fff,stroke:#c8791a"""
 
 
-def ollama_call(prompt, model, temperature=0.35):
+def ollama_call(prompt, model, temperature=0.35, num_ctx=16384):
+    # The EA prompt carries a 61-name allowed-systems list plus a worked form
+    # example, so 8192 is not enough headroom to also emit a 30-node diagram.
     r = requests.post(
         f"{OLLAMA_URL}/api/generate",
         json={"model": model, "prompt": prompt, "stream": False,
-              "options": {"temperature": temperature, "num_ctx": 8192}},
+              "options": {"temperature": temperature, "num_ctx": num_ctx,
+                          "num_predict": 4096}},
         timeout=OLLAMA_TIMEOUT,
     )
     r.raise_for_status()
@@ -721,18 +727,47 @@ def finalize_svg(path):
         svg = path.read_text(encoding="utf-8")
     except Exception:
         return False
-    m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
-    if not m:
+
+    # Operate on the ROOT <svg ...> tag only. Mermaid 11 embeds arrowhead marker
+    # defs that each carry viewBox="0 0 10 10", so a whole-file search for a
+    # viewBox finds a marker's and resizes the diagram to 10x10 pixels. Mermaid 11
+    # also emits a negative x origin (viewBox="-0.0000019 0 624.01 201.84"), so the
+    # origin must be matched as a signed float rather than assumed to be "0 0".
+    end = svg.find(">")
+    if end == -1:
         return False
-    w, h = m.group(1), m.group(2)
-    svg = svg.replace('width="100%"', f'width="{w}" height="{h}"', 1)
-    svg = re.sub(r'max-width:\s*[\d.]+px;?\s*', '', svg)
-    if 'height=' not in svg.split('>', 1)[0]:
-        svg = svg.replace('<svg ', f'<svg height="{h}" ', 1)
+    root, rest = svg[:end + 1], svg[end + 1:]
+
+    m = re.search(r'viewBox="\s*[-\d.eE]+\s+[-\d.eE]+\s+([\d.eE]+)\s+([\d.eE]+)\s*"', root)
+    if not m:
+        log(f"  {path.name}: no viewBox on the root <svg> — size cap not removed", "WARN")
+        return False
+    w = f"{float(m.group(1)):.0f}"
+    h = f"{float(m.group(2)):.0f}"
+
+    root = re.sub(r'\swidth="[^"]*"', "", root)
+    root = re.sub(r'\sheight="[^"]*"', "", root)
+    root = root.replace("<svg ", f'<svg width="{w}" height="{h}" ', 1)
+    # The inline max-width is the actual zoom ceiling: it caps how large the
+    # vector ever renders, so the browser rasterises at that ceiling and scales
+    # the bitmap up, which reads as blur even though the file is real vector.
+    root = re.sub(r'max-width:\s*[\d.]+px;?\s*', "", root)
+
+    svg = root + rest
     path.write_text(svg, encoding="utf-8")
-    remaining = svg.count("max-width")
-    log(f"  svg finalised — intrinsic {w}x{h}, max-width occurrences remaining: {remaining}")
-    return remaining == 0
+
+    # Proof, measured on the output file rather than asserted from the code.
+    # Only the ROOT cap is the zoom ceiling. Mermaid's embedded stylesheet also
+    # carries `max-width: 200px` rules on label wrappers — those size the text
+    # inside a node and must stay, so the check is specifically that no cap
+    # remains on the root element and no cap matches the diagram's own width.
+    root_capped = "max-width" in svg[:svg.find(">") + 1]
+    diagram_cap = re.search(r'max-width:\s*' + re.escape(w.split('.')[0]), svg) is not None
+    ok = not root_capped and not diagram_cap
+    log(f"  svg finalised — intrinsic {w}x{h}, root size cap "
+        f"{'STILL PRESENT' if root_capped else 'removed'}, "
+        f"label-wrap rules left intact: {svg.count('max-width')}")
+    return ok
 
 
 def build_diagram(proc, data):
