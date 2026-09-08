@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Arrival Notification]
+    A([Start]) --> B[Receive Arrival Notification\nHarriman Dispatching Center HDC]
+    B --> C{Track Authority Granted?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Assign Yard Crews\nPS Technology PST]
+  end
+
+  subgraph P2[Phase 2: Preparation]
+    D --> E[Prepare Yard for Inbound Train\nNetControl]
+    E --> F{Yard Ready?}
+    F -- No --> E
+    F -- Yes --> G[Conduct Initial Inspection\nWabtrax]
+  end
+
+  subgraph P3[Phase 3: Classification and Detailed Inspection]
+    G --> H{FRA Defect Found?}
+    H -- Yes --> Hold2([Hold])
+    H -- No --> I[Classify Cars Using Hump Yard Technology\nHump yard generic classification technology]
+    I --> J[Perform Detailed Inspection\nMachine Vision portals]
+  end
+
+  subgraph P4[Phase 4: Accounting and Health Update]
+    J --> K{Car Bad Ordered?}
+    K -- Yes --> Rej1([Reject])
+    K -- No --> L[Update Car Hire Accounting\nCHARM car hire accounting]
+    L --> M[Update Equipment Health Management System\nEHMS equipment health]
+  end
+
+  subgraph P5[Phase 5: Departure Preparation]
+    M --> N{Hours of Service Remaining?}
+    N -- No --> Hold3([Hold])
+    N -- Yes --> O[Prepare Train for Departure\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Final Inspection and Notification]
+    O --> P[Conduct Final Inspection\nWabtrax]
+    P --> Q{FRA Defect Found?}
+    Q -- Yes --> Hold4([Hold])
+    Q -- No --> R[Notify Train Dispatcher of Departure\nHarriman Dispatching Center HDC]
+    R --> S[Update Interline Settlement System\nInterline Settlement System ISS / Switching Settlement Data Exchange SSDX]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
