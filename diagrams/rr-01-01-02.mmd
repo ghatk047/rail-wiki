@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Traffic Forecasting]
+    A([Start]) --> B[Gather Traffic Forecasts\nUnified Plan 2020]
+    B --> C{Forecast within acceptable range?}
+    C -- No --> B
+    C -- Yes --> D[Define Train Routes\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Route Planning]
+    D --> E{Route feasible?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Assign Crews\nPS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Crew Assignment]
+    F --> G{Crew availability confirmed?}
+    G -- No --> F
+    G -- Yes --> H[Schedule Maintenance Activities\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P4[Phase 4: Plan Review]
+    H --> I{Plan meets regulatory standards?}
+    I -- No --> Rej1([Reject])
+    I -- Yes --> J[Review and Approve Plan\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Plan Implementation]
+    J --> K{Implementation approved?}
+    K -- No --> Rej2([Escalate])
+    K -- Yes --> L[Implement Operating Plan\nNetControl / CADx Computer-Aided Dispatch]
+  end
+
+  subgraph P6[Phase 6: Plan Monitoring and Adjustment]
+    L --> M[Monitor Train Performance\nI-ETMS Interoperable Electronic Train Management System]
+    M --> N{Performance within acceptable range?}
+    N -- No --> O[Adjust for Variations\nNetControl / CADx Computer-Aided Dispatch]
+    N -- Yes --> P[Conduct Crew Briefings\nPS Technology PST]
+    P --> Q{Briefing completed successfully?}
+    Q -- No --> P
+    Q -- Yes --> R[Ensure Regulatory Compliance\nUnified Plan 2020]
+    R --> S{Compliance confirmed?}
+    S -- No --> Rej3([Reject])
+    S -- Yes --> T[Monitor Equipment Health\nEHMS Equipment Health Management System]
+    T --> U{Health within acceptable range?}
+    U -- No --> H
+    U -- Yes --> V[Review and Update Plan\nVP Network Planning Operations]
+    V --> W{Plan updated successfully?}
+    W -- No --> Rej4([Reject])
+    W -- Yes --> L
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
