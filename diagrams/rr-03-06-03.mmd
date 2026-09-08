@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\nNetControl]
+    B --> C{Train on schedule?}
+    C -- Yes --> D[Update Yard Inventory\nUmler, CHARM]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Dwell Time Assessment]
+    D --> E[Dwell Time Assessment\nUmler, CHARM]
+    E --> F{Dwell time within limits?}
+    F -- Yes --> G[Train Classification Plan\nHump yard generic classification technology]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Train Classification]
+    G --> H{Classification complete?}
+    H -- Yes --> I[Equipment Inspection\nEHMS, Wabtrax]
+    H -- No --> G
+  end
+
+  subgraph P4[Phase 4: Equipment Inspection]
+    I --> J{Air Brake Test Passed?}
+    J -- Yes --> K[Train Departure Planning\nNetControl, Harriman Dispatching Center HDC]
+    J -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Train Departure Preparation]
+    K --> L[Train Departure Notification\nNetControl, Harriman Dispatching Center HDC]
+    L --> M{Departure approved?}
+    M -- Yes --> N[Post-Departure Review\nNetControl, Umler]
+    M -- No --> Hold4([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Departure and Continuous Improvement]
+    N --> O[Update Yard Inventory\nUmler, CHARM]
+    O --> P[Settlement Data Exchange\nInterline Settlement System ISS / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX]
+    P --> Q[Performance Review\nNetControl, Umler]
+    Q --> R[Continuous Improvement\nNetControl, I-ETMS]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
