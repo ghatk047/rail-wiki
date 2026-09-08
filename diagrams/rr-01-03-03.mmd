@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Car Trip Plan Development]
+    A([Start]) --> B[Develop car trip plan\nUnified Plan 2020; NetControl]
+    B --> C{Plan meets network constraints?}
+    C -- No --> B
+    C -- Yes --> D[Review car trip plan\nVP Network Planning Operations; Unified Plan 2020; NetControl]
+  end
+
+  subgraph P2[Phase 2: Car Trip Plan Review]
+    D --> E{Review approved?}
+    E -- No --> Rej1([Reject])
+    E -- Yes --> F[Dispatch car trip plan\nTrain Dispatcher; NetControl; CADx]
+  end
+
+  subgraph P3[Phase 3: Car Trip Plan Dispatching]
+    F --> G{Track authority granted?}
+    G -- No --> F
+    G -- Yes --> H[Departure from yard\nLocomotive Engineer; Conductor; I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Train Departure and Movement]
+    H --> I{Air brake test passed?}
+    I -- No --> H
+    I -- Yes --> J[Monitor train movement\nControl Operator; Chief Dispatcher; NetControl; I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Car Inspection and Maintenance]
+    J --> K{Train arrives at destination yard?}
+    K -- No --> J
+    K -- Yes --> L[Inspect cars\nCar Inspector Carman; EHMS; Umler]
+    L --> M{Cars in good condition?}
+    M -- No --> L
+    M -- Yes --> N[Hire accounting\nService Design / Network Planning Analyst; CHARM; TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Post-Trip Review and Optimization]
+    N --> O[Settle interline charges\nVP Network Planning Operations; ISS; SSDX; CHDX]
+    O --> P{Interline settlement complete?}
+    P -- No --> O
+    P -- Yes --> Q[Optimize car trip plan\nService Design / Network Planning Analyst; Unified Plan 2020; NetControl]
+    Q --> R{Plan optimized?}
+    R -- No --> Q
+    R -- Yes --> S[Schedule car maintenance\nVP Network Planning Operations; EHMS; Umler]
+    S --> T{Maintenance scheduled?}
+    T -- No --> S
+    T -- Yes --> U[Review and report post-trip\nService Design / Network Planning Analyst; Unified Plan 2020; NetControl]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
