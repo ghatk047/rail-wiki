@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Order Identification]
+    A([Start]) --> B[Identify Order Type\\NetControl / CADx]
+    B --> C{Order type valid?}
+    C -- No --> A
+    C -- Yes --> D[Update Order in System\\NetControl / CADx]
+  end
+
+  subgraph P2[Phase 2: Notification and Review]
+    D --> E[Notify Affected Trains\\NetControl / CADx, I-ETMS]
+    E --> F[Review Train Speed and Schedule\\NetControl / CADx, I-ETMS]
+    F --> G{Speed and schedule reviewed?}
+    G -- No --> F
+    G -- Yes --> H[Monitor Train Movement\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Impact Assessment]
+    H --> I[Assess Order Impact\\NetControl / CADx, I-ETMS]
+    I --> J{Impact assessed?}
+    J -- No --> I
+    J -- Yes --> K[Adjust Crew Scheduling\\PS Technology, NetControl]
+  end
+
+  subgraph P4[Phase 4: Equipment Review]
+    K --> L[Review Equipment Health\\EHMS]
+    L --> M{Equipment health reviewed?}
+    M -- No --> L
+    M -- Yes --> N[Update Maintenance Schedule\\HASTUS, EHMS]
+  end
+
+  subgraph P5[Phase 5: Order Adjustment and Notification]
+    N --> O[Review and Adjust Orders\\NetControl / CADx, I-ETMS]
+    O --> P{Orders reviewed?}
+    P -- No --> O
+    P -- Yes --> Q[Notify Stakeholders\\NetControl / CADx, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Order Closure]
+    Q --> R[Close Order and Document\\NetControl / CADx, I-ETMS]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
