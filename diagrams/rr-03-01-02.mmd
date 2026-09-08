@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Receive train arrival notification\nHarriman Dispatching Center HDC]
+    B --> C{Train on schedule?}
+    C -- No --> D[Reschedule train\nHarriman Dispatching Center HDC]
+    C -- Yes --> E[Notify yardmaster\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Train Positioning]
+    E --> F[Position train in yard\nYardmaster, NetControl]
+    F --> G{Train positioned correctly?}
+    G -- No --> H[Reposition train\nYardmaster, NetControl]
+    G -- Yes --> I[Notify car inspector\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Car Inspection]
+    I --> J[Inspect cars for defects\nCar Inspector Carman, EHMS]
+    J --> K{Defects found?}
+    K -- No --> L[Notify yardmaster\nNetControl]
+    K -- Yes --> M[Handle defects\nCar Inspector Carman, EHMS]
+  end
+
+  subgraph P4[Phase 4: Train Classification]
+    L --> N[Classify train cars\nSwitchman/Switch Foreman, Hump yard classification technology]
+    N --> O{Classification complete?}
+    O -- No --> P[Reclassify cars\nSwitchman/Switch Foreman, Hump yard classification technology]
+    O -- Yes --> Q[Notify yardmaster\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Train Preparation for Departure]
+    Q --> R[Prepare train for departure\nYardmaster, NetControl]
+    R --> S{Train ready?}
+    S -- No --> T[Reprepare train\nYardmaster, NetControl]
+    S -- Yes --> U[Notify dispatcher\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Post-Departure Review and Documentation]
+    U --> V[Review departure\nYardmaster, NetControl]
+    V --> W{Departure reviewed?}
+    W -- No --> X[Re-review departure\nYardmaster, NetControl]
+    W -- Yes --> Y[Exchange settlement data\nTrain Dispatcher, Interline Settlement System ISS]
+    Y --> Z[Update car hire accounting\nTrain Dispatcher, CHARM car hire accounting]
+    Z --> AA[Monitor equipment health\nTrain Dispatcher, EHMS equipment health]
+    AA --> AB[Final review and documentation\nTrain Dispatcher, NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
