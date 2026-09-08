@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Notification]
+    A([Start]) --> B[Receive Notification\\NetControl / CADx]
+    B --> C{Notification valid?}
+    C -- Yes --> D[Initiate Emergency Response\\NetControl / CADx]
+    C -- No --> Escalate([Escalate])
+  end
+
+  subgraph P2[Phase 2: Secure the Scene]
+    D --> E[Secure the Scene\\NetControl / CADx]
+    E --> F{Scene secured?}
+    F -- Yes --> G[Coordinate with Emergency Services\\NetControl / CADx]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Assess Damage]
+    G --> H[Assess Damage\\Umler / EHMS]
+    H --> I{Damage assessed?}
+    I -- Yes --> J[Plan Recovery Operations\\NetControl / CADx]
+    I -- No --> H
+  end
+
+  subgraph P4[Phase 4: Implement Recovery Operations]
+    J --> K[Implement Recovery Operations\\NetControl / CADx]
+    K --> L{Operations implemented?}
+    L -- Yes --> M[Monitor Recovery Progress\\NetControl / CADx]
+    L -- No --> K
+  end
+
+  subgraph P5[Phase 5: Evaluate and Adjust Recovery Plan]
+    M --> N[Evaluate and Adjust Recovery Plan\\NetControl / CADx]
+    N --> O{Plan adjusted?}
+    O -- Yes --> P[Implement Recovery Operations\\NetControl / CADx]
+    O -- No --> N
+  end
+
+  subgraph P6[Phase 6: Complete Post-Event Review]
+    P --> Q[Complete Recovery Operations\\NetControl / CADx]
+    Q --> R{Recovery complete?}
+    R -- Yes --> S[Conduct Post-Event Review\\NetControl / CADx]
+    R -- No --> M
+    S --> T[Update Safety Protocols\\NetControl / CADx]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
