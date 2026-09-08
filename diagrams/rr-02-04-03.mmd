@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Meet/Pass Scenario]
+    A([Start]) --> B[Identify potential meet/pass scenario\\NetControl / CADx]
+    B --> C{Scenario identified?}
+    C -- No --> B
+    C -- Yes --> D[Assess train priorities\\NetControl / CADx]
+  end
+
+  subgraph P2[Phase 2: Assess Train Priorities]
+    D --> E{High priority trains present?}
+    E -- No --> F[Update train schedules\\NetControl / CADx]
+    E -- Yes --> G[Notify train crews\\PS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Update Train Schedules]
+    F --> H{Schedules updated successfully?}
+    H -- No --> F
+    H -- Yes --> I[Monitor train movement\\NetControl / CADx]
+  end
+
+  subgraph P4[Phase 4: Monitor Train Movement]
+    I --> J{Train on track?}
+    J -- No --> K[Adjust schedules as needed\\NetControl / CADx]
+    J -- Yes --> L[Conduct safety checks\\Wabtrax]
+  end
+
+  subgraph P5[Phase 5: Conduct Safety Checks]
+    L --> M{Safety checks passed?}
+    M -- No --> N([Bad Order])
+    M -- Yes --> O[Update equipment health\\EHMS Equipment Health Management System]
+  end
+
+  subgraph P6[Phase 6: Finalize and Execute Meet/Pass]
+    O --> P[Review train performance\\NetControl / CADx]
+    P --> Q{Performance satisfactory?}
+    Q -- No --> R[Adjust train speeds\\NetControl / CADx]
+    Q -- Yes --> S[Finalize meet/pass sequence\\NetControl / CADx]
+    S --> T[Execute meet/pass\\NetControl / CADx]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
