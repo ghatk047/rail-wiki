@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Build Order]
+    A([Start]) --> B[Train Build Order Received\nNetControl]
+    B --> C{Order Valid?}
+    C -- No --> BadOrder([Bad Order])
+    C -- Yes --> D[Train Formation Plan Review\nUmler]
+  end
+
+  subgraph P2[Phase 2: Train Formation Execution]
+    D --> E{Formation Approved?}
+    E -- No --> Rej1([Reject])
+    E -- Yes --> F[Train Formation Execution\nPS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Car Inspection and Safety Check]
+    F --> G[Car Inspection and Safety Check\nEHMS]
+    G --> H{Inspection Passed?}
+    H -- No --> I[Re-inspect Cars\nEHMS]
+    H -- Yes --> J[Air Brake Test\nWabtrax]
+  end
+
+  subgraph P4[Phase 4: Train Departure Preparation]
+    J --> K{Air Brake Test Passed?}
+    K -- No --> G
+    K -- Yes --> L[Train Departure Preparation\nI-ETMS]
+  end
+
+  subgraph P5[Phase 5: Train Departure]
+    L --> M{Departure Ready?}
+    M -- No --> L
+    M -- Yes --> N[Train Departure\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Post-Departure Monitoring and Settlement]
+    N --> O[Post-Departure Monitoring\nI-ETMS]
+    O --> P{Monitoring Complete?}
+    P -- No --> O
+    P -- Yes --> Q[Settlement Data Exchange\nInterline Settlement System ISS]
+    Q --> R[Train Arrival Notification\nNetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
