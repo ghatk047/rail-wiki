@@ -1331,7 +1331,7 @@ def build_home(tr):
 {chr(10).join(cards)}
       </div>
 """
-    return page_shell(SITE_TITLE, "Business Process Reference", DEPTH_ROOT, main)
+    return page_shell("Home", "Business Process Reference", DEPTH_ROOT, main)
 
 
 def build_search_page():
