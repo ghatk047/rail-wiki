@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Arrival Notification]
+    A([Start]) --> B[Receive Arrival Notification\\nHarriman Dispatching Center HDC]
+    B --> C{Train on time?}
+    C -- No --> D[Delay Train\\nNetControl]
+    C -- Yes --> E[Prepare Yard for Classification\\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Pre-Classification Inspection]
+    E --> F[Conduct Pre-Classification Inspection\\nEHMS]
+    F --> G{FRA defect found?}
+    G -- No --> H[Set Up Hump Yard for Classification\\nI-ETMS]
+    G -- Yes --> I[Report Defect\\nHarriman Dispatching Center HDC]
+  end
+
+  subgraph P3[Phase 3: Release Train to Hump Yard]
+    H --> J[Release Train to Hump Yard\\nNetControl]
+    J --> K{Track authority granted?}
+    K -- No --> L[Request Track Authority\\nNetControl]
+    K -- Yes --> M[Classify Cars Using Hump Yard Technology\\nHump yard generic classification technology]
+  end
+
+  subgraph P4[Phase 4: Verify Car Sorting and Securing]
+    M --> N[Verify Car Sorting and Securing\\nMachine Vision portals]
+    N --> O{Car bad ordered?}
+    O -- No --> P[Prepare Train for Departure\\nNetControl]
+    O -- Yes --> Q[Report Bad Order\\nHarriman Dispatching Center HDC]
+  end
+
+  subgraph P5[Phase 5: Update Manifests and Accounting]
+    P --> R[Update Train Manifests and Accounting\\nCHARM, TRAIN II]
+    R --> S{Manifest updated?}
+    S -- No --> T[Retry Update\\nCHARM, TRAIN II]
+    S -- Yes --> U[Notify Harriman Dispatching Center of Departure\\nHarriman Dispatching Center HDC]
+  end
+
+  subgraph P6[Phase 6: Review and Adjust Strategy]
+    U --> V[Review and Analyze Classification Performance\\nNetControl, I-ETMS]
+    V --> W{Performance meets standards?}
+    W -- No --> X[Adjust Classification Strategy Based on Analysis\\nVP Network Planning Operations]
+    W -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
