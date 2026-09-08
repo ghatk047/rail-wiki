@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Schedule Review]
+    A([Start]) --> B[Review Train Schedule\\NetControl]
+    B --> C{Schedule Valid?}
+    C -- Yes --> D[Verify Train Status\\NetControl]
+    C -- No --> E[Update Train Schedule in NetControl\\NetControl]
+    E --> F{Update Successful?}
+    F -- Yes --> D
+    F -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Dispatch Instructions]
+    D --> G[Dispatch Instructions to Train Crew\\NetControl]
+    G --> H{Instructions Sent?}
+    H -- Yes --> I[Monitor Train Movement\\NetControl]
+    H -- No --> E
+  end
+
+  subgraph P3[Phase 3: Schedule Adjustment]
+    I --> J[Adjust Schedule Based on Movement Data\\NetControl]
+    J --> K{Schedule Adjusted?}
+    K -- Yes --> L[Conduct Safety Checks\\EHMS]
+    K -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Safety Check Update]
+    L --> M[Update Safety Check Status in NetControl\\NetControl]
+    M --> N{Status Updated?}
+    N -- Yes --> O[Review and Adjust Train Speeds\\NetControl]
+    N -- No --> G
+  end
+
+  subgraph P5[Phase 5: Speed Update]
+    O --> P[Update Train Speeds in NetControl\\NetControl]
+    P --> Q{Speeds Updated?}
+    Q -- Yes --> R[Monitor Train Performance\\NetControl]
+    Q -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Performance Reporting]
+    R --> S[Report Train Performance to Chief Dispatcher\\NetControl]
+    S --> T{Performance Reported?}
+    T -- Yes --> L
+    T -- No --> P
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
