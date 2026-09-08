@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival]
+    A([Start]) --> B[Receive Train Arrival Report\\nNetControl]
+    B --> C{Train report received?}
+    C -- No --> B
+    C -- Yes --> D[Assign Train to Track\\nHarriman Dispatching Center]
+  end
+
+  subgraph P2[Phase 2: Pre-Departure Inspection]
+    D --> E[Conduct Pre-Departure Inspection\\nEHMS]
+    E --> F{Inspection passed?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Initiate Train Departure\\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Train Movement]
+    G --> H[Monitor Train Movement\\nI-ETMS]
+    H --> I{Train on schedule?}
+    I -- No --> J[Handle Train Delays\\nChief Dispatcher]
+    I -- Yes --> K[Conduct Post-Arrival Inspection\\nEHMS]
+  end
+
+  subgraph P4[Phase 4: Schedule Update]
+    K --> L{Post-arrival inspection passed?}
+    L -- No --> Hold2([Hold])
+    L -- Yes --> M[Update Train Schedule\\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Crew Notification]
+    M --> N[Notify Crew of Departure\\nPS Technology]
+    N --> O{Crew notified?}
+    O -- No --> Hold3([Hold])
+    O -- Yes --> P[Review Train Performance\\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Schedule Adjustment and Finalization]
+    P --> Q{Performance review complete?}
+    Q -- No --> N
+    Q -- Yes --> R[Adjust Train Schedule\\nNetControl]
+    R --> S[Finalize Train Movement\\nChief Dispatcher]
+    S --> T{Movement finalized?}
+    T -- No --> Hold4([Hold])
+    T -- Yes --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
