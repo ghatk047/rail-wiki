@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Current Plan]
+    A([Start]) --> B[Review current operating plan\\Unified Plan 2020]
+    B --> C{Plan up-to-date?}
+    C -- No --> B
+    C -- Yes --> D[Identify network constraints\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Develop New Schedules]
+    D --> E[Develop new train schedules\\NetControl / CADx]
+    E --> F{Schedules feasible?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Review and validate schedules\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Update Records]
+    G --> H{Validation passed?}
+    H -- No --> E
+    H -- Yes --> I[Update equipment health records\\EHMS]
+  end
+
+  subgraph P4[Phase 4: Conduct Hazmat Review]
+    I --> J[Conduct hazardous material review\\TRANSCAER / GCOR]
+    J --> K{Hazmat placard verified?}
+    K -- No --> Hold2([Hold])
+    K -- Yes --> L[Implement new operating plan\\Unified Plan 2020 / NetControl]
+  end
+
+  subgraph P5[Phase 5: Monitor and Adjust]
+    L --> M[Monitor and adjust operating plan\\NetControl / CADx]
+    M --> N{Performance satisfactory?}
+    N -- No --> E
+    N -- Yes --> O[Review and report performance\\Unified Plan 2020 / NetControl]
+  end
+
+  subgraph P6[Phase 6: Finalize and Communicate]
+    O --> P[Update documentation and procedures\\Unified Plan 2020 / NetControl]
+    P --> Q[Conduct safety audit\\EHMS / I-ETMS]
+    Q --> R{Audit passed?}
+    R -- No --> Hold3([Hold])
+    R -- Yes --> S[Finalize and communicate plan\\Unified Plan 2020 / NetControl]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
