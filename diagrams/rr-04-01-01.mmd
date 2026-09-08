@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Calling Extra Board]
+    A([Start]) --> B[Review Train Schedule\\NetControl]
+    B --> C{Train schedule reviewed?}
+    C -- Yes --> D[Identify Crew Requirements\\CrewPro]
+    C -- No --> A
+    D --> E{Crew requirements identified?}
+    E -- Yes --> F[Assign Crews\\CloudMoyo Crew Management CCM]
+    E -- No --> B
+  end
+
+  subgraph P2[Phase 2: Verify Credentials Notify]
+    F --> G[Verify Crew Credentials\\HASTUS]
+    G --> H{Credentials verified?}
+    H -- Yes --> I[Notify Crews\\PS Technology PST]
+    H -- No --> F
+    I --> J{Notifications sent?}
+    J -- Yes --> K[Conduct Pre-Departure Briefing\\NetControl]
+    J -- No --> G
+  end
+
+  subgraph P3[Phase 3: Monitor Update Schedule]
+    K --> L[Monitor Crew Status\\trackHOS-class HOS monitoring tools]
+    L --> M{Crew status monitored?}
+    M -- Yes --> N[Update Train Schedule\\NetControl]
+    M -- No --> K
+    N --> O{Schedule updated?}
+    O -- Yes --> P[Review Train Performance\\I-ETMS]
+    O -- No --> L
+  end
+
+  subgraph P4[Phase 4: Adjust Review]
+    P --> Q{Performance reviewed?}
+    Q -- Yes --> R[Adjust Crew Assignments\\CloudMoyo Crew Management CCM]
+    Q -- No --> N
+    R --> S{Assignments adjusted?}
+    S -- Yes --> T[Conduct Post-Departure Review\\NetControl]
+    S -- No --> P
+  end
+
+  subgraph P5[Phase 5: Update Records End]
+    T --> U{Review completed?}
+    U -- Yes --> V[Update Crew Records\\CloudMoyo Crew Management CCM]
+    U -- No --> R
+    V --> W{Records updated?}
+    W -- Yes --> X([End])
+    W -- No --> T
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
