@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Defect Identification]
+    A([Start]) --> B[Identify Defect or Condition\\Wayside defect detector network]
+    B --> C{Defect Found?}
+    C -- Yes --> D[Assess Order Type\\NetControl]
+    C -- No --> E([End])
+  end
+
+  subgraph P2[Phase 2: Order Notification and Scheduling]
+    D --> F{Order Type: Slow or Heat/Cold?}
+    F -- Slow --> G[Notify Affected Trains\\NetControl / CADx]
+    F -- Heat/Cold --> H[Update Train Schedule\\NetControl / CADx]
+    G --> I[Monitor Train Compliance\\NetControl / CADx]
+    H --> I
+  end
+
+  subgraph P3[Phase 3: Compliance Monitoring and Review]
+    I --> J{Compliance Met?}
+    J -- No --> K[Review and Adjust Orders\\NetControl / CADx]
+    J -- Yes --> L[Clear Orders When Safe\\NetControl / CADx]
+    K --> I
+  end
+
+  subgraph P4[Phase 4: Maintenance Record Update]
+    L --> M[Update Maintenance Records\\Umler / EHMS]
+    M --> N([End])
+  end
+
+  subgraph P5[Phase 5: Review and Reporting]
+    N --> O[Review and Report\\NetControl / CADx]
+    O --> P{Report Complete?}
+    P -- Yes --> Q[Notify Stakeholders\\NetControl / CADx]
+    P -- No --> R([Escalate])
+  end
+
+  subgraph P6[Phase 6: Training Update and Post-Process Review]
+    Q --> S[Update Training Materials\\NetControl service design use]
+    S --> T{Training Updated?}
+    T -- Yes --> U[Conduct Post-Process Review\\NetControl / CADx]
+    T -- No --> V([Escalate])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
