@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Demand Forecast Analysis]
+    A([Start]) --> B[Demand Forecast Analysis\\Unified Plan 2020; NetControl service design use]
+    B --> C{Forecast within\nacceptable range?}
+    C -- No --> D[Adjust forecast parameters\\Unified Plan 2020; NetControl service design use]
+    C -- Yes --> E[Locomotive Availability Assessment\\VP Network Planning Operations; Umler; EHMS Equipment Health Management System]
+  end
+
+  subgraph P2[Phase 2: Locomotive Availability]
+    E --> F{Locomotives available?}
+    F -- No --> G[Request additional locomotives\\VP Network Planning Operations; Unified Plan 2020; NetControl service design use]
+    F -- Yes --> H[Route Optimization\\Service Design / Network Planning Analyst; NetControl; I-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P3[Phase 3: Route Optimization]
+    H --> I{Optimized route feasible?}
+    I -- No --> J[Adjust route parameters\\NetControl; I-ETMS Interoperable Electronic Train Management System]
+    I -- Yes --> K[Locomotive Assignment\\Train Dispatcher; NetControl; CADx Computer-Aided Dispatch]
+  end
+
+  subgraph P4[Phase 4: Locomotive Assignment]
+    K --> L{Assignment successful?}
+    L -- No --> M[Reassign locomotives\\NetControl; CADx Computer-Aided Dispatch]
+    L -- Yes --> N[Crew Scheduling\\Crew Caller / Crew Dispatcher; PS Technology PST; CrewPro]
+  end
+
+  subgraph P5[Phase 5: Crew Scheduling]
+    N --> O{Sufficient crew available?}
+    O -- No --> P[Request additional crew\\PS Technology PST; CrewPro]
+    O -- Yes --> Q[Train Departure Coordination\\Chief Dispatcher; Harriman Dispatching Center HDC; I-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P6[Phase 6: Regulatory and Maintenance Checks]
+    Q --> R{Track authority granted?}
+    R -- No --> S[Request track authority\\Chief Dispatcher; Harriman Dispatching Center HDC; I-ETMS Interoperable Electronic Train Management System]
+    R -- Yes --> T[Track Inspection and Maintenance\\Track Inspector; Wabtrax; Wayside defect detector network hot bearing / wheel impact / acoustic]
+    T --> U{FRA defect found?}
+    U -- No --> V[Locomotive Maintenance Scheduling\\VP Network Planning Operations; EHMS Equipment Health Management System; Umler]
+    U -- Yes --> W[Report defect and schedule maintenance\\Wabtrax; Wayside defect detector network hot bearing / wheel impact / acoustic]
+    V --> X{Maintenance scheduled?}
+    X -- No --> Y[Reschedule maintenance\\VP Network Planning Operations; EHMS Equipment Health Management System; Umler]
+    X -- Yes --> Z[Regulatory Compliance Review\\Service Design / Network Planning Analyst; Unified Plan 2020; NetControl service design use]
+    Z --> AA{Compliant with regulations?}
+    AA -- No --> AB[Report non-compliance and adjust plan\\Unified Plan 2020; NetControl service design use]
+    AA -- Yes --> AC[Feedback Loop and Adjustment\\VP Network Planning Operations; Unified Plan 2020; NetControl service design use]
+    AC --> AD{Adjustments needed?}
+    AD -- No --> AE([End])
+    AD -- Yes --> AF[Adjust plan parameters\\Unified Plan 2020; NetControl service design use]
+    AF --> AG[Restart process from Demand Forecast Analysis\\Unified Plan 2020; NetControl service design use]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AE fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style AC fill:#20242b,color:#fff,stroke:#20242b
+  style AD fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
+  style AA fill:#c8791a,color:#fff,stroke:#c8791a
+  style AD fill:#c8791a,color:#fff,stroke:#c8791a
