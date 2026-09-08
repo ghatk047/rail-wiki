@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Arrival]
+    A([Start]) --> B[Receive Train Arrival Report\nNetControl/CADx]
+    B --> C{Train report valid?}
+    C -- No --> E([Bad Order])
+    C -- Yes --> D[Conduct Pre-Dispatch Review\nNetControl/CADx]
+  end
+
+  subgraph P2[Phase 2: Crew Assignment and Preparation]
+    D --> F[Assign Train Crew\nPS Technology PST]
+    F --> G{Crew assigned successfully?}
+    G -- No --> H([Hold])
+    G -- Yes --> I[Prepare Train for Departure\nEHMS Equipment Health Management System]
+    I --> J{Train prepared?}
+    J -- No --> I
+    J -- Yes --> K[Conduct Air Brake Test\nNetControl/CADx]
+  end
+
+  subgraph P3[Phase 3: Air Brake Test and Schedule Update]
+    K --> L{Air brake test passed?}
+    L -- No --> M([Reject])
+    L -- Yes --> N[Update Train Schedule\nNetControl/CADx]
+  end
+
+  subgraph P4[Phase 4: Monitor Train Movement]
+    N --> O[Monitor Train Movement\nI-ETMS Interoperable Electronic Train Management System]
+    O --> P{Train movement normal?}
+    P -- No --> Q[Handle Exceptions\nChief Dispatcher]
+    P -- Yes --> R[Update Train Status\nNetControl/CADx]
+  end
+
+  subgraph P5[Phase 5: Notify Terminal and Conduct Post-Dispatch Review]
+    R --> S[Notify Terminal of Departure\nNetControl/CADx]
+    S --> T[Conduct Post-Dispatch Review\nNetControl/CADx]
+  end
+
+  subgraph P6[Phase 6: Update Historical Records]
+    T --> U[Update Historical Records\nTRAIN II Tele Rail Automated Information Network Phase 2]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
