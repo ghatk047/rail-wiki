@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Network Planning Data]
+    A([Start]) --> B[Review network planning data\nUnified Plan 2020; NetControl service design use]
+    B --> C{Data complete and accurate?}
+    C -- No --> B
+    C -- Yes --> D[Develop train symbols\nUnified Plan 2020; NetControl service design use]
+  end
+
+  subgraph P2[Phase 2: Create Blocking Plans]
+    D --> E[Create blocking plans\nUnified Plan 2020; NetControl service design use]
+    E --> F{Blocking plan feasible?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Review and validate plans\nVP Network Planning Operations; Unified Plan 2020; NetControl service design use]
+  end
+
+  subgraph P3[Phase 3: Update Train Schedules]
+    G --> H{Plans approved?}
+    H -- No --> E
+    H -- Yes --> I[Update train schedules\nTrain Dispatcher; NetControl / CADx Computer-Aided Dispatch]
+  end
+
+  subgraph P4[Phase 4: Implement Blocking Plans]
+    I --> J{Schedules updated?}
+    J -- No --> I
+    J -- Yes --> K[Implement blocking plans\nTrain Dispatcher; NetControl / CADx Computer-Aided Dispatch]
+  end
+
+  subgraph P5[Phase 5: Monitor Train Operations]
+    K --> L{Blocking plans implemented?}
+    L -- No --> K
+    L -- Yes --> M[Monitor train operations\nControl Operator; I-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P6[Phase 6: Review and Report on Performance]
+    M --> N{Operations monitored?}
+    N -- No --> M
+    N -- Yes --> O[Adjust blocking plans as needed\nTrain Dispatcher; NetControl / CADx Computer-Aided Dispatch]
+    O --> P{Blocking plans adjusted?}
+    P -- No --> O
+    P -- Yes --> Q[Update equipment health records\nLocomotive Engineer; EHMS Equipment Health Management System]
+    Q --> R{Records updated?}
+    R -- No --> Q
+    R -- Yes --> S[Review and report on performance\nVP Network Planning Operations; Unified Plan 2020; NetControl service design use]
+    S --> T{Performance reviewed?}
+    T -- No --> S
+    T -- Yes --> U[Update network planning data\nService Design / Network Planning Analyst; Unified Plan 2020; NetControl service design use]
+    U --> V{Data updated?}
+    V -- No --> U
+    V -- Yes --> W([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
