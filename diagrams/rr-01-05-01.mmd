@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Traffic Analysis]
+    A([Start]) --> B[Review Traffic Forecasts\nUnified Plan 2020]
+    B --> C{Capacity Bottlenecks Identified?}
+    C -- No --> B
+    C -- Yes --> D[Identify Capacity Bottlenecks\nUnified Plan 2020]
+  end
+
+  subgraph P2[Phase 2: Route Development]
+    D --> E[Develop Alternative Routes\nUnified Plan 2020]
+    E --> F{Routes Developed?}
+    F -- No --> D
+    F -- Yes --> G[Evaluate Route Feasibility\nUnified Plan 2020]
+  end
+
+  subgraph P3[Phase 3: Route Selection]
+    G --> H{Feasible Routes Identified?}
+    H -- No --> E
+    H -- Yes --> I[Select Optimal Route\nUnified Plan 2020]
+  end
+
+  subgraph P4[Phase 4: Network Update]
+    I --> J[Update Network Configuration\nUnified Plan 2020]
+    J --> K{Configuration Updated?}
+    K -- No --> I
+    K -- Yes --> L[Implement Route Changes\nNetControl / CADx]
+  end
+
+  subgraph P5[Phase 5: Performance Monitoring]
+    L --> M[Monitor Route Performance\nUnified Plan 2020]
+    M --> N{Performance Within Tolerances?}
+    N -- No --> O[Adjust Route as Necessary\nUnified Plan 2020]
+    N -- Yes --> P[Update Documentation\nUnified Plan 2020]
+  end
+
+  subgraph P6[Phase 6: Review and Close]
+    P --> Q[Review and Report\nUnified Plan 2020]
+    Q --> R{Report Complete?}
+    R -- No --> P
+    R -- Yes --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
