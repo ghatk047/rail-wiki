@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Traffic Forecast Review]
+    A([Start]) --> B[Review Traffic Forecasts\nUnified Plan 2020]
+    B --> C{Forecast within acceptable range?}
+    C -- No --> D[Adjust forecasts\nUnified Plan 2020]
+    C -- Yes --> E[Identify Locomotive Requirements\nUnified Plan 2020]
+  end
+
+  subgraph P2[Phase 2: Locomotive Allocation]
+    E --> F{Locomotives available?}
+    F -- No --> G[Request additional locomotives\nVP Network Planning Operations]
+    F -- Yes --> H[Allocate Locomotives to Routes\nUnified Plan 2020]
+  end
+
+  subgraph P3[Phase 3: Crew Scheduling Update]
+    H --> I[Update Crew Scheduling\nPS Technology PST]
+    I --> J{Crews scheduled correctly?}
+    J -- No --> K[Reassign crews\nPS Technology PST]
+    J -- Yes --> L[Monitor Locomotive Performance\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P4[Phase 4: Performance Monitoring]
+    L --> M{Performance within standards?}
+    M -- No --> N[Adjust Locomotive Distribution\nVP Network Planning Operations]
+    M -- Yes --> O[Update Dispatching Plans\nNetControl / CADx Computer-Aided Dispatch]
+  end
+
+  subgraph P5[Phase 5: Safety Audits and Review]
+    O --> P[Conduct Safety Audits\nWabtrax]
+    P --> Q{Safety audit passed?}
+    Q -- No --> R[Escalate issue\nVP Network Planning Operations]
+    Q -- Yes --> S[Review and Adjust Allocation\nUnified Plan 2020]
+  end
+
+  subgraph P6[Phase 6: Final Implementation and Reporting]
+    S --> T{Allocation adjusted?}
+    T -- No --> U[Implement Final Plan\nVP Network Planning Operations]
+    T -- Yes --> V[Monitor Operational Performance\nI-ETMS Interoperable Electronic Train Management System]
+    V --> W{Performance meets expectations?}
+    W -- No --> X[Review and Report\nUnified Plan 2020]
+    W -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
