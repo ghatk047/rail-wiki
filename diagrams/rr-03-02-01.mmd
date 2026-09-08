@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Pre-Classification Inspection\\EHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Classification Preparation]
+    D --> E[Hump Yard Preparation\\I-ETMS]
+    E --> F{Switches Set Correctly?}
+    F -- Yes --> G[Train Pushing and Classification\\Umler]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Post-Classification]
+    G --> H[Post-Classification Inspection\\EHMS]
+    H --> I{Defects Found?}
+    I -- Yes --> J[Defect Reporting and Resolution\\EHMS]
+    I -- No --> K[Train Departure Notification\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Settlement and Accounting]
+    K --> L[Settlement Data Exchange\\ISS / SSDX]
+    L --> M{Data Exchange Complete?}
+    M -- Yes --> N[Car Hire Accounting Update\\CHARM]
+    M -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Terminal Monitoring]
+    N --> O[Terminal Dwell Time Monitoring\\NetControl]
+    O --> P{Dwell Time Within Limits?}
+    P -- Yes --> Q[Train Speed Monitoring\\I-ETMS]
+    P -- No --> Hold4([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Departure]
+    Q --> R{Speed Within Limits?}
+    R -- Yes --> S[Final Train Departure\\NetControl]
+    R -- No --> Hold5([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
