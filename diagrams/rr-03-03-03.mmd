@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Order]
+    A([Start]) --> B[Receive Train Order\nHarriman Dispatching Center HDC]
+    B --> C{Order Valid?}
+    C -- No --> BadOrder([Bad Order])
+    C -- Yes --> D[Prepare Yard for Classification\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Classify Cars]
+    D --> E[Classify Cars\nHump yard generic classification technology]
+    E --> F{Classification Complete?}
+    F -- No --> E
+    F -- Yes --> G[Inspect Cars\nWabtrax, Machine Vision portals]
+  end
+
+  subgraph P3[Phase 3: Inspect and Repair Cars]
+    G --> H{Inspection Passed?}
+    H -- No --> I[Repair or Replace Defective Cars\nEHMS, Umler]
+    I --> J{Car Repaired/Replaced?}
+    J -- No --> I
+    J -- Yes --> K[Assemble Train\nHump yard generic classification technology]
+  end
+
+  subgraph P4[Phase 4: Conduct Air Brake Test]
+    K --> L[Conduct Air Brake Test\nI-ETMS]
+    L --> M{Air Brake Test Passed?}
+    M -- No --> N([Hold])
+    M -- Yes --> O[Verify Train Compliance\nGCOR, AAR Interchange Rules]
+  end
+
+  subgraph P5[Phase 5: Verify and Update Train Data]
+    O --> P{Interchange Accepted?}
+    P -- No --> Rej1([Reject])
+    P -- Yes --> Q[Update Train Data\nHarriman Dispatching Center HDC, TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Departure Approval and Initiation]
+    Q --> R[Departure Approval\nHarriman Dispatching Center HDC]
+    R --> S{Approval Granted?}
+    S -- No --> Rej2([Reject])
+    S -- Yes --> T[Initiate Departure\nI-ETMS]
+    T --> U[Post-Departure Reporting\nHarriman Dispatching Center HDC, TRAIN II]
+  end
+
+  A --> B
+  D --> E
+  G --> H
+  I --> J
+  K --> L
+  O --> P
+  Q --> R
+  T --> U
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
