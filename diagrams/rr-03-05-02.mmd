@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Train on schedule?}
+    C -- Yes --> D[Assign Crew for Inspection\\PS Technology PST]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Inspection]
+    D --> E[Conduct Initial Inspection\\EHMS Equipment Health Management System]
+    E --> F{Initial inspection passed?}
+    F -- Yes --> G[Air Brake Test Preparation\\Umler]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Air Brake Test]
+    G --> H[Conduct Air Brake Test\\Wabtrax]
+    H --> I{Air brake test passed?}
+    I -- Yes --> J[Review Test Results\\Wabtrax]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Corrective Actions]
+    J --> K{Corrective actions required?}
+    K -- Yes --> L[Apply Corrective Actions\\EHMS Equipment Health Management System]
+    K -- No --> M[Final Inspection and Departure Preparation\\TRAIN II]
+  end
+
+  subgraph P5[Phase 5: Notify Yardmaster]
+    L --> M
+    M --> N{Final inspection passed?}
+    N -- Yes --> O[Notify Yardmaster of Departure Readiness\\PS Technology PST]
+    N -- No --> Hold4([Hold])
+  end
+
+  subgraph P6[Phase 6: Departure Authorization]
+    O --> P[Conduct Departure Inspection\\Umler]
+    P --> Q{Departure inspection passed?}
+    Q -- Yes --> R[Update Train Status\\TRAIN II]
+    Q -- No --> Hold5([Hold])
+    R --> S[Departure Authorization\\NetControl]
+    S --> T{Authorization granted?}
+    T -- Yes --> U([End])
+    T -- No --> Escalate1([Escalate])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
