@@ -322,6 +322,8 @@ def _dom_key(l1_code):
 
 
 SYSTEM_MENU_LIMIT = 15
+ROLE_MENU_LIMIT = 14
+REG_MENU_LIMIT = 10
 
 
 def registry_systems_for(l1_code, limit=SYSTEM_MENU_LIMIT):
@@ -370,6 +372,35 @@ def registry_systems_for(l1_code, limit=SYSTEM_MENU_LIMIT):
 
     room = max(0, limit - len(own))
     return own[:limit], deduped[:room]
+
+
+def _menu_for(l1_code, entries, key, limit):
+    """Domain-owned entries first, topped up from the rest of the estate, deduped.
+
+    Same shape as registry_systems_for. Used for roles and regulations so the
+    prompt can only ever ask for names the audit can resolve.
+    """
+    dom = _dom_key(l1_code)
+    own = [e[key] for e in entries if e["_domain"] == dom and e.get(key)]
+    other, seen = [], {_norm(x) for x in own}
+    for e in entries:
+        v = e.get(key)
+        if not v or e["_domain"] == dom:
+            continue
+        n = _norm(v)
+        if n in seen:
+            continue
+        seen.add(n)
+        other.append(v)
+    return own[:limit], other[: max(0, limit - len(own))]
+
+
+def registry_roles_for(l1_code, limit=ROLE_MENU_LIMIT):
+    return _menu_for(l1_code, REG_ROLES, "role", limit)
+
+
+def registry_regs_for(l1_code, limit=REG_MENU_LIMIT):
+    return _menu_for(l1_code, REG_REGS, "cite", limit)
 
 
 def _norm(s):
@@ -422,7 +453,11 @@ def registry_audit(pid, data, mmd=None):
         if step.get("role") and not in_registry(step["role"], ROLE_NAMES):
             findings.append(("step.role", step["role"]))
     for c in re.findall(r'\b\d{2}\s*CFR\s*(?:Part\s*)?[\d.]+\b', json.dumps(data)):
-        if not in_registry(c, REG_CITES):
+        # registries/regulations.json cites at Part granularity ("49 CFR Part 232").
+        # A section within a registered Part is sourced, so 49 CFR 232.205 must
+        # resolve rather than be reported as an invention.
+        part = re.sub(r'(\d{2})\s*CFR\s*(?:Part\s*)?(\d+).*', r'\1 CFR Part \2', c)
+        if not in_registry(c, REG_CITES) and not in_registry(part, REG_CITES):
             findings.append(("regulation", c))
     if findings:
         log(f"  registry audit {pid}: {len(findings)} unregistered name(s)", "WARN")
@@ -501,14 +536,12 @@ CONTENT_RULES = """CONTENT RULES:
 - 10 to 12 l4_steps spread across 4 to 6 phases
 - At least 3 steps must be genuine decision points with decision_point Y
 - At least 2 steps must have exception Y
-- Real rail roles only: Train Dispatcher, Chief Dispatcher, Yardmaster, Conductor,
-  Locomotive Engineer, Carman, Car Inspector, Track Inspector, Roadway Worker in
-  Charge, Signal Maintainer, Trainmaster, Manager of Train Operations, Crew Caller,
-  Mechanical Foreman, Hazmat Specialist, Corridor Manager
-- 4 to 6 systems per process, named exactly as listed in the system prompt
+- Use ONLY roles from the role list given above, spelled exactly as written there
+- 4 to 6 systems per process, named exactly as listed above
 - 4 to 6 KPIs with measurable targets
 - 3 to 5 rail-specific risks covering regulatory, safety, service and commercial
-- 2 to 4 regulations, cited exactly, e.g. 49 CFR 232.205, 49 CFR 218.99, GCOR 6.28
+- 2 to 4 regulations, copied exactly from the regulation list given above. Cite at
+  the Part level the list uses, for example 49 CFR Part 232, not 49 CFR 232.205
 - Write role and system NAMES, never internal ID codes such as ROLE-D01-02
 - Do NOT include a mermaid field. The diagram is requested separately.
 - JSON ONLY — no markdown, no preamble"""
@@ -632,6 +665,8 @@ def generate_process_content(proc):
     # box at every step.
     sys_menu = "; ".join(x["name"] for x in own) or "none sourced for this domain"
     other_menu = "; ".join(x["name"] for x in other)
+    own_roles, other_roles = registry_roles_for(proc["l1"])
+    own_regs, other_regs = registry_regs_for(proc["l1"])
     prompt = (
         f"{SYSTEM_PROMPT_JSON}\n\n"
         f"Document this business process for a US Class I freight railroad:\n"
@@ -643,6 +678,10 @@ def generate_process_content(proc):
         f"Other sourced systems you may use where the process genuinely touches "
         f"them: {other_menu}\n"
         f"Do not name any system outside these two lists.\n\n"
+        f"Roles sourced for this domain, prefer these: {'; '.join(own_roles) or 'none'}\n"
+        f"Other sourced roles you may use: {'; '.join(other_roles)}\n\n"
+        f"Regulations sourced for this domain: {'; '.join(own_regs) or 'none'}\n"
+        f"Other sourced regulations you may cite: {'; '.join(other_regs)}\n\n"
         f"Return exactly this JSON shape:\n{JSON_SHAPE}\n\n{CONTENT_RULES}\n"
     )
     for i, model in enumerate((PRIMARY_MODEL, PRIMARY_MODEL, FALLBACK_MODEL)):
@@ -942,17 +981,22 @@ def excel_record(proc, data, url):
     except ImportError:
         log("openpyxl not installed — skipping the Excel row", "WARN")
         return
-    if EXCEL_PATH.exists():
-        wb = load_workbook(EXCEL_PATH)
-    else:
-        wb = Workbook()
-        idx = wb.active
+    wb = load_workbook(EXCEL_PATH) if EXCEL_PATH.exists() else Workbook()
+
+    # An existing workbook is not necessarily one this script wrote. The file left
+    # behind by the old write_excel.py has a single "progress" sheet, so assuming
+    # "Index" exists whenever the file does raised KeyError after the pages had
+    # already been pushed. Create whatever is missing instead.
+    if "Index" not in wb.sheetnames:
+        idx = wb.active if wb.active and wb.active.max_row == 1 and \
+            wb.active.max_column == 1 and wb.active["A1"].value is None else wb.create_sheet()
         idx.title = "Index"
         idx.append(["PID", "Process Name", "L1 Domain", "L2 Group",
                     "Status", "GitHub Pages URL", "Completed At"])
         for p in PROCESSES:
             idx.append([p["pid"], p["name"], p["l1_name"], p["l2_name"],
                         "Queued", f"{PAGES_BASE}/{p['path']}", ""])
+    if "Master Catalog" not in wb.sheetnames:
         cat = wb.create_sheet("Master Catalog")
         cat.append(["PID", "Step", "Step Name", "Role", "System", "Input", "Output",
                     "KPI", "Decision", "Exception", "Pain Point"])
@@ -1658,8 +1702,15 @@ def main():
             f"Generate {', '.join(p['pid'] for p, _ in pending)} under {TEMPLATE_VERSION}",
             no_push=args.no_push)
         for proc, data in pending:
-            excel_record(proc, data, f"{PAGES_BASE}/{proc['path']}")
-        log(f"  {len(pending)} process(es) recorded in the tracker and Excel")
+            try:
+                excel_record(proc, data, f"{PAGES_BASE}/{proc['path']}")
+            except Exception as exc:
+                # Pages are pushed and the tracker is saved by this point. A
+                # spreadsheet problem is not a reason to abort the remaining
+                # processes in the batch.
+                log(f"  Excel row for {proc['pid']} failed: {exc}", "WARN")
+        log(f"  {len(pending)} process(es) recorded in the tracker"
+            f"{' and Excel' if EXCEL_PATH.exists() else ''}")
         all_done.extend(pending)
         pending.clear()
 
