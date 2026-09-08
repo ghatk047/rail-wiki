@@ -1,0 +1,47 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Exception]
+    A([Start]) --> B{Exception Detected?}
+    B -- Yes --> C[Identify Exception Type\\NetControl / CADx]
+    B -- No --> D([End])
+  end
+
+  subgraph P2[Phase 2: Assess Impact]
+    C --> E{Impact Assessed?}
+    E -- Yes --> F[Determine Mitigation Strategy\\NetControl / CADx, I-ETMS]
+    E -- No --> C
+  end
+
+  subgraph P3[Phase 3: Notify Affected Parties]
+    F --> G{Notification Sent?}
+    G -- Yes --> H[Execute Mitigation Strategy\\NetControl / CADx, I-ETMS]
+    G -- No --> F
+  end
+
+  subgraph P4[Phase 4: Monitor Train Status]
+    H --> I{Train Status Monitored?}
+    I -- Yes --> J[Evaluate Exception Resolution\\NetControl / CADx, I-ETMS]
+    I -- No --> H
+  end
+
+  subgraph P5[Phase 5: Update Network Schedule]
+    J --> K{Schedule Updated?}
+    K -- Yes --> L[Document Incident\\NetControl / CADx, I-ETMS]
+    K -- No --> J
+  end
+
+  subgraph P6[Phase 6: Review and Improve Process]
+    L --> M{Process Reviewed?}
+    M -- Yes --> N([End])
+    M -- No --> C
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
