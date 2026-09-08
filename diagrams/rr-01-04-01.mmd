@@ -1,0 +1,74 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Define Mission Objectives]
+    A([Start]) --> B[Define Terminal Mission Objectives\nUnified Plan 2020]
+    B --> C{Mission objectives clear?}
+    C -- No --> B
+    C -- Yes --> D[Conduct Feasibility Study\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Layout and Validation]
+    D --> E{Feasibility study complete?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Develop Terminal Layout Plan\nNetControl]
+    F --> G{Layout plan valid?}
+    G -- No --> F
+    G -- Yes --> H[Validate Train Schedules\nNetControl / CADx]
+  end
+
+  subgraph P3[Phase 3: Implementation and Crew Assignment]
+    H --> I{Train schedules validated?}
+    I -- No --> H
+    I -- Yes --> J[Implement Positive Train Control PTC\nI-ETMS]
+    J --> K{PTC initialised?}
+    K -- No --> Hold2([Hold])
+    K -- Yes --> L[Assign Crews and Equipment\nPS Technology PST]
+  end
+
+  subgraph P4[Phase 4: Performance Monitoring]
+    L --> M{Crews and equipment assigned?}
+    M -- No --> L
+    M -- Yes --> N[Monitor Train Performance\nNetControl / CADx]
+    N --> O{Performance within limits?}
+    O -- No --> N
+    O -- Yes --> P[Review and Adjust Mission Plan\nUnified Plan 2020]
+  end
+
+  subgraph P5[Phase 5: Compliance and Maintenance]
+    P --> Q{Mission plan reviewed?}
+    Q -- No --> P
+    Q -- Yes --> R[Ensure Regulatory Compliance\nUnified Plan 2020]
+    R --> S{Compliance ensured?}
+    S -- No --> Hold3([Hold])
+    S -- Yes --> T[Update Maintenance Schedules\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P6[Phase 6: Safety Audits and Finalization]
+    T --> U{Maintenance schedules updated?}
+    U -- No --> T
+    U -- Yes --> V[Conduct Safety Audits\nWabtrax]
+    V --> W{Safety audits complete?}
+    W -- No --> V
+    W -- Yes --> X[Finalize Mission Plan\nUnified Plan 2020]
+    X --> Y{Mission plan finalized?}
+    Y -- No --> X
+    Y -- Yes --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
