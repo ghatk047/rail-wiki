@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>RR-01-01-01 — Operating Plan Design</title>
+<title>RR-01-01-01 — Operating Plan Design and Approval</title>
 <style>
 :root {
   --bg: #f7f7f5; --panel: #ffffff; --ink: #1c1d1f; --muted: #5c5f66;
@@ -138,124 +138,150 @@ footer.site-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px s
   <main class="content">
     <div class="breadcrumb"><a href="../../../index.html">Home</a> &rsaquo; <a href="../../index.html">Service Design &amp; Network Planning</a> &rsaquo; <a href="../index.html">Operating Plan Design</a> &rsaquo; <b>RR-01-01-01</b></div>
     <div class="pid-tag" style="font-size:.8rem;">RR-01-01-01</div>
-<h1>Operating Plan Design</h1>
+<h1>Operating Plan Design and Approval</h1>
 <p class="lede">Service Design &amp; Network Planning &rsaquo; Operating Plan Design &middot; confidence: high</p>
 
 <section>
   <h2>Description</h2>
-  <p>The need for an updated operating plan arises when the current plan&#x27;s performance metrics indicate inefficiencies or when regulatory changes necessitate adjustments. The Service Design / Network Planning Analyst uses NetControl to analyze network performance and propose improvements. The VP Network Planning &amp; Operations reviews these proposals, incorporating feedback from the Chairman, President and CEO. Decisions are made on whether proposed changes align with strategic goals and regulatory requirements, balancing operational efficiency against compliance risks. Once approved, the updated operating plan is integrated into Unified Plan 2020 for implementation across the network. The VP Network Planning &amp; Operations oversees this transition. The process concludes when the new operating plan is fully implemented and initial performance metrics indicate alignment with strategic objectives and regulatory compliance.</p>
+  <p>The Service Design / Network Planning Analyst identifies inefficiencies or opportunities for improvement in the current operating plan, initiating a review cycle to enhance service quality and efficiency. The analyst uses NetControl to model potential changes, evaluates KPIs like car dwell times and locomotive power requirements, and consults with VP Network Planning &amp; Operations for feedback. Decisions are made on whether proposed changes improve the operating ratio and overall network performance, considering regulatory compliance and pain points such as terminal dwell time constraints. The finalized plan is submitted to the Chairman, President and CEO for approval before being implemented across the company&#x27;s operations. Once approved by senior leadership and integrated into Unified Plan 2020, the new operating plan becomes active, marking the process as complete.</p>
 </section>
 <section>
   <h2>Process Flow</h2>
   <div class="diagram-wrap"><pre class="mermaid">%%{init: {&#x27;flowchart&#x27;: {&#x27;curve&#x27;: &#x27;basis&#x27;}}}%%
 flowchart TD
   subgraph PH1[&quot;Phase 1&quot;]
-    S1[1. Initiate operating plan design process]
-    S2[2. Analyze network performance metrics]
+    S1(1. Review current operating plan)
+    S2(2. Analyze network capacity and constraints)
   end
   subgraph PH2[&quot;Phase 2&quot;]
-    S3(3. Review draft operating plan with VP Network Planning &amp; Operations)
-    S4[4. Update operating plan based on feedback]
+    S3(3. Identify service design improvements)
+    S4{4. Consult with VP Network Planning &amp; Operations}
   end
   subgraph PH3[&quot;Phase 3&quot;]
-    S5{5. Finalize and approve operating plan}
+    S5(5. Submit final operating plan design for approval)
+    S6{6. Present final design to Chairman, President and CEO for review}
   end
   subgraph PH4[&quot;Phase 4&quot;]
-    S6[6. Implement approved operating plan in Unified Plan 2020 system]
+    S7(7. Implement approved operating plan design)
+    S8(8. Monitor and adjust plan based on performance data)
   end
 
-  S1 --&gt; S2
-  S2 --&gt; S3
+  S1 -- Cleared --&gt; S2
+  S2 -- Cleared --&gt; S3
   S3 -- Cleared --&gt; S4
-  S4 --&gt; S5
-  S5 -- Approval --&gt; S6</pre></div>
+  S4 -- Approval --&gt; S5
+  S5 -- Cleared --&gt; S6
+  S6 -- Approval --&gt; S7
+  S7 -- Cleared --&gt; S8</pre></div>
 </section>
 <section>
-  <h2>Process Steps &middot; 6 steps, 2 gates</h2>
+  <h2>Process Steps &middot; 8 steps, 8 gates</h2>
   <div class="tbl-wrap"><table>
 <thead><tr><th>Step</th><th>Activity</th><th>Role</th><th>System</th><th>Input</th>
 <th>Output</th><th>KPI</th><th>Dec</th><th>Exc</th><th>Pain point</th></tr></thead>
 <tbody><tr>
 <td>1</td>
-<td><b>Initiate operating plan design process</b></td>
+<td><b>Review current operating plan</b></td>
 <td>Service Design / Network Planning Analyst</td>
-<td><span style="color:var(--muted);">—</span></td>
-<td>Previous year&#x27;s OR and car dwell data</td>
-<td>Operating plan draft</td>
-<td>Operating ratio (OR)</td>
+<td>Unified Plan 2020 <span class="badge company">company-specific</span></td>
+<td>Current operating plan document</td>
+<td>Reviewed notes and observations</td>
+<td>—</td>
 <td class="flag"><span class="no">N</span></td>
-<td class="flag"><span class="no">N</span></td>
-<td>Terminal dwell and trip-plan compliance as competing metrics</td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>Crew availability as a service constraint during demand recovery</td>
 </tr><tr>
 <td>2</td>
-<td><b>Analyze network performance metrics</b></td>
+<td><b>Analyze network capacity and constraints</b></td>
 <td>Service Design / Network Planning Analyst</td>
-<td><span style="color:var(--muted);">—</span></td>
-<td>Current year&#x27;s OR and car dwell data</td>
-<td>Network performance report</td>
-<td>Car dwell / car classification events / locomotive power requirement</td>
+<td>NetControl (service design use) <span class="badge company">company-specific</span></td>
+<td>Network data, historical performance metrics</td>
+<td>Capacity analysis report</td>
+<td>—</td>
 <td class="flag"><span class="no">N</span></td>
-<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
 <td>Terminal dwell and trip-plan compliance as competing metrics</td>
 </tr><tr>
 <td>3</td>
-<td><b>Review draft operating plan with VP Network Planning &amp; Operations</b></td>
+<td><b>Identify service design improvements</b></td>
 <td>Service Design / Network Planning Analyst</td>
 <td><span style="color:var(--muted);">—</span></td>
-<td>Operating plan draft</td>
-<td>Feedback on draft operating plan</td>
+<td>Capacity analysis report</td>
+<td>Proposed service enhancements</td>
 <td>—</td>
 <td class="flag"><span class="no">N</span></td>
 <td class="flag"><span class="yes">Y</span></td>
-<td>Terminal dwell and trip-plan compliance as competing metrics</td>
+<td>PTC initialization failures and enroute cutouts consuming HOS</td>
 </tr><tr>
 <td>4</td>
-<td><b>Update operating plan based on feedback</b></td>
+<td><b>Consult with VP Network Planning &amp; Operations</b> <span style="color:var(--muted); font-size:.78rem;">&rarr; Approval: 5</span></td>
 <td>Service Design / Network Planning Analyst</td>
 <td><span style="color:var(--muted);">—</span></td>
-<td>Feedback from VP Network Planning &amp; Operations</td>
-<td>Updated draft of operating plan</td>
-<td>—</td>
-<td class="flag"><span class="no">N</span></td>
-<td class="flag"><span class="no">N</span></td>
-<td>Terminal dwell and trip-plan compliance as competing metrics</td>
-</tr><tr>
-<td>5</td>
-<td><b>Finalize and approve operating plan</b> <span style="color:var(--muted); font-size:.78rem;">&rarr; Approval: 6</span></td>
-<td>VP Network Planning &amp; Operations</td>
-<td><span style="color:var(--muted);">—</span></td>
-<td>Updated draft of operating plan</td>
-<td>Approved operating plan</td>
+<td>Proposed service enhancements</td>
+<td>Feedback and approval for proposed changes</td>
 <td>—</td>
 <td class="flag"><span class="yes">Y</span></td>
 <td class="flag"><span class="no">N</span></td>
-<td>Terminal dwell and trip-plan compliance as competing metrics</td>
+<td>Subdivision track data file currency after MOW changes</td>
 </tr><tr>
-<td>6</td>
-<td><b>Implement approved operating plan in Unified Plan 2020 system</b></td>
-<td>VP Network Planning &amp; Operations</td>
-<td>Unified Plan 2020 <span class="badge company">company-specific</span></td>
-<td>Approved operating plan</td>
-<td>Operating plan implemented in system</td>
+<td>5</td>
+<td><b>Submit final operating plan design for approval</b></td>
+<td>Service Design / Network Planning Analyst</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Feedback and approved enhancements</td>
+<td>Final operating plan document</td>
 <td>—</td>
 <td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>Wayside detector alert volume vs. actionable defect rate</td>
+</tr><tr>
+<td>6</td>
+<td><b>Present final design to Chairman, President and CEO for review</b> <span style="color:var(--muted); font-size:.78rem;">&rarr; Approval: 7</span></td>
+<td>Service Design / Network Planning Analyst</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Final operating plan document</td>
+<td>CEO&#x27;s approval or further revisions</td>
+<td>—</td>
+<td class="flag"><span class="yes">Y</span></td>
 <td class="flag"><span class="no">N</span></td>
-<td>Terminal dwell and trip-plan compliance as competing metrics</td>
+<td>Demurrage and accessorial disputes as a persistent shipper grievance</td>
+</tr><tr>
+<td>7</td>
+<td><b>Implement approved operating plan design</b></td>
+<td>Service Design / Network Planning Analyst</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>CEO&#x27;s approval and final document</td>
+<td>Updated operational procedures</td>
+<td>Operating ratio (OR)</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>Interline data quality (registry accuracy) affecting car hire settlement</td>
+</tr><tr>
+<td>8</td>
+<td><b>Monitor and adjust plan based on performance data</b></td>
+<td>Service Design / Network Planning Analyst</td>
+<td><span style="color:var(--muted);">—</span></td>
+<td>Operational performance metrics</td>
+<td>Performance report and adjustments</td>
+<td>Car dwell / car classification events / locomotive power requirement</td>
+<td class="flag"><span class="no">N</span></td>
+<td class="flag"><span class="yes">Y</span></td>
+<td>First-mile/last-mile service consistency for carload shippers</td>
 </tr></tbody></table></div>
 </section>
 <section>
   <h2>Actors</h2>
-  <div class="pill-row"><span class="pill">Service Design / Network Planning Analyst</span><span class="pill">VP Network Planning &amp; Operations</span><span class="pill">Chairman, President and CEO (plan sponsor level)</span></div>
+  <div class="pill-row"><span class="pill">Chairman, President and CEO (plan sponsor level)</span><span class="pill">Service Design / Network Planning Analyst</span><span class="pill">VP Network Planning &amp; Operations</span></div>
 </section>
 <section>
   <h2>Systems</h2>
-  <ul><li><strong>NetControl (service design use)</strong> <span class="badge company">company-specific</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D01-02</span></li><li><strong>Unified Plan 2020</strong> <span class="badge company">company-specific</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D01-01</span></li></ul>
+  <ul><li><strong>Unified Plan 2020</strong> <span class="badge company">company-specific</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D01-01</span></li><li><strong>NetControl (service design use)</strong> <span class="badge company">company-specific</span> <span style="color:var(--muted); font-size:.8rem;">SYS-D01-02</span></li></ul>
 </section>
 <section>
   <h2>Inputs / Outputs</h2>
   <div class="kv">
     <dt>Inputs</dt><dd>Current operating plan, Performance data</dd>
-    <dt>Outputs</dt><dd>Updated operating plan, Network performance improvements</dd>
+    <dt>Outputs</dt><dd>Enhanced operating plan, Approved changes</dd>
   </div>
 </section>
 <section>
@@ -275,7 +301,7 @@ flowchart TD
 </section>
 <section>
   <h2>Sources</h2>
-  <ul><li><a href="https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm" target="_blank" rel="noopener">https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm</a></li><li><a href="https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940" target="_blank" rel="noopener">https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940</a></li><li><a href="https://www.progressiverailroading.com/union_pacific/news/Union-Pacific-to-launch-precision-scheduled-railroading-plan--55636" target="_blank" rel="noopener">https://www.progressiverailroading.com/union_pacific/news/Union-Pacific-to-launch-precision-scheduled-railroading-plan--55636</a></li><li><a href="https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro" target="_blank" rel="noopener">https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro</a></li><li><a href="https://www.freightwaves.com/news/union-pacific-turns-to-precision-scheduled-railroading" target="_blank" rel="noopener">https://www.freightwaves.com/news/union-pacific-turns-to-precision-scheduled-railroading</a></li></ul>
+  <ul><li><a href="https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940" target="_blank" rel="noopener">https://www.progressiverailroading.com/union_pacific/article/Its-taking-a-team-effort-for-Union-Pacific-to-roll-out-its-version-of-PSR--56940</a></li><li><a href="https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm" target="_blank" rel="noopener">https://www.up.com/aboutup/community/inside_track/jalali-netcontrol-tech-it-240318.htm</a></li><li><a href="https://www.progressiverailroading.com/union_pacific/news/Union-Pacific-to-launch-precision-scheduled-railroading-plan--55636" target="_blank" rel="noopener">https://www.progressiverailroading.com/union_pacific/news/Union-Pacific-to-launch-precision-scheduled-railroading-plan--55636</a></li><li><a href="https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro" target="_blank" rel="noopener">https://www.logisticsmgmt.com/article/stb_leadership_calls_on_union_pacific_to_provide_precision_scheduled_railro</a></li><li><a href="https://www.freightwaves.com/news/union-pacific-turns-to-precision-scheduled-railroading" target="_blank" rel="noopener">https://www.freightwaves.com/news/union-pacific-turns-to-precision-scheduled-railroading</a></li></ul>
 </section>
 <p style="color:var(--muted); font-size:.8rem;">Last reviewed (machine): 2026-09-07
 &mdash; DRAFT, not yet human-reviewed per spec &sect;11.</p>
