@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Car Trip Plan Creation]
+    A([Start]) --> B[Create car trip plan\nUnified Plan 2020; NetControl]
+    B --> C{Plan valid?}
+    C -- No --> B
+    C -- Yes --> D[Review and validate plan\nVP Network Planning Operations; Unified Plan 2020; NetControl]
+  end
+
+  subgraph P2[Phase 2: Dispatching Instructions]
+    D --> E[Issue dispatching instructions\nTrain Dispatcher; NetControl; CADx]
+    E --> F{Track authority granted?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Train departure\nLocomotive Engineer; I-ETMS; NetControl]
+  end
+
+  subgraph P3[Phase 3: Terminal Arrival and Inspection]
+    G --> H[Terminal arrival\nYardmaster; NetControl; CADx]
+    H --> I{Car inspection required?}
+    I -- Yes --> J[Perform car inspection\nCar Inspector Carman; EHMS; Wabtrax]
+    I -- No --> K[Car Hire Accounting\nService Design / Network Planning Analyst; CHARM; TRAIN II]
+  end
+
+  subgraph P4[Phase 4: Train Rescheduling and Interline Settlement]
+    J --> L{FRA defect found?}
+    L -- Yes --> M[Reschedule train\nTrain Dispatcher; NetControl; CADx]
+    L -- No --> N[Interline settlement\nVP Network Planning Operations; ISS; SSDX; CHDX]
+  end
+
+  subgraph P5[Phase 5: Final Departure and Monitoring]
+    N --> O[Final train departure\nLocomotive Engineer; I-ETMS; NetControl]
+    O --> P{Hours of service remaining?}
+    P -- No --> Escalate1([Escalate])
+    P -- Yes --> Q[Post-departure monitoring\nTrain Dispatcher; I-ETMS; NetControl]
+  end
+
+  subgraph P6[Phase 6: Process Review and Optimization]
+    Q --> R[Process review and optimization\nService Design / Network Planning Analyst; Unified Plan 2020; NetControl]
+    R --> S{Review complete?}
+    S -- No --> R
+    S -- Yes --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
