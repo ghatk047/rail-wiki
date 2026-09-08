@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Demand Review]
+    A([Start]) --> B[Review Demand Forecasts\nUnified Plan 2020]
+    B --> C{Forecast within\nacceptable range?}
+    C -- No --> D[Adjust forecasts\nUnified Plan 2020]
+    C -- Yes --> E[Identify Available Locomotives\nEHMS]
+  end
+
+  subgraph P2[Phase 2: Allocation]
+    E --> F{Locomotives available?}
+    F -- No --> G[Request additional locomotives\nVP Network Planning Operations]
+    F -- Yes --> H[Allocate Locomotives to Trains\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Schedule Update]
+    H --> I{Allocation successful?}
+    I -- No --> E
+    I -- Yes --> J[Update Train Schedules\nNetControl / CADx]
+  end
+
+  subgraph P4[Phase 4: Pre-Departure Checks]
+    J --> K[Conduct Pre-Departure Inspections\nEHMS]
+    K --> L{Inspection passed?}
+    L -- No --> M[Repair or replace locomotive\nMechanical Department]
+    L -- Yes --> N[Notify Crews and Stakeholders\nPS Technology]
+  end
+
+  subgraph P5[Phase 5: Performance Monitoring]
+    N --> O[Monitor Train Performance\nI-ETMS]
+    O --> P{Performance within\nacceptable limits?}
+    P -- No --> Q[Adjust Locomotive Power Distribution\nNetControl]
+    P -- Yes --> R[Review and Report Performance\nUnified Plan 2020]
+  end
+
+  subgraph P6[Phase 6: Post-Operational Review]
+    R --> S{Post-review adjustments needed?}
+    S -- No --> T[Update Maintenance Schedules\nEHMS]
+    S -- Yes --> U[Conduct Post-Operational Review\nNetControl / CADx]
+    U --> V{Review complete?}
+    V -- No --> O
+    V -- Yes --> W[Update Demand Forecasts for Next Cycle\nUnified Plan 2020]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
