@@ -1,0 +1,83 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Exception]
+    Start([Start]) --> Step1_1{Exception Identified?}
+    Step1_1 -- Yes --> Step1_2[Assess Impact\\NetControl / CADx, I-ETMS]
+    Step1_1 -- No --> End([End])
+  end
+
+  subgraph P2[Phase 2: Assess Impact]
+    Step1_2 --> Step2_1{Impact Assessed?}
+    Step2_1 -- Yes --> Step2_2[Determine Mitigation Strategy\\NetControl / CADx, I-ETMS]
+    Step2_1 -- No --> Hold([Hold])
+  end
+
+  subgraph P3[Phase 3: Determine Mitigation Strategy]
+    Step2_2 --> Step3_1{Mitigation Strategy Determined?}
+    Step3_1 -- Yes --> Step3_2[Notify Affected Parties\\NetControl / CADx, PS Technology]
+    Step3_1 -- No --> Step2_2
+  end
+
+  subgraph P4[Phase 4: Notify Affected Parties]
+    Step3_2 --> Step4_1{Notification Sent?}
+    Step4_1 -- Yes --> Step4_2[Execute Mitigation Strategy\\NetControl / CADx, I-ETMS]
+    Step4_1 -- No --> Escalate([Escalate])
+  end
+
+  subgraph P5[Phase 5: Execute Mitigation Strategy]
+    Step4_2 --> Step5_1{Mitigation Executed?}
+    Step5_1 -- Yes --> Step5_2[Monitor and Adjust\\NetControl / CADx, I-ETMS]
+    Step5_1 -- No --> Step4_2
+  end
+
+  subgraph P6[Phase 6: Monitor and Adjust]
+    Step5_2 --> Step6_1{Resolution Verified?}
+    Step6_1 -- Yes --> Step6_2[Document Incident\\NetControl / CADx, I-ETMS]
+    Step6_1 -- No --> Step5_2
+  end
+
+  subgraph P7[Phase 7: Document Incident]
+    Step6_2 --> Step7_1{Incident Documented?}
+    Step7_1 -- Yes --> Step7_2[Review and Improve\\NetControl service design use, I-ETMS]
+    Step7_1 -- No --> Escalate
+  end
+
+  subgraph P8[Phase 8: Review and Improve]
+    Step7_2 --> Step8_1{Improvements Identified?}
+    Step8_1 -- Yes --> Step8_2[Implement Improvements\\NetControl service design use, I-ETMS]
+    Step8_1 -- No --> End
+  end
+
+  subgraph P9[Phase 9: Implement Improvements]
+    Step8_2 --> Step9_1{Improvements Implemented?}
+    Step9_1 -- Yes --> Step9_2[Conduct Post-Incident Review\\NetControl / CADx, I-ETMS]
+    Step9_1 -- No --> Escalate
+  end
+
+  subgraph P10[Phase 10: Conduct Post-Incident Review]
+    Step9_2 --> Step10_1{Review Completed?}
+    Step10_1 -- Yes --> Step10_2[Update Training Materials\\NetControl / CADx, I-ETMS]
+    Step10_1 -- No --> Step9_2
+  end
+
+  subgraph P11[Phase 11: Update Training Materials]
+    Step10_2 --> Step11_1{Training Updated?}
+    Step11_1 -- Yes --> End
+    Step11_1 -- No --> Escalate
+  end
+
+  style Start fill:#20242b,color:#fff,stroke:#20242b
+  style End fill:#20242b,color:#fff,stroke:#20242b
+  style Hold fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate fill:#20242b,color:#fff,stroke:#20242b
+  style Step1_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step2_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step3_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step4_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step5_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step6_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step7_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step8_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step9_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step10_1 fill:#c8791a,color:#fff,stroke:#c8791a
+  style Step11_1 fill:#c8791a,color:#fff,stroke:#c8791a
