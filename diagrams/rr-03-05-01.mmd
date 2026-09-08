@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Train on schedule?}
+    C -- Yes --> D[Car Inspection Preparation\\Umler]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Car Inspection Preparation]
+    D --> E[Visual Inspection of Cars\\Machine Vision portals]
+    E --> F{All cars inspected?}
+    F -- Yes --> G[Air Brake Test Execution\\Wabtrax]
+    F -- No --> D
+  end
+
+  subgraph P3[Phase 3: Air Brake Test Execution]
+    G --> H[Review of Air Brake Test Results\\Umler]
+    H --> I{Air brake test passed?}
+    I -- Yes --> J[Clearance for Departure\\NetControl]
+    I -- No --> K[Defective Brake Repair Notification\\PS Technology]
+  end
+
+  subgraph P4[Phase 4: Defective Brake Repair Notification]
+    K --> L[Car Inspection Preparation\\Umler]
+    L --> M{All cars repaired?}
+    M -- Yes --> N[Air Brake Test Execution\\Wabtrax]
+    M -- No --> K
+  end
+
+  subgraph P5[Phase 5: Train Departure Preparation]
+    J --> O[Train Departure Preparation\\Hump yard generic classification technology]
+    O --> P{All cars ready?}
+    P -- Yes --> Q[Train Departure Notification\\NetControl]
+    P -- No --> J
+  end
+
+  subgraph P6[Phase 6: Post-Departure Review and Finalization]
+    Q --> R[Post-Departure Review\\Umler]
+    R --> S{All cars reviewed?}
+    S -- Yes --> T[Update Maintenance Records\\EHMS]
+    S -- No --> Q
+    T --> U[Final Departure Confirmation\\NetControl]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
