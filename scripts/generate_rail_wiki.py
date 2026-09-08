@@ -716,8 +716,16 @@ def diagram_richness(mmd):
     measured averages across 149 real .mmd files, rounded down."""
     if not mmd:
         return 0, {}
+    # Node IDs appear inline inside edges — `A([Start]) --> B[Do a thing]` defines
+    # two nodes on one line — so the reference's line-anchored `^\s*\w+[\[\({]`
+    # counts about one node per file. It scored 1 node for a 41-node diagram, which
+    # made the nodes criterion fail on 149 of 149 known-good reference diagrams.
+    # Count unique IDs anywhere, excluding Mermaid's own keywords.
+    _KW = {"subgraph", "classDef", "class", "style", "flowchart", "graph",
+           "direction", "end", "linkStyle"}
+    ids = re.findall(r'\b([A-Za-z][A-Za-z0-9_]*)\s*[\[\({]', mmd)
     m = {
-        "nodes":     len(re.findall(r'^\s*\w+[\[\({]', mmd, flags=re.MULTILINE)),
+        "nodes":     len({i for i in ids if i not in _KW}),
         "decisions": len(re.findall(r'\w+\{[^}]+\}', mmd)),
         "branches":  len(re.findall(r'--\s*[A-Za-z][\w \-]*\s*-->', mmd)),
         "subgraphs": mmd.count("subgraph"),

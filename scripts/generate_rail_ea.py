@@ -202,8 +202,14 @@ def ea_richness(mmd):
     """Floors from the airline reference repo's 149 measured diagrams."""
     if not mmd:
         return 0, {}
+    # Same inline-definition problem as the process scorer: a line-anchored regex
+    # undercounts. It scored EA-03 at 16 nodes when the published diagram has 27,
+    # i.e. comfortably inside the 22-30 target it was being marked down for missing.
+    _KW = {"subgraph", "classDef", "class", "style", "flowchart", "graph",
+           "direction", "end", "linkStyle"}
+    _ids = re.findall(r'\b([A-Za-z][A-Za-z0-9_]*)\s*[\[\({]', mmd)
     m = {
-        "nodes":     len(re.findall(r'^\s*\w+\[', mmd, flags=re.MULTILINE)),
+        "nodes":     len({i for i in _ids if i not in _KW}),
         "labelled":  mmd.count("-->|"),
         "subgraphs": mmd.count("subgraph"),
         "classdefs": mmd.count("classDef"),
