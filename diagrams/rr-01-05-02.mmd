@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection and Analysis]
+    A([Start]) --> B[Collect line capacity data\\Unified Plan 2020; NetControl]
+    B --> C{Data complete?}
+    C -- No --> B
+    C -- Yes --> D[Analyze data trends\\Unified Plan 2020; NetControl]
+  end
+
+  subgraph P2[Phase 2: Route Selection]
+    D --> E[Identify potential routes\\Unified Plan 2020; NetControl]
+    E --> F{Routes meet capacity?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Select optimal route\\VP Network Planning Operations]
+  end
+
+  subgraph P3[Phase 3: Regulatory Compliance Review]
+    G --> H[Review regulatory requirements\\Unified Plan 2020; NetControl]
+    H --> I{Compliance met?}
+    I -- No --> Rej1([Reject])
+    I -- Yes --> J[Develop implementation plan\\VP Network Planning Operations]
+  end
+
+  subgraph P4[Phase 4: Resource Allocation]
+    J --> K[Allocate resources\\Unified Plan 2020; NetControl]
+    K --> L{Resources allocated?}
+    L -- No --> K
+    L -- Yes --> M[Prepare dispatching instructions\\Train Dispatcher]
+  end
+
+  subgraph P5[Phase 5: Train Monitoring and Adjustment]
+    M --> N[Monitor train performance\\Chief Dispatcher]
+    N --> O{Performance within limits?}
+    O -- No --> P[Adjust route or speed\\Chief Dispatcher]
+    P --> Q[Re-monitor performance\\Chief Dispatcher]
+    Q --> R{Performance improved?}
+    R -- No --> N
+    R -- Yes --> S([End])
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement Planning]
+    S --> T[Review post-implementation\\Unified Plan 2020; NetControl]
+    T --> U{Improvements identified?}
+    U -- No --> V[Final implementation monitoring\\Train Dispatcher]
+    V --> W{Monitoring complete?}
+    W -- No --> V
+    W -- Yes --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
