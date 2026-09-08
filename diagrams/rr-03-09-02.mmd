@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C[Train Positioning\\I-ETMS]
+    C --> D{Position correct?}
+    D -- No --> C
+    D -- Yes --> E[Air Brake Test\\EHMS]
+  end
+
+  subgraph P2[Phase 2: Air Brake and Utility Check]
+    E --> F{Air brake test passed?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Utility Check\\Umler]
+    G --> H{Utility check complete?}
+    H -- No --> G
+    H -- Yes --> I[Equipment Maintenance\\Wabtrax]
+  end
+
+  subgraph P3[Phase 3: Equipment Maintenance]
+    I --> J{Maintenance needed?}
+    J -- No --> K[Train Departure Preparation\\I-ETMS]
+    J -- Yes --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Train Departure Preparation]
+    K --> L{Departure preparation complete?}
+    L -- No --> K
+    L -- Yes --> M[Train Departure Notification\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Post-Departure Review]
+    M --> N[Post-Departure Review\\TRAIN II]
+    N --> O{Review complete?}
+    O -- No --> N
+    O -- Yes --> P[Update Car Hire Accounting\\CHARM]
+  end
+
+  subgraph P6[Phase 6: Final Update and Documentation]
+    P --> Q{Accounting update complete?}
+    Q -- No --> P
+    Q -- Yes --> R[Update Interline Settlement System\\ISS]
+    R --> S{Interline update complete?}
+    S -- No --> R
+    S -- Yes --> T[Update Wayside Defect Detector Network\\Wayside defect detector network]
+    T --> U{Defects updated?}
+    U -- No --> T
+    U -- Yes --> V[Final Review and Documentation\\TRAIN II]
+    V --> W{Documentation complete?}
+    W -- No --> V
+    W -- Yes --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
