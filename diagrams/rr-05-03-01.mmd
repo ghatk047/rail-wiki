@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Defect Identification]
+    A([Start]) --> B[Identify Defect\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- No --> D[Report Defect\\NetControl]
+    C -- Yes --> E[Assign Repair Crew\\PS Technology]
+  end
+
+  subgraph P2[Phase 2: Inspection and Repair]
+    E --> F[Inspect Railcar\\Wabtec Modular Control Architecture]
+    F --> G{Inspection passed?}
+    G -- No --> H[Repair Railcar\\Downing B. Jenks Shop]
+    G -- Yes --> I[Conduct Air Brake Test\\EHMS]
+  end
+
+  subgraph P3[Phase 3: Status Update and Billing]
+    I --> J{Air brake test passed?}
+    J -- No --> K[Inspect Railcar\\Wabtec Modular Control Architecture]
+    J -- Yes --> L[Update Railcar Status\\Umler]
+    L --> M[Prepare Repair Card\\TRAIN II]
+    M --> N[Bill Repair Costs\\Interline Settlement System]
+  end
+
+  subgraph P4[Phase 4: Release to Service]
+    N --> O{Repair card prepared?}
+    O -- No --> P[Update Railcar Status\\Umler]
+    O -- Yes --> Q[Release Railcar to Service\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Performance Monitoring]
+    Q --> R[Monitor Railcar Performance\\Wayside defect detector network]
+    R --> S{Performance within limits?}
+    S -- No --> T[Repair Railcar\\Downing B. Jenks Shop]
+    S -- Yes --> U([End])
+  end
+
+  subgraph P6[Phase 6: Process Review]
+    U --> V[Review and Improve Process\\TRAIN II]
+    V --> W([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
