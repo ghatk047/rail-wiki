@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Incident Reporting]
+    A([Start]) --> B[Report incident\\NetControl]
+    B --> C{Incident reported?}
+    C -- Yes --> D[Initial assessment\\I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E{Assessment complete?}
+    E -- Yes --> F[Investigation initiation\\Umler]
+    E -- No --> D
+  end
+
+  subgraph P3[Phase 3: Investigation Initiation]
+    F --> G[Interviews and evidence collection\\PS Technology]
+    G --> H{Evidence collected?}
+    H -- Yes --> I[Review and analysis\\EHMS]
+    H -- No --> G
+  end
+
+  subgraph P4[Phase 4: Review and Analysis]
+    I --> J{Analysis complete?}
+    J -- Yes --> K[Disciplinary decision\\TRAIN II]
+    J -- No --> I
+  end
+
+  subgraph P5[Phase 5: Disciplinary Decision]
+    K --> L{Decision made?}
+    L -- Yes --> M[Notification of employee\\CHARM]
+    L -- No --> K
+  end
+
+  subgraph P6[Phase 6: Notification and Training]
+    M --> N{Employee notified?}
+    N -- Yes --> O[Appeal process initiation\\Interline Settlement System]
+    N -- No --> M
+    O --> P{Review of appeal?}
+    P -- Yes --> Q[Final notification\\Harriman Dispatching Center HDC]
+    P -- No --> O
+    Q --> R{Employee notified?}
+    R -- Yes --> S[Training and preventive measures\\Mobile classroom training trailers]
+    R -- No --> Q
+    S --> T{Training complete?}
+    T -- Yes --> U[Review and continuous improvement\\GCOR]
+    T -- No --> S
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
