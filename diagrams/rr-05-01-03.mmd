@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Fault Detection]
+    A([Start]) --> B[Fault Detection\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- Yes --> D[Initial Assessment\\Umler]
+    C -- No --> E([End])
+  end
+
+  subgraph P2[Phase 2: Prioritization and Work Order Creation]
+    D --> F[Prioritization\\NetControl]
+    F --> G{Priority level?}
+    G -- High --> H[Work Order Creation\\PS Technology PST]
+    G -- Low --> I([Hold])
+  end
+
+  subgraph P3[Phase 3: Parts Ordering and Repair]
+    H --> J[Parts Ordering\\TRAIN II]
+    J --> K{Parts available?}
+    K -- Yes --> L[Locomotive Repair\\Wabtec Modular Control Architecture]
+    K -- No --> M([Escalate])
+  end
+
+  subgraph P4[Phase 4: Quality Check and Final Inspection]
+    L --> N[Quality Check\\EHMS Equipment Health Management System]
+    N --> O{Repair quality meets standards?}
+    O -- Yes --> P[Final Inspection\\I-ETMS Interoperable Electronic Train Management System]
+    O -- No --> J
+  end
+
+  subgraph P5[Phase 5: Return to Service and Post-Service Monitoring]
+    P --> Q[Return to Service\\NetControl]
+    Q --> R{Locomotive ready?}
+    R -- Yes --> S[Post-Service Monitoring\\EHMS Equipment Health Management System]
+    R -- No --> N
+  end
+
+  subgraph P6[Phase 6: Feedback Loop and Continuous Improvement]
+    S --> T[Feedback Loop\\Umler]
+    T --> U{Feedback received?}
+    U -- Yes --> V[Continuous Improvement\\NetControl service design use]
+    U -- No --> W([Bad Order])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
