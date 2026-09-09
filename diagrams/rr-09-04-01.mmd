@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Arrival Notification]
+    A([Start]) --> B[Receive Arrival Notification\\nYard System]
+    B --> C{Container in good condition?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Schedule Container Inspection\\nUPGo]
+  end
+
+  subgraph P2[Phase 2: Container Inspection]
+    D --> E[Perform Container Inspection\\nEHMS]
+    E --> F{FRA defect found?}
+    F -- No --> G[Update Container Status\\nUPGo]
+    F -- Yes --> Hold1
+  end
+
+  subgraph P3[Phase 3: Loading/Unloading Coordination]
+    G --> H[Coordinate Loading/Unloading\\nUPGo]
+    H --> I{Loading/Unloading complete?}
+    I -- No --> H
+    I -- Yes --> J[Perform Air Brake Test\\nUPGo]
+  end
+
+  subgraph P4[Phase 4: Air Brake Test]
+    J --> K{Air brake test passed?}
+    K -- No --> Hold1
+    K -- Yes --> L[Update Train Schedule\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Notification and Documentation]
+    L --> M[Notify Drayage Company\\nYard System]
+    M --> N[Final Inspection and Documentation\\nEHMS]
+    N --> O{Inspection passed?}
+    O -- No --> Hold1
+    O -- Yes --> P[Update Container Status for Departure\\nUPGo]
+  end
+
+  subgraph P6[Phase 6: Departure]
+    P --> Q[Depart Container from ICTF\\nUPGo]
+    Q --> R{Departure successful?}
+    R -- No --> Hold1
+    R -- Yes --> S[Update Interline Settlement System\\nISS / SSDX / CHDX]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
