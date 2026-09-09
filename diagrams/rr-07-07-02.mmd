@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Incident Detection]
+    A([Start]) --> B[Detect incident\\NetControl]
+    B --> C{Incident detected?}
+    C -- Yes --> D[Assess incident severity\\C3RS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Incident Assessment]
+    D --> E{Is it a security threat?}
+    E -- Yes --> F[Dispatch security personnel\\NetControl]
+    E -- No --> G[On-site investigation\\Railroad Police]
+  end
+
+  subgraph P3[Phase 3: On-Site Investigation]
+    F --> H[Investigate incident\\NetControl]
+    G --> I{Incident resolved?}
+    I -- Yes --> J[Classify incident\\C3RS]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Incident Classification]
+    J --> K{Is it a major incident?}
+    K -- Yes --> L[Report incident\\Chief Safety Officer / VP Safety]
+    K -- No --> M[Implement preventive measures\\VP Network Planning Operations]
+  end
+
+  subgraph P5[Phase 5: Preventive Measures Implementation]
+    L --> N[Conduct root cause analysis\\Rules Instructor / Rules Officer]
+    M --> O{Preventive measures effective?}
+    O -- Yes --> P[Update policies\\Chief Safety Officer / VP Safety]
+    O -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement]
+    N --> Q[Train and raise awareness\\Rules Instructor / Rules Officer]
+    P --> R{Policies updated?}
+    R -- Yes --> S[Review incident\\Chairman, President and CEO]
+    R -- No --> Hold4([Hold])
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
