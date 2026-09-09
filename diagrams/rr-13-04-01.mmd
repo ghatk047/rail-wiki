@@ -1,0 +1,64 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection]
+    A([Start]) --> B[Collect cost data\\NetControl]
+    B --> C{Data complete?}
+    C -- Yes --> D[Fuel Surcharge Calculation\\Fuel surcharge program]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Fuel Surcharge Calculation]
+    D --> E{Surcharge calculation valid?}
+    E -- Yes --> F[Revenue Per Car Calculation\\ARC Average Revenue per Car]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Revenue Per Car Calculation]
+    F --> G{Calculation accurate?}
+    G -- Yes --> H[Regulatory Compliance Review\\I-ETMS]
+    G -- No --> D
+  end
+
+  subgraph P4[Phase 4: Regulatory Compliance Review]
+    H --> I{Compliance met?}
+    I -- Yes --> J[Data Validation\\NetControl, I-ETMS]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Data Validation]
+    J --> K{Validation successful?}
+    K -- Yes --> L[Final Report Preparation\\TRAIN II, CHARM]
+    K -- No --> F
+  end
+
+  subgraph P6[Phase 6: Final Steps]
+    L --> M[Review by Plan Sponsor\\up.com customer portal]
+    M --> N{Approval received?}
+    N -- Yes --> O[Update Regulatory Costing System\\PS Technology, EHMS]
+    N -- No --> Hold3([Hold])
+    O --> P[Interline Settlement Review\\Interline Settlement System, CHDX]
+    P --> Q{Review complete?}
+    Q -- Yes --> R[Final Review and Submission\\up.com customer portal, SERTC]
+    Q -- No --> L
+    R --> S[Post-Submission Review\\up.com customer portal, SERTC]
+    S --> T{Review approved?}
+    T -- Yes --> U[Continuous Improvement\\NetControl, I-ETMS]
+    T -- No --> Hold4([Hold])
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
