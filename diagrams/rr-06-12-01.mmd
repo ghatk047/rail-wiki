@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Derailment Notification]
+    A([Start]) --> B[Derailment Notification\\Wabtrax]
+    B --> C{FRA defect found?}
+    C -- No --> D[Initial Assessment\\NetControl]
+    C -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E{Track authority granted?}
+    E -- No --> A
+    E -- Yes --> F[Safety Declaration\\Umler]
+  end
+
+  subgraph P3[Phase 3: Safety Declaration]
+    F --> G{Safety approved?}
+    G -- No --> Hold2([Hold])
+    G -- Yes --> H[Evacuation and Clearing\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Evacuation and Clearing]
+    H --> I{Clearance complete?}
+    I -- No --> H
+    I -- Yes --> J[Track Inspection and Repair\\FRA Automated Track Inspection Program ATIP]
+  end
+
+  subgraph P5[Phase 5: Track Inspection and Repair]
+    J --> K{Repair needed?}
+    K -- No --> L[Final Inspection and Certification\\NetControl]
+    K -- Yes --> M[Repair Execution\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Final Steps]
+    L --> N{Inspection passed?}
+    N -- No --> J
+    N -- Yes --> O[Traffic Resumption\\I-ETMS]
+    O --> P[Post-Event Review\\Umler]
+    P --> Q[Regulatory Compliance Check\\PTC Back Office Server BOS]
+    Q --> R{Compliance met?}
+    R -- No --> Hold3([Hold])
+    R -- Yes --> S[Documentation and Reporting\\NetControl]
+    S --> T[Continuous Improvement Plan\\NetControl service design use]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
