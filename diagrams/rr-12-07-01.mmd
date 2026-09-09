@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Network Assessment]
+    A([Start]) --> B[Conduct network assessment\\NetControl]
+    B --> C{Network meets standards?}
+    C -- Yes --> D[Initiate security audit\\Cybersecurity]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Security Audit]
+    D --> E[Perform security audit\\Cybersecurity]
+    E --> F{Security vulnerabilities found?}
+    F -- Yes --> G[Remediate vulnerabilities\\NetControl]
+    F -- No --> H[Plan network maintenance\\VP Network Planning Operations]
+  end
+
+  subgraph P3[Phase 3: Maintenance Planning]
+    H --> I[Create maintenance plan\\NetControl service design use]
+    I --> J{Maintenance plan approved?}
+    J -- Yes --> K[Execute maintenance\\Service Design / Network Planning Analyst]
+    J -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Maintenance Execution]
+    K --> L[Test network after maintenance\\NetControl]
+    L --> M{Network test passed?}
+    M -- Yes --> N[Review regulatory compliance\\CIO]
+    M -- No --> K
+  end
+
+  subgraph P5[Phase 5: Regulatory Compliance Review]
+    N --> O[Update documentation\\Enterprise Architect / Platform Owner]
+    O --> P{Documentation updated correctly?}
+    P -- Yes --> Q[Monitor network\\Enterprise Architect / Platform Owner]
+    P -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement]
+    Q --> R[Report incident if any\\Enterprise Architect / Platform Owner]
+    R --> S{Incident reported?}
+    S -- Yes --> T[Plan continuous improvement\\VP Network Planning Operations]
+    S -- No --> U[Final review and reporting\\VP Network Planning Operations]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
