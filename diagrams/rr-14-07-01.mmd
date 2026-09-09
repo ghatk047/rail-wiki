@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Policy Request Review]
+    A([Start]) --> B[Review Attendance Policy Request\nTRAIN II]
+    B --> C{Policy request valid?}
+    C -- No --> A
+    C -- Yes --> D[Consult with HR and Labor Relations\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Drafting and Review]
+    D --> E[Draft Attendance Policy Update\nTRAIN II]
+    E --> F{Update draft approved?}
+    F -- No --> E
+    F -- Yes --> G[Review by Chairman and President\nTRAIN II]
+  end
+
+  subgraph P3[Phase 3: Communication and Training]
+    G --> H[Communicate Policy Update to Employees\nup.com customer portal]
+    H --> I{Employees informed?}
+    I -- No --> H
+    I -- Yes --> J[Conduct Training Sessions\nMobile classroom training trailers]
+  end
+
+  subgraph P4[Phase 4: Monitoring and Adjustment]
+    J --> K[Monitor Policy Compliance\nTRAIN II]
+    K --> L{Compliance within limits?}
+    L -- No --> M[Review and Adjust Policy\nTRAIN II]
+    L -- Yes --> N[Update Policy in System\nTRAIN II]
+  end
+
+  subgraph P5[Phase 5: Notification and Follow-up]
+    M --> O[Notify Employees of Adjustments\nup.com customer portal]
+    O --> P{Employees notified?}
+    P -- No --> O
+    P -- Yes --> Q[Conduct Follow-up Training if Necessary\nMobile classroom training trailers]
+  end
+
+  subgraph P6[Phase 6: Final Review and Closure]
+    Q --> R[Final Review and Close Process\nTRAIN II]
+    R --> S{Process finalized?}
+    S -- No --> Q
+    S -- Yes --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
