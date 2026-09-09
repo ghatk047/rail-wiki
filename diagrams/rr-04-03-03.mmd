@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Assignment]
+    A([Start]) --> B[Crew Assignment\\PS Technology PST]
+    B --> C{Assignment successful?}
+    C -- Yes --> D[HOS Log Initialization\\CloudMoyo Crew Management CCM]
+    C -- No --> E([Exception])
+  end
+
+  subgraph P2[Phase 2: Pre-Trip Inspection]
+    D --> F[Pre-Trip Inspection\\EHMS Equipment Health Management System]
+    F --> G{Inspection passed?}
+    G -- Yes --> H[Train Departure\\NetControl service design use]
+    G -- No --> I([Exception])
+  end
+
+  subgraph P3[Phase 3: In-Route Monitoring]
+    H --> J[In-Route Monitoring\\trackHOS-class HOS monitoring tools]
+    J --> K{Hours of service remaining?}
+    K -- Yes --> L[Mid-Trip Break\\CrewPro]
+    K -- No --> M([Exception])
+  end
+
+  subgraph P4[Phase 4: Mid-Trip Break]
+    L --> N{Break completed successfully?}
+    N -- Yes --> O[Terminal Arrival\\NetControl service design use]
+    N -- No --> I
+  end
+
+  subgraph P5[Phase 5: Post-Trip Inspection]
+    O --> P[Post-Trip Inspection\\EHMS Equipment Health Management System]
+    P --> Q{Inspection passed?}
+    Q -- Yes --> R[HOS Log Finalization\\CloudMoyo Crew Management CCM]
+    Q -- No --> I
+  end
+
+  subgraph P6[Phase 6: Compliance Review]
+    R --> S[HOS Compliance Review\\CloudMoyo Crew Management CCM]
+    S --> T{Compliance met?}
+    T -- Yes --> U[Post-Trip Reporting\\PS Technology PST]
+    T -- No --> V([Exception])
+  end
+
+  subgraph P7[Phase 7: Exception Handling]
+    E --> W[Exception Handling\\CloudMoyo Crew Management CCM]
+    W --> X{Exception resolved?}
+    X -- Yes --> Y[Restart Process from Crew Assignment\\PS Technology PST]
+    X -- No --> V
+  end
+
+  U --> Z([End])
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
