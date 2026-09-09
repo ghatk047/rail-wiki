@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify High-Risk Crossings]
+    A([Start]) --> B{High-risk grade crossings\nidentified?}
+    B -- Yes --> C[Develop outreach plan\\NetControl]
+    B -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Develop Outreach Plan]
+    C --> D{Outreach plan developed?}
+    D -- Yes --> E[Coordinate with local authorities\\I-ETMS]
+    D -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Coordinate with Local Authorities]
+    E --> F{Coordination successful?}
+    F -- Yes --> G[Design educational materials\\Umler]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Design Educational Materials]
+    G --> H{Materials designed?}
+    H -- Yes --> I[Conduct public meetings\\PS Technology]
+    H -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Conduct Public Meetings]
+    I --> J{Meetings conducted successfully?}
+    J -- Yes --> K[Distribute educational materials\\EHMS]
+    J -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Monitor and Evaluate]
+    K --> L[Monitor and collect feedback\\TRAIN II]
+    L --> M{Feedback collected?}
+    M -- Yes --> N[Evaluate effectiveness\\Interline Settlement System]
+    M -- No --> Hold4([Hold])
+    N --> O{Effectiveness evaluated?}
+    O -- Yes --> P[Report to senior management\\Wabtrax]
+    O -- No --> Rej3([Reject])
+  end
+
+  subgraph P7[Phase 7: Plan Continuous Improvement]
+    P --> Q[Plan continuous improvement\\Harriman Dispatching Center]
+    Q --> R{Improvement plan developed?}
+    R -- Yes --> S[Implement continuous improvement measures\\Conductor]
+    R -- No --> Rej4([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej4 fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
