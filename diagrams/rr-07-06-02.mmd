@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identification]
+    A([Start]) --> B[Identify Close Call\\NetControl]
+    B --> C{Close Call Identified?}
+    C -- Yes --> D[Report Close Call\\C3RS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Review]
+    D --> E[Review Close Call\\C3RS]
+    E --> F{Review Approved?}
+    F -- Yes --> G[Determine Root Cause\\Umler]
+    F -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Corrective Actions]
+    G --> H[Develop Corrective Actions\\NetControl]
+    H --> I{Actions Approved?}
+    I -- Yes --> J[Implement Corrective Actions\\VP Network Planning Operations]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Monitoring]
+    J --> K[Monitor Corrective Actions\\NetControl]
+    K --> L{Actions Effective?}
+    L -- Yes --> M[Review and Update Policies\\C3RS]
+    L -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Notification]
+    M --> N[Notify Affected Parties\\C3RS]
+    N --> O{Notification Sent?}
+    O -- Yes --> P[Close Incident Case\\C3RS]
+    O -- No --> Rej2([Reject])
+  end
+
+  subgraph P6[Phase 6: Post-Incident Review]
+    P --> Q[Conduct Post-Incident Review\\Umler]
+    Q --> R{Review Complete?}
+    R -- Yes --> S[Update Training Programs\\NetControl]
+    R -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
