@@ -1,0 +1,80 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Contract Request Review]
+    A([Start]) --> B[Review contract request\nUP.com secure portal; Loup Logistics]
+    B --> C{Request valid?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Pricing Evaluation]
+  end
+
+  subgraph P2[Phase 2: Pricing Evaluation]
+    D --> E[Evaluate pricing\nShipmentVision; Loup Logistics]
+    E --> F{Pricing acceptable?}
+    F -- No --> Rej1([Reject])
+    F -- Yes --> G[Regulatory Compliance Check]
+  end
+
+  subgraph P3[Phase 3: Regulatory Compliance Check]
+    G --> H[Check regulatory compliance\nNetControl; I-ETMS]
+    H --> I{Compliance met?}
+    I -- No --> Hold2([Hold])
+    I -- Yes --> J[Customer Approval]
+  end
+
+  subgraph P4[Phase 4: Customer Approval]
+    J --> K[Obtain customer approval\nUP.com secure portal; Loup Logistics]
+    K --> L{Approval received?}
+    L -- No --> Rej2([Reject])
+    L -- Yes --> M[Contract Execution]
+  end
+
+  subgraph P5[Phase 5: Contract Execution]
+    M --> N[Execute contract\nLoup Logistics; ShipmentVision]
+    N --> O{Execution successful?}
+    O -- No --> Esc1([Escalate])
+    O -- Yes --> P[Service Design Update]
+  end
+
+  subgraph P6[Phase 6: Post-Contract Execution]
+    P --> Q[Coordinate with Train Dispatcher\nHarriman Dispatching Center; I-ETMS]
+    Q --> R{Dispatcher coordination complete?}
+    R -- No --> Hold3([Hold])
+    R -- Yes --> S[Equipment Health Check]
+    S --> T{Equipment healthy?}
+    T -- No --> Rej3([Reject])
+    T -- Yes --> U[Customer Communication]
+    U --> V{Communication acknowledged?}
+    V -- No --> Esc2([Escalate])
+    V -- Yes --> W[Prepare Interline Settlement\nInterline Settlement System; CHDX]
+    W --> X{Settlement prepared?}
+    X -- No --> Hold4([Hold])
+    X -- Yes --> Y[Final Review and Sign-off]
+    Y --> Z{Sign-off complete?}
+    Z -- No --> Rej4([Reject])
+    Z -- Yes --> AA[Contract Closure and Reporting]
+    AA --> AB{Reporting complete?}
+    AB -- No --> Esc3([Escalate])
+    AB -- Yes --> AC([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AC fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc1 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc2 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
+  style Z fill:#c8791a,color:#fff,stroke:#c8791a
+  style AB fill:#c8791a,color:#fff,stroke:#c8791a
