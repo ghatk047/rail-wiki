@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection Initiation]
+    A([Start]) --> B[Initiate data collection\\NetControl; PS Technology PST; Physics Train Builder]
+    B --> C{Data collection complete?}
+    C -- No --> B
+    C -- Yes --> D[Integrate and clean data\\NetControl; I-ETMS; Umler; PS Technology]
+  end
+
+  subgraph P2[Phase 2: Data Integration and Cleaning]
+    D --> E{Data integration successful?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Detect anomalies\\Commit Situational Awareness Testing program; Machine Vision portals]
+  end
+
+  subgraph P3[Phase 3: Anomaly Detection and Reporting]
+    F --> G{Anomalies detected?}
+    G -- No --> H[Assess security and compliance\\Cybersecurity — 'secure-by-design' approach unbranded]
+    G -- Yes --> I[Report anomalies\\Commit Situational Awareness Testing program; Machine Vision portals]
+  end
+
+  subgraph P4[Phase 4: Security Assessment and Compliance Check]
+    H --> J{Compliance check passed?}
+    J -- No --> Rej1([Reject])
+    J -- Yes --> K[Visualize data\\NetControl; PS Technology PST; Physics Train Builder]
+  end
+
+  subgraph P5[Phase 5: Data Visualization and Reporting]
+    K --> L{Visualization complete?}
+    L -- No --> Hold2([Hold])
+    L -- Yes --> M[Plan predictive maintenance\\EHMS Equipment Health Management System; TRAIN II Tele Rail Automated Information Network Phase 2]
+  end
+
+  subgraph P6[Phase 6: Predictive Maintenance Planning]
+    M --> N{Maintenance plan approved?}
+    N -- No --> Hold3([Hold])
+    N -- Yes --> O[Optimize resource allocation\\NetControl; I-ETMS]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
