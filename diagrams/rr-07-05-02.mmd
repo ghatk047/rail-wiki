@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Notification]
+    A([Start]) --> B[Receive FRA Inspection Notification\\NetControl]
+    B --> C{Inspection notification received?}
+    C -- No --> B
+    C -- Yes --> D[Coordinate Inspection Team\\I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Conduct Initial Inspection]
+    D --> E[Conduct Initial Inspection\\Umler]
+    E --> F{FRA defect found?}
+    F -- No --> G[Review Inspection Report\\C3RS]
+    F -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Develop Corrective Actions Plan]
+    G --> H{Inspection report reviewed?}
+    H -- No --> E
+    H -- Yes --> I[Develop Corrective Actions Plan\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Implement Corrective Actions]
+    I --> J[Implement Corrective Actions\\EHMS]
+    J --> K{Corrective actions implemented?}
+    K -- No --> I
+    K -- Yes --> L[Verify Corrective Actions\\I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Report to FRA and Monitor Compliance]
+    L --> M{Corrective actions verified?}
+    M -- No --> J
+    M -- Yes --> N[Report to FRA\\NetControl]
+    N --> O[Monitor Compliance Post-Inspection\\I-ETMS]
+    O --> P{Compliance monitored?}
+    P -- No --> L
+    P -- Yes --> Q[Update Safety Policies and Procedures\\Umler]
+  end
+
+  subgraph P6[Phase 6: Review and Improve Processes]
+    Q --> R{Safety policies updated?}
+    R -- No --> O
+    R -- Yes --> S[Review and Improve Processes\\VP Network Planning Operations]
+    S --> T{Processes reviewed?}
+    T -- No --> Q
+    T -- Yes --> U[Implement Process Improvements\\Service Design / Network Planning Analyst]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
