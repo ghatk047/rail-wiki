@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Inquiry]
+    A([Start]) --> B[Receive Customer Inquiry\nLoup Logistics; ShipmentVision; up.com secure portal]
+    B --> C{Initial Assessment Complete?}
+    C -- No --> B
+    C -- Yes --> D[Initial Assessment and Quotation\nLoup Logistics; ShipmentVision; up.com secure portal]
+  end
+
+  subgraph P2[Phase 2: Negotiate Contract]
+    D --> E[Negotiate Contract Terms\nLoup Logistics; ShipmentVision; up.com secure portal]
+    E --> F{Contract Approved?}
+    F -- No --> B
+    F -- Yes --> G[Approve Contract\nVP-Loup Loup Logistics; Loup Logistics; ShipmentVision; up.com secure portal]
+  end
+
+  subgraph P3[Phase 3: Order Processing]
+    G --> H[Order Processing\nDedicated Logistics Representative Loup; Loup Logistics; ShipmentVision; up.com secure portal]
+    H --> I{Order Processed Correctly?}
+    I -- No --> B
+    I -- Yes --> J[Routing and Equipment Allocation\nService Design / Network Planning Analyst; VP Network Planning Operations; NetControl; I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Scheduling and Dispatching]
+    J --> K[Scheduling and Dispatching\nTrain Dispatcher; Control Operator; Chief Dispatcher; NetControl; I-ETMS]
+    K --> L{Dispatch Successful?}
+    L -- No --> B
+    L -- Yes --> M[Monitor Shipment Progress\nAccount Manager / Sales Representative; Dedicated Logistics Representative Loup; ShipmentVision; up.com secure portal]
+  end
+
+  subgraph P5[Phase 5: Handle Exceptions and Claims]
+    M --> N{Exception Occurred?}
+    N -- No --> O[Post-Shipment Review and Feedback\nAccount Manager / Sales Representative; VP-Loup Loup Logistics; Loup Logistics; ShipmentVision; up.com secure portal]
+    N -- Yes --> P[Handle Exceptions and Claims\nClaims Adjuster; Account Manager / Sales Representative; Loup Logistics; ShipmentVision; up.com secure portal]
+  end
+
+  subgraph P6[Phase 6: Final Review]
+    O --> Q{Feedback Received?}
+    Q -- No --> M
+    Q -- Yes --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
