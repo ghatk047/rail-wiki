@@ -1,0 +1,81 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Site Identification]
+    A([Start]) --> B[Identify potential sites\nLoup Logistics]
+    B --> C{Site feasible?}
+    C -- Yes --> D[Initiate site evaluation]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Site Evaluation]
+    D --> E[Conduct site evaluation\nShipmentVision, Loup Logistics]
+    E --> F{Evaluation meets criteria?}
+    F -- Yes --> G[Initiate regulatory compliance check]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Regulatory Compliance Check]
+    G --> H[Verify regulatory compliance\nUP customer portal up.com secure portal, Transentric]
+    H --> I{Compliance met?}
+    I -- Yes --> J[Initiate operational feasibility analysis]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Operational Feasibility Analysis]
+    J --> K[Analyze operational feasibility\nNetControl, I-ETMS]
+    K --> L{Feasibility met?}
+    L -- Yes --> M[Initiate cost-benefit assessment]
+    L -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Cost-Benefit Assessment]
+    M --> N[Conduct cost-benefit analysis\nTRAIN II, EHMS]
+    N --> O{Cost-benefit favorable?}
+    O -- Yes --> P[Initiate site selection]
+    O -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Approval and Implementation]
+    P --> Q[Select site\nUmler, CHARM]
+    Q --> R{Site selected?}
+    R -- Yes --> S[Develop implementation plan\nLoup Logistics, ShipmentVision]
+    R -- No --> Hold6([Hold])
+    S --> T[Communicate with stakeholders\nUP customer portal up.com secure portal, Transentric]
+    T --> U{Stakeholder approval received?}
+    U -- Yes --> V[Initiate regulatory approval process]
+    U -- No --> Hold7([Hold])
+    V --> W[Obtain regulatory approval\nUP customer portal up.com secure portal, Transentric]
+    W --> X{Approval granted?}
+    X -- Yes --> Y[Confirm final site selection\nUmler, CHARM]
+    X -- No --> Hold8([Hold])
+    Y --> Z{Final confirmation received?}
+    Z -- Yes --> AA[Kickoff project\nLoup Logistics, ShipmentVision]
+    Z -- No --> Hold9([Hold])
+    AA --> AB[Monitor and report progress\nLoup Logistics, ShipmentVision]
+    AB --> AC{Project on track?}
+    AC -- Yes --> AD([End])
+    AC -- No --> Hold10([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AD fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold7 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold8 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold9 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold10 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
+  style Z fill:#c8791a,color:#fff,stroke:#c8791a
+  style AC fill:#c8791a,color:#fff,stroke:#c8791a
