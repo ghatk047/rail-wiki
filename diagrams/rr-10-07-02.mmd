@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Inquiry]
+    A([Start]) --> B[Receive Shipment Inquiry\nup.com secure portal]
+    B --> C{Data Valid?}
+    C -- No --> D[Validate Shipment Data\nLoup Logistics]
+    C -- Yes --> E[Query Shipment Status\nShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Validate and Query]
+    D --> C
+    E --> F{Status Available?}
+    F -- No --> G([Hold])
+    F -- Yes --> H[Update Customer Portal\nup.com secure portal]
+  end
+
+  subgraph P3[Phase 3: Notify Customer]
+    H --> I[Notify Customer\nup.com secure portal]
+    I --> J{Exception Raised?}
+    J -- No --> K([End])
+    J -- Yes --> L[Handle Exceptions\nLoup Logistics]
+  end
+
+  subgraph P4[Phase 4: Monitor Shipment]
+    L --> M[Monitor Shipment Progress\nShipmentVision]
+    M --> N{Progress Monitored?}
+    N -- No --> O([Hold])
+    N -- Yes --> P[Update Exception Status\nShipmentVision]
+  end
+
+  subgraph P5[Phase 5: Notify of Exception]
+    P --> Q[Notify Customer of Exception\nup.com secure portal]
+    Q --> R{Case Closed?}
+    R -- No --> S([Hold])
+    R -- Yes --> T[Review and Close Case\nLoup Logistics]
+  end
+
+  subgraph P6[Phase 6: Final Review]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
