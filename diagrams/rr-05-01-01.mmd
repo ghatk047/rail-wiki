@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Locomotive Identification]
+    A([Start]) --> B[Locomotive Identification\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- Yes --> Hold1([Hold])
+    C -- No --> D[Locomotive Routing\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Arrival and Initial Inspection]
+    D --> E[Locomotive Arrival at Shop\\NetControl]
+    E --> F[Initial Inspection and Defect Identification\\EHMS]
+    F --> G{Defects identified?}
+    G -- Yes --> H[Defect Prioritization and Repair Planning\\Umler]
+    G -- No --> I[Locomotive Reassembly and Final Inspection\\EHMS]
+  end
+
+  subgraph P3[Phase 3: Component Replacement or Repair]
+    H --> J[Component Replacement or Repair\\Wabtec Modular Control Architecture]
+    J --> K{Repair completed?}
+    K -- Yes --> L[Air Brake System Test\\I-ETMS]
+    K -- No --> J
+  end
+
+  subgraph P4[Phase 4: Air Brake System Testing]
+    L --> M{Air brake test passed?}
+    M -- Yes --> N[Locomotive Reassembly and Final Inspection\\EHMS]
+    M -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Final Inspection and Readiness Check]
+    N --> O[Locomotive Testing and Readiness Check\\NetControl]
+    O --> P{Locomotive ready?}
+    P -- Yes --> Q[Locomotive Departure for Service\\NetControl]
+    P -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Departure]
+    Q --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
