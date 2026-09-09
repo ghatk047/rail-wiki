@@ -1,0 +1,49 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Efficiency Testing Plan\\NetControl]
+    B --> C{Plan Approved?}
+    C -- Yes --> D[Assign Testing Crews and Equipment\\I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Inspection]
+    D --> E[Conduct Initial Track Inspection\\Wabtrax]
+    E --> F{Defect Found?}
+    F -- Yes --> G[Report Defect\\NetControl]
+    F -- No --> H[Perform Train Speed and Dwell Time Monitoring\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Data Evaluation]
+    H --> I[Evaluate Train Performance Data\\NetControl]
+    I --> J{Improvements Identified?}
+    J -- Yes --> K[Update Operating Procedures\\NetControl]
+    J -- No --> L[Conduct Final Track Inspection\\Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Final Review]
+    L --> M{Final Report Approved?}
+    M -- Yes --> N[Implement Improvements and Monitor Compliance\\I-ETMS]
+    M -- No --> Rej1([Reject])
+  end
+
+  subgraph P5[Phase 5: Monitoring]
+    N --> O[Monitor Compliance\\NetControl]
+    O --> P{Compliance Issues?}
+    P -- Yes --> Q[Report Issue\\NetControl]
+    P -- No --> R[Document and Close Process\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Closure]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
