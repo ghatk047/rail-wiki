@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Fuel Surcharge Initiation]
+    A([Start]) --> B[Fuel Surcharge Calculation Initiation\nFuel surcharge program; ARC Average Revenue per Car]
+    B --> C{Decision Y?}
+    C -- Yes --> D[Review and Approval of Fuel Surcharge Report\nFuel surcharge program; ARC Average Revenue per Car]
+    C -- No --> A
+  end
+
+  subgraph P2[Phase 2: Material Procurement Request]
+    D --> E[Material Procurement Request\nNetControl service design use]
+    E --> F{Decision N?}
+    F -- Yes --> G([Hold])
+    F -- No --> H[Material Procurement Approval\nNetControl service design use]
+  end
+
+  subgraph P3[Phase 3: Material Dispatch and Delivery]
+    H --> I[Material Dispatch and Delivery\nI-ETMS Interoperable Electronic Train Management System]
+    I --> J{Decision N?}
+    J -- Yes --> K([Hold])
+    J -- No --> L[Material Inventory Update\nUmler Universal Machine Language Equipment Register]
+  end
+
+  subgraph P4[Phase 4: Revenue Accounting for Materials]
+    L --> M[Revenue Accounting for Materials\nCHARM Car Hire Accounting Rate Master]
+    M --> N{Decision Y?}
+    N -- Yes --> O[Review and Approval of Revenue Report\nCHARM Car Hire Accounting Rate Master]
+    N -- No --> M
+  end
+
+  subgraph P5[Phase 5: Material Usage Tracking]
+    O --> P[Material Usage Tracking\nEHMS Equipment Health Management System]
+    P --> Q{Decision N?}
+    Q -- Yes --> R([Hold])
+    Q -- No --> S[Material Usage Review\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P6[Phase 6: Final Adjustment and Closure]
+    S --> T[Adjustment of Material Procurement\nNetControl service design use]
+    T --> U{Decision Y?}
+    U -- Yes --> V[Final Review and Closure\nCHARM Car Hire Accounting Rate Master]
+    U -- No --> T
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style G fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
