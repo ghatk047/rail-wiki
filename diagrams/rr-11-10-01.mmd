@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Arrival confirmed?}
+    C -- Yes --> D[Customs Clearance Initiation\\CHARM, TRAIN II]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Customs Clearance]
+    D --> E{Clearance approved?}
+    E -- Yes --> F[Border Crossing Approval\\NetControl, I-ETMS]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Border Crossing]
+    F --> G{Crossing approved?}
+    G -- Yes --> H[Equipment Inspection\\EHMS, Wabtrax]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Equipment Inspection]
+    H --> I{Defect found?}
+    I -- Yes --> J[Defect Resolution\\EHMS, Umler]
+    I -- No --> K[Train Departure Preparation\\NetControl, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Train Departure Preparation]
+    K --> L{Preparation complete?}
+    L -- Yes --> M[Interline Settlement Data Exchange\\ISS, CHDX]
+    L -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Steps]
+    M --> N[Final Train Departure\\NetControl, I-ETMS]
+    N --> O{Departure confirmed?}
+    O -- Yes --> P[Post-Departure Monitoring\\NetControl, I-ETMS]
+    O -- No --> Hold4([Hold])
+    P --> Q[End-of-Day Report Generation\\CHARM, TRAIN II]
+    Q --> R[Regulatory Compliance Review\\EHMS, Umler]
+    R --> S{Compliance met?}
+    S -- Yes --> T[Continuous Improvement Planning\\NetControl, I-ETMS]
+    S -- No --> Rej2([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
