@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Alert Generation]
+    A([Start]) --> B[Generate alert\\Wayside defect detector network]
+    B --> C{Alert valid?}
+    C -- No --> E([Escalate])
+    C -- Yes --> D[Notify dispatcher\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Alert Notification]
+    D --> E{Dispatcher notified?}
+    E -- No --> F([Hold])
+    E -- Yes --> G[Stop train or reroute\\Control Operator, NetControl]
+  end
+
+  subgraph P3[Phase 3: Train Stoppage or Rerouting]
+    G --> H{Train stopped or rerouted?}
+    H -- No --> I([Escalate])
+    H -- Yes --> J[Inspect initial\\Machinist, Wabtec Modular Control Architecture]
+  end
+
+  subgraph P4[Phase 4: Initial Inspection]
+    J --> K{Defect found?}
+    K -- No --> L[Release train\\Control Operator, NetControl]
+    K -- Yes --> M[Classify defect\\Manager-Mechanical Maintenance, EHMS]
+  end
+
+  subgraph P5[Phase 5: Defect Classification]
+    M --> N{Classification complete?}
+    N -- No --> O([Hold])
+    N -- Yes --> P[Assign maintenance\\Senior Director-System Locomotive Facility, Umler]
+  end
+
+  subgraph P6[Phase 6: Repair or Replacement]
+    P --> Q{Repair assigned?}
+    Q -- No --> R([Escalate])
+    Q -- Yes --> S[Perform repair or replacement\\Electrician locomotive, Wabtec Modular Control Architecture]
+    S --> T{Repair complete?}
+    T -- No --> U([Hold])
+    T -- Yes --> V[Inspect post-repair\\Machinist, Wabtec Modular Control Architecture]
+    V --> W{Post-repair inspection passed?}
+    W -- No --> X([Escalate])
+    W -- Yes --> Y[Release train\\Control Operator, NetControl]
+  end
+
+  subgraph P7[Phase 7: Post-Release Monitoring]
+    Y --> Z{Train released?}
+    Z -- No --> AA([Hold])
+    Z -- Yes --> AB[Monitor post-release\\Service Operator, Wayside defect detector network]
+    AB --> AC{Monitoring complete?}
+    AC -- No --> AD([Escalate])
+    AC -- Yes --> AE([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AE fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Z fill:#c8791a,color:#fff,stroke:#c8791a
+  style AC fill:#c8791a,color:#fff,stroke:#c8791a
