@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Notification and Preparation]
+    A([Start]) --> B[Notification of Arrival\\NetControl]
+    B --> C{FRA defect found?}
+    C -- Yes --> Hold1([Hold])
+    C -- No --> D[Pre-inspection Preparation\\Umler]
+  end
+
+  subgraph P2[Phase 2: Visual and Hot Bearing Inspection]
+    D --> E[Visual Inspection\\Wayside defect detector network]
+    E --> F{Defect detected?}
+    F -- Yes --> G[Hot Bearing Detection\\Wayside defect detector network]
+    F -- No --> H[Review and Repair Planning\\Umler]
+  end
+
+  subgraph P3[Phase 3: Wheel Impact and Acoustic Inspection]
+    G --> I[Wheel Impact Analysis\\Wayside defect detector network]
+    I --> J{Defect detected?}
+    J -- Yes --> K[Acoustic Inspection\\Wayside defect detector network]
+    J -- No --> L[Review and Repair Planning\\Umler]
+  end
+
+  subgraph P4[Phase 4: Repair Execution]
+    K --> M{Defect detected?}
+    M -- Yes --> N[Repair Execution\\Downing B. Jenks Shop]
+    M -- No --> O[Post-Repair Inspection\\Wayside defect detector network]
+  end
+
+  subgraph P5[Phase 5: Post-Repair Review]
+    N --> P{Repair complete?}
+    P -- Yes --> Q[Post-Repair Inspection\\Wayside defect detector network]
+    P -- No --> R([Escalate])
+  end
+
+  subgraph P6[Phase 6: Final Clearance and Documentation]
+    O --> S{Defect detected?}
+    S -- Yes --> T[Repair Execution\\Downing B. Jenks Shop]
+    S -- No --> U[Final Clearance and Documentation\\Umler]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
