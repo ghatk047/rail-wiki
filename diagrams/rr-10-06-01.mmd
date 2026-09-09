@@ -1,0 +1,49 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Waybill/Bill of Lading Intake]
+    A([Start]) --> B[Receive Waybill/Bill of Lading\nLoup Logistics; ShipmentVision; UP.com secure portal]
+    B --> C{Compliance with Regulations?}
+    C -- No --> D[Notify Account Manager / Sales Representative\nUP.com secure portal; Loup Logistics]
+    C -- Yes --> E[Assign Shipment to Train and Track\nNetControl; I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Equipment Preparation]
+    E --> F[Prepare Equipment for Shipment\nEHMS; Umler]
+    F --> G{Equipment Ready?}
+    G -- No --> H[Inspect Car Again\nCar Inspector Carman]
+    G -- Yes --> I[Update Waybill/Bill of Lading Status\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P3[Phase 3: Train Dispatch]
+    I --> J[Dispatch Train\nNetControl; I-ETMS]
+    J --> K{Train Dispatched?}
+    K -- No --> L[Hold for Further Instructions\nChief Dispatcher; Train Dispatcher]
+    K -- Yes --> M[Monitor Train Movement\nI-ETMS; NetControl]
+  end
+
+  subgraph P4[Phase 4: Shipment Status Update]
+    M --> N{Train in Transit?}
+    N -- No --> O[Update Shipment Status\nLoup Logistics; ShipmentVision]
+    N -- Yes --> P[Continue Monitoring Train Movement\nI-ETMS; NetControl]
+  end
+
+  subgraph P5[Phase 5: Exception Handling]
+    O --> Q{Exceptions Occurred?}
+    Q -- No --> R[Finalize Waybill/Bill of Lading\nVP-Loup Loup Logistics; ShipmentVision]
+    Q -- Yes --> S[Handle Exceptions and Adjustments\nAccount Manager / Sales Representative; Claims Adjuster]
+  end
+
+  subgraph P6[Phase 6: Notification and Closure]
+    R --> T[Notify Customer of Shipment Status\nUP.com secure portal; Loup Logistics]
+    T --> U[Close Waybill/Bill of Lading Intake Process\nVP-Loup Loup Logistics; ShipmentVision]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
