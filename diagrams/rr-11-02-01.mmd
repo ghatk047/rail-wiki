@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Register Equipment]
+    A([Start]) --> B[Register New Equipment\nUmler]
+    B --> C{Equipment Data Complete?}
+    C -- Yes --> D[Verify Equipment Compliance\nUmler, EHMS]
+    C -- No --> Hold1([Hold])
+    D --> E{Compliance Verified?}
+    E -- No --> B
+    E -- Yes --> F[Update Equipment Status\nUmler, TRAIN II]
+  end
+
+  subgraph P2[Phase 2: Review and Approve Changes]
+    F --> G[Review and Approve Equipment Changes\nVP Network Planning Operations]
+    G --> H{Approval Granted?}
+    H -- No --> Hold1
+    H -- Yes --> I[Conduct Equipment Inspection\nCar Inspector Carman, EHMS, Wabtrax]
+  end
+
+  subgraph P3[Phase 3: Update Health Records]
+    I --> J{Inspection Passed?}
+    J -- No --> I
+    J -- Yes --> K[Update Equipment Health Records\nUmler Data Analyst, EHMS, Umler]
+  end
+
+  subgraph P4[Phase 4: Notify Stakeholders]
+    K --> L[Notify Stakeholders of Changes\nService Design / Network Planning Analyst, NetControl, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Monitor Performance]
+    L --> M[Monitor Equipment Performance\nUmler Data Analyst, EHMS, TRAIN II]
+    M --> N{Performance Within Limits?}
+    N -- No --> K
+    N -- Yes --> O[Review and Adjust Maintenance Schedule\nVP Network Planning Operations]
+  end
+
+  subgraph P6[Phase 6: Update Interline Settlement and Audit]
+    O --> P[Update Interline Settlement Data\nCar Hire / Interline Settlement Analyst, ISS, CHDX]
+    P --> Q[Report and Audit Equipment Registry\nUmler Data Analyst, TRAIN II]
+    Q --> R{Audit Passed?}
+    R -- No --> Hold1
+    R -- Yes --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
