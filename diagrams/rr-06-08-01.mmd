@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Inspection Schedule\\NetControl]
+    B --> C{Schedule Approved?}
+    C -- Yes --> D[Assign Inspection Teams\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Inspection]
+    D --> E[Conduct Initial Inspection\\Wabtrax]
+    E --> F{FRA Defect Found?}
+    F -- Yes --> G[Review Inspection Report\\NetControl]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Maintenance Actions]
+    G --> H{Maintenance Required?}
+    H -- Yes --> I[Implement Maintenance Actions\\Wabtrax]
+    H -- No --> J[Verify Maintenance Completion\\Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Inventory Update]
+    I --> K{Maintenance Complete?}
+    K -- Yes --> J
+    K -- No --> I
+    J --> L[Update Inventory Records\\Umler]
+  end
+
+  subgraph P5[Phase 5: Final Report Generation]
+    L --> M[Generate Final Report\\NetControl]
+    M --> N{Report Approved?}
+    N -- Yes --> O[Distribute Approved Report\\NetControl]
+    N -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Follow-Up and Monitoring]
+    O --> P[Schedule Follow-Up Inspections\\NetControl]
+    P --> Q{Inspection Scheduled?}
+    Q -- Yes --> R[Monitor and Adjust Maintenance Plans\\NetControl]
+    Q -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
