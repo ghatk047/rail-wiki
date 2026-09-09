@@ -1,0 +1,71 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Application Preparation]
+    A([Start]) --> B[Prepare merger application\nNetControl]
+    B --> C{Application complete?}
+    C -- Yes --> D[Submit for review\nIntegration Program Management Office PMO lead]
+    C -- No --> B
+  end
+
+  subgraph P2[Phase 2: Regulatory Compliance Review]
+    D --> E[Review regulatory compliance\nI-ETMS]
+    E --> F{Regulatory requirements met?}
+    F -- Yes --> G[Notify PMO lead\nChairman/CEO]
+    F -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Network Integration Planning]
+    G --> H[Plan network integration\nUmler]
+    H --> I{Network plan approved?}
+    I -- Yes --> J[Update service design\nNetControl]
+    I -- No --> H
+  end
+
+  subgraph P4[Phase 4: Service Design Review]
+    J --> K[Review service design\nService Design / Network Planning Analyst]
+    K --> L{Service design accepted?}
+    L -- Yes --> M[Conduct equipment health assessment\nEHMS]
+    L -- No --> J
+  end
+
+  subgraph P5[Phase 5: Equipment Health Assessment]
+    M --> N{Equipment in good condition?}
+    N -- Yes --> O[Coordinate with dispatcher\nHarriman Dispatching Center HDC]
+    N -- No --> Hold2([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Submission and Integration]
+    O --> P[Update car hire accounting\nCHARM]
+    P --> Q{Car hire updated?}
+    Q -- Yes --> R[Review interline settlement\nISS / SSDX / CHDX]
+    Q -- No --> M
+    R --> S{Interline settlement approved?}
+    S -- Yes --> T[Conduct wayside defect detection review\nWayside defect detector network]
+    S -- No --> Hold3([Hold])
+    T --> U{Defects found?}
+    U -- No --> V[Review machine vision portal\nTrain Dispatcher]
+    U -- Yes --> T
+    V --> W{Machine vision review complete?}
+    W -- Yes --> X[Integrate Positive Train Control\nI-ETMS]
+    W -- No --> V
+    X --> Y{PTC integration successful?}
+    Y -- Yes --> Z[Submit final application\nNetControl]
+    Y -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
