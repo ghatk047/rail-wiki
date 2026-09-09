@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Inquiry]
+    A([Start]) --> B[Receive Customer Inquiry\nup.com secure portal; Loup Logistics; ShipmentVision]
+    B --> C{Shipment Data Valid?}
+    C -- No --> D[Validate Shipment Data\nAccount Manager / Sales Representative; Umler; TRAIN II]
+    D --> C
+    C -- Yes --> E[Query Shipment Status\nDedicated Logistics Representative Loup; NetControl; I-ETMS; Wabtrax]
+  end
+
+  subgraph P2[Phase 2: Review and Confirm]
+    E --> F{Shipment Status Confirmed?}
+    F -- No --> G[Review Shipment Status\nVP-Loup Loup Logistics; CHARM; EHMS]
+    G --> F
+    F -- Yes --> H[Prepare Customer Response\nDedicated Logistics Representative Loup; up.com secure portal; Loup Logistics; ShipmentVision]
+  end
+
+  subgraph P3[Phase 3: Send Response]
+    H --> I{Response Sent?}
+    I -- No --> J[Send Customer Response\nAccount Manager / Sales Representative; up.com secure portal; Loup Logistics; ShipmentVision]
+    J --> I
+    I -- Yes --> K[Monitor Shipment Progress\nDedicated Logistics Representative Loup; NetControl; I-ETMS; Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Update Customer]
+    K --> L{Progress Updated?}
+    L -- No --> M[Update Customer on Progress\nAccount Manager / Sales Representative; up.com secure portal; Loup Logistics; ShipmentVision]
+    M --> L
+    L -- Yes --> N[Final Shipment Status Confirmation\nVP-Loup Loup Logistics; CHARM; EHMS]
+  end
+
+  subgraph P5[Phase 5: Close Case]
+    N --> O{Case Closed?}
+    O -- No --> P[Close Customer Case\nDedicated Logistics Representative Loup; up.com secure portal; Loup Logistics; ShipmentVision]
+    P --> O
+    O -- Yes --> Q([End])
+  end
+
+  subgraph P6[Phase 6: Review and Improve Process]
+    Q --> R{Process Reviewed?}
+    R -- No --> S[Review and Document Process\nVP Network Planning Operations; NetControl; I-ETMS]
+    S --> T[Update Process Improvements\nService Design / Network Planning Analyst; NetControl; I-ETMS]
+    T --> R
+    R -- Yes --> Q
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
