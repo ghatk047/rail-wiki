@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Workforce Needs Assessment]
+    A([Start]) --> B[Assessment of Workforce Needs\nTRAIN II, CHARM]
+    B --> C{Needs met?}
+    C -- No --> D[Furlough Notification\nPS Technology, NetControl]
+    C -- Yes --> E[Recall Planning\nTRAIN II, CHARM]
+  end
+
+  subgraph P2[Phase 2: Furlough and Recall Communication]
+    D --> F{Notification sent?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Recall Communication\nPS Technology, NetControl]
+  end
+
+  subgraph P3[Phase 3: Training for Recalled Employees]
+    G --> H{Communication received?}
+    H -- No --> Hold2([Hold])
+    H -- Yes --> I[Training for Recalled Employees\nTEY New Hire Training program, Mobile classroom training trailers]
+  end
+
+  subgraph P4[Phase 4: Integration of Recalled Employees]
+    I --> J{Training completed?}
+    J -- No --> I
+    J -- Yes --> K[Integration of Recalled Employees\nNetControl, Harriman Dispatching Center]
+  end
+
+  subgraph P5[Phase 5: Monitoring and Feedback]
+    K --> L{Integration successful?}
+    L -- No --> Hold3([Hold])
+    L -- Yes --> M[Monitoring and Feedback\nTRAIN II, CHARM]
+  end
+
+  subgraph P6[Phase 6: Workforce Plan Adjustment and Review]
+    M --> N{Feedback received?}
+    N -- No --> Hold4([Hold])
+    N -- Yes --> O[Adjustment of Workforce Plan\nTRAIN II, CHARM]
+    O --> P[Review and Documentation\nTRAIN II, CHARM]
+    P --> Q[Reporting and Review\nChairman, President and CEO plan sponsor level]
+    Q --> R[Implementation of Adjustments\nTRAIN II, CHARM]
+    R --> S{Adjustments implemented?}
+    S -- No --> Hold5([Hold])
+    S -- Yes --> T[Final Monitoring and Evaluation\nTRAIN II, CHARM]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
