@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Defect Detection]
+    A([Start]) --> B[Defect Detection Notification\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- No --> A
+    C -- Yes --> D[Initial Assessment\\Downing B. Jenks Shop]
+  end
+
+  subgraph P2[Phase 2: Repair Authorization]
+    D --> E[Repair Authorization\\Umler]
+    E --> F{Authorization granted?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Repair Execution\\Downing B. Jenks Shop]
+  end
+
+  subgraph P3[Phase 3: Quality Inspection]
+    G --> H[Quality Inspection\\Electrician locomotive]
+    H --> I{Inspection passed?}
+    I -- No --> D
+    I -- Yes --> J[Billing Preparation\\CHARM]
+  end
+
+  subgraph P4[Phase 4: Billing Approval]
+    J --> K[Billing Approval\\Senior Director-System Locomotive Facility]
+    K --> L{Approval granted?}
+    L -- No --> Hold2([Hold])
+    L -- Yes --> M[Repair Card Generation\\TRAIN II]
+  end
+
+  subgraph P5[Phase 5: Return to Service Notification]
+    M --> N[Return to Service Notification\\NetControl]
+    N --> O{Service notification sent?}
+    O -- No --> Hold3([Hold])
+    O -- Yes --> P[Service Readiness Check\\Train Dispatcher]
+  end
+
+  subgraph P6[Phase 6: Final Inspection and Dispatch]
+    P --> Q[Final Inspection\\Electrician locomotive]
+    Q --> R{Inspection passed?}
+    R -- No --> H
+    R -- Yes --> S[Dispatch for Service\\NetControl]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
