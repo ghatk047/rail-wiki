@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: System Initialization]
+    A([Start]) --> B[System Health Check\\NetControl]
+    B --> C{System Healthy?}
+    C -- Yes --> D[Configuration Review\\NetControl]
+    C -- No --> E([Bad Order])
+  end
+
+  subgraph P2[Phase 2: Configuration Management]
+    D --> F[Data Backup\\NetControl]
+    F --> G{Backup Successful?}
+    G -- Yes --> H[Security Audit\\Cybersecurity]
+    G -- No --> I([Hold])
+  end
+
+  subgraph P3[Phase 3: Security and Compliance]
+    H --> J[System Update\\NetControl]
+    J --> K{Update Applied?}
+    K -- Yes --> L[Performance Monitoring\\NetControl]
+    K -- No --> M([Reject])
+  end
+
+  subgraph P4[Phase 4: Performance and Incident Handling]
+    L --> N[Incident Reporting\\NetControl]
+    N --> O{Incidents Reported?}
+    O -- Yes --> P[Training Session\\NetControl]
+    O -- No --> Q([Escalate])
+  end
+
+  subgraph P5[Phase 5: Compliance and Optimization]
+    P --> R[Compliance Check\\NetControl]
+    R --> S{Compliant?}
+    S -- Yes --> T[System Optimization\\NetControl]
+    S -- No --> U([Hold])
+  end
+
+  subgraph P6[Phase 6: Maintenance Review]
+    T --> V[Incident Resolution\\NetControl]
+    V --> W{Incidents Resolved?}
+    W -- Yes --> X[Post-Maintenance Review\\NetControl]
+    W -- No --> Y([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
