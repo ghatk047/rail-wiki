@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Yard Entry and Unloading Preparation\\UPGo]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Container Unloading]
+    D --> E[Unloading Containers\\EMP and UMAX container fleets]
+    E --> F{Container Bad Ordered?}
+    F -- Yes --> Rej1([Reject])
+    F -- No --> G[Container Inspection and Documentation\\EHMS]
+    G --> H{FRA Defect Found?}
+    H -- Yes --> I[Reinspect Container\\EMP and UMAX container fleets]
+    H -- No --> J[Container Reconciliation and Storage\\CHARM]
+  end
+
+  subgraph P3[Phase 3: Bulk Commodity Unloading]
+    J --> K[Bulk Commodity Unloading and Storage\\UPGo]
+    K --> L{Bulk Commodity Bad Ordered?}
+    L -- Yes --> Rej2([Reject])
+    L -- No --> M[Bulk Commodity Inspection and Documentation\\EHMS]
+    M --> N{FRA Defect Found?}
+    N -- Yes --> O[Reinspect Bulk Commodity\\UPGo]
+    N -- No --> P[Bulk Commodity Reconciliation and Storage\\CHARM]
+  end
+
+  subgraph P4[Phase 4: Container Loading Preparation]
+    P --> Q[Container Loading and Preparation for Outbound Train\\EMP and UMAX container fleets]
+    Q --> R{Container Bad Ordered?}
+    R -- Yes --> Rej3([Reject])
+    R -- No --> S[Outbound Train Departure Preparation\\UPGo]
+  end
+
+  subgraph P5[Phase 5: Train Departure Notification]
+    S --> T[Outbound Train Departure Notification\\NetControl]
+    T --> U{Hours of Service Remaining?}
+    U -- Yes --> V[Post-Departure Review and Reporting\\CHARM]
+    U -- No --> Hold2([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Departure Review]
+    V --> W([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
