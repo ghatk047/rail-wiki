@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Container Arrival Notification]
+    A([Start]) --> B[Container Arrival Notification\\UPGo]
+    B --> C{Notification Received?}
+    C -- Yes --> D[Train Assignment and Scheduling\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Container Loading and Securing]
+    D --> E[Container Loading and Securing\\EMP and UMAX container fleets]
+    E --> F{Loading Complete?}
+    F -- Yes --> G[Driver Scanning and Gate Entry\\Yard System]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Train Departure from Terminal]
+    G --> H{Gate Entry Approved?}
+    H -- Yes --> I[Train Departure from Terminal\\Harriman Dispatching Center]
+    H -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: In-Transit Monitoring and Control]
+    I --> J[In-Transit Monitoring and Control\\I-ETMS Interoperable Electronic Train Management System]
+    J --> K{Train on Track?}
+    K -- Yes --> L[Container Unloading and Delivery\\EMP and UMAX container fleets]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Container Unloading and Delivery]
+    L --> M{Unloading Complete?}
+    M -- Yes --> N[Post-Delivery Documentation and Reporting\\TRAIN II Tele Rail Automated Information Network Phase 2]
+    M -- No --> L
+  end
+
+  subgraph P6[Phase 6: Settlement and Continuous Improvement]
+    N --> O[Safety Inspection and Compliance Check\\EHMS Equipment Health Management System]
+    O --> P{Inspection Passed?}
+    P -- Yes --> Q[Settlement and Billing\\Interline Settlement System / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX]
+    P -- No --> Hold4([Hold])
+    Q --> R[Customer Feedback and Continuous Improvement\\up.com customer portal / AskRail]
+    R --> S{Feedback Received?}
+    S -- Yes --> T[Regulatory Compliance Review\\Umler]
+    S -- No --> R
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
