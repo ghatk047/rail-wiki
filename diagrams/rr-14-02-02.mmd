@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Assessment]
+    A([Start]) --> B[Initial Assessment\\NetControl]
+    B --> C{Assessment Passed?}
+    C -- Yes --> D[Safety Orientation\\I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Safety Orientation]
+    D --> E[Role-Specific Training\\PS Technology]
+    E --> F{Training Completed?}
+    F -- Yes --> G[Simulator Training\\NetControl]
+    F -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Simulator Training]
+    G --> H[Field Training Assignment\\I-ETMS]
+    H --> I{Assignment Approved?}
+    I -- Yes --> J[Performance Evaluation\\Umler]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Performance Evaluation]
+    J --> K[Certification Review\\PS Technology]
+    K --> L{Review Passed?}
+    L -- Yes --> M[Regulatory Compliance Check\\I-ETMS]
+    L -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Regulatory Compliance Check]
+    M --> N[Final Review and Certification\\PS Technology]
+    N --> O{Certification Approved?}
+    O -- Yes --> P[Post-Certification Support\\NetControl]
+    O -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Certification Support]
+    P --> Q[Continuous Improvement Plan\\Umler]
+    Q --> R[Post-Certification Monitoring\\NetControl]
+    R --> S{Monitoring Passed?}
+    S -- Yes --> T([End])
+    S -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
