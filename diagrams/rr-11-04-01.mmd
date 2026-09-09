@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Demand Intake]
+    A([Start]) --> B[Receive Demand Report\nISS / SSDX]
+    B --> C{Demand within capacity?}
+    C -- No --> B
+    C -- Yes --> D[Identify Available Cars\nUmler]
+  end
+
+  subgraph P2[Phase 2: Allocation Planning]
+    D --> E[Allocate Cars to Terminals\nISS / SSDX]
+    E --> F{Allocation feasible?}
+    F -- No --> G([Hold])
+    F -- Yes --> H[Update Umler with Allocations\nUmler]
+  end
+
+  subgraph P3[Phase 3: Dispatch Preparation]
+    H --> I[Generate Dispatch Orders\nNetControl]
+    I --> J{Dispatch order valid?}
+    J -- No --> I
+    J -- Yes --> K[Monitor Terminal Operations\nI-ETMS]
+  end
+
+  subgraph P4[Phase 4: Feedback Loop]
+    K --> L[Adjust Allocations Based on Feedback\nISS / SSDX]
+    L --> M{Feedback incorporated?}
+    M -- No --> L
+    M -- Yes --> N[Update EHMS with Car Status\nEHMS]
+  end
+
+  subgraph P5[Phase 5: Fleet Review]
+    N --> O[Review and Optimize Fleet Utilization\nTRAIN II]
+    O --> P{Optimization complete?}
+    P -- No --> O
+    P -- Yes --> Q[Prepare for Next Allocation Cycle\nISS / SSDX]
+  end
+
+  subgraph P6[Phase 6: Exception Handling]
+    G --> R([Bad Order])
+    R --> S([Escalate])
+    N --> T([Reject])
+    T --> U([Escalate])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
