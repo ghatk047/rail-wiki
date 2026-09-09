@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify and Assess]
+    A([Start]) --> B{Service Disruption Identified?}
+    B -- Yes --> C[Assess Impact and Prioritize Recovery\\I-ETMS]
+    B -- No --> Hold1([Hold])
+    C --> D{Recovery Plan Approved?}
+    D -- No --> C
+    D -- Yes --> E[Notify Affected Customers\\up.com secure portal, ShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Coordinate and Implement]
+    E --> F[Coordinate with Loup Logistics\\Loup Logistics, ShipmentVision]
+    F --> G{Coordination Complete?}
+    G -- No --> F
+    G -- Yes --> H[Implement Recovery Actions\\NetControl, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Monitor and Adjust]
+    H --> I{Recovery Complete?}
+    I -- No --> J[Monitor Recovery Progress\\NetControl, I-ETMS]
+    I -- Yes --> K[Adjust Pricing and Yield Management\\TRAIN II, CHARM]
+  end
+
+  subgraph P4[Phase 4: Handle Claims]
+    K --> L[Handle Claims Adjustments\\Interline Settlement System, CHARM]
+    L --> M{Claims Handled?}
+    M -- No --> L
+    M -- Yes --> N[Review and Document Recovery\\TRAIN II, CHARM]
+  end
+
+  subgraph P5[Phase 5: Communicate Completion]
+    N --> O{Recovery Documentation Complete?}
+    O -- No --> N
+    O -- Yes --> P[Communicate Recovery Completion\\up.com secure portal, ShipmentVision]
+  end
+
+  subgraph P6[Phase 6: Update and Improve]
+    P --> Q[Update EHMS and Umler\\EHMS, Umler]
+    Q --> R{Updates Complete?}
+    R -- No --> Q
+    R -- Yes --> S[Review and Improve Process\\NetControl, I-ETMS]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
