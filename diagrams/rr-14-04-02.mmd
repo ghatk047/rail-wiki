@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Bargaining Issues]
+    A([Start]) --> B{Identify Bargaining Issues?}
+    B -- Yes --> C[Prepare for Negotiations\\Mobile classroom training trailers]
+    B -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Prepare for Negotiations]
+    C --> D{Training Completed?}
+    D -- Yes --> E[Conduct Initial Negotiations\\NetControl, I-ETMS]
+    D -- No --> C
+  end
+
+  subgraph P3[Phase 3: Conduct Initial Negotiations]
+    E --> F{Agreement Reached?}
+    F -- Yes --> G[Review and Revise Agreement\\Mobile classroom training trailers]
+    F -- No --> E
+  end
+
+  subgraph P4[Phase 4: Review and Revise Agreement]
+    G --> H{Revisions Approved?}
+    H -- Yes --> I[Sign Labor Agreement\\NetControl, I-ETMS]
+    H -- No --> G
+  end
+
+  subgraph P5[Phase 5: Sign Labor Agreement]
+    I --> J{Agreement Signed?}
+    J -- Yes --> K[Communicate Agreement to Employees\\Mobile classroom training trailers]
+    J -- No --> I
+  end
+
+  subgraph P6[Phase 6: Monitor and Improve Process]
+    K --> L[Monitor Agreement Compliance\\Mobile classroom training trailers]
+    L --> M{Compliance Issues?}
+    M -- Yes --> N[Address Disputes\\NetControl, I-ETMS]
+    M -- No --> O[Update Training Programs\\Mobile classroom training trailers]
+    N --> P{Dispute Resolved?}
+    P -- Yes --> Q[Review and Improve Process\\NetControl, I-ETMS]
+    P -- No --> N
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
