@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Fuel Consumption]
+    A([Start]) --> B[Review Fuel Consumption Report\\nEHMS]
+    B --> C{Fuel consumption within budget?}
+    C -- No --> D[Adjust fuel usage targets\\nRevenue Accountant]
+    C -- Yes --> E[Analyze Market Trends and Prices\\nFuel surcharge program]
+  end
+
+  subgraph P2[Phase 2: Determine Hedging Strategy]
+    E --> F{Market trends stable?}
+    F -- No --> G[Determine Hedging Strategy\\nRevenue Accountant]
+    F -- Yes --> H[Negotiate with Fuel Suppliers\\nVP Network Planning Operations]
+  end
+
+  subgraph P3[Phase 3: Contract Review and Approval]
+    H --> I{Negotiation successful?}
+    I -- No --> J[Re-evaluate market trends\\nCost Analyst regulatory costing]
+    I -- Yes --> K[Review and Approve Contracts\\nPresident and CEO]
+  end
+
+  subgraph P4[Phase 4: Monitor Market Conditions]
+    K --> L{Contracts approved?}
+    L -- No --> M[Escalate to higher management\\nVP Network Planning Operations]
+    L -- Yes --> N[Monitor Fuel Prices and Market Conditions\\nCost Analyst regulatory costing]
+  end
+
+  subgraph P5[Phase 5: Adjust Hedging Strategy]
+    N --> O{Market conditions changed?}
+    O -- No --> P[Prepare Fuel Procurement Report\\nRevenue Accountant]
+    O -- Yes --> Q[Adjust Hedging Strategy as Needed\\nRevenue Accountant]
+  end
+
+  subgraph P6[Phase 6: Implement and Monitor Procurement Plan]
+    P --> R{Procurement report approved?}
+    R -- No --> S[Escalate to higher management\\nVP Network Planning Operations]
+    R -- Yes --> T[Implement Procurement Plan\\nTrain Dispatcher]
+    T --> U[Monitor Fuel Deliveries and Usage\\nControl Operator]
+    U --> V{Deliveries and usage within plan?}
+    V -- No --> W[Review and Adjust Procurement Plan as Needed\\nRevenue Accountant]
+    V -- Yes --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
