@@ -1,0 +1,63 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Notification]
+    A([Start]) --> B[Receive shipment notification\nup.com customer portal]
+    B --> C{Shipment valid?}
+    C -- No --> BadOrder([Bad Order])
+    C -- Yes --> D[Schedule container pickup/drop-off\nUPGo; ICTF Intermodal Container Transfer Facility]
+  end
+
+  subgraph P2[Phase 2: Pre-Departure Inspection]
+    D --> E[Conduct pre-departure inspection\nEHMS Equipment Health Management System]
+    E --> F{Inspection passed?}
+    F -- No --> G[Re-inspect container\nEHMS Equipment Health Management System]
+    G --> H{Inspection passed?}
+    H -- No --> BadOrder
+    H -- Yes --> I[Load container onto railcar\nEMP and UMAX container fleets; Yard System]
+  end
+
+  subgraph P3[Phase 3: Dispatch Train]
+    I --> J[Dispatch train with loaded containers\nNetControl; Harriman Dispatching Center]
+    J --> K{Train dispatched?}
+    K -- No --> BadOrder
+    K -- Yes --> L[Monitor train movement\nI-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P4[Phase 4: Unload Container]
+    L --> M[Unload container at destination terminal\nEMP and UMAX container fleets; Yard System]
+    M --> N{Container unloaded?}
+    N -- No --> BadOrder
+    N -- Yes --> O[Conduct post-arrival inspection\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P5[Phase 5: Coordinate Motor Carrier Delivery]
+    O --> P{Inspection passed?}
+    P -- No --> G
+    P -- Yes --> Q[Coordinate motor carrier delivery\nICTF Intermodal Container Transfer Facility]
+    Q --> R{Delivery coordinated?}
+    R -- No --> BadOrder
+    R -- Yes --> S[Notify BCO of delivery status\nup.com customer portal]
+  end
+
+  subgraph P6[Phase 6: Update and Review Process Performance]
+    S --> T[Update Interline Settlement System\nISS / SSDX]
+    T --> U{Update successful?}
+    U -- No --> BadOrder
+    U -- Yes --> V[Review and report process performance\nTRAIN II Tele Rail Automated Information Network Phase 2]
+    V --> W{Performance reviewed?}
+    W -- No --> BadOrder
+    W -- Yes --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
