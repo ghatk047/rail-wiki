@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Schedule Review]
+    A([Start]) --> B[Review Train Schedule\\NetControl]
+    B --> C{Schedule meets\noperational needs?}
+    C -- No --> D[Adjust schedule\\Harriman Dispatching Center]
+    C -- Yes --> E[Determine Crew Requirements\\CrewPro]
+  end
+
+  subgraph P2[Phase 2: Crew Assignment]
+    E --> F{Requirements met?}
+    F -- No --> G[Re-evaluate requirements\\Trainmaster]
+    F -- Yes --> H[Assign Crew Members\\PS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Credential Verification]
+    H --> I[Verify Crew Credentials\\EHMS]
+    I --> J{Credentials valid?}
+    J -- No --> K[Escalate to HR\\Trainmaster]
+    J -- Yes --> L[Conduct Pre-Trip Briefing\\HASTUS]
+  end
+
+  subgraph P4[Phase 4: Hours of Service Monitoring]
+    L --> M[Monitor Crew Hours of Service HOS\\trackHOS-class HOS monitoring tools]
+    M --> N{Hours of service remaining?}
+    N -- No --> O[Adjust crew schedule\\Train Dispatcher]
+    N -- Yes --> P[Review Train Performance\\TRAIN II]
+  end
+
+  subgraph P5[Phase 5: Crew Size Adjustment]
+    P --> Q{Performance satisfactory?}
+    Q -- No --> R[Adjust Crew Size if Necessary\\PS Technology PST]
+    Q -- Yes --> S[Update Crew Management System\\CloudMoyo Crew Management CCM]
+  end
+
+  subgraph P6[Phase 6: Compliance Reporting]
+    S --> T[Report Crew Compliance Status\\CrewPro]
+    T --> U{Compliance met?}
+    U -- No --> V[Review and Update Policies\\Superintendent Division / Umler]
+    U -- Yes --> W[Conduct Post-Trip Review\\HASTUS]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
