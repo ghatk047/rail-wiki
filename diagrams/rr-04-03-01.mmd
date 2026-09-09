@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Assignment]
+    A([Start]) --> B[Crew Assignment\\NetControl]
+    B --> C{Hours of Service Remaining?}
+    C -- Yes --> D[HOS Log Initialization\\PS Technology PST]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Train Departure Notification]
+    D --> E[Train Departure Notification\\I-ETMS]
+    E --> F{Track Authority Granted?}
+    F -- Yes --> G[Duty Status Update\\HASTUS]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Break Arrival Notification]
+    G --> H{Break Time Required?}
+    H -- Yes --> I[Break Notification\\PS Technology PST]
+    H -- No --> J[Train Arrival Notification\\I-ETMS]
+    I --> K{Hours of Service Remaining?}
+    K -- Yes --> J
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Daily Log Review Exception Handling]
+    J --> L[Daily Log Review\\CloudMoyo Crew Management CCM]
+    L --> M{Log Valid?}
+    M -- Yes --> N[Weekly Compliance Report\\CloudMoyo Crew Management CCM]
+    M -- No --> O[Exception Handling\\PS Technology PST]
+  end
+
+  subgraph P5[Phase 5: Monthly Annual Review]
+    N --> P[Monthly Review Meeting\\NetControl]
+    P --> Q{Compliance Issues?}
+    Q -- Yes --> R[Continuous Improvement Plan\\NetControl]
+    Q -- No --> S[Annual Audit\\CloudMoyo Crew Management CCM]
+  end
+
+  subgraph P6[Phase 6: Final Compliance Check]
+    S --> T{Final Compliance Met?}
+    T -- Yes --> U([End])
+    T -- No --> Escalate1([Escalate])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
