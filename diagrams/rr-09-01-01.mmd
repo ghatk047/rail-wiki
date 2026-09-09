@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Gate Access Request\\UPGo]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Gate Access Approval]
+    D --> E{Access Approved?}
+    E -- Yes --> F[Container Inspection\\EHMS]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Container Inspection]
+    F --> G{Inspection Passed?}
+    G -- Yes --> H[Container Transfer Planning\\ICTF]
+    G -- No --> F
+  end
+
+  subgraph P4[Phase 4: Crane Operation]
+    H --> I[Crane Operation\\UPGo]
+    I --> J{Operation Successful?}
+    J -- Yes --> K[Train Departure Notification\\NetControl]
+    J -- No --> I
+  end
+
+  subgraph P5[Phase 5: Train Departure and Settlement]
+    K --> L{Departure Confirmed?}
+    L -- Yes --> M[Settlement Data Exchange\\ISS/SSDX]
+    L -- No --> Hold2([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Departure Review]
+    M --> N{Settlement Complete?}
+    N -- Yes --> O[Customer Notification\\up.com customer portal]
+    N -- No --> M
+    O --> P[Post-Departure Review\\UPGo]
+    P --> Q{Review Passed?}
+    Q -- Yes --> R[Safety Audit\\EHMS]
+    Q -- No --> Hold3([Hold])
+    R --> S{Audit Passed?}
+    S -- Yes --> T[Continuous Improvement Planning\\UPGo]
+    S -- No --> R
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
