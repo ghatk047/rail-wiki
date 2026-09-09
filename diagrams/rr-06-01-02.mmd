@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Plan Inspection Route]
+    A([Start]) --> B[Plan inspection route\\NetControl]
+    B --> C{Route approved?}
+    C -- Yes --> D[Assign crew and equipment\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Visual Inspection]
+    D --> E[Conduct initial visual inspection\\Wabtrax]
+    E --> F{Visual defects found?}
+    F -- Yes --> G[Document visual defects\\Umler]
+    F -- No --> H[Proceed to walking inspection\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Walking Inspection]
+    H --> I[Perform walking inspection\\Track geometry car]
+    I --> J{Walking defects found?}
+    J -- Yes --> K[Document walking defects\\Umler]
+    J -- No --> L[Proceed to data analysis\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Analyze Inspection Data]
+    L --> M[Analyze inspection data\\RailAI]
+    M --> N{Defects identified?}
+    N -- Yes --> O[Identify defects and prioritize repairs\\Umler]
+    N -- No --> P[Report no defects found\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Report Defects to Maintenance Team]
+    O --> Q[Report defects to maintenance team\\NetControl]
+    Q --> R{Defects reported?}
+    R -- Yes --> S[Verify defect corrections\\Wabtrax]
+    R -- No --> Hold2([Hold])
+  end
+
+  subgraph P6[Phase 6: Finalize and Archive]
+    S --> T{Corrections verified?}
+    T -- Yes --> U[Update track geometry data\\Track geometry car]
+    T -- No --> I
+    U --> V[Generate comprehensive report\\NetControl]
+    V --> W{Report reviewed and approved?}
+    W -- Yes --> X[Archive inspection data\\NetControl]
+    W -- No --> Y[Notify stakeholders\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
