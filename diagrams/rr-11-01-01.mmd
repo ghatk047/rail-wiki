@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Interchange Agreement Review]
+    A([Start]) --> B[Review Interchange Agreement\nUmler]
+    B --> C{Agreement valid?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Verify Car Hire Status\nUmler, CHARM]
+  end
+
+  subgraph P2[Phase 2: Equipment Verification]
+    D --> E[Inspect Cars for Defects\nWayside defect detector network, Machine Vision portals]
+    E --> F{Defect found?}
+    F -- Yes --> Hold2([Hold])
+    F -- No --> G[Update Equipment Health Records\nEHMS, Umler]
+  end
+
+  subgraph P3[Phase 3: Preparation for Interchange]
+    G --> H[Prepare for Interchange\nNetControl, I-ETMS]
+    H --> I{Track authority granted?}
+    I -- No --> Hold3([Hold])
+    I -- Yes --> J[Execute Interchange Plan\nNetControl, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Execution and Monitoring]
+    J --> K{Interchange accepted?}
+    K -- No --> Escalate1([Escalate])
+    K -- Yes --> L[Settle Interline Charges\nISS, CHDX]
+  end
+
+  subgraph P5[Phase 5: Record Keeping]
+    L --> M[Update Umler Records\nUmler, CHARM]
+    M --> N{Records updated?}
+    N -- No --> Hold4([Hold])
+    N -- Yes --> O[Notify Stakeholders\nup.com, AskRail]
+  end
+
+  subgraph P6[Phase 6: Process Review and Closure]
+    O --> P[Review and Close Process\nUmler, CHARM]
+    P --> Q{Process complete?}
+    Q -- No --> Hold5([Hold])
+    Q -- Yes --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
