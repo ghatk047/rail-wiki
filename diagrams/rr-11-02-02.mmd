@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Registration Intake]
+    A([Start]) --> B[Receive Registration Request\nUmler, CHARM]
+    B --> C{Equipment within\nregistry capacity?}
+    C -- No --> B
+    C -- Yes --> D[Verify Equipment Compliance\nUmler, AAR Interchange Rules]
+  end
+
+  subgraph P2[Phase 2: Compliance Check]
+    D --> E{Interchange accepted?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Update Maintenance Schedule\nEHMS, TRAIN II]
+  end
+
+  subgraph P3[Phase 3: Maintenance Update]
+    F --> G{Schedule updated successfully?}
+    G -- No --> F
+    G -- Yes --> H[Notify Affected Parties\nNetControl, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Performance Monitoring]
+    H --> I[Monitor Equipment Performance\nWabtrax, Machine Vision portals]
+    I --> J{Performance within limits?}
+    J -- No --> F
+    J -- Yes --> K[Review and Adjust Maintenance Plan\nVP Network Planning Operations, EHMS, TRAIN II]
+  end
+
+  subgraph P5[Phase 5: Review and Approval]
+    K --> L{Maintenance plan reviewed?}
+    L -- No --> K
+    L -- Yes --> M[Update Umler Database\nUmler, CHARM]
+  end
+
+  subgraph P6[Phase 6: Settlement and Closure]
+    M --> N[Generate Interline Settlement Data\nISS, CHDX]
+    N --> O{Data generated successfully?}
+    O -- No --> M
+    O -- Yes --> P[Review and Approve Settlements\nChairman, President and CEO, ISS, CHDX]
+    P --> Q{Settlement approved?}
+    Q -- No --> P
+    Q -- Yes --> R[Update Interline Records\nISS, CHDX]
+    R --> S{Records updated successfully?}
+    S -- No --> R
+    S -- Yes --> T[Conduct Final Audit\nUmler, CHARM]
+    T --> U{Audit passed?}
+    U -- No --> M
+    U -- Yes --> V[Close Process\nUmler, CHARM]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
