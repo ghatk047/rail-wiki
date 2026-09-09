@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Inspection Plan\\NetControl]
+    B --> C{Inspection plan approved?}
+    C -- No --> D([Bad Order])
+    C -- Yes --> E[Conduct Initial Inspection\\Wabtrax]
+  end
+
+  subgraph P2[Phase 2: Review and Schedule]
+    E --> F[Review Inspection Report\\NetControl]
+    F --> G{Defects found?}
+    G -- No --> H([End])
+    G -- Yes --> I[Schedule Maintenance or Replacement\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Maintenance]
+    I --> J[Perform Maintenance or Replacement\\Wabtrax]
+    J --> K{Maintenance successful?}
+    K -- No --> E
+    K -- Yes --> L[Conduct Post-Maintenance Inspection\\Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Inventory Update]
+    L --> M[Update Inventory System\\Umler]
+    M --> N{Inventory update successful?}
+    N -- No --> O([Escalate])
+    N -- Yes --> P[Generate Final Report\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Review and Approval]
+    P --> Q[Review and Approve Final Report\\Chief Engineer / VP Engineering]
+    Q --> R{Report approved?}
+    R -- No --> S([Reject])
+    R -- Yes --> T[Archive and Retain Records\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Notification and Planning]
+    T --> U[Notify Stakeholders\\NetControl]
+    U --> V[Plan for Next Inspection Cycle\\NetControl]
+    V --> W{Next inspection planned?}
+    W -- No --> X([Hold])
+    W -- Yes --> H
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
