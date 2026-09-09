@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Emissions Reporting Cycle\\nAskRail]
+    B --> C{Report Submitted?}
+    C -- No --> B
+    C -- Yes --> D[Review Emission Reports\\nTRANSCAER]
+  end
+
+  subgraph P2[Phase 2: Review and Update]
+    D --> E[Update Fuel Consumption Metrics\\nNetControl]
+    E --> F{Metrics Updated?}
+    F -- No --> E
+    F -- Yes --> G[Implement Sustainability Programs\\nI-ETMS]
+  end
+
+  subgraph P3[Phase 3: Monitoring]
+    G --> H[Monitor Train Operations\\nHarriman Dispatching Center]
+    H --> I{Operations Monitored?}
+    I -- No --> H
+    I -- Yes --> J[Conduct Emergency Response Drills\\nSERTC]
+  end
+
+  subgraph P4[Phase 4: Compliance and Optimization]
+    J --> K[Review and Update Regulations\\nAskRail]
+    K --> L{Regulations Updated?}
+    L -- No --> K
+    L -- Yes --> M[Optimize Train Schedules\\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Verification]
+    M --> N[Ensure Compliance with AAR M-1002\\nUmler]
+    N --> O{Compliance Verified?}
+    O -- No --> N
+    O -- Yes --> P[Report to Stakeholders\\nTRANSCAER]
+  end
+
+  subgraph P6[Phase 6: Maintenance and Closure]
+    P --> Q[Update EHMS for Maintenance\\nEHMS]
+    Q --> R{Maintenance Updated?}
+    R -- No --> Q
+    R -- Yes --> S[Final Review and Close Cycle\\nAskRail]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
