@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Assignment Review]
+    A([Start]) --> B[Review Crew Assignment Changes\\nPS Technology PST]
+    B --> C{Changes Approved?}
+    C -- Yes --> D[Update Crew Districts\\nCloudMoyo Crew Management CCM]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Notification]
+    D --> E[Notify Crew Members\\nPS Technology PST]
+    E --> F{Notification Sent?}
+    F -- Yes --> G[Review CBA Compliance\\nUmler]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Regulatory Update]
+    G --> H{CBA Compliant?}
+    H -- Yes --> I[Update Regulatory Records\\nEHMS Equipment Health Management System]
+    H -- No --> Rej1([Reject])
+  end
+
+  subgraph P4[Phase 4: Performance Monitoring]
+    I --> J[Monitor Crew Performance\\nHASTUS]
+    J --> K{Performance Within Limits?}
+    K -- Yes --> L[Conduct Crew Training\\nPS Technology PST]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Training Review]
+    L --> M[Review Training Outcomes\\nPS Technology PST]
+    M --> N{Training Successful?}
+    N -- Yes --> O[Update Crew Districts Again\\nCloudMoyo Crew Management CCM]
+    N -- No --> Hold4([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Notification and Adjustment]
+    O --> P[Notify All Stakeholders\\nPS Technology PST]
+    P --> Q{Notifications Sent?}
+    Q -- Yes --> R[Review and Adjust\\nPS Technology PST]
+    Q -- No --> Hold5([Hold])
+    R --> S[Implement Adjustments\\nCloudMoyo Crew Management CCM]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
