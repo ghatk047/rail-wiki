@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Defect Detection]
+    A([Start]) --> B[Defect Detection Notification\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- No --> A
+    C -- Yes --> D[Initial Assessment\\Downing B. Jenks Shop]
+  end
+
+  subgraph P2[Phase 2: Repair Authorization]
+    D --> E{Assessment complete?}
+    E -- No --> D
+    E -- Yes --> F[Repair Authorization\\Umler]
+    F --> G{Authorization granted?}
+    G -- No --> Hold1([Hold])
+    G -- Yes --> H[Repair Execution\\Downing B. Jenks Shop]
+  end
+
+  subgraph P3[Phase 3: Post-Repair Inspection]
+    H --> I{Repair complete?}
+    I -- No --> H
+    I -- Yes --> J[Post-Repair Inspection\\Downing B. Jenks Shop]
+    J --> K{Inspection passed?}
+    K -- No --> H
+    K -- Yes --> L[Billing Preparation\\CHARM, TRAIN II]
+  end
+
+  subgraph P4[Phase 4: Billing Review]
+    L --> M{Billing prepared?}
+    M -- No --> L
+    M -- Yes --> N[Billing Review\\Senior Manager-Mechanical Engineering]
+    N --> O{Review approved?}
+    O -- No --> L
+    O -- Yes --> P[Repair Card Update\\Umler, TRAIN II]
+  end
+
+  subgraph P5[Phase 5: Return to Service Notification]
+    P --> Q{Card updated?}
+    Q -- No --> P
+    Q -- Yes --> R[Return to Service Notification\\NetControl, I-ETMS]
+    R --> S{Service notification sent?}
+    S -- No --> P
+    S -- Yes --> T[Service Confirmation\\Train Dispatcher, Control Operator]
+  end
+
+  subgraph P6[Phase 6: Final Inspection and Completion Record]
+    T --> U{Service confirmed?}
+    U -- No --> R
+    U -- Yes --> V[Final Inspection\\Downing B. Jenks Shop]
+    V --> W{Final inspection passed?}
+    W -- No --> H
+    W -- Yes --> X[Completion Record\\Umler, TRAIN II]
+    X --> Y{Record completed?}
+    Y -- No --> P
+    Y -- Yes --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
