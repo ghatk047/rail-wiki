@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Booking Intake]
+    A([Start]) --> B[Receive Booking Request\nup.com customer portal / AskRail]
+    B --> C{Booking within\ncapacity?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Validate Booking Details\nUPGo; EMP and UMAX container fleets]
+  end
+
+  subgraph P2[Phase 2: Capacity Assignment]
+    D --> E{Validation Passed?}
+    E -- No --> B
+    E -- Yes --> F[Assign Terminal Capacity\nICTF Intermodal Container Transfer Facility, Long Beach; Joliet Intermodal Terminal; Global IV Intermodal Terminal]
+  end
+
+  subgraph P3[Phase 3: Scheduling]
+    F --> G{Capacity Assigned?}
+    G -- No --> Hold1
+    G -- Yes --> H[Schedule Container Arrival\nNetControl; I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Notification and Preparation]
+    H --> I{Arrival Scheduled?}
+    I -- No --> Hold1
+    I -- Yes --> J[Notify BCO of Arrival Schedule\nup.com customer portal / AskRail]
+    J --> K[Prepare Terminal for Arrival\nCrane/Lift Operator; Yardmaster]
+  end
+
+  subgraph P5[Phase 5: Container Reception and Inspection]
+    K --> L{Preparation Complete?}
+    L -- No --> Hold1
+    L -- Yes --> M[Receive and Inspect Containers\nCar Inspector Carman; EHMS Equipment Health Management System; Umler]
+  end
+
+  subgraph P6[Phase 6: Transfer, Review, and Update]
+    M --> N{Inspection Passed?}
+    N -- No --> Hold1
+    N -- Yes --> O[Process Container Transfer\nCrane/Lift Operator; Yardmaster]
+    O --> P[Update Terminal Capacity Utilization\nICTF Intermodal Container Transfer Facility, Long Beach; Joliet Intermodal Terminal; Global IV Intermodal Terminal]
+    P --> Q[Notify BCO of Departure\nup.com customer portal / AskRail]
+    Q --> R[Conduct Post-Departure Review\nIntermodal Terminal Manager]
+    R --> S{Review Passed?}
+    S -- No --> Hold1
+    S -- Yes --> T[Update System and Records\nUPGo; EMP and UMAX container fleets; CHARM car hire accounting]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
