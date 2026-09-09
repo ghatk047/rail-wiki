@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify and Notify]
+    A([Start]) --> B[Identify Discrepancy or Failure\\Wabtrax]
+    B --> C{Discrepancy Found?}
+    C -- Yes --> D[Notify PTC Field Engineer\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Inspect and Diagnose]
+    D --> E[Inspect and Diagnose Issue\\I-ETMS]
+    E --> F{Issue Diagnosed?}
+    F -- Yes --> G[Update PTC Wayside Assets\\I-ETMS]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Verify and Update Data File]
+    G --> H[Verify Data Update\\I-ETMS]
+    H --> I{Data Verified?}
+    I -- Yes --> J[Update Subdivision Track Data File\\PTC Back Office Server BOS]
+    I -- No --> E
+  end
+
+  subgraph P4[Phase 4: Notify and Review Changes]
+    J --> K[Notify Control Operator\\NetControl]
+    K --> L[Review and Approve Changes\\PTC Back Office Server BOS]
+    L --> M{Changes Approved?}
+    M -- Yes --> N[Implement Changes\\NetControl]
+    M -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Monitor System Performance]
+    N --> O[Monitor System Performance\\Wabtrax]
+    O --> P{Performance Monitored?}
+    P -- Yes --> Q[Review and Document Incident\\Umler]
+    P -- No --> N
+  end
+
+  subgraph P6[Phase 6: Close Incident]
+    Q --> R[Close Incident\\Umler]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
