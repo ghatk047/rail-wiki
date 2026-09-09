@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Report Damage or Loss]
+    A([Start]) --> B[Report damage or loss\\Loup Logistics]
+    B --> C{Damage reported?}
+    C -- No --> B
+    C -- Yes --> D[Initial assessment\\ShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Notify Customer]
+    D --> E{Assessment complete?}
+    E -- No --> D
+    E -- Yes --> F[Notify customer\\UP customer portal up.com secure portal]
+  end
+
+  subgraph P3[Phase 3: Investigate Incident]
+    F --> G{Notification sent?}
+    G -- No --> F
+    G -- Yes --> H[Investigate incident\\Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Review Findings]
+    H --> I{Investigation complete?}
+    I -- No --> H
+    I -- Yes --> J[Review findings\\Umler]
+  end
+
+  subgraph P5[Phase 5: Determine Compensation]
+    J --> K{Findings reviewed?}
+    K -- No --> J
+    K -- Yes --> L[Determine compensation\\TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Close Claim and Update Records]
+    L --> M{Compensation determined?}
+    M -- No --> L
+    M -- Yes --> N[Notify customer of compensation\\UP customer portal up.com secure portal]
+    N --> O{Notification sent?}
+    O -- No --> N
+    O -- Yes --> P[Close claim\\Loup Logistics]
+    P --> Q{Claim closed?}
+    Q -- No --> P
+    Q -- Yes --> R[Update records\\CHARM car hire accounting]
+    R --> S{Records updated?}
+    S -- No --> R
+    S -- Yes --> T[Review and improve process\\Transentric]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
