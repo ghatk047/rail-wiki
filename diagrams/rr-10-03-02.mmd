@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Contract Initiation]
+    A([Start]) --> B[Sales Representative initiates contract request\nup.com secure portal]
+    B --> C{Pricing / Yield Manager review complete?}
+    C -- No --> B
+    C -- Yes --> D[Pricing / Yield Manager reviews and quotes\nShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Customer Approval]
+    D --> E[Customer approves priced proposal\nup.com secure portal]
+    E --> F{Approval received?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[VP-Loup reviews contract terms\nLoup Logistics]
+  end
+
+  subgraph P3[Phase 3: Regulatory Verification]
+    G --> H[Claims Adjuster verifies contract terms against regulatory standards\nTransentric]
+    H --> I{Verification complete?}
+    I -- No --> Hold2([Hold])
+    I -- Yes --> J[Service Design / Network Planning Analyst updates service design\nNetControl]
+  end
+
+  subgraph P4[Phase 4: Service Design Approval]
+    J --> K[VP Network Planning Operations approves service design\nNetControl]
+    K --> L{Approval received?}
+    L -- No --> Hold3([Hold])
+    L -- Yes --> M[Train Dispatcher schedules trains based on approved service design\nI-ETMS]
+  end
+
+  subgraph P5[Phase 5: Train Operation Monitoring]
+    M --> N[Control Operator monitors train operations\nI-ETMS]
+    N --> O{Operations within limits?}
+    O -- No --> P[Chief Dispatcher adjusts schedule if necessary\nI-ETMS]
+    P --> Q{Adjustment complete?}
+    Q -- No --> Hold4([Hold])
+    Q -- Yes --> R[Dedicated Logistics Representative updates customer on status\nup.com secure portal]
+  end
+
+  subgraph P6[Phase 6: Process Completion]
+    R --> S[Contract Management and Common Carrier Obligation process completes\nup.com secure portal]
+    S --> T{Completion successful?}
+    T -- No --> Escalate([Escalate])
+    T -- Yes --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
