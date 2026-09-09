@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Assessment]
+    A([Start]) --> B[Assessment of Tank Car Compliance\nAskRail]
+    B --> C{Compliant?}
+    C -- Yes --> D[Review and Approval of Non-Compliant Cars\nTRANSCAER]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Retrofitting Planning]
+    D --> E[Retrofitting or Replacement Planning\nNetControl]
+    E --> F{Plan Approved?}
+    F -- Yes --> G[Execution of Retrofitting or Replacement\nPS Technology]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Verification]
+    G --> H[Verification of Compliance Post-Retrofit/Replacement\nEHMS]
+    H --> I{Compliant?}
+    I -- Yes --> J[Update Tank Car Inventory\nUmler]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Training and Monitoring]
+    J --> K[Training for Employees on New Fleet\nSERTC]
+    K --> L[Monitoring Fleet Performance\nI-ETMS]
+    L --> M{Performance Satisfactory?}
+    M -- No --> N[Review and Adjust Fleet Transition Plan\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Documentation and Reporting]
+    N --> O[Documentation and Reporting\nTRANSCAER]
+    O --> P[Review and Approval of Final Report\nTRANSCAER]
+    P --> Q{Approved?}
+    Q -- Yes --> R([End])
+    Q -- No --> Hold4([Hold])
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement]
+    R --> S[Post-Process Review and Continuous Improvement\nNetControl]
+    S --> T{Improvements Needed?}
+    T -- Yes --> U[Adjust Plan and Reassess\nNetControl]
+    T -- No --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
