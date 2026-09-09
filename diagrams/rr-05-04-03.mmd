@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Arrival Notification]
+    A([Start]) --> B[Initial Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Mechanical Inspection Request\\Downing B. Jenks Shop, North Platte, NE locomotive shop]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: On-site Inspection]
+    D --> E[On-site Inspection\\Wayside defect detector network]
+    E --> F{FRA Defect Found?}
+    F -- Yes --> G[Defect Analysis\\EHMS, Umler]
+    F -- No --> I[Final Inspection\\Wayside defect detector network]
+  end
+
+  subgraph P3[Phase 3: Repair or Replacement]
+    G --> H{Repair Feasible?}
+    H -- Yes --> I
+    H -- No --> J[Replacement Request\\Downing B. Jenks Shop, North Platte, NE locomotive shop]
+  end
+
+  subgraph P4[Phase 4: Final Inspection]
+    I --> K{Final Inspection Passed?}
+    K -- Yes --> L[Release for Departure\\NetControl, I-ETMS]
+    K -- No --> E
+  end
+
+  subgraph P5[Phase 5: Post-Departure Monitoring]
+    L --> M[Post-Departure Monitoring\\I-ETMS, NetControl]
+    M --> N{Hours of Service Remaining?}
+    N -- Yes --> O[Data Entry and Reporting\\TRAIN II, CHARM]
+    N -- No --> Hold2([Hold])
+  end
+
+  subgraph P6[Phase 6: Review and Closeout]
+    O --> P[Review and Approval\\TRAIN II, CHARM]
+    P --> Q{Approval Received?}
+    Q -- Yes --> R[Update Maintenance Records\\EHMS, Umler]
+    Q -- No --> P
+    R --> S[Closeout and Documentation\\NetControl, I-ETMS]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
