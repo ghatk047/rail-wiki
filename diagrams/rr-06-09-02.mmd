@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Project Initiation]
+    A([Start]) --> B[Initiate Capital Program\\Umler]
+    B --> C{Project Approved?}
+    C -- Yes --> D[Regulatory Compliance Check\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Regulatory Compliance]
+    D --> E{Compliance Passed?}
+    E -- Yes --> F[Environmental Impact Assessment\\NetControl]
+    E -- No --> Reject1([Reject])
+  end
+
+  subgraph P3[Phase 3: Environmental Assessment]
+    F --> G{Assessment Approved?}
+    G -- Yes --> H[Design and Engineering\\I-ETMS]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Design Engineering]
+    H --> I{Design Complete?}
+    I -- Yes --> J[Bid Preparation and Tendering\\NetControl]
+    I -- No --> H
+  end
+
+  subgraph P5[Phase 5: Bid Preparation]
+    J --> K{Bid Accepted?}
+    K -- Yes --> L[Contract Award\\NetControl]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Construction Acceptance]
+    L --> M[Construction Planning\\I-ETMS]
+    M --> N{Plan Approved?}
+    N -- Yes --> O[Site Preparation\\Wabtrax]
+    N -- No --> M
+    O --> P[Construction Execution\\Wabtrax]
+    P --> Q{Construction Complete?}
+    Q -- Yes --> R[Quality Assurance Inspection\\FRA Automated Track Inspection Program ATIP]
+    Q -- No --> O
+    R --> S{Inspection Passed?}
+    S -- Yes --> T[Final Acceptance\\I-ETMS]
+    S -- No --> P
+    T --> U[Post-Completion Review\\NetControl]
+    U --> V{Review Approved?}
+    V -- Yes --> W([End])
+    V -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
