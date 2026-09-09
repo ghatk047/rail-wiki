@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Train Schedule Updates]
+    A([Start]) --> B[Receive Train Schedule Updates\\NetControl]
+    B --> C{Schedule Confirmed?}
+    C -- Yes --> D[Crew Assignment and Tie-up\\PS Technology PST]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Crew Assignment and Tie-up]
+    D --> E{Crew Assigned Successfully?}
+    E -- Yes --> F[Lodging Arrangements\\CloudMoyo Crew Management CCM]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Lodging Arrangements]
+    F --> G{Lodging Confirmed?}
+    G -- Yes --> H[Transportation Coordination\\PS Technology PST]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Transportation Coordination]
+    H --> I{Transportation Coordinated?}
+    I -- Yes --> J[Pre-departure Briefing\\HASTUS]
+    I -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Pre-trip Inspections and HOS Monitoring]
+    J --> K[Conduct Pre-trip Inspections\\EHMS Equipment Health Management System]
+    K --> L{Inspection Passed?}
+    L -- Yes --> M[Monitor Crew Hours of Service HOS\\trackHOS-class HOS monitoring tools]
+    L -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Departure and Post-trip Review]
+    M --> N{Hours of Service Remaining?}
+    N -- Yes --> O[Coordinate Train Departure\\NetControl]
+    N -- No --> Rej3([Reject])
+    O --> P[Post-trip Review and Reporting\\HASTUS, PS Technology PST]
+    P --> Q[Update Crew Records\\CloudMoyo Crew Management CCM]
+    Q --> R[Monitor Crew Well-being\\CloudMoyo Crew Management CCM]
+    R --> S{Crew Well-being Monitored?}
+    S -- Yes --> T[Adjust Crew Scheduling for Next Shift\\NetControl, PS Technology PST]
+    S -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
