@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Rotation Notification]
+    A([Start]) --> B[Notify crew rotation\\Harriman Dispatching Center HDC]
+    B --> C{Notification received?}
+    C -- No --> B
+    C -- Yes --> D[Assign deadhead\\PS Technology PST]
+  end
+
+  subgraph P2[Phase 2: Deadhead Assignment]
+    D --> E[Confirm deadhead route\\NetControl service design use]
+    E --> F{Route confirmed?}
+    F -- No --> E
+    F -- Yes --> G[Update crew status\\CloudMoyo Crew Management CCM]
+  end
+
+  subgraph P3[Phase 3: Monitor Deadhead Travel]
+    G --> H[Monitor deadhead travel\\I-ETMS Interoperable Electronic Train Management System]
+    H --> I{Travel completed?}
+    I -- No --> H
+    I -- Yes --> J[Evaluate limbo time\\HASTUS]
+  end
+
+  subgraph P4[Phase 4: Evaluate Limbo Time]
+    J --> K{Limbo time within limits?}
+    K -- No --> L[Adjust crew schedule\\PS Technology PST]
+    K -- Yes --> M[Notify crews\\CloudMoyo Crew Management CCM]
+  end
+
+  subgraph P5[Phase 5: Monitor Crew Compliance]
+    M --> N[Monitor crew compliance\\trackHOS-class HOS monitoring tools]
+    N --> O{Compliance met?}
+    O -- No --> P([Escalate])
+    O -- Yes --> Q[Review and report\\PS Technology PST]
+  end
+
+  subgraph P6[Phase 6: Final Status Check]
+    Q --> R[Update crew records\\CloudMoyo Crew Management CCM]
+    R --> S[Final status check\\Harriman Dispatching Center HDC]
+    S --> T{Status finalized?}
+    T -- No --> R
+    T -- Yes --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
