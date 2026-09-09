@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Defect Detection]
+    A([Start]) --> B[Defect Detection\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- No --> A
+    C -- Yes --> D[Initial Assessment\\Umler]
+  end
+
+  subgraph P2[Phase 2: Priority Assignment]
+    D --> E[Priority Assignment\\NetControl]
+    E --> F{Priority assigned?}
+    F -- No --> D
+    F -- Yes --> G[Shop Assignment\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Repair Initiation and Parts Acquisition]
+    G --> H[Repair Initiation\\Wabtec Modular Control Architecture]
+    H --> I{Repair initiated?}
+    I -- No --> G
+    I -- Yes --> J[Parts Acquisition\\TRAIN II]
+    J --> K{Parts acquired?}
+    K -- No --> J
+    K -- Yes --> L[Repair Execution\\PS Technology]
+  end
+
+  subgraph P4[Phase 4: Quality Assurance and Reassignment]
+    L --> M[Quality Assurance\\EHMS]
+    M --> N{QA passed?}
+    N -- No --> L
+    N -- Yes --> O[Reassignment for Further Repair\\NetControl]
+    O --> P{Reassigned?}
+    P -- No --> M
+    P -- Yes --> Q[Final Inspection\\Wabtec Modular Control Architecture]
+  end
+
+  subgraph P5[Phase 5: Release for Service]
+    Q --> R{Inspection passed?}
+    R -- No --> O
+    R -- Yes --> S[Release for Service\\Umler]
+    S --> T{Released?}
+    T -- No --> Q
+    T -- Yes --> U([End])
+  end
+
+  subgraph P6[Phase 6: Post-Release Monitoring]
+    S --> V[Post-Release Monitoring\\Wabtec Modular Control Architecture]
+    V --> W{Monitoring passed?}
+    W -- No --> R
+    W -- Yes --> U
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
