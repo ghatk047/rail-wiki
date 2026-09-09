@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Request]
+    A([Start]) --> B[Receive Shipment Request\nup.com secure portal; Loup Logistics]
+    B --> C{Shipment details valid?}
+    C -- No --> B
+    C -- Yes --> D[Assign Shipment to Train\nHarriman Dispatching Center; I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Validate Shipment Details]
+    D --> E[Validate Shipment Details\nLoup Logistics; ShipmentVision]
+    E --> F{Shipment details valid?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Update Shipment Status\nNetControl; I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Monitor Shipment Progress]
+    G --> H[Monitor Shipment Progress\nShipmentVision; Loup Logistics]
+    H --> I{Shipment in progress?}
+    I -- No --> J[Prepare Shipment Completion Report\nLoup Logistics; CHARM]
+    I -- Yes --> H
+  end
+
+  subgraph P4[Phase 4: Handle Customer Queries]
+    J --> K[Handle Customer Queries\nup.com secure portal; Loup Logistics]
+    K --> L{Query resolved?}
+    L -- No --> K
+    L -- Yes --> M[Notify Customer of Completion\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P5[Phase 5: Review and Adjust Pricing]
+    M --> N[Review and Adjust Pricing\nLoup Logistics; TRAIN II]
+    N --> O{Pricing reviewed?}
+    O -- No --> N
+    O -- Yes --> P[Finalize Shipment Record\nInterline Settlement System; CHARM]
+  end
+
+  subgraph P6[Phase 6: Update Customer Portal and Close Case]
+    P --> Q[Update Customer Portal\nup.com secure portal; Loup Logistics]
+    Q --> R[Close Shipment Case\nLoup Logistics; up.com secure portal]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
