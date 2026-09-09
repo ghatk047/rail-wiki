@@ -1,0 +1,69 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: System Initialization]
+    A([Start]) --> B[System Initialization\\NetControl]
+    B --> C{Initialization Successful?}
+    C -- Yes --> D[Network Connectivity Check\\NetControl]
+    C -- No --> E([Bad Order])
+  end
+
+  subgraph P2[Phase 2: Network Connectivity Check]
+    D --> F{Connectivity Established?}
+    F -- Yes --> G[Data Integrity Verification\\I-ETMS]
+    F -- No --> H([Hold])
+  end
+
+  subgraph P3[Phase 3: Data Integrity Verification]
+    G --> I{Data Verified?}
+    I -- Yes --> J[Software Update Application\\NetControl]
+    I -- No --> K([Reject])
+  end
+
+  subgraph P4[Phase 4: Software Update Application]
+    J --> L{Update Applied Successfully?}
+    L -- Yes --> M[Security Audit Execution\\Cybersecurity]
+    L -- No --> N([Escalate])
+  end
+
+  subgraph P5[Phase 5: Security Audit Execution]
+    M --> O{Audit Passed?}
+    O -- Yes --> P[Performance Monitoring Setup\\NetControl]
+    O -- No --> Q([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Setup Operations]
+    P --> R[Backup and Recovery Test\\NetControl]
+    R --> S{Test Successful?}
+    S -- Yes --> T[Incident Response Planning\\NetControl]
+    S -- No --> U([Reject])
+
+    T --> V[Compliance Review\\NetControl]
+    V --> W{Compliant?}
+    W -- Yes --> X[Training and Awareness Program\\NetControl]
+    W -- No --> Y([Escalate])
+
+    X --> Z[Continuous Improvement Feedback Loop\\NetControl]
+    Z --> AA{Feedback Received?}
+    AA -- Yes --> AB[System Shutdown and Maintenance\\NetControl]
+    AA -- No --> AC([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style AC fill:#20242b,color:#fff,stroke:#20242b
+
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style AA fill:#c8791a,color:#fff,stroke:#c8791a
