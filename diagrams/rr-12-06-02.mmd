@@ -1,0 +1,48 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Movement Request]
+    A([Start]) --> B[Train Movement Request Received\nNetControl]
+    B --> C{Track Authority Granted?}
+    C -- No --> B
+    C -- Yes --> D[Secure-by-Design Review\nCybersecurity - 'secure-by-design' approach unbranded]
+  end
+
+  subgraph P2[Phase 2: System Initialization]
+    D --> E[System Initialization\nNetControl, I-ETMS]
+    E --> F{System Ready?}
+    F -- No --> E
+    F -- Yes --> G[Train Departure Notification\nNetControl, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Terminal Operations]
+    G --> H{Terminal Arrival Notification\nNetControl, I-ETMS}
+    H -- No --> G
+    H -- Yes --> I[System Shutdown\nNetControl, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Post-Operation Review]
+    I --> J[Post-Operation Review\nCybersecurity - 'secure-by-design' approach unbranded]
+    J --> K{Security Protocols Updated?}
+    K -- No --> J
+    K -- Yes --> L[System Maintenance\nNetControl, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Conduct Maintenance]
+    L --> M[Conduct Maintenance\nNetControl, I-ETMS]
+    M --> N{Maintenance Completed?}
+    N -- No --> M
+    N -- Yes --> O[Post-Maintenance Review\nCybersecurity - 'secure-by-design' approach unbranded]
+  end
+
+  subgraph P6[Phase 6: Update Schedule]
+    O --> P{Update Maintenance Schedule?\nNetControl, I-ETMS}
+    P -- No --> O
+    P -- Yes --> Q([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
