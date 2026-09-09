@@ -1,0 +1,76 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Anomaly Detection]
+    A([Start]) --> B[Anomaly Detection\\Wayside defect detector network]
+    B --> C{Defect detected?}
+    C -- No --> A
+    C -- Yes --> D[Initial Assessment\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E{Train Dispatcher approval?}
+    E -- No --> Esc1([Escalate])
+    E -- Yes --> F[Inspection Train Dispatch\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Inspection Train Dispatch]
+    F --> G{Control Operator approval?}
+    G -- No --> Esc2([Escalate])
+    G -- Yes --> H[On-Site Inspection\\Wabtec Modular Control Architecture]
+  end
+
+  subgraph P4[Phase 4: On-Site Inspection]
+    H --> I{Defect identified?}
+    I -- No --> F
+    I -- Yes --> J[Defect Classification\\EHMS]
+  end
+
+  subgraph P5[Phase 5: Defect Classification]
+    J --> K{Electrician approval?}
+    K -- No --> Esc3([Escalate])
+    K -- Yes --> L[Repair Planning\\Umler]
+  end
+
+  subgraph P6[Phase 6: Repair Execution and Post-Processing]
+    L --> M{Manager-Locomotive Maintenance approval?}
+    M -- No --> Esc4([Escalate])
+    M -- Yes --> N[Repair Execution\\Downing B. Jenks Shop, North Platte, NE locomotive shop, Proviso Locomotive Shop, West Colton Yard and Shops]
+    N --> O[Post-Repair Inspection\\Wayside defect detector network]
+    O --> P{Defect resolved?}
+    P -- No --> N
+    P -- Yes --> Q[Defect Resolution Reporting\\TRAIN II, CHARM]
+    Q --> R{Manager-Mechanical Maintenance approval?}
+    R -- No --> Esc5([Escalate])
+    R -- Yes --> S[System Update\\Wayside defect detector network]
+    S --> T{Senior Manager-Mechanical Engineering approval?}
+    T -- No --> Esc6([Escalate])
+    T -- Yes --> U[Training and Documentation\\NetControl, I-ETMS]
+    U --> V{Chairman, President and CEO approval?}
+    V -- No --> Esc7([Escalate])
+    V -- Yes --> W[Continuous Improvement Review\\NetControl, I-ETMS]
+    W --> X{VP Network Planning Operations approval?}
+    X -- No --> Esc8([Escalate])
+    X -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Esc1 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc2 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc3 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc4 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc5 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc6 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc7 fill:#20242b,color:#fff,stroke:#20242b
+  style Esc8 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
