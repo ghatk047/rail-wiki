@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Key Train Identification]
+    A([Start]) --> B[Identify Key Train\\nAskRail]
+    B --> C{Hazmat Compliance Officer\\napproval?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Review Operating Restrictions\\nTRANSCAER]
+  end
+
+  subgraph P2[Phase 2: Update Dispatching System]
+    D --> E[Update Dispatching System\\nNetControl]
+    E --> F{Track Authority Granted?}
+    F -- No --> Hold2([Hold])
+    F -- Yes --> G[Assign Crew with Training\\nPS Technology]
+  end
+
+  subgraph P3[Phase 3: Pre-Departure Inspection]
+    G --> H[Conduct Pre-Departure Inspection\\nEHMS]
+    H --> I{Car Bad Ordered?}
+    I -- No --> J[Monitor Train Operation\\nI-ETMS]
+    I -- Yes --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Incident Reporting and Review]
+    J --> K{Incident Occurred?}
+    K -- No --> L[Final Inspection and Release\\nEHMS]
+    K -- Yes --> M[Report Incidents\\nWabtrax]
+    M --> N[Review Incident Response\\nTRANSCAER]
+  end
+
+  subgraph P5[Phase 5: Update Training Programs]
+    N --> O{Chairman, President and CEO\\napproval?}
+    O -- No --> Hold4([Hold])
+    O -- Yes --> P[Update Training Programs\\nSERTC]
+  end
+
+  subgraph P6[Phase 6: Final Steps]
+    P --> Q[Update Dispatching System Again\\nNetControl]
+    Q --> R{Dispatch Updated?}
+    R -- No --> Hold5([Hold])
+    R -- Yes --> S[Notify Stakeholders\\nAskRail]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
