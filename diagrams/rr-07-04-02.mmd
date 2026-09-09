@@ -1,0 +1,68 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Report Submission]
+    A([Start]) --> B[Submit initial report\\NetControl]
+    B --> C{Report complete?}
+    C -- No --> B
+    C -- Yes --> D[Notify Rules Officer\\C3RS]
+  end
+
+  subgraph P2[Phase 2: Incident Classification]
+    D --> E[Classify incident\\C3RS]
+    E --> F{Incident classified?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Notify Chief Safety Officer\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Safety Audit Triggered]
+    G --> H{Safety audit required?}
+    H -- No --> I[Notify Rules Officer\\C3RS]
+    H -- Yes --> J[Conduct safety audit\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Root Cause Analysis]
+    J --> K{Root cause identified?}
+    K -- No --> J
+    K -- Yes --> L[Notify Rules Instructor\\Umler]
+  end
+
+  subgraph P5[Phase 5: Corrective Action Plan Development]
+    L --> M[Develop corrective action plan\\PS Technology]
+    M --> N{Plan developed?}
+    N -- No --> M
+    N -- Yes --> O[Notify VP Network Planning Operations\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Implementation and Review]
+    O --> P[Implement corrective actions\\NetControl]
+    P --> Q{Actions implemented?}
+    Q -- No --> P
+    Q -- Yes --> R[Review and approve\\I-ETMS]
+    R --> S{Approved?}
+    S -- No --> P
+    S -- Yes --> T[Notify Train Dispatcher\\NetControl]
+  end
+
+  subgraph P7[Phase 7: Regulatory Reporting and Continuous Improvement]
+    T --> U[Report to regulators\\NetControl]
+    U --> V{Regulatory report complete?}
+    V -- No --> T
+    V -- Yes --> W[Notify VP Safety\\PS Technology]
+    W --> X[Continuous improvement review\\Umler]
+    X --> Y{Review complete?}
+    Y -- No --> W
+    Y -- Yes --> Z[Update final documentation\\C3RS]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
