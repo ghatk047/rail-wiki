@@ -1,0 +1,69 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Customer Inquiry Reception]
+    A([Start]) --> B[Receive customer inquiry\nup.com secure portal; Loup Logistics]
+    B --> C{Inquiry valid?}
+    C -- No --> A
+    C -- Yes --> D[Log inquiry details\nLoup Logistics]
+  end
+
+  subgraph P2[Phase 2: Rate Calculation]
+    D --> E[Calculate rate\nLoup Logistics; ShipmentVision]
+    E --> F{Rate calculation successful?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Review rate proposal\nVP-Loup Loup Logistics]
+  end
+
+  subgraph P3[Phase 3: Proposal Review]
+    G --> H{Proposal approved?}
+    H -- No --> E
+    H -- Yes --> I[Notify customer\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P4[Phase 4: Customer Notification]
+    I --> J{Customer notified successfully?}
+    J -- No --> Hold2([Hold])
+    J -- Yes --> K[Finalize contract\nAccount Manager / Sales Representative]
+  end
+
+  subgraph P5[Phase 5: Contract Finalization]
+    K --> L{Contract finalized?}
+    L -- No --> I
+    L -- Yes --> M[Document rate quotation\nPricing / Yield Manager; TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Rate Quotation Review and Implementation]
+    M --> N[Review by Compliance Team\nService Design / Network Planning Analyst; GCOR]
+    N --> O{Compliance approved?}
+    O -- No --> E
+    O -- Yes --> P[Approve rate quotation\nVP Network Planning Operations]
+    P --> Q{Quotation approved?}
+    Q -- No --> M
+    Q -- Yes --> R[Implement rate quotation\nAccount Manager / Sales Representative]
+    R --> S{Implementation successful?}
+    S -- No --> Hold3([Hold])
+    S -- Yes --> T[Follow up with customer\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P7[Phase 7: Reporting and Adjustment]
+    T --> U[Report rate quotation\nPricing / Yield Manager; TRAIN II]
+    U --> V[Review and adjust rate quotation\nPricing / Yield Manager; ShipmentVision]
+    V --> W{Adjustments needed?}
+    W -- No --> A
+    W -- Yes --> E
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
