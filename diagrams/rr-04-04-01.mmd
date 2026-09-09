@@ -1,0 +1,75 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Scheduling]
+    A([Start]) --> B[Crew Scheduling\\PS Technology PST]
+    B --> C{Hours of Service Remaining?}
+    C -- No --> D[Rest Period Verification\\trackHOS-class HOS monitoring tools]
+    C -- Yes --> E[Attendance Monitoring\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Rest and Attendance]
+    D --> F{Rest Period Verified?}
+    F -- No --> G([Bad Order])
+    F -- Yes --> H[Predictable Scheduling Adjustment\\CloudMoyo Crew Management CCM]
+    E --> I{Attendance Recorded?}
+    I -- No --> J([Hold])
+    I -- Yes --> K[Crew Training Review\\HASTUS]
+  end
+
+  subgraph P3[Phase 3: Equipment and Interline]
+    H --> L{Predictable Schedule Adjusted?}
+    L -- No --> M([Escalate])
+    L -- Yes --> N[Equipment Health Check\\EHMS Equipment Health Management System]
+    K --> O{Training Reviewed?}
+    O -- No --> P([Reject])
+    O -- Yes --> Q[Interline Settlement Review\\Interline Settlement System ISS]
+  end
+
+  subgraph P4[Phase 4: Track and Feedback]
+    N --> R{Equipment Healthy?}
+    R -- No --> S([Hold])
+    R -- Yes --> T[Track Geometry Inspection\\FRA Automated Track Inspection Program]
+    Q --> U{Interline Settlement Approved?}
+    U -- No --> V([Reject])
+    U -- Yes --> W[Crew Feedback Collection\\AskRail]
+  end
+
+  subgraph P5[Phase 5: Performance and Update]
+    T --> X{Track Geometry Inspected?}
+    X -- No --> Y([Bad Order])
+    X -- Yes --> Z[Crew Performance Evaluation\\PS Technology PST]
+    W --> AA{Feedback Collected?}
+    AA -- No --> AB([Hold])
+    AA -- Yes --> AC[Crew Training Update\\HASTUS]
+  end
+
+  subgraph P6[Phase 6: Final Review and Approval]
+    Z --> AD{Performance Evaluated?}
+    AD -- No --> AE([Escalate])
+    AD -- Yes --> AF[Final Review and Approval\\CloudMoyo Crew Management CCM]
+    AC --> AG{Training Updated?}
+    AG -- No --> AH([Reject])
+    AG -- Yes --> AI([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AI fill:#20242b,color:#fff,stroke:#20242b
+  style G fill:#20242b,color:#fff,stroke:#20242b
+  style J fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style AE fill:#20242b,color:#fff,stroke:#20242b
+  style AH fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
+  style AD fill:#c8791a,color:#fff,stroke:#c8791a
+  style AG fill:#c8791a,color:#fff,stroke:#c8791a
