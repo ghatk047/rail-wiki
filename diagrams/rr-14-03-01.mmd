@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Labor Dispute]
+    A([Start]) --> B{Labor Dispute Identified?}
+    B -- Yes --> C[Review Labor Contract\\nTRAIN II]
+    B -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Review and Mediate]
+    C --> D{Contract Terms Met?}
+    D -- No --> E[Conduct Mediation Session\\nMobile classroom training trailers]
+    D -- Yes --> F[Negotiate Settlement Terms\\nUmler]
+  end
+
+  subgraph P3[Phase 3: Finalize and Review]
+    E --> D
+    F --> G{Settlement Approved?}
+    G -- No --> C
+    G -- Yes --> H[Finalize Labor Contract\\nTRAIN II]
+  end
+
+  subgraph P4[Phase 4: Communicate and Monitor]
+    H --> I[Communicate with Employees\\nMobile classroom training trailers]
+    I --> J{Compliance Confirmed?}
+    J -- No --> K[Monitor Compliance\\nNetControl]
+    J -- Yes --> L[Review and Update Policies\\nTRAIN II]
+  end
+
+  subgraph P5[Phase 5: Train and Report]
+    K --> J
+    L --> M[Train Employees on New Policies\\nMobile classroom training trailers]
+    M --> N{Training Completed?}
+    N -- No --> L
+    N -- Yes --> O[Review and Report on Labor Relations\\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Plan for Future]
+    O --> P{Reporting Complete?}
+    P -- No --> M
+    P -- Yes --> Q[Plan for Future Labor Relations Activities\\nNetControl]
+    Q --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
