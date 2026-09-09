@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Maintenance Request\\NetControl]
+    B --> C{Maintenance Approved?}
+    C -- Yes --> D[Review and Approve Maintenance Plan\\Umler]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Inspection]
+    D --> E[Conduct Track Inspection\\Wabtrax, FRA Automated Track Inspection Program ATIP]
+    E --> F{FRA Defect Found?}
+    F -- Yes --> G[Review Inspection Report\\NetControl]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Repair Scheduling]
+    G --> H{Schedule Approved?}
+    H -- Yes --> I[Schedule Repair Work\\NetControl, I-ETMS]
+    H -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Repair Execution]
+    I --> J[Perform Repair Work\\Assistant Foreman track, NetControl, I-ETMS]
+    J --> K{Repair Completed?}
+    K -- Yes --> L[Review Repair Completion\\NetControl, I-ETMS]
+    K -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: PTC Data Update]
+    L --> M[Update PTC Data Files\\PTC Field Engineer / PTC Technician, I-ETMS, PTC Back Office Server BOS]
+    M --> N{Data File Updated?}
+    N -- Yes --> O[Verify PTC Data File Update\\Signal Maintainer, I-ETMS, PTC Back Office Server BOS]
+    N -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Closure and Review]
+    O --> P{Verification Passed?}
+    P -- Yes --> Q[Close Maintenance Request\\NetControl]
+    P -- No --> Hold6([Hold])
+    Q --> R[Review Maintenance History\\Chief Engineer / VP Engineering, NetControl, Umler]
+    R --> S[Plan Future Maintenance\\Track Supervisor, NetControl, I-ETMS]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
