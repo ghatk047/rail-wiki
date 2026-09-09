@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Assignment]
+    A([Start]) --> B[Initial Territory Assignment\\PS Technology PST]
+    B --> C{Assignment Approved?}
+    C -- Yes --> D[Conduct Territory Familiarization Meetings\\CrewPro]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Data Review and Inspection]
+    D --> E[Review Operational Data and Reports\\HASTUS]
+    E --> F{Data Review Complete?}
+    F -- Yes --> G[Schedule Initial Track Inspections\\FRA Automated Track Inspection Program]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Coordination and Scheduling]
+    G --> H[Coordinate with Harriman Dispatching Center\\Harriman Dispatching Center HDC]
+    H --> I{Coordination Successful?}
+    I -- Yes --> J[Review and Update Crew Schedules\\PS Technology PST]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Safety and Performance]
+    J --> K[Conduct Safety Briefings\\CrewPro]
+    K --> L{Briefing Completed?}
+    L -- Yes --> M[Monitor and Report Crew Performance\\CloudMoyo Crew Management CCM]
+    L -- No --> K
+  end
+
+  subgraph P5[Phase 5: Training Review]
+    M --> N[Review and Adjust Training Programs\\TRAIN II]
+    N --> O{Training Updated?}
+    O -- Yes --> P[Final Qualification Review\\CrewPro]
+    O -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Notification and Documentation]
+    P --> Q{Qualification Approved?}
+    Q -- Yes --> R[Notify Crew of Qualification Status\\PS Technology PST]
+    Q -- No --> Escalate1([Escalate])
+    R --> S[Document and Archive Process Records\\CloudMoyo Crew Management CCM]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
