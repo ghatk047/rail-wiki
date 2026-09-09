@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Monitor Performance]
+    A([Start]) --> B[Monitor Locomotive Performance\\NetControl]
+    B --> C{Performance within limits?}
+    C -- No --> D[Identify Non-Compliant Locomotives\\EHMS]
+    C -- Yes --> E[Schedule Maintenance\\PS Technology]
+  end
+
+  subgraph P2[Phase 2: Schedule and Conduct Maintenance]
+    D --> F{Maintenance scheduled?}
+    F -- No --> E
+    F -- Yes --> G[Conduct Maintenance\\Wabtec Modular Control Architecture]
+  end
+
+  subgraph P3[Phase 3: Test Emissions]
+    G --> H{Maintenance completed?}
+    H -- No --> G
+    H -- Yes --> I[Test Emissions\\I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Review and Document Results]
+    I --> J{Emissions test passed?}
+    J -- No --> K[Document Non-Compliance\\TRAIN II]
+    J -- Yes --> L[Review Test Results\\Umler]
+  end
+
+  subgraph P5[Phase 5: Report and Implement Corrective Actions]
+    K --> M{Non-compliance documented?}
+    M -- No --> K
+    M -- Yes --> N[Report to Senior Management\\CHARM]
+    N --> O{Senior management approval?}
+    O -- No --> Hold1([Hold])
+    O -- Yes --> P[Implement Corrective Actions\\PS Technology]
+  end
+
+  subgraph P6[Phase 6: Monitor and Improve Process]
+    P --> Q{Corrective actions implemented?}
+    Q -- No --> P
+    Q -- Yes --> R[Monitor Corrective Actions\\NetControl]
+    R --> S{Corrective actions effective?}
+    S -- No --> Hold1
+    S -- Yes --> T[Update Maintenance Schedule\\PS Technology]
+    T --> U{Schedule updated?}
+    U -- No --> T
+    U -- Yes --> V[Review and Improve Process\\TRAIN II]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
