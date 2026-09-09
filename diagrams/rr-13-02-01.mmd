@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Car Inspection Required?}
+    C -- Yes --> D[Freight Car Inspection\\Wabtrax]
+    C -- No --> E[Freight Bill Generation\\TRAIN II]
+  end
+
+  subgraph P2[Phase 2: Freight Car Inspection]
+    D --> F{FRA Defect Found?}
+    F -- Yes --> Hold1([Hold])
+    F -- No --> G[Freight Bill Generation\\TRAIN II]
+  end
+
+  subgraph P3[Phase 3: Freight Bill Generation]
+    E --> H{Fuel Surcharge Calculation Required?}
+    H -- Yes --> I[Fuel Surcharge Calculation\\Fuel surcharge program]
+    H -- No --> J[Freight Bill Review\\TRAIN II]
+  end
+
+  subgraph P4[Phase 4: Fuel Surcharge Calculation]
+    I --> K{Calculation Valid?}
+    K -- Yes --> L[Freight Bill Review\\TRAIN II]
+    K -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Freight Bill Review]
+    J --> M{Review Approved?}
+    M -- Yes --> N[Freight Bill Distribution\\up.com customer portal]
+    M -- No --> O[Adjustment Processing\\TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Final Steps]
+    N --> P[Payment Receipt\\up.com customer portal]
+    P --> Q{Payment Received?}
+    Q -- Yes --> R[Financial Record Update\\TRAIN II]
+    Q -- No --> Hold3([Hold])
+    R --> S[Interline Settlement\\Interline Settlement System ISS]
+    S --> T{Settlement Approved?}
+    T -- Yes --> U[Audit Review\\TRAIN II]
+    T -- No --> V[Adjustment Processing\\TRAIN II]
+    U --> W{Audit Passed?}
+    W -- Yes --> X[Final Review and Close\\TRAIN II]
+    W -- No --> Y[Adjustment Processing\\TRAIN II]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
