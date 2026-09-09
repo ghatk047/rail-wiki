@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Bid/RFP Request]
+    A([Start]) --> B[Receive Bid/RFP Request\nup.com secure portal]
+    B --> C{Bid/RFP valid?}
+    C -- No --> E([Bad Order])
+    C -- Yes --> D[Evaluate Bid/RFP\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Dedicated Review]
+    D --> F[Dedicated Logistics Representative Review\nTransentric]
+    F --> G{Review approved?}
+    G -- No --> B
+    G -- Yes --> H[Bid/RFP Response Preparation\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P3[Phase 3: Submit Response]
+    H --> I[Submit Bid/RFP Response\nup.com secure portal]
+    I --> J{Response submitted?}
+    J -- No --> E
+    J -- Yes --> K[Evaluate Competitor Bids/RFPs\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P4[Phase 4: Determine Winner]
+    K --> L[Determine Winning Bid/RFP\nVP-Loup Loup Logistics; ShipmentVision]
+    L --> M{Winner determined?}
+    M -- No --> K
+    M -- Yes --> N[Notify Winning Bidder\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P5[Phase 5: Prepare Agreement]
+    N --> O[Prepare Service Agreement\nup.com secure portal; Loup Logistics]
+    O --> P{Agreement prepared?}
+    P -- No --> E
+    P -- Yes --> Q[Sign Service Agreement\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P6[Phase 6: Update and Monitor]
+    Q --> R[Update System with Agreement Details\nNetControl; I-ETMS]
+    R --> S{System updated?}
+    S -- No --> E
+    S -- Yes --> T[Monitor Service Performance\nup.com secure portal; Loup Logistics]
+    T --> U{Performance within limits?}
+    U -- No --> Q
+    U -- Yes --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
