@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Request]
+    A([Start]) --> B[Receive Shipment Request\nup.com secure portal; Loup Logistics]
+    B --> C{Shipment details valid?}
+    C -- No --> B
+    C -- Yes --> D[Assign Shipment to Train\nNetControl; I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Validate and Monitor]
+    D --> E[Update Shipment Status\nI-ETMS; up.com secure portal]
+    E --> F{Shipment assigned successfully?}
+    F -- No --> D
+    F -- Yes --> G[Monitor Shipment Progress\nNetControl; I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Customer Communication]
+    G --> H{Progress within expected time frame?}
+    H -- No --> E
+    H -- Yes --> I[Notify Customer of Shipment Status\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P4[Phase 4: Handle Inquiries and Updates]
+    I --> J[Handle Customer Inquiries\nup.com secure portal; Loup Logistics]
+    J --> K{Inquiry resolved?}
+    K -- No --> I
+    K -- Yes --> L[Update Shipment Tracking Data\nI-ETMS; up.com secure portal]
+  end
+
+  subgraph P5[Phase 5: Review and Finalize]
+    L --> M[Review Shipment Completion\nLoup Logistics; Umler]
+    M --> N{Shipment completed successfully?}
+    N -- No --> K
+    N -- Yes --> O[Finalize Shipment Record\nNetControl; I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Provide Feedback and Close Case]
+    O --> P[Provide Final Customer Feedback\nup.com secure portal; Loup Logistics]
+    P --> Q{Feedback provided?}
+    Q -- No --> M
+    Q -- Yes --> R[Close Shipment Case\nLoup Logistics; up.com secure portal]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
