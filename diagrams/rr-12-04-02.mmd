@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Asset Identification]
+    A([Start]) --> B[Identify Asset for Maintenance\\NetControl]
+    B --> C{Asset requires maintenance?}
+    C -- Yes --> D[Schedule Maintenance Window\\I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Maintenance Planning]
+    D --> E[Prepare Maintenance Crew\\PS Technology PST]
+    E --> F{Crew ready?}
+    F -- Yes --> G[Perform Maintenance\\EHMS Equipment Health Management System]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Post-Maintenance Inspection]
+    G --> H[Conduct Post-Maintenance Inspection\\Machine Vision portals]
+    H --> I{Inspection passed?}
+    I -- Yes --> J[Update Asset Register\\Umler Universal Machine Language Equipment Register]
+    I -- No --> H
+  end
+
+  subgraph P4[Phase 4: Stakeholder Notification]
+    J --> K[Notify Stakeholders\\NetControl service design use]
+    K --> L{Stakeholders notified?}
+    L -- Yes --> M[Review Maintenance Records\\TRAIN II Tele Rail Automated Information Network Phase 2]
+    L -- No --> K
+  end
+
+  subgraph P5[Phase 5: Procedure Update]
+    M --> N[Update Maintenance Procedures\\Physics Train Builder]
+    N --> O{Procedures updated?}
+    O -- Yes --> P[Monitor Asset Performance\\EHMS Equipment Health Management System]
+    O -- No --> N
+  end
+
+  subgraph P6[Phase 6: Cybersecurity Audit]
+    P --> Q[Conduct Cybersecurity Audit\\Cybersecurity — 'secure-by-design' approach unbranded]
+    Q --> R{Audit passed?}
+    R -- Yes --> S[Implement Cybersecurity Improvements\\Cybersecurity — 'secure-by-design' approach unbranded]
+    R -- No --> Q
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
