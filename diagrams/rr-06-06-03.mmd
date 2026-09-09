@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Signal Design]
+    A([Start]) --> B[Signal Design Review\\NetControl]
+    B --> C{Design Approved?}
+    C -- Yes --> D[Approval by Chief Engineer\\Umler]
+    C -- No --> E[Revisit Design\\NetControl]
+    D --> F[Installation Plan Development\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Material Procurement]
+    F --> G[Material Procurement\\PS Technology]
+    G --> H{Materials Ready?}
+    H -- Yes --> I[Site Preparation\\NetControl]
+    H -- No --> J[Reorder Materials\\PS Technology]
+  end
+
+  subgraph P3[Phase 3: Signal Installation]
+    I --> K{Site Prepared?}
+    K -- Yes --> L[Signal Installation\\Wabtrax]
+    K -- No --> M[Prepare Site\\NetControl]
+    L --> N[Signal Testing\\I-ETMS, Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Certification]
+    N --> O{Testing Passed?}
+    O -- Yes --> P[Certification by Chief Engineer\\Umler]
+    O -- No --> Q[Retest Signals\\Wabtrax]
+    P --> R[Update Maintenance Schedule\\NetControl, Umler]
+  end
+
+  subgraph P5[Phase 5: Training]
+    R --> S{Training Required?}
+    S -- Yes --> T[Train Crews\\PS Technology, CrewPro]
+    S -- No --> U[Skip Training\\NetControl]
+    T --> V[Final Inspection by Roadmaster\\NetControl, FRA Automated Track Inspection Program ATIP]
+  end
+
+  subgraph P6[Phase 6: Operational Approval]
+    V --> W{Inspection Passed?}
+    W -- Yes --> X[Approval for Operational Use\\Umler]
+    W -- No --> Y[Reinspect Site\\NetControl, FRA Automated Track Inspection Program ATIP]
+    X --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
