@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Arrival Notification]
+    A([Start]) --> B[Crew Arrival Notification\\Harriman Dispatching Center HDC]
+    B --> C{Crew on time?}
+    C -- No --> D[Reschedule crew arrival\\HDC]
+    C -- Yes --> E[Notify crew of arrival\\PST]
+  end
+
+  subgraph P2[Phase 2: Crew Check-in and Verification]
+    E --> F[Crew Check-in and Verification\\PS Technology PST]
+    F --> G{All documents verified?}
+    G -- No --> H[Request missing documents\\PST]
+    G -- Yes --> I[Assign crew to duties\\CCM]
+  end
+
+  subgraph P3[Phase 3: Accommodation Assignment]
+    I --> J[Accommodation Assignment\\CloudMoyo Crew Management CCM]
+    J --> K{Room available?}
+    K -- No --> L[Reassign crew to another room\\CCM]
+    K -- Yes --> M[Notify crew of accommodation details\\PST]
+  end
+
+  subgraph P4[Phase 4: Meal Preparation and Scheduling]
+    M --> N[Meal Preparation and Scheduling\\PS Technology PST]
+    N --> O{Meals prepared?}
+    O -- No --> P[Prepare meals\\PST]
+    O -- Yes --> Q[Notify crew of meal times\\PST]
+  end
+
+  subgraph P5[Phase 5: Transportation Coordination]
+    Q --> R[Transportation Coordination\\NetControl service design use]
+    R --> S{Transportation arranged?}
+    S -- No --> T[Reschedule transportation\\NetControl]
+    S -- Yes --> U[Notify crew of transportation details\\PST]
+  end
+
+  subgraph P6[Phase 6: Departure Coordination]
+    U --> V[Post-Meal Check-in and Verification\\PS Technology PST]
+    V --> W{All checks passed?}
+    W -- No --> X[Recheck crew status\\PST]
+    W -- Yes --> Y[Rest and Recovery Time\\trackHOS-class HOS monitoring tools]
+    Y --> Z[Pre-Departure Briefing and Equipment Check\\EHMS Equipment Health Management System]
+    Z --> AA{Briefing completed?}
+    AA -- No --> AB[Conduct briefing again\\EHMS]
+    AA -- Yes --> AC[Departure Coordination\\Harriman Dispatching Center HDC]
+    AC --> AD{Departure authorized?}
+    AD -- No --> AE[Request authorization\\HDC]
+    AD -- Yes --> AF[Post-Departure Monitoring and Reporting\\I-ETMS Interoperable Electronic Train Management System]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AF fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style AA fill:#c8791a,color:#fff,stroke:#c8791a
+  style AD fill:#c8791a,color:#fff,stroke:#c8791a
