@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Signal Design]
+    A([Start]) --> B[Signal Design Review\\NetControl]
+    B --> C{Design Approved?}
+    C -- Yes --> D[Signal Installation Planning\\I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Signal Installation]
+    D --> E[Signal Installation\\Wabtrax]
+    E --> F{Installation Complete?}
+    F -- Yes --> G[Signal Testing Initial\\PTC Back Office Server BOS]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Signal Testing]
+    G --> H{Initial Test Passed?}
+    H -- Yes --> I[Signal Testing Final\\FRA Automated Track Inspection Program ATIP]
+    H -- No --> E
+  end
+
+  subgraph P4[Phase 4: Integration and Training]
+    I --> J{Final Test Passed?}
+    J -- Yes --> K[Signal Integration with Existing Systems\\NetControl service design use]
+    J -- No --> G
+    K --> L[Signal System Training\\Umler]
+  end
+
+  subgraph P5[Phase 5: Activation and Monitoring]
+    L --> M{Training Complete?}
+    M -- Yes --> N[Signal System Activation\\PS Technology PST]
+    M -- No --> L
+    N --> O[Signal System Monitoring\\EHMS Equipment Health Management System]
+  end
+
+  subgraph P6[Phase 6: Evaluation and Maintenance]
+    O --> P{Activation Successful?}
+    P -- Yes --> Q[Signal System Evaluation\\TRAIN II Tele Rail Automated Information Network Phase 2]
+    P -- No --> N
+    Q --> R{Evaluation Complete?}
+    R -- Yes --> S[Signal System Maintenance Plan\\CHARM Car Hire Accounting Rate Master]
+    R -- No --> Q
+    S --> T[Signal System Maintenance Execution\\Interline Settlement System ISS / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
