@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Claim Notification]
+    A([Start]) --> B[Receive claim notification\nup.com secure portal]
+    B --> C{Claim valid?}
+    C -- No --> Escalate1([Escalate])
+    C -- Yes --> D[Initial claim assessment\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E{Assessment complete?}
+    E -- No --> D
+    E -- Yes --> F[Notify customer of assessment\nup.com secure portal]
+  end
+
+  subgraph P3[Phase 3: Customer Notification]
+    F --> G{Customer satisfied with assessment?}
+    G -- No --> H[Investigate claim further\nLoup Logistics; ShipmentVision]
+    G -- Yes --> I[Determine compensation or reparation\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P4[Phase 4: Further Investigation]
+    H --> J{Further investigation complete?}
+    J -- No --> H
+    J -- Yes --> I
+  end
+
+  subgraph P5[Phase 5: Compensation Decision]
+    I --> K{Compensation decision made?}
+    K -- No --> I
+    K -- Yes --> L[Notify customer of compensation decision\nup.com secure portal]
+  end
+
+  subgraph P6[Phase 6: Process Compensation Payment and Close Claim]
+    L --> M{Customer satisfied with compensation?}
+    M -- No --> Escalate2([Escalate])
+    M -- Yes --> N[Process compensation payment\nLoup Logistics; ShipmentVision]
+    N --> O[Close claim case\nLoup Logistics; ShipmentVision]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
