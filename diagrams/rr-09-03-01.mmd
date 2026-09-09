@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Order Confirmation and Planning]
+    A([Start]) --> B[Receive order confirmation\nUPGo]
+    B --> C{Order valid?}
+    C -- Yes --> D[Allocate container slots\nEMP and UMAX container fleets]
+    C -- No --> BadOrder([Bad Order])
+  end
+
+  subgraph P2[Phase 2: Container Allocation]
+    D --> E{Containers available?}
+    E -- Yes --> F[Create loading plan\nICTF Intermodal Container Transfer Facility]
+    E -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Container Loading Plan]
+    F --> G[Assign crane/lift operator\nICTF Intermodal Container Transfer Facility]
+    G --> H{Loading plan approved?}
+    H -- Yes --> I[Execute container loading\nICTF Intermodal Container Transfer Facility]
+    H -- No --> F
+  end
+
+  subgraph P4[Phase 4: Driver Scanning and Gate Entry]
+    I --> J[Scan containers\nYard System]
+    J --> K{All containers scanned?}
+    K -- Yes --> L[Gate entry for drivers\nYard System]
+    K -- No --> J
+  end
+
+  subgraph P5[Phase 5: Train Build and Assembly]
+    L --> M[Build train assembly plan\nHarriman Dispatching Center HDC]
+    M --> N{Train build complete?}
+    N -- Yes --> O[Pre-departure inspection\nEHMS Equipment Health Management System]
+    N -- No --> L
+  end
+
+  subgraph P6[Phase 6: Departure and Reporting]
+    O --> P{Inspection passed?}
+    P -- Yes --> Q[Train departure planning\nNetControl service design use]
+    P -- No --> M
+    Q --> R{Departure plan approved?}
+    R -- Yes --> S[Execute train departure\nI-ETMS Interoperable Electronic Train Management System]
+    R -- No --> Q
+    S --> T[Final documentation and compliance check\nUmler Universal Machine Language Equipment Register]
+    T --> U{Documentation complete?}
+    U -- Yes --> V[Post-departure monitoring\nI-ETMS Interoperable Electronic Train Management System]
+    U -- No --> T
+    V --> W{Monitor successful?}
+    W -- Yes --> X[Settlement and reporting\nISS / SSDX / CHDX]
+    W -- No --> S
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
