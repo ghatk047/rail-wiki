@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Work Order\\NetControl]
+    B --> C{Work order initiated?}
+    C -- Yes --> D[Assign Crew and Equipment\\PS Technology PST]
+    C -- No --> BadOrder([Bad Order])
+  end
+
+  subgraph P2[Phase 2: Pre-Work Inspection]
+    D --> E[Conduct Pre-Work Inspection\\NetControl]
+    E --> F{Pre-work inspection passed?}
+    F -- Yes --> G[Perform Vegetation Management\\Wabtrax]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Vegetation Management]
+    G --> H{Vegetation management complete?}
+    H -- Yes --> I[Perform Drainage Work\\Wabtrax]
+    H -- No --> G
+  end
+
+  subgraph P4[Phase 4: Drainage Work]
+    I --> J{Drainage work complete?}
+    J -- Yes --> K[Conduct Post-Work Inspection\\NetControl]
+    J -- No --> I
+  end
+
+  subgraph P5[Phase 5: Post-Work Inspection]
+    K --> L{Post-work inspection passed?}
+    L -- Yes --> M[Update Maintenance Records\\Umler]
+    L -- No --> K
+  end
+
+  subgraph P6[Phase 6: Review and Closure]
+    M --> N[Review and Report\\NetControl]
+    N --> O{Report reviewed?}
+    O -- Yes --> P[Close Work Order\\NetControl]
+    O -- No --> N
+    P --> Q[Monitor and Adjust\\Wabtrax]
+    Q --> R{Monitoring complete?}
+    R -- Yes --> L([End])
+    R -- No --> Q
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
