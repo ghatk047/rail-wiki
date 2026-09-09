@@ -1,0 +1,70 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review and Identify]
+    A([Start]) --> B[Review Train Manifest\nTRAIN II]
+    B --> C{Manifest Correct?}
+    C -- Yes --> D[Identify Hireable Cars\nUmler]
+    C -- No --> Hold1([Hold])
+    D --> E{Cars Identified?}
+    E -- Yes --> F[Update Umler Records\nUmler]
+    E -- No --> B
+  end
+
+  subgraph P2[Phase 2: Prepare Agreement and Notify]
+    F --> G[Prepare Hire Agreement\nCHARM]
+    G --> H{Agreement Prepared?}
+    H -- Yes --> I[Notify Owning Railroad\nInterline Settlement System]
+    H -- No --> G
+    I --> J{Notification Sent?}
+    J -- Yes --> K([End])
+    J -- No --> I
+  end
+
+  subgraph P3[Phase 3: Pre-Hire Inspection]
+    I --> L[Conduct Pre-Hire Inspection\nEHMS]
+    L --> M{Inspection Passed?}
+    M -- Yes --> N[Update Equipment Health Records\nEHMS]
+    M -- No --> Hold2([Hold])
+    N --> O{Records Updated?}
+    O -- Yes --> P[Prepare Per Diem Charges\nCHARM]
+    O -- No --> L
+  end
+
+  subgraph P4[Phase 4: Submit and Monitor Payment]
+    P --> Q{Charges Prepared?}
+    Q -- Yes --> R[Submit Charges to Owning Railroad\nInterline Settlement System]
+    Q -- No --> P
+    R --> S{Submission Successful?}
+    S -- Yes --> T[Monitor Payment Status\nInterline Settlement System]
+    S -- No --> R
+  end
+
+  subgraph P5[Phase 5: Update Financial Records]
+    T --> U{Payment Received?}
+    U -- Yes --> V[Update Financial Records\nInterline Settlement System]
+    U -- No --> T
+    V --> W{Records Updated?}
+    W -- Yes --> X[Close Process\nInterline Settlement System]
+    W -- No --> V
+  end
+
+  subgraph P6[Phase 6: Exception Handling]
+    Hold1 --> Rej1([Reject])
+    Hold2 --> Rej2([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
