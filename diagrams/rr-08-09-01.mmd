@@ -1,0 +1,79 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Hazardous Material Identification]
+    A([Start]) --> B[Identify Potential Hazardous Materials\nAskRail]
+    B --> C{Hazardous materials identified?}
+    C -- Yes --> D[Assess Risk Level\nTRANSCAER]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Risk Assessment and Contingency Planning]
+    D --> E{Risk level assessed?}
+    E -- Yes --> F[Develop Contingency Plan\nSERTC]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Stakeholder Notification and Weather Monitoring]
+    F --> G{Contingency plan developed?}
+    G -- Yes --> H[Notify Stakeholders\nup.com customer portal]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Schedule Adjustment and Facility Inspection]
+    H --> I{Stakeholders notified?}
+    I -- Yes --> J[Monitor Weather Conditions\nWabtrax]
+    I -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Train Schedule Adjustment and Equipment Preparation]
+    J --> K{Weather conditions monitored?}
+    K -- Yes --> L[Adjust Train Schedule\nNetControl]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Monitoring and Coordination]
+    L --> M{Train schedule adjusted?}
+    M -- Yes --> N[Inspect Terminal Facilities\nUmler]
+    M -- No --> Rej3([Reject])
+  end
+
+  N --> O{Facilities inspected?}
+  O -- Yes --> P[Prepare Emergency Equipment\nPS Technology]
+  O -- No --> Hold4([Hold])
+
+  P --> Q{Emergency equipment prepared?}
+  Q -- Yes --> R[Monitor Stormwater Runoff\nI-ETMS]
+  Q -- No --> Rej4([Reject])
+
+  R --> S{Stormwater monitored?}
+  S -- Yes --> T[Update Contingency Plan\nSERTC]
+  S -- No --> Hold5([Hold])
+
+  T --> U{Contingency plan updated?}
+  U -- Yes --> V[Coordinate Response Efforts\nHarriman Dispatching Center]
+  U -- No --> Rej5([Reject])
+
+  V --> W{Response efforts coordinated?}
+  W -- Yes --> X[Review and Document Process\nTRANSCAER]
+  W -- No --> Hold6([Hold])
+
+  X --> Y{Process reviewed and documented?}
+  Y -- Yes --> Z([End])
+  Y -- No --> Rej6([Reject])
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
