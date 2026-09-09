@@ -1,0 +1,72 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Schedule and Notify]
+    A([Start]) --> B[Schedule Random Drug Tests\\nGCOR]
+    B --> C{Random Test Scheduled?}
+    C -- Yes --> D[Notify Employees of Scheduled Tests\\NetControl]
+    C -- No --> Hold1([Hold])
+    D --> E{Notification Sent?}
+    E -- No --> D
+    E -- Yes --> F[Conduct Pre-Test Interview\\C3RS]
+  end
+
+  subgraph P2[Phase 2: Sample Collection and Testing]
+    F --> G{Pre-Test Interview Completed?}
+    G -- No --> F
+    G -- Yes --> H[Collect Sample and Conduct Test\\PS Technology]
+    H --> I{Sample Collected and Tested?}
+    I -- No --> H
+    I -- Yes --> J[Record Test Results\\EHMS]
+  end
+
+  subgraph P3[Phase 3: Review and Action Plan]
+    J --> K{Test Results Recorded?}
+    K -- No --> J
+    K -- Yes --> L[Review Test Results\\Umler]
+    L --> M{Results Reviewed?}
+    M -- No --> L
+    M -- Yes --> N[Implement Action Plan\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Notify Employee and Report]
+    N --> O{Action Plan Implemented?}
+    O -- No --> N
+    O -- Yes --> P[Notify Employee of Test Results\\I-ETMS]
+    P --> Q{Notification Sent?}
+    Q -- No --> P
+    Q -- Yes --> R[Report Test Results to Regulatory Bodies\\GCOR]
+  end
+
+  subgraph P5[Phase 5: Policy Review and Update]
+    R --> S{Regulatory Report Submitted?}
+    S -- No --> R
+    S -- Yes --> T[Review and Update Policies\\TRAIN II]
+    T --> U{Policies Updated?}
+    U -- No --> T
+    U -- Yes --> V[Monitor and Audit Compliance\\C3RS]
+  end
+
+  subgraph P6[Phase 6: Training Review and Adjustment]
+    V --> W{Compliance Monitored?}
+    W -- No --> V
+    W -- Yes --> X[Review and Adjust Training Programs\\PS Technology]
+    X --> Y{Training Programs Adjusted?}
+    Y -- No --> X
+    Y -- Yes --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
