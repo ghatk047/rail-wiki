@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Review]
+    A([Start]) --> B[Review Revenue Accounting Data\nTRAIN II]
+    B --> C{Fuel demand within budget?}
+    C -- No --> D[Adjust Fuel Needs\nCHARM]
+    C -- Yes --> E[Identify Fuel Needs\nCHARM]
+  end
+
+  subgraph P2[Phase 2: Contract Negotiation]
+    E --> F[Negotiate Fuel Contracts\nFuel surcharge program]
+    F --> G{Contract terms accepted?}
+    G -- No --> H[Review and Optimize\nCHARM]
+    G -- Yes --> I[Monitor Fuel Usage\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Regulatory Compliance]
+    I --> J[Review Regulatory Compliance\nGCOR]
+    J --> K{Compliance met?}
+    K -- No --> L[Adjust Procurement Strategies\nCHARM]
+    K -- Yes --> M[Report to Management\nup.com customer portal]
+  end
+
+  subgraph P4[Phase 4: Fuel Surcharge Review]
+    M --> N[Review Fuel Surcharge Program\nFuel surcharge program]
+    N --> O{Surcharge adjustments needed?}
+    O -- No --> P[Close Process Cycle\nup.com customer portal]
+    O -- Yes --> Q[Implement Fuel Surcharge Adjustments\nVP Network Planning Operations]
+  end
+
+  subgraph P5[Phase 5: Data Update]
+    Q --> R[Update Historical Data\nTRAIN II]
+    R --> S{Data updated correctly?}
+    S -- No --> T([Bad Order])
+    S -- Yes --> U[Close Process Cycle\nup.com customer portal]
+  end
+
+  subgraph P6[Phase 6: Exception Handling]
+    T --> V[Escalate to President and CEO\nup.com customer portal]
+    V --> W[Review and Optimize\nCHARM]
+    W --> X[Adjust Procurement Strategies\nCHARM]
+    X --> Y[Monitor Fuel Usage\nNetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
