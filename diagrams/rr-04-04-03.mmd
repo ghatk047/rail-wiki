@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Schedule]
+    A([Start]) --> B[Review Daily Train Schedule\nNetControl]
+    B --> C{Train schedule valid?}
+    C -- Yes --> D[Check Crew Availability\nPS Technology PST]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Assign Crews]
+    D --> E{Crew available?}
+    E -- Yes --> F[Assign Crews to Trains\nCrewPro]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Update Schedules]
+    F --> G[Update Crew Schedules\nCloudMoyo Crew Management CCM]
+    G --> H{Schedule updated successfully?}
+    H -- Yes --> I[Monitor Crew Rest Periods\ntrackHOS-class HOS monitoring tools]
+    H -- No --> D
+  end
+
+  subgraph P4[Phase 4: Review Attendance]
+    I --> J[Review Attendance Records\nHASTUS]
+    J --> K{Attendance records complete?}
+    K -- Yes --> L[Adjust Schedules for Absences\nPS Technology PST]
+    K -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Pre-Departure Briefing]
+    L --> M{Absences adjusted?}
+    M -- Yes --> N[Conduct Pre-Departure Briefing\nNetControl]
+    M -- No --> J
+  end
+
+  subgraph P6[Phase 6: Monitor Departures and Performance]
+    N --> O[Monitor Train Departures\nI-ETMS]
+    O --> P{Train departed successfully?}
+    P -- Yes --> Q[Review Crew Performance\nCloudMoyo Crew Management CCM]
+    P -- No --> N
+    Q --> R{Performance reviewed?}
+    R -- Yes --> S[Update Crew Training Records\nEHMS Equipment Health Management System]
+    R -- No --> Hold3([Hold])
+  end
+
+  subgraph P7[Phase 7: Report Metrics]
+    S --> T{Training records updated?}
+    T -- Yes --> U[Report Crew Management Metrics\nCloudMoyo Crew Management CCM]
+    T -- No --> L
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
