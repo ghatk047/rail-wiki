@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Inspection Notice]
+    A([Start]) --> B[Receive Inspection Notice\nNetControl]
+    B --> C{Inspection notice received?}
+    C -- No --> B
+    C -- Yes --> D[Assign Inspection Team\nUmler]
+  end
+
+  subgraph P2[Phase 2: Conduct Initial Inspection]
+    D --> E[Conduct Initial Inspection\nWabtrax]
+    E --> F{FRA defect found?}
+    F -- No --> G[Review Inspection Report\nC3RS]
+    F -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Implement Corrective Actions]
+    G --> H[Implement Corrective Actions\nNetControl]
+    H --> I{Corrective actions implemented?}
+    I -- No --> H
+    I -- Yes --> J[Verify Corrective Actions\nNetControl]
+  end
+
+  subgraph P4[Phase 4: Notify FRA of Compliance]
+    J --> K{Verification passed?}
+    K -- No --> Hold2([Hold])
+    K -- Yes --> L[Notify FRA of Compliance\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Update Safety Training Programs]
+    L --> M[Update Safety Training Programs\nUmler]
+    M --> N{Training updated?}
+    N -- No --> M
+    N -- Yes --> O[Monitor Compliance Post-Inspection\nNetControl]
+  end
+
+  subgraph P6[Phase 6: Review and Improve Processes]
+    O --> P{Compliance monitored?}
+    P -- No --> Hold3([Hold])
+    P -- Yes --> Q[Report to Management\nNetControl]
+    Q --> R[Review and Improve Processes\nNetControl]
+    R --> S{Process improvements reviewed?}
+    S -- No --> R
+    S -- Yes --> T[Execute Process Improvements\nNetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
