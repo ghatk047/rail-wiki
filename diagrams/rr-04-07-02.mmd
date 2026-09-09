@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Assessment]
+    A([Start]) --> B[Initial Assessment\\PS Technology PST]
+    B --> C{Assessment Passed?}
+    C -- No --> D[Re-assessment Required\\PS Technology PST]
+    C -- Yes --> E[Training Plan Development\\HASTUS]
+  end
+
+  subgraph P2[Phase 2: Technical Training]
+    E --> F[Technical Training\\EHMS Equipment Health Management System]
+    F --> G{Training Complete?}
+    G -- No --> H[Re-train Required\\EHMS Equipment Health Management System]
+    G -- Yes --> I[Operational Familiarization\\NetControl service design use]
+  end
+
+  subgraph P3[Phase 3: Safety Briefing]
+    I --> J[Safety Briefing\\I-ETMS Interoperable Electronic Train Management System]
+    J --> K{Briefing Acknowledged?}
+    K -- No --> L[Re-brief Required\\I-ETMS Interoperable Electronic Train Management System]
+    K -- Yes --> M[Regulatory Compliance Review\\GCOR General Code of Operating Rules]
+  end
+
+  subgraph P4[Phase 4: Final Evaluation]
+    M --> N[Final Evaluation\\CloudMoyo Crew Management CCM]
+    N --> O{Evaluation Passed?}
+    O -- No --> P[Re-evaluation Required\\CloudMoyo Crew Management CCM]
+    O -- Yes --> Q[Documentation Update\\TRAIN II Tele Rail Automated Information Network Phase 2]
+  end
+
+  subgraph P5[Phase 5: Feedback Collection]
+    Q --> R[Feedback Collection\\HASTUS]
+    R --> S{Feedback Collected?}
+    S -- No --> T[Re-collect Feedback\\HASTUS]
+    S -- Yes --> U[Continuous Improvement Plan\\PS Technology PST]
+  end
+
+  subgraph P6[Phase 6: Performance Monitoring and Review]
+    U --> V[Performance Monitoring\\trackHOS-class HOS monitoring tools]
+    V --> W{Performance Within Limits?}
+    W -- No --> X[Adjustments Required\\NetControl service design use]
+    W -- Yes --> Y[Review and Adjustments\\NetControl service design use]
+    Y --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
