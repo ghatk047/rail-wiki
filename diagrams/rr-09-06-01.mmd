@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Request]
+    A([Start]) --> B[Receive Shipment Request\nUPGo; EMP and UMAX container fleets]
+    B --> C{Shipment valid?}
+    C -- No --> BadOrder([Bad Order])
+    C -- Yes --> D[Allocate Chassis/Container\nUPGo; EMP and UMAX container fleets]
+  end
+
+  subgraph P2[Phase 2: Prepare for Loading]
+    D --> E[Prepare for Loading\nDriver scanning / gate technology generic 'Yard System']
+    E --> F{Loading preparations complete?}
+    F -- No --> E
+    F -- Yes --> G[Conduct Pre-Departure Inspection\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P3[Phase 3: Dispatch Train]
+    G --> H{Pre-departure inspection passed?}
+    H -- No --> G
+    H -- Yes --> I[Dispatch Train\nNetControl service design use; I-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P4[Phase 4: Monitor Train Movement]
+    I --> J[Monitor Train Movement\nI-ETMS Interoperable Electronic Train Management System]
+    J --> K{Train on schedule?}
+    K -- No --> Hold1([Hold])
+    K -- Yes --> L[Receive Arrival Notification\nDriver scanning / gate technology generic 'Yard System']
+  end
+
+  subgraph P5[Phase 5: Unload Chassis/Container]
+    L --> M[Unload Chassis/Container\nCrane/Lift Operator; Driver scanning / gate technology generic 'Yard System']
+    M --> N{Unloading complete?}
+    N -- No --> M
+    N -- Yes --> O[Conduct Post-Arrival Inspection\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P6[Phase 6: Release and Notify]
+    O --> P{Post-arrival inspection passed?}
+    P -- No --> O
+    P -- Yes --> Q[Release Chassis/Container\nUPGo; EMP and UMAX container fleets]
+    Q --> R[Update Records\nUmler Universal Machine Language Equipment Register; CHARM Car Hire Accounting Rate Master]
+    R --> S[Notify BCO/Drayman\nup.com customer portal; AskRail]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
