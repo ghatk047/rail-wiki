@@ -1,0 +1,75 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Threat Identification]
+    A([Start]) --> B[Identify Cybersecurity Threats\\nCybersecurity - 'secure-by-design' approach unbranded]
+    B --> C{Threat Identified?}
+    C -- Yes --> D[Develop Security Policies\\nEnterprise Architect / Platform Owner]
+    C -- No --> E[Monitor System Performance\\nNetControl, I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Policy Development and Implementation]
+    D --> F{Policies Developed?}
+    F -- Yes --> G[Implement Security Measures\\nEnterprise Architect / Platform Owner]
+    F -- No --> H([Hold])
+  end
+
+  subgraph P3[Phase 3: Audit and Review]
+    G --> I[Conduct Security Audits\\nCIO]
+    I --> J{Audit Completed?}
+    J -- Yes --> K[Review and Update Policies\\nEnterprise Architect / Platform Owner]
+    J -- No --> L([Hold])
+  end
+
+  subgraph P4[Phase 4: Training and Monitoring]
+    K --> M{Policies Updated?}
+    M -- Yes --> N[Train Staff on Cybersecurity\\nCIO]
+    M -- No --> O([Reject])
+  end
+
+  subgraph P5[Phase 5: Incident Handling]
+    N --> P[Monitor System Performance\\nNetControl, I-ETMS]
+    P --> Q{Incident Detected?}
+    Q -- Yes --> R[Report Security Incidents\\nCIO]
+    Q -- No --> S([End])
+  end
+
+  subgraph P6[Phase 6: Investigation and Improvement]
+    R --> T{Incident Reported?}
+    T -- Yes --> U[Investigate and Resolve Incidents\\nEnterprise Architect / Platform Owner]
+    T -- No --> V([Escalate])
+    U --> W{Incident Resolved?}
+    W -- Yes --> X[Update Security Measures\\nEnterprise Architect / Platform Owner]
+    W -- No --> Y([Hold])
+  end
+
+  subgraph P7[Phase 7: Process Review and Documentation]
+    X --> Z{Measures Updated?}
+    Z -- Yes --> AA[Review and Improve Processes\\nCIO]
+    Z -- No --> AB([Reject])
+  end
+
+  subgraph P8[Phase 8: Communication]
+    AA --> AC[Document and Communicate Changes\\nEnterprise Architect / Platform Owner]
+    AC --> AD{Changes Documented?}
+    AD -- Yes --> AE([End])
+    AD -- No --> AF([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AE fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style AF fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Z fill:#c8791a,color:#fff,stroke:#c8791a
+  style AD fill:#c8791a,color:#fff,stroke:#c8791a
