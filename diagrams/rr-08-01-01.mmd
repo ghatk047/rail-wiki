@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Inspection]
+    A([Start]) --> B[Initial Inspection\\nAskRail]
+    B --> C{Inspection Passed?}
+    C -- Yes --> D[Documentation Review\\nTRANSCAER]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Documentation Review]
+    D --> E{Review Approved?}
+    E -- Yes --> F[Placarding Application\\nUmler]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Placarding Application]
+    F --> G{Placarding Applied Correctly?}
+    G -- Yes --> H[Hazmat Acceptance Decision\\nNetControl]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Hazmat Acceptance]
+    H --> I{Acceptance Approved?}
+    I -- Yes --> J[Update Hazmat Database\\nTRANSCAER]
+    I -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Update and Notify]
+    J --> K[Notify Emergency Response Coordinator\\nSERTC]
+    K --> L[Prepare for Transportation\\nI-ETMS]
+  end
+
+  subgraph P6[Phase 6: Final Checks]
+    L --> M[Conduct Pre-Departure Inspection\\nEHMS]
+    M --> N{Inspection Passed?}
+    N -- Yes --> O[Final Acceptance Check\\nTRANSCAER]
+    N -- No --> Hold3([Hold])
+    O --> P{Acceptance Approved?}
+    P -- Yes --> Q[Update Transportation Records\\nNetControl]
+    P -- No --> Rej3([Reject])
+    Q --> R[Notify Customer\\nup.com customer portal]
+    R --> S[Close Hazmat Shipment Record\\nTRANSCAER]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
