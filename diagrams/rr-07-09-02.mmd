@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Regulatory Filings Process\\nGCOR]
+    B --> C{Data available?}
+    C -- No --> B
+    C -- Yes --> D[Review and Compile Data\\nTRAIN II, EHMS]
+  end
+
+  subgraph P2[Phase 2: Internal Review]
+    D --> E[Conduct Internal Audit\\nI-ETMS, Umler]
+    E --> F{Audit Passed?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Prepare Regulatory Filings\\nNetControl, PS Technology]
+  end
+
+  subgraph P3[Phase 3: Approval and Submission]
+    G --> H[Review and Approve Filings\\nGCOR, C3RS]
+    H --> I{Approval Given?}
+    I -- No --> Hold1
+    I -- Yes --> J[Submit Filings to STB\\nNetControl, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Monitoring and Response]
+    J --> K[Monitor STB Response\\nNetControl, I-ETMS]
+    K --> L{Response Received?}
+    L -- No --> K
+    L -- Yes --> M[Address STB Comments\\nGCOR, C3RS]
+  end
+
+  subgraph P5[Phase 5: Resubmission and Finalization]
+    M --> N{Comments Addressed?}
+    N -- No --> J
+    N -- Yes --> O[Resubmit Revised Filings\\nNetControl, I-ETMS]
+    O --> P[Finalize and Archive Records\\nTRAIN II, CHARM]
+  end
+
+  subgraph P6[Phase 6: Policy Review and Reporting]
+    P --> Q[Review and Update Internal Policies\\nGCOR, C3RS]
+    Q --> R{Policies Updated?}
+    R -- No --> Hold1
+    R -- Yes --> S[Report on Regulatory Compliance\\nNetControl, I-ETMS]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
