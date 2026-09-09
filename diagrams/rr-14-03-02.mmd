@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: New Hire Notification]
+    A([Start]) --> B[Notify new hire\\TEY Train, Engine Yard New Hire Training program]
+  end
+
+  subgraph P2[Phase 2: Initial Orientation]
+    B --> C[Conduct initial orientation\\Mobile classroom training trailers]
+  end
+
+  subgraph P3[Phase 3: Labor Agreement Review]
+    C --> D[Review labor agreement\\Umler Universal Machine Language Equipment Register]
+    D --> E{Agreement reviewed?}
+    E -- Yes --> F[Proceed to safety training\\Mobile classroom training trailers]
+    E -- No --> Hold1([Hold])
+  end
+
+  subgraph P4[Phase 4: Safety Training]
+    F --> G[Conduct safety training\\Mobile classroom training trailers]
+    G --> H{Safety training completed?}
+    H -- Yes --> I[Proceed to operational training\\Mobile classroom training trailers]
+    H -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Operational Training]
+    I --> J[Conduct operational training\\Mobile classroom training trailers]
+    J --> K{Operational training completed?}
+    K -- Yes --> L[Perform performance evaluation\\TRAIN II Tele Rail Automated Information Network Phase 2]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Onboarding Completion and Review]
+    L --> M[Review documentation\\Umler Universal Machine Language Equipment Register]
+    M --> N{Documentation reviewed?}
+    N -- Yes --> O[Complete onboarding\\TEY Train, Engine Yard New Hire Training program]
+    N -- No --> Hold4([Hold])
+    O --> P[Conduct post-onboarding review\\TRAIN II Tele Rail Automated Information Network Phase 2]
+    P --> Q{Post-onboarding review completed?}
+    Q -- Yes --> R[Provide feedback loop\\TEY Train, Engine Yard New Hire Training program]
+    Q -- No --> Hold5([Hold])
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
