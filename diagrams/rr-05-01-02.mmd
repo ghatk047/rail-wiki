@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Defect Detection]
+    A([Start]) --> B[Defect Detection Notification\\Wayside defect detector network]
+    B --> C{FRA defect found?}
+    C -- No --> D[Continue normal operation]
+    C -- Yes --> E[Locomotive Removal from Service\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    E --> F[Initial Assessment\\Umler]
+    F --> G{Interchange accepted?}
+    G -- No --> Hold1([Hold])
+    G -- Yes --> H[Locomotive Arrival at Shop\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Inspection and Diagnostics]
+    H --> I[Initial Inspection and Diagnostics\\EHMS]
+    I --> J{Inspection passed?}
+    J -- No --> I
+    J -- Yes --> K[Repair Planning and Scheduling\\Umler]
+  end
+
+  subgraph P4[Phase 4: Repair Execution]
+    K --> L[Component Replacement and Repair\\Wabtec Modular Control Architecture]
+    L --> M{Repair complete?}
+    M -- No --> L
+    M -- Yes --> N[Final Inspection and Testing\\EHMS]
+  end
+
+  subgraph P5[Phase 5: Air Brake Test]
+    N --> O[Air Brake Test\\I-ETMS]
+    O --> P{Air brake test passed?}
+    P -- No --> Q[Escalate for further inspection]
+    P -- Yes --> R[Return to Service\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Post-Service Monitoring and Improvement]
+    R --> S[Post-Service Monitoring\\EHMS]
+    S --> T{Monitoring indicates issues?}
+    T -- No --> U[Continuous Improvement\\Umler]
+    T -- Yes --> V[Re-evaluate repair plan]
+    V --> W[Repair Planning and Scheduling\\Umler]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
