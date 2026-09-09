@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Derailment Notification]
+    A([Start]) --> B[Derailment Notification and Initial Assessment\\Wabtrax]
+    B --> C{FRA defect found?}
+    C -- Yes --> D[Report to FRA Automated Track Inspection Program\\NetControl]
+    C -- No --> E[Notify Train Dispatcher\\I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Safety Zone Establishment]
+    D --> F[Safety Zone Establishment\\NetControl]
+    F --> G{Safety zone established?}
+    G -- Yes --> H[Derailment Site Inspection\\Track geometry car]
+    G -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Track Damage Assessment]
+    H --> I[Track Damage Assessment\\RailAI]
+    I --> J{Damage assessed?}
+    J -- Yes --> K[Resource Allocation\\Umler]
+    J -- No --> H
+  end
+
+  subgraph P4[Phase 4: Track Repair Execution]
+    K --> L[Track Repair Execution\\NetControl]
+    L --> M{Repair executed?}
+    M -- Yes --> N[Quality Control Inspection\\Track geometry car]
+    M -- No --> K
+  end
+
+  subgraph P5[Phase 5: Final Safety Check]
+    N --> O[Final Safety Check\\NetControl]
+    O --> P{Safety check passed?}
+    P -- Yes --> Q[Resumption of Train Operations\\I-ETMS]
+    P -- No --> Hold2([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Restoration Review and Closeout]
+    Q --> R[Post-Restoration Review\\Umler]
+    R --> S{Review complete?}
+    S -- Yes --> T[Update Maintenance Records\\EHMS]
+    S -- No --> O
+    T --> U[Closeout and Documentation\\NetControl]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
