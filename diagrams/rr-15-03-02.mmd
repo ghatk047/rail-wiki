@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Review Existing Agreements]
+    A([Start]) --> B[Review existing labor agreements\nNetControl]
+    B --> C{Agreements up-to-date?}
+    C -- No --> D[Identify regulatory gaps\nI-ETMS]
+    C -- Yes --> E[Draft new labor agreements\nUmler]
+  end
+
+  subgraph P2[Phase 2: Identify Regulatory Gaps]
+    D --> F{Regulatory gaps identified?}
+    F -- No --> G[Conduct stakeholder meetings\nNetControl]
+    F -- Yes --> H[Draft new labor agreements\nUmler]
+  end
+
+  subgraph P3[Phase 3: Draft New Agreements]
+    E --> I{Agreements drafted?}
+    I -- No --> J[Draft new labor agreements\nUmler]
+    I -- Yes --> K[Conduct stakeholder meetings\nNetControl]
+  end
+
+  subgraph P4[Phase 4: Stakeholder Meetings]
+    K --> L{Stakeholder approval received?}
+    L -- No --> M[Draft new labor agreements\nUmler]
+    L -- Yes --> N[Finalize labor agreements\nPS Technology]
+  end
+
+  subgraph P5[Phase 5: Finalize Agreements]
+    N --> O{Agreements finalized?}
+    O -- No --> P[Conduct stakeholder meetings\nNetControl]
+    O -- Yes --> Q[Implement labor agreements\nI-ETMS]
+  end
+
+  subgraph P6[Phase 6: Monitor and Improve]
+    Q --> R[Monitor compliance\nNetControl]
+    R --> S{Compliance issues identified?}
+    S -- No --> T[Review and update agreements\nUmler]
+    S -- Yes --> U[Conduct training sessions\nPS Technology]
+    U --> V{Training completed?}
+    V -- No --> W[Conduct training sessions\nPS Technology]
+    V -- Yes --> X[Review and report on labor conditions\nNetControl]
+    X --> Y{Issues addressed?}
+    Y -- No --> Z[Address identified issues\nVP Network Planning Operations]
+    Y -- Yes --> AA[Continuous improvement\nNetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AA fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
