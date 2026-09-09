@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Review]
+    A([Start]) --> B[Hazmat Shipment Review\\nAskRail]
+    B --> C{Hazmat Declaration\nCompliant?}
+    C -- No --> Rej1([Reject])
+    C -- Yes --> D[Documentation Preparation\\nTRANSCAER]
+  end
+
+  subgraph P2[Phase 2: Placarding and Inspection]
+    D --> E[Placarding Application Review\\nUmler]
+    E --> F{Placard Valid?}
+    F -- No --> Rej2([Reject])
+    F -- Yes --> G[Hazmat Acceptance Decision\\nNetControl]
+  end
+
+  subgraph P3[Phase 3: Routing and Dispatch]
+    G --> H{Acceptance Approved?}
+    H -- No --> Rej1
+    H -- Yes --> I[Hazmat Shipment Routing\\nI-ETMS]
+    I --> J{Route Validated?}
+    J -- No --> D
+    J -- Yes --> K[Hazmat Shipment Dispatch\\nHarriman Dispatching Center HDC]
+  end
+
+  subgraph P4[Phase 4: Monitoring and Arrival]
+    K --> L[Hazmat Shipment Monitoring\\nWabtrax]
+    L --> M{Shipment Monitored?}
+    M -- No --> Rej3([Reject])
+    M -- Yes --> N[Hazmat Shipment Arrival Notification\\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Unloading and Final Inspection]
+    N --> O{Arrival Notified?}
+    O -- No --> L
+    O -- Yes --> P[Hazmat Shipment Unloading\\nPS Technology PST]
+    P --> Q[Hazmat Shipment Final Inspection\\nEHMS]
+    Q --> R{Inspection Passed?}
+    R -- No --> Rej4([Reject])
+    R -- Yes --> S[Hazmat Shipment Settlement\\nInterline Settlement System ISS]
+  end
+
+  subgraph P6[Phase 6: Closure and Reporting]
+    S --> T{Settlement Complete?}
+    T -- No --> Q
+    T -- Yes --> U[Hazmat Shipment Closure\\nTRANSCAER]
+    U --> V{Closure Reported?}
+    V -- No --> Rej5([Reject])
+    V -- Yes --> W([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej4 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
