@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Right-of-Way Issues]
+    A([Start]) --> B[Identify Right-of-Way Issues\\NetControl]
+    B --> C{Issue Identified?}
+    C -- No --> A
+    C -- Yes --> D[Assess Regulatory Compliance\\Umler, PS Technology]
+  end
+
+  subgraph P2[Phase 2: Assess Regulatory Compliance]
+    D --> E{Regulatory Compliant?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Plan Right-of-Way Resolution\\NetControl, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Plan Right-of-Way Resolution]
+    F --> G{Resolution Planned?}
+    G -- No --> D
+    G -- Yes --> H[Coordinate with Utilities\\NetControl, Umler]
+  end
+
+  subgraph P4[Phase 4: Coordinate with Utilities]
+    H --> I{Utilities Coordinated?}
+    I -- No --> Hold2([Hold])
+    I -- Yes --> J[Implement Right-of-Way Changes\\Track Supervisor, Assistant Foreman track]
+  end
+
+  subgraph P5[Phase 5: Implement Right-of-Way Changes]
+    J --> K{Changes Implemented?}
+    K -- No --> H
+    K -- Yes --> L[Conduct Post-Implementation Review\\Track Supervisor, Chief Engineer / VP Engineering]
+  end
+
+  subgraph P6[Phase 6: Monitor and Report]
+    L --> M{Review Complete?}
+    M -- No --> J
+    M -- Yes --> N[Update Right-of-Way Records\\Track Supervisor, Assistant Foreman track]
+    N --> O[Monitor Right-of-Way Compliance\\NetControl, I-ETMS]
+    O --> P{Compliance Monitored?}
+    P -- No --> Hold3([Hold])
+    P -- Yes --> Q[Report to Management\\Track Supervisor, Chief Engineer / VP Engineering]
+    Q --> R[Review and Adjust Plans\\Track Supervisor, Chief Engineer / VP Engineering]
+    R --> S{Plans Reviewed?}
+    S -- No --> N
+    S -- Yes --> T[Ensure Safety Compliance\\Track Supervisor, Signal Maintainer]
+    T --> U{Safety Compliant?}
+    U -- No --> Hold4([Hold])
+    U -- Yes --> V[Update Regulatory Compliance\\Chief Engineer / VP Engineering]
+    V --> W([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
