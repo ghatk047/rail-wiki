@@ -1,0 +1,64 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiate Inspection]
+    A([Start]) --> B[Initiate Inspection Schedule\\NetControl]
+    B --> C{Inspection schedule initiated?}
+    C -- Yes --> D[Deploy Track Geometry Car\\Track geometry car]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Data Collection]
+    D --> E[Analyze Raw Data\\RailAI]
+    E --> F{Data analysis complete?}
+    F -- Yes --> G[Review and Prioritize Issues\\Umler]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Repair Scheduling]
+    G --> H{Issues prioritized?}
+    H -- Yes --> I[Schedule Repairs\\NetControl]
+    H -- No --> E
+  end
+
+  subgraph P4[Phase 4: Conduct Repairs]
+    I --> J[Conduct Repairs\\Assistant Foreman track]
+    J --> K{Repairs complete?}
+    K -- Yes --> L[Verify Repairs\\Track geometry car]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Update Records]
+    L --> M{Repairs verified?}
+    M -- Yes --> N[Update Maintenance Records\\Umler]
+    M -- No --> J
+  end
+
+  subgraph P6[Phase 6: Final Reporting and Notification]
+    N --> O[Generate Final Report\\RailAI]
+    O --> P{Report generated?}
+    P -- Yes --> Q[Review Final Report\\NetControl]
+    P -- No --> Hold4([Hold])
+    Q --> R{Report reviewed?}
+    R -- Yes --> S[Update Regulatory Compliance Records\\Umler]
+    R -- No --> O
+    S --> T[Notify Stakeholders\\NetControl]
+    T --> U{Stakeholders notified?}
+    U -- Yes --> V([End])
+    U -- No --> Hold5([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
