@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Manifest Receipt]
+    A([Start]) --> B[Receive Manifest\nUmler]
+    B --> C{Manifest Valid?}
+    C -- Yes --> D[Inspect Cars\nEHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Car Inspection]
+    D --> E{Inspection Passed?}
+    E -- Yes --> F[Update Umler Record\nUmler]
+    E -- No --> Reject1([Reject])
+  end
+
+  subgraph P3[Phase 3: Preparation for Transfer]
+    F --> G[Prepare for Transfer\nNetControl]
+    G --> H{Transfer Ready?}
+    H -- Yes --> I[Conduct Air Brake Test\nWabtrax]
+    H -- No --> D
+  end
+
+  subgraph P4[Phase 4: Air Brake Test]
+    I --> J{Air Brake Test Passed?}
+    J -- Yes --> K[Transfer Cars\nI-ETMS]
+    J -- No --> Reject2([Reject])
+  end
+
+  subgraph P5[Phase 5: Account Settlement]
+    K --> L[Settle Accounts\nInterline Settlement System ISS / SSDX]
+    L --> M{Settlement Complete?}
+    M -- Yes --> N[Update CHARM Record\nCHARM]
+    M -- No --> L
+  end
+
+  subgraph P6[Phase 6: Final Review and Closeout]
+    N --> O[Review and Adjust\nTRAIN II]
+    O --> P{Review Approved?}
+    P -- Yes --> Q[Final Inspection\nEHMS]
+    P -- No --> Hold2([Hold])
+    Q --> R{Final Inspection Passed?}
+    R -- Yes --> S[Update Umler Record Again\nUmler]
+    R -- No --> Reject3([Reject])
+    S --> T[Close Process\nInterline Settlement System ISS / SSDX]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Reject2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Reject3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
