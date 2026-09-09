@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Order Receipt and Planning]
+    A([Start]) --> B[Receive order request\\nUPGo]
+    B --> C{Order valid?}
+    C -- No --> BadOrder([Bad Order])
+    C -- Yes --> D[Allocate container\\nEMP and UMAX container fleets]
+  end
+
+  subgraph P2[Phase 2: Container Allocation]
+    D --> E{Containers available?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Prepare loading plan\\nICTF Intermodal Container Transfer Facility]
+  end
+
+  subgraph P3[Phase 3: Loading Plan Preparation]
+    F --> G{Plan approved?}
+    G -- No --> D
+    G -- Yes --> H[Load containers\\nCrane/Lift Operator]
+  end
+
+  subgraph P4[Phase 4: Container Loading]
+    H --> I{Loading complete?}
+    I -- No --> H
+    I -- Yes --> J[Inspect train\\nCar Inspector Carman]
+  end
+
+  subgraph P5[Phase 5: Train Inspection]
+    J --> K{Train inspection passed?}
+    K -- No --> Hold2([Hold])
+    K -- Yes --> L[Prepare train departure\\nYardmaster]
+  end
+
+  subgraph P6[Phase 6: Departure and Post-Departure]
+    L --> M{Train ready to depart?}
+    M -- No --> J
+    M -- Yes --> N[Dispatch train\\nTrain Dispatcher]
+    N --> O[Monitor post-departure\\nControl Operator]
+    O --> P{Post-departure monitoring complete?}
+    P -- No --> O
+    P -- Yes --> Q[Prepare settlement\\nBCO]
+    Q --> R[Final documentation\\nCHARM Car Hire Accounting Rate Master]
+    R --> S[Notify customer\\navp.com customer portal]
+    S --> T[Review process\\nService Design / Network Planning Analyst]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
