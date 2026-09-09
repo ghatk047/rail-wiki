@@ -1,0 +1,63 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Signal Design]
+    A([Start]) --> B[Signal Design Review\\NetControl]
+    B --> C{Design Approved?}
+    C -- Yes --> D[Obtain Regulatory Approval\\NetControl]
+    C -- No --> Hold1([Hold])
+    D --> E{Approval Received?}
+    E -- Yes --> Procurement[Procurement of Signal Components\\Umler]
+    E -- No --> Hold2([Hold])
+  end
+
+  subgraph P2[Phase 2: Site Preparation]
+    Procurement --> F[Site Preparation and Layout\\NetControl]
+    F --> G{Preparation Complete?}
+    G -- Yes --> Installation[Signal Installation\\I-ETMS]
+    G -- No --> Hold3([Hold])
+  end
+
+  subgraph P3[Phase 3: Signal Testing]
+    Installation --> H[Signal Testing\\Wabtrax]
+    H --> I{Test Passed?}
+    I -- Yes --> Calibration[Signal Calibration\\I-ETMS]
+    I -- No --> Rej1([Reject])
+  end
+
+  subgraph P4[Phase 4: Final Inspection]
+    Calibration --> J[Final Inspection and Certification\\NetControl]
+    J --> K{Inspection Passed?}
+    K -- Yes --> UpdateRecords[Update Maintenance Records\\EHMS]
+    K -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Crew Training]
+    UpdateRecords --> L[Training for Crews\\NetControl]
+    L --> M{Crew Trained?}
+    M -- Yes --> Monitoring[Post-Installation Monitoring\\Wabtrax]
+    M -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Activation]
+    Monitoring --> N[Final Approval and Activation\\NetControl]
+    N --> O{Activation Approved?}
+    O -- Yes --> L1([End])
+    O -- No --> Rej2([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
