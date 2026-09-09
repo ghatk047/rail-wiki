@@ -1,0 +1,49 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Planning Process\\NetControl / TCS cutover precedent]
+    B --> C{Planning approved?}
+    C -- No --> B
+    C -- Yes --> D[Define Service Objectives\\NetControl service design use]
+  end
+
+  subgraph P2[Phase 2: Schedule Development]
+    D --> E[Develop Train Schedules\\NetControl]
+    E --> F{Schedules feasible?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Review and Adjust Schedules\\I-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P3[Phase 3: Safety Assurance]
+    G --> H[Conduct Safety Audits\\EHMS Equipment Health Management System]
+    H --> I{Safety audit passed?}
+    I -- No --> E
+    I -- Yes --> J[Update Operating Rules\\Umler]
+  end
+
+  subgraph P4[Phase 4: Implementation]
+    J --> K[Implement Service Assurance Measures\\NetControl]
+    K --> L{Measures effective?}
+    L -- No --> H
+    L -- Yes --> M[Monitor Performance\\Wabtrax]
+  end
+
+  subgraph P5[Phase 5: Optimization]
+    M --> N[Review and Optimize\\NetControl service design use]
+    N --> O{Optimization successful?}
+    O -- No --> K
+    O -- Yes --> P[Finalize Operating Plan\\NetControl / TCS cutover precedent]
+  end
+
+  subgraph P6[Phase 6: Completion]
+    P --> Q([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
