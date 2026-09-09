@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Plan Inspection]
+    A([Start]) --> B[Plan Inspection Route\\NetControl]
+    B --> C{Route Approved?}
+    C -- Yes --> D[Assign Crew\\PS Technology PST]
+    C -- No --> Hold1([Hold])
+    D --> E{Crew Assigned?}
+    E -- No --> D
+    E -- Yes --> F[Prepare Inspection Tools\\Umler]
+  end
+
+  subgraph P2[Phase 2: Conduct Visual Inspection]
+    F --> G[Conduct Visual Inspection\\Wabtrax]
+    G --> H{Defects Found?}
+    H -- No --> I[Review Inspection Data\\NetControl]
+    H -- Yes --> J[Report Defects to Maintenance Team\\PS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Schedule and Monitor Maintenance]
+    I --> K{Data Reviewed?}
+    K -- No --> G
+    K -- Yes --> L[Schedule Maintenance Work\\NetControl]
+    J --> M{Report Sent?}
+    M -- No --> J
+    M -- Yes --> N[Monitor Maintenance Progress\\NetControl]
+  end
+
+  subgraph P4[Phase 4: Verify Defect Resolution]
+    N --> O{Maintenance Scheduled?}
+    O -- No --> L
+    O -- Yes --> P[Verify Defect Resolution\\Wabtrax]
+    P --> Q{Defects Resolved?}
+    Q -- No --> G
+    Q -- Yes --> R[Update Maintenance Records\\Umler]
+  end
+
+  subgraph P5[Phase 5: Close Inspection Case]
+    R --> S{Records Updated?}
+    S -- No --> P
+    S -- Yes --> T[Close Inspection Case\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
