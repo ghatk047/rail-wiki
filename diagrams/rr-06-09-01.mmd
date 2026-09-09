@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Feasibility Study]
+    A([Start]) --> B[Conduct feasibility study\\NetControl service design use]
+    B --> C{Study approved?}
+    C -- No --> A
+    C -- Yes --> D[Initiate design phase\\Umler]
+  end
+
+  subgraph P2[Phase 2: Design Phase Initiation]
+    D --> E[Conduct environmental impact assessment\\NetControl service design use]
+    E --> F{Assessment approved?}
+    F -- No --> D
+    F -- Yes --> G[Prepare construction bid\\Umler]
+  end
+
+  subgraph P3[Phase 3: Construction Bid Preparation]
+    G --> H[Award contract\\Umler]
+    H --> I{Contract awarded?}
+    I -- No --> G
+    I -- Yes --> J[Monitor construction\\Wabtrax, RailAI Tetra Tech]
+  end
+
+  subgraph P4[Phase 4: Construction Monitoring]
+    J --> K[Conduct quality assurance inspection\\FRA Automated Track Inspection Program ATIP, UP automated/autonomous track inspection program unbranded]
+    K --> L{Inspection passed?}
+    L -- No --> J
+    L -- Yes --> M[Test and commission\\I-ETMS Interoperable Electronic Train Management System, PTC Back Office Server BOS]
+  end
+
+  subgraph P5[Phase 5: Testing and Commissioning]
+    M --> N[Train and document\\NetControl, Umler]
+    N --> O{Training complete?}
+    O -- No --> M
+    O -- Yes --> P[Monitor post-commissioning\\Wabtrax, RailAI Tetra Tech]
+  end
+
+  subgraph P6[Phase 6: Post-Commissioning Monitoring]
+    P --> Q[Review and optimize performance\\NetControl, Umler]
+    Q --> R{Performance reviewed?}
+    R -- No --> P
+    R -- Yes --> S[Close project\\Umler]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
