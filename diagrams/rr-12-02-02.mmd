@@ -1,0 +1,73 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Schedule Reception]
+    A([Start]) --> B[Receive Train Schedule\nNetControl]
+    B --> C{Schedule within\noperational limits?}
+    C -- No --> Hold1([Hold])
+    C -- Yes --> D[Verify Train Schedule Compliance\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Compliance Verification]
+    D --> E{Compliance verified?}
+    E -- No --> Rej1([Reject])
+    E -- Yes --> F[Assign Crew and Equipment\nPS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Crew and Equipment Assignment]
+    F --> G{Crew and equipment assigned?}
+    G -- No --> F
+    G -- Yes --> H[Initiate Air Brake Test\nEHMS Equipment Health Management System]
+  end
+
+  subgraph P4[Phase 4: Air Brake Test]
+    H --> I{Air brake test passed?}
+    I -- No --> Rej2([Reject])
+    I -- Yes --> J[Monitor Train Movement\nNetControl]
+  end
+
+  subgraph P5[Phase 5: Terminal Operations Update]
+    J --> K[Update Terminal Operations\nNetControl]
+    K --> L{Terminal operations updated?}
+    L -- No --> K
+    L -- Yes --> M[Conduct Safety Audit\nCybersecurity — 'secure-by-design' approach unbranded]
+  end
+
+  subgraph P6[Phase 6: Review and Improvement]
+    M --> N{Safety audit passed?}
+    N -- No --> Rej3([Reject])
+    N -- Yes --> O[Review and Adjust Schedule\nNetControl]
+    O --> P{Schedule adjusted?}
+    P -- No --> O
+    P -- Yes --> Q[Implement Adjusted Schedule\nNetControl]
+    Q --> R{Adjusted schedule implemented?}
+    R -- No --> Q
+    R -- Yes --> S[Monitor and Report Performance\nNetControl]
+    S --> T{Performance within limits?}
+    T -- No --> Rej4([Reject])
+    T -- Yes --> U[Update Interline Settlements\nInterline Settlement System ISS / Switching Settlement Data Exchange SSDX]
+    U --> V{Settlements updated?}
+    V -- No --> U
+    V -- Yes --> W[Review and Improve Processes\nNetControl service design use]
+    W --> X{Processes reviewed?}
+    X -- No --> W
+    X -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
