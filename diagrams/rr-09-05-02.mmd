@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Request]
+    A([Start]) --> B[Receive Shipment Request\nUPGo]
+    B --> C{Shipment within\nterminal capacity?}
+    C -- No --> D[Adjust Terminal Capacity\nUPGo]
+    C -- Yes --> E[Schedule Appointment\nUPGo]
+  end
+
+  subgraph P2[Phase 2: Update Yard System]
+    E --> F[Update Yard System\nYard System]
+    F --> G{Update successful?}
+    G -- No --> H([Hold])
+    G -- Yes --> I[Notify BCO and Stakeholders\nUPGo]
+  end
+
+  subgraph P3[Phase 3: Monitor Appointment Progress]
+    I --> J[Monitor Appointment Progress\nUPGo]
+    J --> K{Appointment on track?}
+    K -- No --> L[Adjust Terminal Capacity if Necessary\nUPGo]
+    K -- Yes --> M[Coordinate with Yard Operations\nYard System]
+  end
+
+  subgraph P4[Phase 4: Conduct Final Checks]
+    M --> N[Conduct Final Checks\nUPGo]
+    N --> O{Checks passed?}
+    O -- No --> P([Reject])
+    O -- Yes --> Q[Release Container for Delivery\nYard System]
+  end
+
+  subgraph P5[Phase 5: Update Terminal Records]
+    Q --> R[Update Terminal Records\nUPGo]
+    R --> S{Records updated successfully?}
+    S -- No --> T([Escalate])
+    S -- Yes --> U[Review and Improve Process\nUPGo]
+  end
+
+  subgraph P6[Phase 6: End Process]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
