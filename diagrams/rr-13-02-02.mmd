@@ -1,0 +1,64 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Yardmaster Notification\\Umler]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Freight Car Inventory Update]
+    D --> E[Freight Car Inventory Update\\Umler]
+    E --> F{Inventory Updated Successfully?}
+    F -- Yes --> G[Freight Bill Generation\\TRAIN II]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Freight Bill Generation]
+    G --> H{Freight Bill Generated Correctly?}
+    H -- Yes --> I[Fuel Surcharge Calculation\\Fuel surcharge program]
+    H -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Fuel Surcharge Calculation]
+    I --> J{Fuel Surcharge Calculated?}
+    J -- Yes --> K[Freight Bill Review\\TRAIN II]
+    J -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Freight Bill Review]
+    K --> L{Freight Bill Approved?}
+    L -- Yes --> M[Freight Bill Dispatch\\NetControl]
+    L -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Payment Collection and Accounting]
+    M --> N[Payment Collection\\up.com portal]
+    N --> O{Payment Received?}
+    O -- Yes --> P[Revenue Accounting Update\\TRAIN II]
+    O -- No --> Hold6([Hold])
+    P --> Q[Interline Settlement\\ISS]
+    Q --> R[Audit and Compliance Review\\TRAIN II]
+    R --> S{Compliance Passed?}
+    S -- Yes --> T[Exception Handling\\TRAIN II]
+    S -- No --> Reject1([Reject])
+    T --> U[Reporting and Analysis\\TRAIN II]
+    U --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
