@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Gate Access Request\\UPGo]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Gate Access Request]
+    D --> E{Access Approved?}
+    E -- Yes --> F[Container Verification\\EMP and UMAX container fleets]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Container Verification]
+    F --> G{Verification Passed?}
+    G -- Yes --> H[Container Unloading\\EMP and UMAX container fleets]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Container Unloading]
+    H --> I{Unloading Complete?}
+    I -- Yes --> J[Container Storage Assignment\\UPGo]
+    I -- No --> H
+  end
+
+  subgraph P5[Phase 5: Container Storage Assignment]
+    J --> K{Storage Assigned?}
+    K -- Yes --> L[Container Loading\\EMP and UMAX container fleets]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Gate Exit]
+    L --> M{Loading Complete?}
+    M -- Yes --> N[Train Departure Notification\\NetControl]
+    M -- No --> L
+    N --> O[Container Documentation\\TRAIN II]
+    O --> P[Container Security Check\\C-TPAT]
+    P --> Q{Security Check Passed?}
+    Q -- Yes --> R[Final Gate Exit\\UPGo]
+    Q -- No --> Rej2([Reject])
+    R --> S[Container Status Update\\UPGo]
+    S --> T[Post-Departure Review\\UPGo]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
