@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Gate Access Request\\Driver scanning / gate technology]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Gate Access]
+    D --> E{BCO Approval?}
+    E -- Yes --> F[Train Unloading\\EMP and UMAX container fleets]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Container Inspection]
+    F --> G[Container Inspection\\EHMS]
+    G --> H{Inspection Passed?}
+    H -- Yes --> I[Container Repositioning\\EMP and UMAX container fleets]
+    H -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Train Loading]
+    I --> J[Train Loading\\EMP and UMAX container fleets]
+    J --> K{Loading Complete?}
+    K -- Yes --> L[Train Departure Notification\\NetControl]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Gate Exit]
+    L --> M[Gate Exit Request\\Driver scanning / gate technology]
+    M --> N{BCO Approval?}
+    N -- Yes --> O[Container Tracking Update\\TRAIN II]
+    N -- No --> Rej2([Reject])
+  end
+
+  subgraph P6[Phase 6: Post-Departure Review]
+    O --> P[Post-Departure Review\\Umler]
+    P --> Q{Review Passed?}
+    Q -- Yes --> R([End])
+    Q -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+
+  Hold2 --> F
+  Hold3 --> J
+  Hold4 --> O
