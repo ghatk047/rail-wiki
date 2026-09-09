@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Inspection]
+    A([Start]) --> B[Initial Inspection Trigger\\Wabtrax, FRA Automated Track Inspection Program ATIP]
+    B --> C{FRA defect found?}
+    C -- Yes --> D[Prioritization and Task Assignment\\NetControl, Umler]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Pre-Maintenance]
+    D --> E[Pre-Maintenance Inspection\\NetControl, Umler]
+    E --> F{Inspection passed?}
+    F -- Yes --> G[Maintenance Execution\\Track Supervisor, Assistant Foreman track]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Post-Maintenance]
+    G --> H[Post-Maintenance Inspection\\NetControl, Umler]
+    H --> I{Inspection passed?}
+    I -- Yes --> J[Quality Assurance Review\\Chief Engineer / VP Engineering]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Documentation and Reporting]
+    J --> K[Maintenance Documentation Update\\Track Supervisor, Umler, CHARM]
+    K --> L[Record Keeping and Reporting\\Track Supervisor, Umler, CHARM]
+    L --> M{Documentation complete?}
+    M -- Yes --> N[Budget and Resource Allocation\\VP Network Planning Operations]
+    M -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Continuous Improvement]
+    N --> O[Continuous Improvement Review\\Chief Engineer / VP Engineering]
+    O --> P{Review complete?}
+    P -- Yes --> Q[Training and Development\\Track Supervisor, Assistant Foreman track]
+    P -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Performance Monitoring]
+    Q --> R[Performance Monitoring and Reporting\\Chief Engineer / VP Engineering]
+    R --> S{Monitoring complete?}
+    S -- Yes --> T([End])
+    S -- No --> Hold6([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
