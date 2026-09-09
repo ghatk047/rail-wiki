@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Train on schedule?}
+    C -- Yes --> D[Car Hire Accounting Update\\CHARM]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Equipment Registration Review]
+    D --> E[Equipment Registration Review\\Umler]
+    E --> F{Interchange accepted?}
+    F -- Yes --> G[Train Departure Preparation\\NetControl]
+    F -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Air Brake Test Conducted]
+    G --> H[Air Brake Test Conducted\\Wabtrax]
+    H --> I{Air brake test passed?}
+    I -- Yes --> J[Train Departure Confirmation\\NetControl]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Interline Settlement Data Exchange]
+    J --> K[Interline Settlement Data Exchange\\ISS / SSDX / CHDX]
+    K --> L{Data exchange successful?}
+    L -- Yes --> M[Equipment Health Monitoring\\EHMS]
+    L -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Train Arrival Notification Partner]
+    M --> N[Train Arrival Notification Partner\\NetControl]
+    N --> O{Train on schedule?}
+    O -- Yes --> P[Car Hire Accounting Update Partner\\CHARM]
+    O -- No --> Hold4([Hold])
+  end
+
+  subgraph P6[Phase 6: Equipment Registration Review Partner]
+    P --> Q[Equipment Registration Review Partner\\Umler]
+    Q --> R{Interchange accepted?}
+    R -- Yes --> S[Train Departure Preparation Partner\\NetControl]
+    R -- No --> Rej2([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
