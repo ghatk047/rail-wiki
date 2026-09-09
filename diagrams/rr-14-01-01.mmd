@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Job Posting]
+    A([Start]) --> B[Job Posting\\NetControl]
+    B --> C{Application Received?}
+    C -- Yes --> D[Application Review\\NetControl]
+    C -- No --> A
+  end
+
+  subgraph P2[Phase 2: Background Check]
+    D --> E[Background Check\\NetControl]
+    E --> F{Background Check Passed?}
+    F -- Yes --> G[Pre-Employment Drug Test\\NetControl]
+    F -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Medical Examination]
+    G --> H[Medical Examination\\NetControl]
+    H --> I{Medical Exam Passed?}
+    I -- Yes --> J[Safety Training Assessment\\TEY New Hire Training program]
+    I -- No --> Hold1
+  end
+
+  subgraph P4[Phase 4: Final Interview]
+    J --> K[Final Interview\\NetControl]
+    K --> L{Interview Approved?}
+    L -- Yes --> M[Offer Letter Generation\\NetControl]
+    L -- No --> Reject1([Reject])
+  end
+
+  subgraph P5[Phase 5: Onboarding Preparation]
+    M --> N[Onboarding Preparation\\TEY New Hire Training program]
+    N --> O[New Hire Orientation\\TEY New Hire Training program]
+  end
+
+  subgraph P6[Phase 6: Performance Evaluation and Final Clearance]
+    O --> P[Performance Evaluation\\TEY New Hire Training program]
+    P --> Q{Performance Satisfactory?}
+    Q -- Yes --> R[Final Clearance and Assignment\\NetControl]
+    Q -- No --> Hold1
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
