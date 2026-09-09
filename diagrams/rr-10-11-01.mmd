@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Service Disruption]
+    A([Start]) --> B[Identify service disruption\\Harriman Dispatching Center]
+    B --> C{Disruption identified?}
+    C -- Yes --> D[Assess impact and prioritize\\NetControl]
+    C -- No --> A
+  end
+
+  subgraph P2[Phase 2: Notify Customers]
+    D --> E[Notify customers\\up.com secure portal, ShipmentVision]
+    E --> F{Notification successful?}
+    F -- Yes --> G[Coordinate recovery efforts\\Harriman Dispatching Center, NetControl]
+    F -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Implement Recovery Plan]
+    G --> H[Implement recovery plan\\NetControl, I-ETMS]
+    H --> I{Plan implemented?}
+    I -- Yes --> J[Monitor recovery progress\\I-ETMS, NetControl]
+    I -- No --> G
+  end
+
+  subgraph P4[Phase 4: Update Customers on Recovery Status]
+    J --> K[Update customers on recovery status\\up.com secure portal, ShipmentVision]
+    K --> L{Update successful?}
+    L -- Yes --> M[Review and document incident\\EHMS, TRAIN II]
+    L -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Adjust Pricing and Compensation]
+    M --> N[Adjust pricing and compensation\\TRAIN II, Loup Logistics]
+    N --> O{Adjustments made?}
+    O -- Yes --> P[Close incident and document lessons learned\\TRAIN II, Loup Logistics]
+    O -- No --> M
+  end
+
+  subgraph P6[Phase 6: Close Incident]
+    P --> Q([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
