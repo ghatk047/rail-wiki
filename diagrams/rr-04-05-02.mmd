@@ -1,0 +1,71 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Idle Crews]
+    A([Start]) --> B[Identify Idle Crews\\PS Technology PST]
+    B --> C{Crews Identified?}
+    C -- No --> B
+    C -- Yes --> D[Assess Crew Availability\\NetControl service design use]
+  end
+
+  subgraph P2[Phase 2: Allocate Deadhead Assignments]
+    D --> E{Availability Assessed?}
+    E -- No --> D
+    E -- Yes --> F[Allocate Deadhead Assignments\\PS Technology PST]
+    F --> G{Assignments Allocated?}
+    G -- No --> F
+    G -- Yes --> H[Notify Crews of Deadhead Assignments\\PS Technology PST]
+  end
+
+  subgraph P3[Phase 3: Monitor Crew Compliance]
+    H --> I{Notifications Sent?}
+    I -- No --> H
+    I -- Yes --> J[Monitor Crew Compliance\\NetControl service design use]
+    J --> K{Compliance Monitored?}
+    K -- No --> J
+    K -- Yes --> L[Adjust Deadhead Assignments\\PS Technology PST]
+  end
+
+  subgraph P4[Phase 4: Update Crew Records]
+    L --> M{Assignments Adjusted?}
+    M -- No --> L
+    M -- Yes --> N[Update Crew Records\\CloudMoyo Crew Management CCM]
+    N --> O{Records Updated?}
+    O -- No --> N
+    O -- Yes --> P[Review Deadhead Performance\\PS Technology PST]
+  end
+
+  subgraph P5[Phase 5: Implement Performance Improvements]
+    P --> Q{Performance Reviewed?}
+    Q -- No --> P
+    Q -- Yes --> R[Implement Performance Improvements\\PS Technology PST]
+    R --> S{Improvements Implemented?}
+    S -- No --> R
+    S -- Yes --> T[Communicate Changes to Crews\\PS Technology PST]
+  end
+
+  subgraph P6[Phase 6: Monitor Implementation Effectiveness]
+    T --> U{Changes Communicated?}
+    U -- No --> T
+    U -- Yes --> V[Monitor Implementation Effectiveness\\NetControl service design use]
+    V --> W{Effectiveness Monitored?}
+    W -- No --> V
+    W -- Yes --> X[Adjust Improvements Based on Effectiveness\\PS Technology PST]
+    X --> Y{Improvements Adjusted?}
+    Y -- No --> X
+    Y -- Yes --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
