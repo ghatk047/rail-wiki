@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection and Reporting]
+    A([Start]) --> B[Collect data from wayside defect detector network\\nEHMS]
+    B --> C{FRA defect found?}
+    C -- No --> D[Report to Service Operator\\nNetControl, I-ETMS]
+    C -- Yes --> E[Escalate for further analysis\\nUmler, TRAIN II]
+  end
+
+  subgraph P2[Phase 2: Failure Analysis Meeting]
+    E --> F[Conduct failure analysis meeting\\nManager-Locomotive Maintenance, Manager-Mechanical Maintenance]
+    F --> G{Root cause identified?}
+    G -- No --> H[Recollect data and reanalyze\\nEHMS, TRAIN II]
+    G -- Yes --> I[Document root cause\\nUmler, EHMS]
+  end
+
+  subgraph P3[Phase 3: Root Cause Analysis]
+    I --> J[Conduct root cause analysis meeting\\nSenior Director-System Locomotive Facility, Senior Manager-Mechanical Engineering]
+    J --> K{Corrective actions identified?}
+    K -- No --> L[Reanalyze and identify corrective actions\\nUmler, EHMS]
+    K -- Yes --> M[Implement maintenance schedule adjustment\\nService Operator, Yardmaster]
+  end
+
+  subgraph P4[Phase 4: Maintenance Schedule Adjustment]
+    M --> N{Schedule adjusted?}
+    N -- No --> O[Adjust schedule again\\NetControl, I-ETMS]
+    N -- Yes --> P[Implement corrective actions\\Machinist, Electrician locomotive]
+  end
+
+  subgraph P5[Phase 5: Implementation of Corrective Actions]
+    P --> Q{Actions implemented?}
+    Q -- No --> R[Reimplement actions\\Downing B. Jenks Shop, North Platte, NE locomotive shop, Proviso Locomotive Shop, West Colton Yard and Shops]
+    Q -- Yes --> S[Conduct post-implementation review\\Manager-Locomotive Maintenance, Manager-Mechanical Maintenance]
+  end
+
+  subgraph P6[Phase 6: Continuous Monitoring and Reporting]
+    S --> T{Performance within limits?}
+    T -- No --> U[Adjust maintenance schedule\\Service Operator, Yardmaster]
+    T -- Yes --> V[Update fleet management systems\\Senior Director-System Locomotive Facility, Senior Manager-Mechanical Engineering]
+    V --> W[Conduct performance review meeting\\Chairman, President and CEO]
+    W --> X{Performance satisfactory?}
+    X -- No --> Y[Adjust strategic plan\\VP Network Planning Operations, Service Design / Network Planning Analyst]
+    X -- Yes --> Z[Implement strategic plan\\Manager-Locomotive Maintenance, Manager-Mechanical Maintenance]
+    Z --> AA[Conduct final review and reporting\\Senior Director-System Locomotive Facility, Senior Manager-Mechanical Engineering]
+    AA --> AB([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
