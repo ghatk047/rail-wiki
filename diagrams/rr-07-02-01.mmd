@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Observation Schedule\\NetControl]
+    B --> C{Schedule approved?}
+    C -- Yes --> D[Conduct Pre-Departure Inspection\\EHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Departure and Monitoring]
+    D --> E{Car inspection passed?}
+    E -- Yes --> F[Monitor Train Departure\\I-ETMS]
+    E -- No --> Rej1([Reject])
+    F --> G[Track Train Speed and Dwell Time\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Wayside Defect Review]
+    G --> H{Speed and dwell time within limits?}
+    H -- Yes --> I[Review Wayside Defect Data\\Wayside defect detector network]
+    H -- No --> F
+    I --> J{Defects found?}
+    J -- Yes --> Rej2([Reject])
+    J -- No --> K[Evaluate Terminal Operations\\Umler]
+  end
+
+  subgraph P4[Phase 4: Crew Performance Assessment]
+    K --> L{Terminal operations evaluated?}
+    L -- Yes --> M[Assess Crew Performance\\PS Technology PST]
+    L -- No --> I
+    M --> N{Crew performance satisfactory?}
+    N -- Yes --> O[Review Regulatory Compliance\\C3RS]
+    N -- No --> F
+  end
+
+  subgraph P5[Phase 5: Report Generation and Approval]
+    O --> P{Regulatory compliance met?}
+    P -- Yes --> Q[Generate Final Report\\TRAIN II]
+    P -- No --> Rej3([Reject])
+    Q --> R[Review and Approve Report\\Chief Safety Officer / VP Safety]
+  end
+
+  subgraph P6[Phase 6: Implementation and Monitoring]
+    R --> S{Report approved?}
+    S -- Yes --> T[Implement Improvements\\NetControl]
+    S -- No --> Rej4([Reject])
+    T --> U[Monitor Implementation\\I-ETMS]
+    U --> V{Improvements effective?}
+    V -- Yes --> W([End])
+    V -- No --> T
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
