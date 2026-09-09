@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Container Inspection\\EHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Container Inspection]
+    D --> E{FRA Defect Found?}
+    E -- Yes --> Rej1([Reject])
+    E -- No --> F[Lift and Stack Planning\\UPGo]
+  end
+
+  subgraph P3[Phase 3: Lift and Stack Planning]
+    F --> G{Crane Operator Assigned?}
+    G -- Yes --> H[Container Lift and Stack Execution\\UPGo]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Container Lift and Stack Execution]
+    H --> I{Lift and Stack Successful?}
+    I -- Yes --> J[Container Security Check\\Driver scanning / gate technology generic 'Yard System']
+    I -- No --> F
+  end
+
+  subgraph P5[Phase 5: Train Departure Preparation]
+    J --> K{Security Check Passed?}
+    K -- Yes --> L[Final Inspection and Documentation\\EHMS]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Container Settlement and Accounting]
+    L --> M{Inspection Approved?}
+    M -- Yes --> N[Train Departure Notification\\NetControl]
+    M -- No --> Hold4([Hold])
+    N --> O[Container Settlement and Accounting\\CHARM, Interline Settlement System ISS]
+    O --> P{Settlement Complete?}
+    P -- Yes --> Q[Post-Departure Review\\UPGo, EHMS]
+    P -- No --> O
+    Q --> R[Continuous Improvement Actions\\UPGo, EHMS]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
