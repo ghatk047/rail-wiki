@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Rule Proposal Review]
+    A([Start]) --> B[Review Rule Proposal\nGCOR]
+    B --> C{Decision Approved?}
+    C -- Yes --> D[Consult with Stakeholders\nNetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Drafting and Review]
+    D --> E[Draft Updated Rule\nGCOR]
+    E --> F[Review by Chief Safety Officer\nGCOR]
+    F --> G{Decision Approved?}
+    G -- Yes --> H[Publish Updated Rule\nGCOR]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Training and Monitoring]
+    H --> I[Train Employees\nNetControl]
+    I --> J[Monitor Compliance\nI-ETMS]
+    J --> K{Compliance Met?}
+    K -- Yes --> L[Document and Report\nGCOR]
+    K -- No --> M[Report Non-Compliance\nC3RS]
+  end
+
+  subgraph P4[Phase 4: Corrective Actions]
+    M --> N[Corrective Action Plan\nGCOR]
+    N --> O[Implement Corrective Actions\nNetControl]
+    O --> P{Actions Implemented?}
+    P -- Yes --> Q[Review and Update Rules\nGCOR]
+    P -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Final Review]
+    Q --> R{Decision Approved?}
+    R -- Yes --> S([End])
+    R -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
