@@ -1,0 +1,48 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive and Validate]
+    A([Start]) --> B[Receive Train Movement Request\nNetControl]
+    B --> C{Train Schedule Valid?}
+    C -- No --> D[Adjust Train Schedule\nI-ETMS]
+    C -- Yes --> E[Update Train Status\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Assign and Monitor]
+    E --> F[Assign Crew and Equipment\nPS Technology PST]
+    F --> G[Monitor Train Movement\nNetControl]
+    G --> H{Track Authority Granted?}
+    H -- No --> I([Hold])
+    H -- Yes --> J[Conduct Pre-Departure Checks\nEHMS]
+  end
+
+  subgraph P3[Phase 3: Departure and Performance]
+    J --> K{Air Brake Test Passed?}
+    K -- No --> L[Perform Class I air brake test\nFRA 49 CFR 232.205 record]
+    K -- Yes --> M[Initiate Train Departure\nNetControl]
+    M --> N[Monitor Train Performance\nNetControl]
+  end
+
+  subgraph P4[Phase 4: Post-Departure and Arrival]
+    N --> O{Hours of Service Remaining?}
+    O -- No --> P([Escalate])
+    O -- Yes --> Q[Update Train Status Post-Departure\nNetControl]
+    Q --> R[Conduct Post-Arrival Checks\nEHMS]
+  end
+
+  subgraph P5[Phase 5: Finalization]
+    R --> S{Car Bad Ordered?}
+    S -- No --> T[Finalize Train Movement\nNetControl]
+    S -- Yes --> U([Bad Order])
+    T --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
