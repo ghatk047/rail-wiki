@@ -1,0 +1,79 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Proposal Submission]
+    A([Start]) --> B[Submit Capital Budget Proposal\nNetControl]
+    B --> C{Proposal Approved?}
+    C -- Yes --> D[Initiate Revenue Impact Analysis\nTRAIN II]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Revenue Impact Analysis]
+    D --> E{Revenue Impact Acceptable?}
+    E -- Yes --> F[Initiate Cost Analysis\nUmler]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Cost Analysis]
+    F --> G{Costs Within Budget?}
+    G -- Yes --> H[Initiate Regulatory Compliance Check\nI-ETMS]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Regulatory Compliance Check]
+    H --> I{Compliance Approved?}
+    I -- Yes --> J[Submit Project Authorization Request\nHarriman Dispatching Center]
+    I -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Project Authorization]
+    J --> K{Authorization Granted?}
+    K -- Yes --> L[Initiate Senior Management Review\nPS Technology]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Approval and Execution]
+    L --> M{Senior Management Approves?}
+    M -- Yes --> N[Allocate Budget\nNetControl]
+    M -- No --> Rej3([Reject])
+    N --> O[Initiate Project Implementation Planning\nUmler]
+    O --> P{Implementation Plan Approved?}
+    P -- Yes --> Q[Review Interline Settlement\nCHARM]
+    P -- No --> Hold4([Hold])
+    Q --> R{Interline Settlement Approved?}
+    R -- Yes --> S[Final Approval and Execution\nHarriman Dispatching Center]
+    R -- No --> Rej4([Reject])
+  end
+
+  subgraph P7[Phase 7: Project Monitoring Review]
+    S --> T[Monitor Project Progress\nNetControl]
+    T --> U{Project On Track?}
+    U -- Yes --> V[Continue Monitoring]
+    U -- No --> Hold5([Hold])
+    V --> W[Initiate Post-Implementation Review\nUmler]
+    W --> X{Review Complete?}
+    X -- Yes --> Y([End])
+    X -- No --> Hold6([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
