@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Right-of-Way Inspection\nWabtrax; FRA Automated Track Inspection Program ATIP]
+    B --> C{FRA defect found?}
+    C -- No --> D[Field Inspection\nNetControl; I-ETMS]
+    C -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Evaluation]
+    D --> E[Evaluate Inspection Results\nUmler; PS Technology PST]
+    E --> F{Inspection approved?}
+    F -- No --> G[Plan Repairs or Adjustments\nNetControl; I-ETMS]
+    F -- Yes --> H[Execute Repairs or Adjustments\nNetControl; I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Verification]
+    H --> I[Verify Repairs or Adjustments\nNetControl; I-ETMS]
+    I --> J{Repairs verified?}
+    J -- No --> G
+    J -- Yes --> K[Update Documentation\nUmler; PS Technology PST]
+  end
+
+  subgraph P4[Phase 4: Review and Approval]
+    K --> L[Review and Approve Documentation\nChief Engineer / VP Engineering; Umler; PS Technology PST]
+    L --> M{Approval granted?}
+    M -- No --> N([Reject])
+    M -- Yes --> O[Close Work Order\nNetControl; I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Maintenance Schedule Update]
+    O --> P[Update Maintenance Schedule\nNetControl; I-ETMS]
+    P --> Q{Schedule updated?}
+    Q -- No --> R([Escalate])
+    Q -- Yes --> S[Report to Management\nChief Engineer / VP Engineering; NetControl; I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Next Steps Review]
+    S --> T[Review and Plan Next Steps\nChief Engineer / VP Engineering; NetControl; I-ETMS]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
