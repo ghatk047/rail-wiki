@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Order Processing]
+    A([Start]) --> B[Order Processing\\up.com customer portal]
+    B --> C{Order Valid?}
+    C -- Yes --> D[Chassis/Container Availability Check\\UPGo; EMP and UMAX container fleets]
+    C -- No --> BadOrder([Bad Order])
+  end
+
+  subgraph P2[Phase 2: Allocation]
+    D --> E{Availability Sufficient?}
+    E -- Yes --> F[Chassis/Container Allocation\\UPGo; EMP and UMAX container fleets]
+    E -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Pickup]
+    F --> G[Chassis/Container Pickup\\Driver scanning / gate technology generic 'Yard System']
+    G --> H{Pickup Successful?}
+    H -- Yes --> I[Chassis/Container Delivery to ICTF\\ICTF Intermodal Container Transfer Facility]
+    H -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Maintenance Check]
+    I --> J[Chassis/Container Maintenance Check\\EHMS Equipment Health Management System]
+    J --> K{Maintenance Passed?}
+    K -- Yes --> L[Chassis/Container Return to Terminal\\Driver scanning / gate technology generic 'Yard System']
+    K -- No --> Reject1([Reject])
+  end
+
+  subgraph P5[Phase 5: Inventory Update and Billing]
+    L --> M[Chassis/Container Inventory Update\\UPGo; EMP and UMAX container fleets]
+    M --> N[Chassis/Container Billing\\up.com customer portal; CHARM car hire accounting]
+    N --> O{Billing Complete?}
+    O -- Yes --> P([End])
+    O -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Audit, Reporting, and Optimization]
+    P --> Q[Chassis/Container Audit and Reporting\\UPGo; EMP and UMAX container fleets; CHARM car hire accounting]
+    Q --> R{Audit Complete?}
+    R -- Yes --> S[Chassis/Container Disposal or Repurposing\\UPGo; EMP and UMAX container fleets]
+    R -- No --> Hold4([Hold])
+    S --> T[Chassis/Container Cycle Review and Optimization\\UPGo; EMP and UMAX container fleets; CHARM car hire accounting]
+    T --> U{Optimization Complete?}
+    U -- Yes --> V([End])
+    U -- No --> Hold5([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
