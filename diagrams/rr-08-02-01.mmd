@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: TIH/PIH Identification]
+    A([Start]) --> B[Identify TIH/PIH Train\nAskRail]
+    B --> C{TIH/PIH identified?}
+    C -- Yes --> D[Review Route Risk\nTRANSCAER]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Route Risk Review]
+    D --> E{Route risk acceptable?}
+    E -- Yes --> F[Update Train Schedule\nNetControl]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Pre-Departure Inspection]
+    F --> G[Conduct Pre-Departure Inspection\nEHMS]
+    G --> H{Inspection passed?}
+    H -- Yes --> I[Monitor Train Movement\nI-ETMS]
+    H -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Environmental Impact Assessment]
+    I --> J[Assess Environmental Impact\nTRANSCAER]
+    J --> K{Environmental impact acceptable?}
+    K -- Yes --> L[Update Emergency Response Plan\nSERTC]
+    K -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Route Change Review]
+    L --> M[Review and Approve Route Changes\nNetControl]
+    M --> N{Route changes approved?}
+    N -- Yes --> O[Implement Safety Precautions\nNetControl]
+    N -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Final Monitoring and Adjustment]
+    O --> P[Monitor Train Performance\nI-ETMS]
+    P --> Q[Review and Adjust Route Risk\nTRANSCAER]
+    Q --> R{Route risk adjusted?}
+    R -- Yes --> S[Finalize Route and Safety Measures\nNetControl]
+    R -- No --> Hold4([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
