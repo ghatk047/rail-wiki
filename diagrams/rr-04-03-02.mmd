@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Crew Check-in]
+    A([Start]) --> B[Crew Check-in\\nPS Technology PST]
+    B --> C{Check-in successful?}
+    C -- No --> B
+    C -- Yes --> D[Train Departure Notification\\nNetControl service design use]
+  end
+
+  subgraph P2[Phase 2: Duty Status Update]
+    D --> E[Duty Status Update\\nCloudMoyo Crew Management CCM]
+    E --> F{Duty status updated?}
+    F -- No --> E
+    F -- Yes --> G[Rest Break Notification\\nI-ETMS Interoperable Electronic Train Management System]
+  end
+
+  subgraph P3[Phase 3: Rest Break Notification]
+    G --> H{Rest break received?}
+    H -- No --> G
+    H -- Yes --> I[Train Arrival Notification\\nNetControl service design use]
+  end
+
+  subgraph P4[Phase 4: Crew Check-out]
+    I --> J[Crew Check-out\\nPS Technology PST]
+    J --> K{Check-out successful?}
+    K -- No --> J
+    K -- Yes --> L[HOS Compliance Review\\nCloudMoyo Crew Management CCM]
+  end
+
+  subgraph P5[Phase 5: Exception Handling]
+    L --> M{Compliant with HOS?}
+    M -- No --> N[Exception Handling\\nSuperintendent Division]
+    M -- Yes --> O[Crew Scheduling Update\\nPS Technology PST]
+  end
+
+  subgraph P6[Phase 6: Final Review and Reporting]
+    O --> P{Scheduling updated?}
+    P -- No --> O
+    P -- Yes --> Q[Final Review and Reporting\\nCloudMoyo Crew Management CCM]
+    Q --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
