@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: System Assessment]
+    A([Start]) --> B[System Assessment\\NetControl; PS Technology]
+    B --> C{Air brake test passed?}
+    C -- No --> D[Perform Class I air brake test\\nFRA 49 CFR 232.205 record]
+    D --> C
+    C -- Yes --> E[Regulatory Compliance Review\\NetControl; PS Technology]
+  end
+
+  subgraph P2[Phase 2: Regulatory Compliance Review]
+    E --> F{FRA defect found?}
+    F -- No --> G[Security Design\\NetControl; PS Technology]
+    F -- Yes --> Hold1([Hold])
+    G --> H[Integration Planning\\NetControl; PS Technology]
+  end
+
+  subgraph P3[Phase 3: Security Design]
+    H --> I{Interchange accepted?}
+    I -- No --> J[Review and update security design\\NetControl; PS Technology]
+    J --> I
+    I -- Yes --> K[System Integration\\NetControl; PS Technology]
+  end
+
+  subgraph P4[Phase 4: System Integration]
+    K --> L{PTC initialised?}
+    L -- No --> M[Initialise Positive Train Control\\I-ETMS]
+    M --> L
+    L -- Yes --> N[Testing and Validation\\NetControl; PS Technology]
+  end
+
+  subgraph P5[Phase 5: Testing and Validation]
+    N --> O{Hours of service remaining?}
+    O -- No --> P[Adjust hours of service\\UPGo]
+    P --> O
+    O -- Yes --> Q[Stakeholder Approval\\Chairman, President and CEO; NetControl; PS Technology]
+  end
+
+  subgraph P6[Phase 6: Deployment and Monitoring]
+    Q --> R[Deployment Preparation\\NetControl; PS Technology]
+    R --> S[System Deployment\\NetControl; PS Technology]
+    S --> T{Track authority granted?}
+    T -- No --> U[Request track authority\\Harriman Dispatching Center]
+    U --> T
+    T -- Yes --> V[Post-Deployment Monitoring\\NetControl; PS Technology]
+    V --> W[Continuous Improvement\\NetControl; PS Technology]
+    W --> X[Documentation Update\\NetControl; PS Technology]
+    X --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
