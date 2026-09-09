@@ -1,0 +1,68 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Automated Track Inspection\\nI-ETMS]
+    B --> C{Inspection initiated?}
+    C -- No --> B
+    C -- Yes --> D[Deploy Track Geometry Car\\nTrack geometry car]
+  end
+
+  subgraph P2[Phase 2: Data Collection]
+    D --> E{Car deployed successfully?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Analyze Data with RailAI\\nRailAI]
+  end
+
+  subgraph P3[Phase 3: Review and Analysis]
+    F --> G{Data analyzed?}
+    G -- No --> F
+    G -- Yes --> H[Review Inspection Report\\nNetControl]
+  end
+
+  subgraph P4[Phase 4: Corrective Actions]
+    H --> I{Report reviewed?}
+    I -- No --> H
+    I -- Yes --> J[Schedule Corrective Actions\\nI-ETMS]
+  end
+
+  subgraph P5[Phase 5: Implementation and Verification]
+    J --> K{Actions scheduled?}
+    K -- No --> J
+    K -- Yes --> L[Implement Corrective Actions\\nPS Technology]
+    L --> M{Actions implemented?}
+    M -- No --> L
+    M -- Yes --> N[Verify Repairs with Track Geometry Car\\nTrack geometry car]
+  end
+
+  subgraph P6[Phase 6: Reporting and Documentation]
+    N --> O{Repairs verified?}
+    O -- No --> N
+    O -- Yes --> P[Update RailAI with Verification Data\\nRailAI]
+    P --> Q{Data updated?}
+    Q -- No --> P
+    Q -- Yes --> R[Document and Report Findings\\nNetControl]
+    R --> S{Findings documented?}
+    S -- No --> R
+    S -- Yes --> T[Review and Approve Final Report\\nNetControl]
+    T --> U{Report approved?}
+    U -- No --> R
+    U -- Yes --> V[Update Maintenance Schedule\\nI-ETMS]
+    V --> W{Schedule updated?}
+    W -- No --> V
+    W -- Yes --> X[Notify Stakeholders\\nNetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
