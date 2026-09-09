@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection]
+    A([Start]) --> B[Collect cost data\\NetControl]
+    B --> C{Data complete?}
+    C -- Yes --> D[Review regulatory requirements\\Umler]
+    C -- No --> E([Bad Order])
+  end
+
+  subgraph P2[Phase 2: Regulatory Review]
+    D --> F{Regulatory compliance met?}
+    F -- Yes --> G[Perform cost analysis\\PS Technology]
+    F -- No --> H([Hold])
+  end
+
+  subgraph P3[Phase 3: Cost Analysis]
+    G --> I{Analysis valid?}
+    I -- Yes --> J[Calculate surcharge\\TRAIN II]
+    I -- No --> K[Review and adjust data\\Revenue Accountant]
+    K --> B
+  end
+
+  subgraph P4[Phase 4: Surcharge Calculation]
+    J --> L{Surcharge calculation correct?}
+    L -- Yes --> M[Approve surcharge\\VP Network Planning Operations]
+    L -- No --> N([Reject])
+  end
+
+  subgraph P5[Phase 5: Approval Process]
+    M --> O{Approval granted?}
+    O -- Yes --> P[Implement surcharge\\Train Dispatcher]
+    O -- No --> Q([Escalate])
+  end
+
+  subgraph P6[Phase 6: Monitoring and Continuous Improvement]
+    P --> R[Monitor implementation\\Wabtrax]
+    R --> S{Implementation successful?}
+    S -- Yes --> T[Adjust costs if necessary\\Cost Analyst regulatory costing]
+    T --> U[Report findings\\NetControl]
+    U --> V{Review complete?}
+    V -- Yes --> W[Provide feedback\\Chairman, President and CEO]
+    W --> X[Update documentation\\TRAIN II]
+    X --> Y{Documentation updated?}
+    Y -- Yes --> Z([End])
+    Y -- No --> T
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
