@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Key Train Identification]
+    A([Start]) --> B{Is train a key train?}
+    B -- Yes --> C[Identify Key Train\\NetControl]
+    B -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Hazardous Material Review]
+    C --> D[Review Hazardous Material Documentation\\AskRail, TRANSCAER]
+    D --> E{Documentation complete?}
+    E -- Yes --> F[Update Train Schedule\\NetControl, I-ETMS]
+    E -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Pre-Departure Inspection]
+    F --> G[Conduct Pre-Departure Inspection\\EHMS]
+    G --> H{Inspection passed?}
+    H -- Yes --> I[Notify Emergency Response Team\\SERTC, TRANSCAER]
+    H -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Train Movement Monitoring]
+    I --> J[Monitor Train Movement\\I-ETMS, NetControl]
+    J --> K{Track authority granted?}
+    K -- Yes --> L[Review Wayside Defects\\Wayside defect detector network]
+    K -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Post-Arrival Inspection]
+    L --> M{FRA defect found?}
+    M -- No --> N[Update Crew Scheduling\\PS Technology, CloudMoyo Crew Management]
+    M -- Yes --> O[Conduct Post-Arrival Inspection\\EHMS]
+    O --> P{Inspection passed?}
+    P -- Yes --> Q[Final Compliance Check\\AskRail, TRANSCAER]
+    P -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Process Closure]
+    Q --> R{Compliance check passed?}
+    R -- Yes --> S[Update Maintenance Records\\EHMS, HASTUS]
+    R -- No --> Hold6([Hold])
+    S --> T[Close Process\\NetControl, I-ETMS]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
