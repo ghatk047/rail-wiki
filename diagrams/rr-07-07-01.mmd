@@ -1,0 +1,63 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Patrol\\NetControl]
+    B --> C{Patrol initiated successfully?}
+    C -- Yes --> D[Conduct Visual Inspection\\I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Trespass Detection]
+    D --> E{Trespass incident detected?}
+    E -- Yes --> F[Report Trespass Incidents\\C3RS]
+    E -- No --> G[Secure the Area\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Coordination and Notification]
+    F --> H[Coordinate with Dispatch\\NetControl]
+    G --> I{Area secured?}
+    I -- Yes --> J[Notify Local Authorities\\NetControl]
+    I -- No --> D
+  end
+
+  subgraph P4[Phase 4: Review and Update Procedures]
+    H --> K{Coordination successful?}
+    J --> L{Notification sent successfully?}
+    K -- Yes --> M[Review and Update Procedures\\C3RS]
+    L -- Yes --> N[Conduct Training Sessions\\NetControl]
+    K -- No --> Hold2([Hold])
+    L -- No --> J
+  end
+
+  subgraph P5[Phase 5: Compliance Monitoring]
+    M --> O{Procedures reviewed?}
+    N --> P{Training sessions conducted?}
+    O -- Yes --> Q[Monitor and Report Compliance\\I-ETMS]
+    P -- Yes --> R[Review and Adjust Resources\\NetControl]
+    O -- No --> M
+    P -- No --> N
+  end
+
+  subgraph P6[Phase 6: Route Update and System Improvement]
+    Q --> S{Compliance monitored?}
+    R --> T{Resources adjusted?}
+    S -- Yes --> U[Update Patrol Routes\\NetControl]
+    T -- Yes --> V[Review and Improve Systems\\C3RS]
+    S -- No --> Q
+    T -- No --> R
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
