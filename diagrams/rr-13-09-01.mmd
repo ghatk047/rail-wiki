@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection]
+    A([Start]) --> B[Collect financial data\\nTRAIN II, CHARM]
+    B --> C{Data complete?}
+    C -- No --> B
+    C -- Yes --> D[Fuel Surcharge Calculation\\nFuel surcharge program, ARC]
+  end
+
+  subgraph P2[Phase 2: Fuel Surcharge Calculation]
+    D --> E{Surcharge calculation valid?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Revenue Accounting Review\\nTRAIN II, CHARM]
+  end
+
+  subgraph P3[Phase 3: Revenue Accounting Review]
+    F --> G{Review complete and accurate?}
+    G -- No --> F
+    G -- Yes --> H[Regulatory Compliance Check\\nNetControl, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Regulatory Compliance Check]
+    H --> I{Compliance met?}
+    I -- No --> Reject1([Reject])
+    I -- Yes --> J[Report Preparation\\nTRAIN II, CHARM]
+  end
+
+  subgraph P5[Phase 5: Report Preparation]
+    J --> K{Report ready for submission?}
+    K -- No --> J
+    K -- Yes --> L[Submission to Authorities\\nup.com customer portal]
+  end
+
+  subgraph P6[Phase 6: Internal and External Review]
+    L --> M[Internal Audit Review\\nTRAIN II, CHARM]
+    M --> N{Audit approved?}
+    N -- No --> M
+    N -- Yes --> O[Stakeholder Communication\\nAskRail, TRANSCAER]
+    O --> P[Documentation Update\\nTRAIN II, CHARM]
+    P --> Q[Review and Feedback Loop\\nTRAIN II, CHARM]
+    Q --> R{Feedback addressed?}
+    R -- No --> Q
+    R -- Yes --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
