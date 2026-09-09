@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Failure Detection and Reporting]
+    A([Start]) --> B[Detect failure\\Wayside Defect Detector Network]
+    B --> C{Failure reported?}
+    C -- No --> B
+    C -- Yes --> D[Report failure\\Umler]
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E[Assess initial failure\\Electrician locomotive]
+    E --> F{Initial assessment complete?}
+    F -- No --> E
+    F -- Yes --> G[Record assessment\\Umler]
+  end
+
+  subgraph P3[Phase 3: Failure Analysis]
+    G --> H[Analyze failure\\Manager-Locomotive Maintenance]
+    H --> I{Analysis complete?}
+    I -- No --> H
+    I -- Yes --> J[Plan corrective actions\\Senior Director-System Locomotive Facility]
+  end
+
+  subgraph P4[Phase 4: Corrective Action Implementation]
+    J --> K[Implement corrective actions\\Machinist]
+    K --> L{Actions implemented?}
+    L -- No --> K
+    L -- Yes --> M[Test locomotive\\Electrician locomotive]
+  end
+
+  subgraph P5[Phase 5: Verification and Testing]
+    M --> N{Test results satisfactory?}
+    N -- No --> K
+    N -- Yes --> O[Update maintenance records\\Manager-Mechanical Maintenance]
+  end
+
+  subgraph P6[Phase 6: Review, Reporting, and Continuous Improvement]
+    O --> P[Review failure and actions\\Senior Manager-Mechanical Engineering]
+    P --> Q{Review complete?}
+    Q -- No --> P
+    Q -- Yes --> R[Implement improvements\\VP Network Planning Operations]
+    R --> S[Monitor and provide feedback\\Train Dispatcher]
+    S --> T{Feedback received?}
+    T -- No --> R
+    T -- Yes --> U[Close case\\Control Operator]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
