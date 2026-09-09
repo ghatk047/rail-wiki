@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Assessment]
+    A([Start]) --> B[Initial Assessment\\AskRail]
+    B --> C{Assessment Passed?}
+    C -- Yes --> D[Training Needs Analysis\\TRANSCAER]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Training Needs Analysis]
+    D --> E[Register Employee in Umler\\Umler]
+    E --> F{Registration Successful?}
+    F -- Yes --> G[Conduct Initial Training\\SERTC]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Conduct Initial Training]
+    G --> H[Post-Training Assessment\\AskRail]
+    H --> I{Assessment Passed?}
+    I -- Yes --> J[Update Employee Record in CHARM\\CHARM]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Update and Review Certification]
+    J --> K[Review and Approve Certification\\NetControl]
+    K --> L{Certification Approved?}
+    L -- Yes --> M[Notify Employee of Certification\\I-ETMS]
+    L -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Update Databases]
+    M --> N[Update TRAIN II Database\\TRAIN II]
+    N --> O{Update Successful?}
+    O -- Yes --> P[Review and Update GCOR\\GCOR]
+    O -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Annual Refresher Training]
+    P --> Q[Conduct Annual Refresher Training\\SERTC]
+    Q --> R[Review and Update Certification Status\\AskRail]
+    R --> S{Certification Updated?}
+    S -- Yes --> T([End])
+    S -- No --> Hold6([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
