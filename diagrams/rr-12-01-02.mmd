@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Air Brake Test Passed?}
+    C -- No --> D[Perform Class I air brake test\\FRA 49 CFR 232.205 record]
+    D --> C
+    C -- Yes --> E[Conduct Pre-Dispatch Safety Checks\\EHMS]
+  end
+
+  subgraph P2[Phase 2: Schedule Update and Yard Notification]
+    E --> F{Train Schedule Updated?}
+    F -- No --> G[Update Train Schedule in NetControl\\NetControl]
+    G --> F
+    F -- Yes --> H[Notify Yardmaster for Unloading/Loading Operations\\NetControl]
+  end
+
+  subgraph P3[Phase 3: Unloading/Loading Operations]
+    H --> I{Unloading/Loading Completed?}
+    I -- No --> J[Perform Unloading/Loading Operations\\NetControl]
+    J --> I
+    I -- Yes --> K[Conduct Post-Operation Safety Checks\\EHMS]
+  end
+
+  subgraph P4[Phase 4: Train Status Update and Preparation]
+    K --> L{Train Status Updated?}
+    L -- No --> M[Update Train Status in NetControl\\NetControl]
+    M --> L
+    L -- Yes --> N[Prepare for Dispatch\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Final Safety Checks and Dispatch]
+    N --> O{Final Safety Checks Passed?}
+    O -- No --> P[Conduct Final Safety Checks\\EHMS]
+    P --> O
+    O -- Yes --> Q[Dispatch Train\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Monitor and Update Post-Dispatch]
+    Q --> R{Train Dispatched?}
+    R -- No --> S[Monitor Train Movement\\NetControl, I-ETMS]
+    S --> R
+    R -- Yes --> T[Update Train Schedule Post-Dispatch\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
