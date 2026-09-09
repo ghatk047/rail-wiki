@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Needs]
+    A([Start]) --> B[Identify Environmental Needs\\nAskRail]
+    B --> C{Needs Identified?}
+    C -- Yes --> D[Prepare Permit Application\\nTRANSCAER]
+    C -- No --> A
+  end
+
+  subgraph P2[Phase 2: Submit Application]
+    D --> E[Submit Permit Application\\NetControl]
+    E --> F{Application Submitted?}
+    F -- Yes --> G[Review and Approve\\TRAIN II]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Approval]
+    G --> H{Approved by Chairman, President and CEO?}
+    H -- Yes --> I[Coordinate Remediation Planning\\Umler]
+    H -- No --> Escalate([Escalate])
+  end
+
+  subgraph P4[Phase 4: Plan Remediation]
+    I --> J[Implement Site Remediation Activities\\PS Technology]
+    J --> K{Remediation Implemented?}
+    K -- Yes --> L[Monitor Remediation Progress\\Wabtrax]
+    K -- No --> I
+  end
+
+  subgraph P5[Phase 5: Monitor and Inspect]
+    L --> M[Conduct Final Inspection\\I-ETMS]
+    M --> N{Inspection Passed?}
+    N -- Yes --> O[Close Permit and Remediation Case\\TRANSCAER]
+    N -- No --> J
+  end
+
+  subgraph P6[Phase 6: Review and Plan Future]
+    O --> P[Update Environmental Records\\CHARM]
+    P --> Q{Records Updated?}
+    Q -- Yes --> R[Review and Report on Remediation Outcomes\\SERTC]
+    Q -- No --> P
+    R --> S[Plan for Future Remediation Needs\\GCOR]
+    S --> T{Future Plan Ready?}
+    T -- Yes --> U([End])
+    T -- No --> R
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
