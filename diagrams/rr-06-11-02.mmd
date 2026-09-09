@@ -1,0 +1,64 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Vegetation Management Plan\\nUmler]
+    B --> C{Plan Approved?}
+    C -- No --> D[Escalate to Chief Engineer / VP Engineering\\nNetControl]
+    C -- Yes --> E[Assign Crews and Equipment\\nPS Technology]
+  end
+
+  subgraph P2[Phase 2: Field Work]
+    E --> F[Conduct Vegetation Management\\nWabtrax]
+    F --> G{Vegetation Control Complete?}
+    G -- No --> H[Reassign Crews and Equipment\\nPS Technology]
+    G -- Yes --> I[Inspect Drainage Systems\\nTrack geometry car]
+  end
+
+  subgraph P3[Phase 3: Environmental Review]
+    I --> J{Drainage Inspected?}
+    J -- No --> K[Reinspect Drainage Systems\\nTrack geometry car]
+    J -- Yes --> L[Review Environmental Impact\\nRailAI]
+  end
+
+  subgraph P4[Phase 4: Record Keeping]
+    L --> M{Environmental Review Complete?}
+    M -- No --> N[Re-review Environmental Impact\\nRailAI]
+    M -- Yes --> O[Update Maintenance Records\\nUmler]
+  end
+
+  subgraph P5[Phase 5: Reporting and Planning]
+    O --> P[Report Findings to Management\\nNetControl]
+    P --> Q{Findings Reported?}
+    Q -- No --> R[Re-report Findings\\nNetControl]
+    Q -- Yes --> S[Plan Corrective Actions\\nPS Technology]
+  end
+
+  subgraph P6[Phase 6: Implementation and Verification]
+    S --> T{Corrective Plan Approved?}
+    T -- No --> U[Escalate to Chief Engineer / VP Engineering\\nNetControl]
+    T -- Yes --> V[Implement Corrective Actions\\nWabtrax]
+    V --> W{Actions Implemented?}
+    W -- No --> X[Reimplement Corrective Actions\\nWabtrax]
+    W -- Yes --> Y[Verify Corrective Actions\\nTrack geometry car]
+    Y --> Z{Verification Complete?}
+    Z -- No --> AA[Reverify Corrective Actions\\nTrack geometry car]
+    Z -- Yes --> AB[Update Regulatory Compliance Records\\nUmler]
+  end
+
+  subgraph P7[Phase 7: Closure]
+    AB --> AC{Records Updated?}
+    AC -- No --> AD[Re-update Records\\nUmler]
+    AC -- Yes --> AE[Close Process\\nNetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AE fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
+  style AA fill:#c8791a,color:#fff,stroke:#c8791a
+  style AD fill:#c8791a,color:#fff,stroke:#c8791a
