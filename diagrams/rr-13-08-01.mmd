@@ -1,0 +1,57 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Lease Agreement Review]
+    A([Start]) --> B[Review Lease Agreements\nCHARM]
+    B --> C{Agreement within terms?}
+    C -- No --> B
+    C -- Yes --> D[Calculate Average Revenue per Car ARC\nTRAIN II]
+  end
+
+  subgraph P2[Phase 2: Regulatory Compliance Check]
+    D --> E[Evaluate Fuel Surcharge Program\nFuel surcharge program]
+    E --> F{Surcharge approved?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Assess Regulatory Compliance\nEHMS]
+    G --> H{Compliance met?}
+    H -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Equipment Register Update]
+    H -- Yes --> I[Update Equipment Register\nUmler]
+    I --> J{Register updated successfully?}
+    J -- No --> I
+    J -- Yes --> K[Prepare Interline Settlement Data\nInterline Settlement System ISS]
+  end
+
+  subgraph P4[Phase 4: Defect Detection Review]
+    K --> L[Review Wayside Defect Detector Reports\nWayside defect detector network]
+    L --> M{Defects found?}
+    M -- Yes --> N[Conduct Machine Vision Portal Review\nMachine Vision portals]
+    M -- No --> O[Update Maintenance Schedule\nEHMS]
+  end
+
+  subgraph P5[Phase 5: Financial Reporting]
+    N --> P{Review complete?}
+    P -- No --> L
+    P -- Yes --> Q[Prepare Monthly Financial Report\nTRAIN II, CHARM]
+  end
+
+  subgraph P6[Phase 6: Lease Adjustment Finalization]
+    Q --> R[Review and Adjust Lease Terms\nCHARM, TRAIN II]
+    R --> S{Terms adjusted?}
+    S -- No --> Q
+    S -- Yes --> T[Finalize and Approve Lease Adjustments\nCHARM, TRAIN II]
+    T --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
