@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Customer Request]
+    A([Start]) --> B[Receive Customer Request\nup.com secure portal, Loup Logistics]
+    B --> C{Initial Rate Evaluation Approved?}
+    C -- No --> B
+    C -- Yes --> D[Review and Adjust Rates\nLoup Logistics, ShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Finalize and Send Quote]
+    D --> E{Final Rate Quote Approved?}
+    E -- No --> D
+    E -- Yes --> F[Send Rate Quote to Customer\nup.com secure portal, Loup Logistics]
+  end
+
+  subgraph P3[Phase 3: Customer Response Evaluation]
+    F --> G[Customer Response Evaluation\nup.com secure portal, Loup Logistics]
+    G --> H{Customer Accepts Quote?}
+    H -- No --> F
+    H -- Yes --> I[Close Sales Agreement\nup.com secure portal, Loup Logistics]
+  end
+
+  subgraph P4[Phase 4: Update Rate Database]
+    I --> J[Update Rate Database\nLoup Logistics, ShipmentVision]
+    J --> K{Database Update Successful?}
+    K -- No --> J
+    K -- Yes --> L([End])
+  end
+
+  subgraph P5[Phase 5: Monitor Customer Satisfaction]
+    L --> M[Monitor Customer Satisfaction\nup.com secure portal, Loup Logistics]
+    M --> N{Customer Satisfied?}
+    N -- No --> I
+    N -- Yes --> O[Review and Improve Process\nLoup Logistics, ShipmentVision]
+  end
+
+  subgraph P6[Phase 6: Exception Handling]
+    C -- No --> BadOrder([Bad Order])
+    E -- No --> Hold1([Hold])
+    H -- No --> Reject1([Reject])
+    K -- No --> Escalate([Escalate])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style BadOrder fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Reject1 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
