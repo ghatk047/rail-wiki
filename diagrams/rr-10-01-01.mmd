@@ -1,0 +1,63 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Customer Inquiry]
+    A([Start]) --> B[Receive Customer Inquiry\nup.com secure portal; Loup Logistics]
+    B --> C{Inquiry valid?}
+    C -- No --> E([Bad Order])
+    C -- Yes --> D[Initial Assessment and Pricing\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P2[Phase 2: Proposal Review]
+    D --> F[Customer Proposal Review\nup.com secure portal; Loup Logistics]
+    F --> G{Proposal accepted?}
+    G -- No --> H([Hold])
+    G -- Yes --> I[Service Level Agreement SLA Definition\nLoup Logistics; ShipmentVision]
+  end
+
+  subgraph P3[Phase 3: Internal Approval]
+    I --> J[Internal Review and Approval\nVP-Loup Loup Logistics]
+    J --> K{Approval granted?}
+    K -- No --> L([Reject])
+    K -- Yes --> M[Contract Finalization\nup.com secure portal; Loup Logistics]
+  end
+
+  subgraph P4[Phase 4: Order Execution]
+    M --> N[Order Processing\nLoup Logistics; ShipmentVision]
+    N --> O{Processing complete?}
+    O -- No --> P([Hold])
+    O -- Yes --> Q[Order Execution\nTrain Dispatcher; Control Operator]
+    Q --> R{Execution successful?}
+    R -- No --> S([Reject])
+    R -- Yes --> T[Order Tracking and Monitoring\nDedicated Logistics Representative Loup; ShipmentVision; Loup Logistics]
+  end
+
+  subgraph P5[Phase 5: Customer Communication]
+    T --> U[Customer Communication and Feedback\nup.com secure portal; Loup Logistics]
+    U --> V{Feedback received?}
+    V -- No --> W([Escalate])
+    V -- Yes --> X[Post-Order Review and Improvement\nVP-Loup Loup Logistics]
+  end
+
+  subgraph P6[Phase 6: Process Closure]
+    X --> Y[Close Process and Documentation\nup.com secure portal; Loup Logistics]
+    Y --> Z{Documentation complete?}
+    Z -- No --> AA([Hold])
+    Z -- Yes --> AB([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AB fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style P fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style AA fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style Z fill:#c8791a,color:#fff,stroke:#c8791a
