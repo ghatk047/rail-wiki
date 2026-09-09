@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Notification]
+    A([Start]) --> B[Initial Notification\\AskRail]
+    B --> C{Notification Received?}
+    C -- Yes --> D[Route Planning\\NetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Route Planning]
+    D --> E{Route Approved?}
+    E -- Yes --> F[Risk Assessment\\TRANSCAER]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Risk Assessment]
+    F --> G{Risk Assessed?}
+    G -- Yes --> H[Contingency Planning\\SERTC]
+    G -- No --> D
+  end
+
+  subgraph P4[Phase 4: Contingency Planning]
+    H --> I{Plan Approved?}
+    I -- Yes --> J[Equipment Inspection\\EHMS]
+    I -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Equipment Inspection]
+    J --> K{Inspection Passed?}
+    K -- Yes --> L[Route Approval\\NetControl]
+    K -- No --> H
+  end
+
+  subgraph P6[Phase 6: Final Steps]
+    L --> M{Approval Granted?}
+    M -- Yes --> N[Dispatch Instructions\\I-ETMS]
+    M -- No --> Hold3([Hold])
+    N --> O[Monitoring and Reporting\\Wabtrax]
+    O --> P{Monitoring Complete?}
+    P -- Yes --> Q[Post-Dispatch Review\\AskRail]
+    P -- No --> O
+    Q --> R{Review Approved?}
+    R -- Yes --> S[Feedback Loop\\TRANSCAER]
+    R -- No --> Hold4([Hold])
+    S --> T[Final Notification\\SERTC]
+    T --> U[Closeout\\NetControl]
+    U --> V{Closeout Complete?}
+    V -- Yes --> W([End])
+    V -- No --> N
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
