@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Schedule Review]
+    A([Start]) --> B[Review train schedule\\NetControl]
+    B --> C{Schedule valid?}
+    C -- Yes --> D[Crew Size Calculation\\PS Technology]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Crew Size Calculation]
+    D --> E{Crew size sufficient?}
+    E -- Yes --> F[Crew Assignment Request\\CrewPro]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Crew Assignment Request]
+    F --> G[Crew Availability Check\\CloudMoyo Crew Management]
+    G --> H{Crew available?}
+    H -- Yes --> I[Final Crew Assignment\\CrewPro]
+    H -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Final Crew Assignment]
+    I --> J[Train Departure Notification\\NetControl]
+    J --> K{Departure confirmed?}
+    K -- Yes --> L[Crew Size Compliance Check\\PS Technology]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Crew Size Compliance Check]
+    L --> M{Compliance met?}
+    M -- Yes --> N[Final Compliance Review\\PS Technology]
+    M -- No --> O[Exception Handling\\CrewPro]
+  end
+
+  subgraph P6[Phase 6: Final Compliance Review]
+    N --> P[Crew Training Verification\\EHMS]
+    P --> Q{Training verified?}
+    Q -- Yes --> R[Crew Departure Monitoring\\trackHOS-class HOS monitoring tools]
+    Q -- No --> Hold4([Hold])
+    R --> S[Post-Departure Review\\NetControl]
+    S --> T{Review complete?}
+    T -- Yes --> U([End])
+    T -- No --> Hold5([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
