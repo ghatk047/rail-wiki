@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Fuel Surcharge Review]
+    A([Start]) --> B[Review Fuel Surcharge Calculation\nFuel surcharge program; ARC]
+    B --> C{Surcharge calculation correct?}
+    C -- No --> B
+    C -- Yes --> D[Update Material Procurement Plan\nNetControl; I-ETMS]
+  end
+
+  subgraph P2[Phase 2: Equipment Registration and Monitoring]
+    D --> E[Register Equipment in Umler\nUmler]
+    E --> F{Registration successful?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Monitor Equipment Health\nEHMS]
+    G --> H{Health status good?}
+    H -- No --> G
+    H -- Yes --> I[Update Interline Settlement System\nISS / SSDX / CHDX]
+  end
+
+  subgraph P3[Phase 3: Wayside Defects Review]
+    I --> J[Review Wayside Defects\nWayside defect detector network]
+    J --> K{Defects found?}
+    K -- Yes --> L([Bad Order])
+    K -- No --> M[Update Terminal Operations\nNetControl; I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Train Speed Review]
+    M --> N[Review Train Speeds\nI-ETMS]
+    N --> O{Speed within limits?}
+    O -- No --> N
+    O -- Yes --> P[Update Car Hire Accounting\nCHARM car hire accounting]
+  end
+
+  subgraph P5[Phase 5: Machine Vision Data Review]
+    P --> Q[Review Machine Vision Data\nMachine Vision portals]
+    Q --> R{Data reviewed?}
+    R -- No --> Q
+    R -- Yes --> S[Update Network Planning\nNetControl; I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Finalize Revenue Accounting]
+    S --> T[Finalize Revenue Accounting\nTRAIN II; CHARM car hire accounting]
+    T --> U{Accounting finalized?}
+    U -- No --> T
+    U -- Yes --> V([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
