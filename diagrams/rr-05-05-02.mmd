@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Alert Detection]
+    A([Start]) --> B[Alert Detection\\Wayside Defect Detector Network]
+    B --> C{Defect detected?}
+    C -- No --> A
+    C -- Yes --> D[Initial Assessment\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E{Assessment complete?}
+    E -- No --> D
+    E -- Yes --> F[Dispatch Response Team\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Field Inspection]
+    F --> G[Field Inspection\\Wabtec Modular Control Architecture]
+    G --> H{Inspection complete?}
+    H -- No --> F
+    H -- Yes --> I[Repair or Replacement\\Downing B. Jenks Shop]
+  end
+
+  subgraph P4[Phase 4: Repair or Replacement]
+    I --> J{Repair complete?}
+    J -- No --> I
+    J -- Yes --> K[Verification of Repair\\EHMS]
+  end
+
+  subgraph P5[Phase 5: Update and Review]
+    K --> L{Verification passed?}
+    L -- No --> G
+    L -- Yes --> M[Update Defect Database\\Umler]
+    M --> N[Review and Reporting\\TRAIN II]
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement]
+    N --> O[Continuous Improvement\\NetControl]
+    O --> P[Training and Awareness\\PS Technology]
+    P --> Q[Regulatory Compliance Review\\I-ETMS]
+    Q --> R{Compliance met?}
+    R -- No --> Q
+    R -- Yes --> S[Final Approval and Deployment\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
