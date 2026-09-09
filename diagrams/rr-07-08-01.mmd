@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Grade Crossings]
+    A([Start]) --> B[Identify Grade Crossing Locations\\nGCOR, C3RS]
+    B --> C{Locations Identified?}
+    C -- Yes --> D[Develop Outreach Plan\\NetControl, I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Develop and Coordinate Plan]
+    D --> E[Coordinate with Local Authorities\\Harriman Dispatching Center, PS Technology]
+    E --> F{Coordination Complete?}
+    F -- Yes --> G[Conduct Public Meetings\\NetControl, I-ETMS]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Distribute Materials]
+    G --> H[Distribute Safety Materials\\Umler, CHARM]
+    H --> I{Materials Distributed?}
+    I -- Yes --> J[Monitor and Report Progress\\GCOR, C3RS]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Review and Adjust]
+    J --> K[Review and Adjust Plan\\GCOR, C3RS]
+    K --> L{Plan Adjusted?}
+    L -- Yes --> M[Evaluate Effectiveness\\GCOR, C3RS]
+    L -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Report to Stakeholders]
+    M --> N[Report to Stakeholders\\TRAIN II, EHMS]
+    N --> O{Stakeholder Feedback?}
+    O -- Yes --> P[Plan Continuous Improvement\\GCOR, C3RS]
+    O -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Continuous Improvement]
+    P --> Q[Continuous Improvement Actions\\GCOR, C3RS]
+    Q --> R{Improvement Complete?}
+    R -- Yes --> S([End])
+    R -- No --> Hold6([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
