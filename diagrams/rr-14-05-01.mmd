@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Incident Reporting]
+    A([Start]) --> B[Report incident\\NetControl]
+    B --> C{Incident reported?}
+    C -- Yes --> D[Initial assessment\\Umler]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E{Assessment complete?}
+    E -- Yes --> F[Initiate investigation\\I-ETMS]
+    E -- No --> D
+  end
+
+  subgraph P3[Phase 3: Investigation Initiation]
+    F --> G[Interviews and evidence collection\\TRAIN II]
+    G --> H{Evidence collected?}
+    H -- Yes --> I[Review and analysis\\PS Technology]
+    H -- No --> G
+  end
+
+  subgraph P4[Phase 4: Review and Analysis]
+    I --> J{Analysis complete?}
+    J -- Yes --> K[Disciplinary decision\\NetControl]
+    J -- No --> I
+  end
+
+  subgraph P5[Phase 5: Disciplinary Decision]
+    K --> L{Decision made?}
+    L -- Yes --> M[Notify of decision\\Umler]
+    L -- No --> K
+  end
+
+  subgraph P6[Phase 6: Training and Closure]
+    M --> N[Assess training requirement\\TEY New Hire Training program]
+    N --> O{Training required?}
+    O -- Yes --> P[Implement training\\Mobile classroom training trailers]
+    O -- No --> Q[Review and document\\PS Technology]
+    P --> R{Training completed?}
+    R -- Yes --> S[Follow-up review\\TRAIN II]
+    R -- No --> P
+    S --> T{Review complete?}
+    T -- Yes --> U[Final case closure\\Umler]
+    T -- No --> S
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
