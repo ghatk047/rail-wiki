@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Track Inspection]
+    A([Start]) --> B[Conduct track inspection\\nWabtrax, FRA Automated Track Inspection Program ATIP]
+    B --> C{FRA defect found?}
+    C -- Yes --> D[Prioritize defects\\nUmler, PS Technology PST]
+    C -- No --> E([End])
+  end
+
+  subgraph P2[Phase 2: Defect Prioritization]
+    D --> F{Critical defect?}
+    F -- Yes --> G[Schedule maintenance crews\\NetControl, I-ETMS]
+    F -- No --> H[Monitor track performance\\Wabtrax, FRA Automated Track Inspection Program ATIP]
+  end
+
+  subgraph P3[Phase 3: Maintenance Scheduling]
+    G --> I{Track authority granted?}
+    I -- Yes --> J[Perform rail maintenance\\Assistant Foreman track, NetControl, PS Technology PST]
+    I -- No --> K([Hold])
+  end
+
+  subgraph P4[Phase 4: Rail Maintenance]
+    J --> L{Maintenance completed successfully?}
+    L -- Yes --> M[Inspect repaired rails\\Track Inspector, Wabtrax, FRA Automated Track Inspection Program ATIP]
+    L -- No --> N[Report maintenance status\\Track Supervisor, NetControl, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Post-Maintenance Inspection]
+    M --> O{Inspection passed?}
+    O -- Yes --> P[Update maintenance records\\Track Supervisor, Umler, PS Technology PST]
+    O -- No --> Q[Report maintenance status\\Track Supervisor, NetControl, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Maintenance Review and Planning]
+    P --> R{Review effectiveness?}
+    R -- Yes --> S[Plan future maintenance\\Track Supervisor, NetControl, I-ETMS]
+    R -- No --> T[Adjust maintenance strategy\\Chief Engineer / VP Engineering, NetControl, I-ETMS]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style K fill:#20242b,color:#fff,stroke:#20242b
+  style N fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
