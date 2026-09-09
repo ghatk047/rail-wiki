@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Issues]
+    A([Start]) --> B[Identify Issues or Changes\\NetControl] --> C{Issues Identified?}
+    C -- Yes --> D[Prioritize Issues\\NetControl]
+    C -- No --> E([End])
+  end
+
+  subgraph P2[Phase 2: Assign Maintenance]
+    D --> F[Assign Maintenance Tasks\\NetControl] --> G{Tasks Assigned?}
+    G -- Yes --> H[Perform Maintenance\\Umler, EHMS]
+    G -- No --> I([Hold])
+  end
+
+  subgraph P3[Phase 3: Update Data Files]
+    H --> J[Update Data Files\\I-ETMS, PTC Back Office Server BOS] --> K{Data Updated?}
+    K -- Yes --> L[Validate Data Files\\I-ETMS, PTC Back Office Server BOS]
+    K -- No --> I
+  end
+
+  subgraph P4[Phase 4: Review Validation]
+    L --> M{Validation Passed?} --> N[Review Validation Reports\\NetControl, I-ETMS]
+    M -- No --> O([Reject])
+  end
+
+  subgraph P5[Phase 5: Deploy Data Files]
+    N --> P[Deploy Updated Data Files\\I-ETMS, PTC Back Office Server BOS] --> Q{Deployment Successful?}
+    Q -- Yes --> R[Monitor Deployment\\NetControl, I-ETMS]
+    Q -- No --> O
+  end
+
+  subgraph P6[Phase 6: Report and Improve]
+    R --> S[Report Findings\\NetControl, I-ETMS] --> T{Findings Reported?}
+    T -- Yes --> U[Review and Improve\\NetControl, I-ETMS]
+    T -- No --> V([Escalate])
+    U --> W[Close Process\\NetControl, I-ETMS] --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style V fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
