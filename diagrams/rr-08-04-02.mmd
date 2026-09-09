@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Assessment]
+    A([Start]) --> B[Conduct initial assessment\\nAskRail]
+    B --> C{Assessment passed?}
+    C -- No --> D[Identify deficiencies\\nAskRail]
+    C -- Yes --> E[Proceed to training needs identification\\nTRANSCAER]
+  end
+
+  subgraph P2[Phase 2: Training Needs Identification]
+    E --> F[Identify training needs\\nTRANSCAER]
+    F --> G{Training needed?}
+    G -- No --> H[Update documentation\\nUmler]
+    G -- Yes --> I[Deliver training\\nSERTC]
+  end
+
+  subgraph P3[Phase 3: Training Delivery]
+    I --> J[Conduct practical exercises\\nAskRail]
+    J --> K{Practical exercise passed?}
+    K -- No --> L[Re-evaluate training needs\\nTRANSCAER]
+    K -- Yes --> M[Review certification\\nTRANSCAER]
+  end
+
+  subgraph P4[Phase 4: Certification Review]
+    M --> N{Certification approved?}
+    N -- No --> O[Escalate to President and CEO\\nTRANSCAER]
+    N -- Yes --> P[Update documentation\\nUmler]
+  end
+
+  subgraph P5[Phase 5: Annual Review Trigger]
+    P --> Q[Trigger annual review\\nAskRail]
+    Q --> R{Review required?}
+    R -- No --> S([End])
+    R -- Yes --> T[Conduct renewal assessment\\nTRANSCAER]
+  end
+
+  subgraph P6[Phase 6: Renewal Process]
+    T --> U[Deliver renewal training\\nSERTC]
+    U --> V[Conduct renewal practical exercises\\nAskRail]
+    V --> W{Renewal practical exercise passed?}
+    W -- No --> X[Re-evaluate renewal training needs\\nTRANSCAER]
+    W -- Yes --> Y[Review renewal certification\\nTRANSCAER]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style O fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
