@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Inspection Initiation]
+    A([Start]) --> B[Initiate Inspection Schedule\\NetControl]
+    B --> C{Inspection scheduled?}
+    C -- No --> B
+    C -- Yes --> D[Conduct Initial Inspection\\Wabtrax]
+  end
+
+  subgraph P2[Phase 2: Review and Plan]
+    D --> E[Review Inspection Report\\NetControl]
+    E --> F{Defects found?}
+    F -- No --> G[Plan Repair Work\\Umler]
+    F -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Execute Repair]
+    G --> H[Execute Repair Work\\PS Technology]
+    H --> I{Repair completed?}
+    I -- No --> H
+    I -- Yes --> J[Conduct Post-Repair Inspection\\Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Review Post-Repair]
+    J --> K[Review Post-Repair Report\\NetControl]
+    K --> L{Defects resolved?}
+    L -- No --> M[Plan Additional Repair Work\\Umler]
+    L -- Yes --> N[Update Maintenance Records\\Umler]
+  end
+
+  subgraph P5[Phase 5: Notify and Schedule Follow-Up]
+    N --> O[Notify Stakeholders\\NetControl]
+    O --> P[Schedule Follow-Up Inspection\\Wabtrax]
+    P --> Q[Conduct Follow-Up Inspection\\Wabtrax]
+    Q --> R{Defects persist?}
+    R -- No --> S[Finalize Maintenance Cycle\\Umler]
+    R -- Yes --> T([Escalate])
+  end
+
+  subgraph P6[Phase 6: Completion]
+    S --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
