@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Car Arrival Notification]
+    A([Start]) --> B[Car Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Car Inspection and Classification\\EHMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Car Inspection and Classification]
+    D --> E{Air Brake Test Passed?}
+    E -- Yes --> F[Umler Data Update\\Umler]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Umler Data Update]
+    F --> G{FRA Defect Found?}
+    G -- Yes --> Hold2([Hold])
+    G -- No --> H[Car Hire Accounting\\CHARM]
+  end
+
+  subgraph P4[Phase 4: Car Hire Accounting]
+    H --> I{Interchange Accepted?}
+    I -- Yes --> J[Interline Settlement Preparation\\ISS]
+    I -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Interline Settlement Preparation]
+    J --> K{Settlement Data Validated?}
+    K -- Yes --> L[Train Departure Notification\\NetControl]
+    K -- No --> Hold3([Hold])
+  end
+
+  subgraph P6[Phase 6: Train Departure and Monitoring]
+    L --> M[Positive Train Control PTC Activation\\I-ETMS]
+    M --> N{PTC Initialised?}
+    N -- Yes --> O[Car Hire Data Exchange CHDX\\CHDX]
+    N -- No --> Hold4([Hold])
+    O --> P[Train Monitoring and Reporting\\Wabtrax]
+    P --> Q{Train Status Normal?}
+    Q -- Yes --> R[Final Car Status Update\\Umler]
+    Q -- No --> Rej3([Reject])
+    R --> S[Settlement Data Finalization\\ISS]
+    S --> T{Settlement Complete?}
+    T -- Yes --> U[Completion Notification\\NetControl]
+    T -- No --> Hold5([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
