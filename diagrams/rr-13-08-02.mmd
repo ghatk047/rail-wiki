@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Lease Agreement Review]
+    A([Start]) --> B[Review Lease Agreement Terms\nCHARM]
+    B --> C{Terms Approved?}
+    C -- Yes --> D[Calculate Fuel Surcharge\nFuel surcharge program]
+    C -- No --> Rej1([Reject])
+  end
+
+  subgraph P2[Phase 2: Equipment Registration]
+    D --> E[Register Equipment in Umler\nUmler]
+    E --> F{Registration Successful?}
+    F -- Yes --> G[Assign Equipment to a Train\nNetControl]
+    F -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Performance Monitoring]
+    G --> H[Monitor Equipment Performance\nEHMS]
+    H --> I{Performance Within Limits?}
+    I -- Yes --> J[Review Regulatory Compliance\nGCOR, 49 CFR Part 232]
+    I -- No --> Hold1
+  end
+
+  subgraph P4[Phase 4: Fuel Surcharge Adjustment]
+    J --> K{Compliance Approved?}
+    K -- Yes --> L[Adjust Fuel Surcharge if Necessary\nFuel surcharge program]
+    K -- No --> Rej2([Reject])
+  end
+
+  subgraph P5[Phase 5: Periodic Audits and Reporting]
+    L --> M[Update Lease Agreement Terms\nCHARM]
+    M --> N{Terms Updated?}
+    N -- Yes --> O[Conduct Periodic Audits\nCHARM, EHMS]
+    N -- No --> Hold1
+  end
+
+  subgraph P6[Phase 6: Finalization and Reporting]
+    O --> P[Report to Stakeholders\nup.com customer portal, AskRail]
+    P --> Q{Reporting Complete?}
+    Q -- Yes --> R[Review and Optimize Fuel Surcharge Program\nFuel surcharge program]
+    Q -- No --> Hold1
+    R --> S[Finalize Lease Agreement\nCHARM]
+    S --> T{Agreement Finalized?}
+    T -- Yes --> U([End])
+    T -- No --> Rej3([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
