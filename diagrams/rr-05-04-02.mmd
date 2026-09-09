@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Train on schedule?}
+    C -- Yes --> D[Initial Inspection Planning\\Umler]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Visual Inspection]
+    D --> E[Visual Inspection\\Wabtec Modular Control Architecture]
+    E --> F{Visual inspection passed?}
+    F -- Yes --> G[Wayside Defect Detection Review\\Wayside defect detector network]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Air Brake Test]
+    G --> H[Air Brake Test\\EHMS]
+    H --> I{Air brake test passed?}
+    I -- Yes --> J[Detailed Mechanical Inspection\\Downing B. Jenks Shop]
+    I -- No --> H
+  end
+
+  subgraph P4[Phase 4: Detailed Mechanical Inspection]
+    J --> K{Detailed inspection completed?}
+    K -- Yes --> L[Repair and Maintenance\\Wabtec Modular Control Architecture]
+    K -- No --> J
+  end
+
+  subgraph P5[Phase 5: Final Inspection and Certification]
+    L --> M[Final Inspection and Certification\\Umler]
+    M --> N{Inspection certified?}
+    N -- Yes --> O[Train Departure Notification\\NetControl]
+    N -- No --> L
+  end
+
+  subgraph P6[Phase 6: Update Maintenance Records and Continuous Improvement]
+    O --> P[Update Maintenance Records\\TRAIN II]
+    P --> Q[Review and Report Defects\\Wayside defect detector network]
+    Q --> R[Continuous Improvement Analysis\\EHMS]
+    R --> S([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style S fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
