@@ -1,0 +1,56 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Interline Request Review]
+    A([Start]) --> B[Review interline request\\Umler, CHARM]
+    B --> C{Request valid?}
+    C -- No --> Rej1([Reject])
+    C -- Yes --> D[Assign equipment\\Umler, TRAIN II]
+  end
+
+  subgraph P2[Phase 2: Equipment Assignment]
+    D --> E[Conduct health check and maintenance\\EHMS]
+    E --> F{Health check passed?}
+    F -- No --> E
+    F -- Yes --> G[Compose train schedule\\NetControl, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Train Composition and Scheduling]
+    G --> H[Review interchange agreement\\Umler, CHARM]
+    H --> I{Interchange accepted?}
+    I -- No --> Rej2([Reject])
+    I -- Yes --> J[Depart train for service\\I-ETMS, Wabtrax]
+  end
+
+  subgraph P4[Phase 4: Train Departure and Monitoring]
+    J --> K[Monitor wayside defects\\Wayside defect detector network, Machine Vision portals]
+    K --> L{Defect found?}
+    L -- Yes --> Hold1([Hold])
+    L -- No --> M[Inspect train arrival\\EHMS, Umler]
+  end
+
+  subgraph P5[Phase 5: Train Arrival and Inspection]
+    M --> N[Settle and bill\\ISS, CHDX]
+    N --> O{Settlement complete?}
+    O -- No --> N
+    O -- Yes --> P[Review post-service\\Umler, CHARM]
+  end
+
+  subgraph P6[Phase 6: Post-Service Review]
+    P --> Q[Implement continuous improvement\\VP Network Planning Operations]
+    Q --> R{Improvement implemented?}
+    R -- No --> Q
+    R -- Yes --> S[Document and report\\Umler, CHARM]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
