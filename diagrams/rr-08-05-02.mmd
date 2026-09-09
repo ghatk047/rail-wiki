@@ -1,0 +1,69 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Incident Detection]
+    A([Start]) --> B[Detect incident using\nAskRail, TRANSCAER, SERTC, Wayside defect detector network]
+    B --> C{Incident detected?}
+    C -- No --> B
+    C -- Yes --> D[Report incident to Control Operator]
+  end
+
+  subgraph P2[Phase 2: Incident Classification]
+    D --> E[Classify incident using\nAskRail, TRANSCAER]
+    E --> F{Classification complete?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Notify Train Dispatcher and Control Operator]
+  end
+
+  subgraph P3[Phase 3: Emergency Response Notification]
+    G --> H[Send emergency response notification\nNetControl, I-ETMS]
+    H --> I{Notification sent?}
+    I -- No --> G
+    I -- Yes --> J[Request data access from Emergency Response Coordinator and Hazmat Compliance Officer]
+  end
+
+  subgraph P4[Phase 4: Data Access Request]
+    J --> K[Access data using\nUmler, PS Technology, EHMS, TRAIN II]
+    K --> L{Data accessed?}
+    L -- No --> Hold2([Hold])
+    L -- Yes --> M[Contain incident with Train Dispatcher, Yardmaster, Switchman/Switch Foreman]
+  end
+
+  subgraph P5[Phase 5: Incident Containment]
+    M --> N[Contain incident using\nNetControl, I-ETMS]
+    N --> O{Incident contained?}
+    O -- No --> M
+    O -- Yes --> P[Report incident to Chairman, President and CEO, Emergency Response Coordinator]
+  end
+
+  subgraph P6[Phase 6: Post-Incident Review and Continuous Improvement]
+    P --> Q[Review incident with\nVP Network Planning Operations, Service Design / Network Planning Analyst]
+    Q --> R{Review complete?}
+    R -- No --> Hold3([Hold])
+    R -- Yes --> S[Share data and collaborate with Emergency Response Coordinator, Hazmat Compliance Officer]
+    S --> T{Data shared?}
+    T -- No --> S
+    T -- Yes --> U[Improve processes with Chairman, President and CEO, VP Network Planning Operations]
+    U --> V{Improvement complete?}
+    V -- No --> Hold4([Hold])
+    V -- Yes --> W[Debrief incident with Emergency Response Coordinator, TRANSCAER Regional Coordinator]
+    W --> X{Debriefing complete?}
+    X -- No --> W
+    X -- Yes --> Y[Close incident with Chairman, President and CEO, Emergency Response Coordinator]
+    Y --> Z([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Z fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
