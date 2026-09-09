@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection]
+    A([Start]) --> B[Collect revenue data\\NetControl]
+    B --> C{Data complete?}
+    C -- No --> B
+    C -- Yes --> D[Calculate fuel surcharge\\Fuel surcharge program]
+  end
+
+  subgraph P2[Phase 2: ARC Calculation]
+    D --> E[Perform ARC calculation\\Umler]
+    E --> F{ARC valid?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Check regulatory compliance\\I-ETMS, Umler, PS Technology]
+    G --> H{Compliance met?}
+    H -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Revenue Recognition]
+    H -- Yes --> I[Recognize revenue\\TRAIN II, CHARM]
+    I --> J{Revenue recognized?}
+    J -- No --> I
+    J -- Yes --> K[Report to Finance Department\\NetControl, I-ETMS]
+    K --> L([End])
+  end
+
+  subgraph P4[Phase 4: Review and Approval]
+    K --> M[Review by Chairman, President and CEO\\NetControl, I-ETMS]
+    M --> N{Approved?}
+    N -- No --> K
+    N -- Yes --> O[Update Revenue Accounting System\\TRAIN II, CHARM]
+  end
+
+  subgraph P5[Phase 5: Audit and Review]
+    O --> P[Audit by Internal Audit Team\\NetControl, I-ETMS]
+    P --> Q{Audit passed?}
+    Q -- No --> M
+    Q -- Yes --> R[Resolve disputes with customers\\up.com customer portal, AskRail]
+    R --> S{Disputes resolved?}
+    S -- No --> R
+    S -- Yes --> T[Continuous Improvement Review\\NetControl, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Final Review and Closeout]
+    T --> U[Final review by Chairman, President and CEO\\NetControl, I-ETMS]
+    U --> V{Closeout approved?}
+    V -- No --> O
+    V -- Yes --> W([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
