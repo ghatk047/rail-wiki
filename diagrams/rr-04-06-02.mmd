@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Assessment]
+    A([Start]) --> B[Initial Assessment\\PS Technology PST]
+    B --> C{Assessment Passed?}
+    C -- No --> D[Re-assessment Required\\PS Technology PST]
+    C -- Yes --> E[Training Needs Identification\\CrewPro]
+  end
+
+  subgraph P2[Phase 2: Training Execution]
+    E --> F{Training Completed?}
+    F -- No --> G[Re-train\\HASTUS]
+    F -- Yes --> H[Skill Assessment\\EHMS]
+  end
+
+  subgraph P3[Phase 3: Certification Review]
+    H --> I{Skill Assessment Passed?}
+    I -- No --> J[Retrain and Re-assess\\HASTUS / EHMS]
+    I -- Yes --> K[Certification Review\\CloudMoyo Crew Management CCM]
+  end
+
+  subgraph P4[Phase 4: Pre-Certification Review]
+    K --> L{Review Approved?}
+    L -- No --> M[Re-review\\NetControl]
+    L -- Yes --> N[Safety Briefing\\Umler]
+  end
+
+  subgraph P5[Phase 5: Final Approval]
+    N --> O{Briefing Approved?}
+    O -- No --> P[Re-brief\\Superintendent Division / Local Chairman / General Chairman union]
+    O -- Yes --> Q[Final Approval\\I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Certification Update and Notification]
+    Q --> R{Approval Granted?}
+    R -- No --> S[Escalate for Review\\Chief Dispatcher / VP Network Planning Operations]
+    R -- Yes --> T[Certification Update in Systems\\PS Technology PST / CloudMoyo Crew Management CCM]
+    T --> U[Notification to Employee\\up.com customer portal]
+    U --> V[Post-Certification Review\\HASTUS]
+    V --> W{Review Passed?}
+    W -- No --> X[Re-review and Update\\HASTUS / PS Technology PST / CloudMoyo Crew Management CCM]
+    W -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
