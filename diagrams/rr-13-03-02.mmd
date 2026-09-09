@@ -1,0 +1,68 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Data Collection]
+    A([Start]) --> B[Collect interline data\nInterline Settlement System ISS]
+    B --> C{Data complete?}
+    C -- No --> B
+    C -- Yes --> D[Calculate revenue\nCost Analyst regulatory costing]
+  end
+
+  subgraph P2[Phase 2: Revenue Calculation]
+    D --> E{Revenue calculation valid?}
+    E -- No --> Hold1([Hold])
+    E -- Yes --> F[Review and adjust revenue\nRevenue Accountant]
+  end
+
+  subgraph P3[Phase 3: Review and Adjustment]
+    F --> G{Adjustments approved?}
+    G -- No --> F
+    G -- Yes --> H[Approve by stakeholders\nChairman, President and CEO]
+  end
+
+  subgraph P4[Phase 4: Approval by Stakeholders]
+    H --> I{Stakeholder approval received?}
+    I -- No --> Hold2([Hold])
+    I -- Yes --> J[Process payment\nRevenue Accountant]
+  end
+
+  subgraph P5[Phase 5: Payment Processing]
+    J --> K{Payment processed successfully?}
+    K -- No --> Escalate1([Escalate])
+    K -- Yes --> L[Generate report and documentation\nRevenue Accountant]
+  end
+
+  subgraph P6[Phase 6: Reporting and Documentation]
+    L --> M[Audit review\nCost Analyst regulatory costing]
+    M --> N{Audit findings resolved?}
+    N -- No --> M
+    N -- Yes --> O[Resolve disputes\nRevenue Accountant]
+    O --> P{Disputes resolved?}
+    P -- No --> O
+    P -- Yes --> Q[Final payment and reporting\nRevenue Accountant]
+    Q --> R{Final documentation complete?}
+    R -- No --> L
+    R -- Yes --> S[Continuous improvement\nService Design / Network Planning Analyst]
+    S --> T{Improvements implemented?}
+    T -- No --> S
+    T -- Yes --> U[Regulatory compliance review\nCost Analyst regulatory costing]
+    U --> V{Compliance reviewed?}
+    V -- No --> U
+    V -- Yes --> W[Final documentation and reporting\nRevenue Accountant]
+    W --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Escalate1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
