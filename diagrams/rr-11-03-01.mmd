@@ -1,0 +1,70 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Car Hire Notification]
+    A([Start]) --> B[Receive car hire notification\nUmler]
+    B --> C{Notification valid?}
+    C -- No --> E([Bad Order])
+    C -- Yes --> D[Log notification details\nUmler]
+  end
+
+  subgraph P2[Phase 2: Car Hire Data Exchange]
+    D --> F[Exchange car hire data\nInterline Settlement System ISS / CHDX]
+    F --> G{Data exchange successful?}
+    G -- No --> H([Hold])
+    G -- Yes --> I[Prepare per diem calculation\nTRAIN II]
+  end
+
+  subgraph P3[Phase 3: Per Diem Calculation]
+    I --> J{Per diem calculated correctly?}
+    J -- No --> F
+    J -- Yes --> K[Conduct equipment health check\nEHMS]
+  end
+
+  subgraph P4[Phase 4: Equipment Health Check]
+    K --> L{Equipment health check passed?}
+    L -- No --> M([Reject])
+    L -- Yes --> N[Review car hire agreement\nChairman, President and CEO / Umler]
+  end
+
+  subgraph P5[Phase 5: Agreement Review]
+    N --> O{Agreement approved?}
+    O -- No --> K
+    O -- Yes --> P[Exchange interline settlement data\nSwitching Settlement Data Exchange SSDX]
+  end
+
+  subgraph P6[Phase 6: Accounting and Reporting]
+    P --> Q{Data exchange successful?}
+    Q -- No --> R([Hold])
+    Q -- Yes --> S[Update car hire accounting rate\nCHARM]
+    S --> T[Monitor train movement\nNetControl]
+    T --> U{Train movement monitored?}
+    U -- No --> T
+    U -- Yes --> V[Validate car hire data\nInterline Settlement System ISS]
+    V --> W{Data valid?}
+    W -- No --> P
+    W -- Yes --> X[Process per diem payment\nInterline Settlement System ISS]
+    X --> Y{Payment processed?}
+    Y -- No --> R
+    Y -- Yes --> Z[Update final car hire record\nUmler]
+    Z --> AA{Record updated?}
+    AA -- No --> V
+    AA -- Yes --> AB[Audit and report\nInterline Settlement System ISS]
+    AB --> AC([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style AC fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style H fill:#20242b,color:#fff,stroke:#20242b
+  style M fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
+  style Y fill:#c8791a,color:#fff,stroke:#c8791a
+  style AA fill:#c8791a,color:#fff,stroke:#c8791a
