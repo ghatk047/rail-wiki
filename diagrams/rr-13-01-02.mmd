@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Train Arrival Notification]
+    A([Start]) --> B[Train Arrival Notification\\NetControl]
+    B --> C{Track Authority Granted?}
+    C -- Yes --> D[Record Arrival Time\\TRAIN II]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Fuel Consumption Data Collection]
+    D --> E[Fuel Consumption Data Collection\\Wabtrax]
+    E --> F{Fuel Data Complete?}
+    F -- Yes --> G[Fuel Surcharge Calculation\\Fuel surcharge program]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Revenue Recognition Review]
+    G --> H[Revenue Recognition Review\\TRAIN II]
+    H --> I{Revenue Recognized?}
+    I -- Yes --> J[ARC Calculation\\Umler]
+    I -- No --> D
+  end
+
+  subgraph P4[Phase 4: Revenue Accounting Review]
+    J --> K[Revenue Accounting Review\\TRAIN II]
+    K --> L{Accounting Approved?}
+    L -- Yes --> M[Payment to Shippers\\Interline Settlement System ISS]
+    L -- No --> H
+  end
+
+  subgraph P5[Phase 5: Regulatory Compliance Check]
+    M --> N[Regulatory Compliance Check\\GCOR]
+    N --> O{Compliant?}
+    O -- Yes --> P[Audit Preparation\\TRAIN II]
+    O -- No --> K
+  end
+
+  subgraph P6[Phase 6: Post-Audit Review and Continuous Improvement]
+    P --> Q[Post-Audit Review\\Chairman, President and CEO]
+    Q --> R{Audit Approved?}
+    R -- Yes --> S[Implementation of Corrective Actions\\NetControl, I-ETMS]
+    R -- No --> N
+    S --> T[Continuous Improvement Review\\NetControl, I-ETMS]
+    T --> U{Improvements Identified?}
+    U -- Yes --> Q
+    U -- No --> A([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
