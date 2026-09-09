@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiate Plan Development]
+    A([Start]) --> B[Initiate Operating Plan Development\\NetControl]
+    B --> C{Plan within budget?}
+    C -- No --> B
+    C -- Yes --> D[Review and Validate Plan\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Deploy Assurance Measures]
+    D --> E[Deploy Service Assurance Measures\\I-ETMS, Umler, PS Technology]
+    E --> F{Measures deployed successfully?}
+    F -- No --> E
+    F -- Yes --> G[Monitor Train Performance\\NetControl, I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Conduct Audits]
+    G --> H[Conduct Regular Audits\\Umler, EHMS]
+    H --> I{Audit findings resolved?}
+    I -- No --> G
+    I -- Yes --> J[Implement Corrective Actions\\NetControl, I-ETMS]
+  end
+
+  subgraph P4[Phase 4: Review and Update Plan]
+    J --> K[Review and Update Plan\\NetControl, I-ETMS]
+    K --> L{Plan updated?}
+    L -- No --> J
+    L -- Yes --> M[Ensure Regulatory Compliance\\NetControl, I-ETMS]
+  end
+
+  subgraph P5[Phase 5: Optimize Terminal Operations]
+    M --> N[Optimize Terminal Operations\\NetControl, Umler]
+    N --> O{Operations optimized?}
+    O -- No --> K
+    O -- Yes --> P[Implement Optimization Plan\\NetControl, I-ETMS]
+  end
+
+  subgraph P6[Phase 6: Monitor and Adjust Plans]
+    P --> Q[Monitor and Report Performance\\NetControl, I-ETMS]
+    Q --> R{Performance within standards?}
+    R -- No --> M
+    R -- Yes --> S[Review and Adjust Plans\\NetControl, I-ETMS]
+    S --> T([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style T fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
