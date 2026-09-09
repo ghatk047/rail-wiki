@@ -1,0 +1,73 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Device Assignment]
+    A([Start]) --> B[Assign device to train\\NetControl]
+    B --> C{Device assigned successfully?}
+    C -- Yes --> D[Security Assessment\\Cybersecurity - 'secure-by-design' approach]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Security Assessment]
+    D --> E{Security assessment passed?}
+    E -- Yes --> F[Device Configuration\\PS Technology PST]
+    E -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Device Configuration]
+    F --> G{Configuration successful?}
+    G -- Yes --> H[Training Notification\\NetControl]
+    G -- No --> Hold2([Hold])
+  end
+
+  subgraph P4[Phase 4: Training and Deployment]
+    H --> I{Train notification sent?}
+    I -- Yes --> J[Device Deployment\\Locomotive Engineer]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P5[Phase 5: Monitoring and Maintenance]
+    J --> K[Monitoring and Reporting\\Cybersecurity - 'secure-by-design' approach]
+    K --> L{Incident detected?}
+    L -- Yes --> M[Incident Response\\Cybersecurity - 'secure-by-design' approach]
+    L -- No --> N[Device Maintenance\\PS Technology PST]
+  end
+
+  subgraph P6[Phase 6: Audit and Continuous Improvement]
+    N --> O{Maintenance successful?}
+    O -- Yes --> P[Audit and Review\\Cybersecurity - 'secure-by-design' approach]
+    O -- No --> Hold4([Hold])
+    P --> Q{Audit passed?}
+    Q -- Yes --> R[Continuous Improvement\\Cybersecurity - 'secure-by-design' approach]
+    Q -- No --> Rej2([Reject])
+  end
+
+  subgraph P7[Phase 7: Device Update and Final Review]
+    R --> S[Device Update\\PS Technology PST]
+    S --> T{Update successful?}
+    T -- Yes --> U[Final Review and Approval\\Cybersecurity - 'secure-by-design' approach]
+    T -- No --> Hold5([Hold])
+  end
+
+  subgraph P8[Phase 8: Completion]
+    U --> V{Review approved?}
+    V -- Yes --> W([End])
+    V -- No --> Rej3([Reject])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
