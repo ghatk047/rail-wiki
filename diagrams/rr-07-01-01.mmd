@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: GCOR Review]
+    A([Start]) --> B[Review GCOR for Updates\\nGCOR]
+    B --> C{Updates Found?}
+    C -- Yes --> D[Identify Non-Compliance Issues\\nC3RS]
+    C -- No --> E[Conduct Rule Training Sessions\\NetControl]
+  end
+
+  subgraph P2[Phase 2: Compliance Checks]
+    D --> F{Non-Compliance Identified?}
+    F -- Yes --> G[Report to Rules Officer\\GCOR]
+    F -- No --> H[Review Train Dispatching Procedures\\I-ETMS]
+  end
+
+  subgraph P3[Phase 3: Locomotive Inspection]
+    H --> I[Inspect Locomotives for Compliance\\EHMS]
+    I --> J{Compliance Found?}
+    J -- Yes --> K[Update Crew Management Records\\CloudMoyo Crew Management]
+    J -- No --> I
+  end
+
+  subgraph P4[Phase 4: Track and Defect Review]
+    K --> L[Review Track Geometry Data\\Wabtrax]
+    L --> M{Defects Found?}
+    M -- Yes --> N[Report to Track Inspector\\Wabtrax]
+    M -- No --> O[Analyze Wayside Defect Detector Data\\Wayside defect detector network]
+  end
+
+  subgraph P5[Phase 5: Container Fleet Review]
+    O --> P{Defects Identified?}
+    P -- Yes --> Q[Report to Control Operator\\Wayside defect detector network]
+    P -- No --> R[Review Intermodal Container Fleet\\EMP and UMAX container fleets]
+  end
+
+  subgraph P6[Phase 6: Final Compliance Review]
+    R --> S{Compliance Issues?}
+    S -- Yes --> T[Update Interline Settlement Data\\Interline Settlement System ISS]
+    S -- No --> U[Review Car Hire Data Exchange\\Car Hire Data Exchange CHDX]
+    U --> V{Data Exchange Issues?}
+    V -- Yes --> W[Report to Car Inspector\\Car Hire Data Exchange CHDX]
+    V -- No --> X[Report Compliance Status to CEO\\up.com customer portal]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
