@@ -1,0 +1,84 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Application Review]
+    A([Start]) --> B[Initial Application Review\\NetControl]
+    B --> C{Application Approved?}
+    C -- Yes --> D[Background Check Initiation\\NetControl]
+    C -- No --> Rej1([Reject])
+  end
+
+  subgraph P2[Phase 2: Background Check]
+    D --> E[Background Check Initiation\\NetControl]
+    E --> F{Background Check Complete?}
+    F -- Yes --> G[Drug and Alcohol Screening\\NetControl]
+    F -- No --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Drug and Alcohol Screening]
+    G --> H{Drug Test Passed?}
+    H -- Yes --> I[Medical Evaluation\\EHMS]
+    H -- No --> Rej2([Reject])
+  end
+
+  subgraph P4[Phase 4: Medical Evaluation]
+    I --> J{Medical Clearance Approved?}
+    J -- Yes --> K[Safety Training Assessment\\TRAIN II]
+    J -- No --> Hold2([Hold])
+  end
+
+  subgraph P5[Phase 5: Safety Training and Final Interview]
+    K --> L{Training Passed?}
+    L -- Yes --> M[Final Interview\\NetControl]
+    L -- No --> Rej3([Reject])
+  end
+
+  subgraph P6[Phase 6: Hiring, Orientation, and Continuous Training]
+    M --> N{Interview Approved?}
+    N -- Yes --> O[Hiring Decision\\NetControl]
+    N -- No --> Hold3([Hold])
+
+    O --> P[Orientation and Onboarding\\TRAIN II]
+    P --> Q{Onboarding Complete?}
+    Q -- Yes --> R[Performance Evaluation\\TRAIN II]
+    Q -- No --> Rej4([Reject])
+  end
+
+  subgraph P7[Phase 7: Continuous Training and Safety Audit]
+    R --> S{Performance Meets Standards?}
+    S -- Yes --> T[Continuous Training and Development\\TRAIN II]
+    S -- No --> Hold4([Hold])
+
+    T --> U{Training Complete?}
+    U -- Yes --> V[Safety Audit Review\\NetControl]
+    U -- No --> Rej5([Reject])
+  end
+
+  subgraph P8[Phase 8: Final Approval and Onboarding]
+    V --> W{Safety Audit Approved?}
+    W -- Yes --> X[Final Approval and Onboarding\\NetControl]
+    W -- No --> Hold5([Hold])
+
+    X --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
