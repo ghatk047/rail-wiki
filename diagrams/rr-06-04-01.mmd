@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiate Track Inspection]
+    A([Start]) --> B[Initiate Track Inspection Schedule\\NetControl]
+    B --> C{Schedule approved?}
+    C -- No --> B
+    C -- Yes --> D[Assign Track Inspection Crew\\PS Technology]
+  end
+
+  subgraph P2[Phase 2: Conduct Inspection]
+    D --> E[Conduct Track Inspection\\Wabtrax]
+    E --> F{FRA defect found?}
+    F -- No --> G[Review Inspection Report\\NetControl]
+    F -- Yes --> Hold1([Hold])
+  end
+
+  subgraph P3[Phase 3: Plan and Execute Repair]
+    G --> H{Inspection report approved?}
+    H -- No --> E
+    H -- Yes --> I[Plan Defect Repair\\Umler]
+    I --> J[Execute Defect Repair\\PS Technology]
+  end
+
+  subgraph P4[Phase 4: Verify Completion]
+    J --> K{Repair completed successfully?}
+    K -- No --> J
+    K -- Yes --> L[Verify Repair Completion\\Wabtrax]
+  end
+
+  subgraph P5[Phase 5: Update Database and Notify Stakeholders]
+    L --> M{Verification successful?}
+    M -- No --> K
+    M -- Yes --> N[Update Track Condition Database\\Umler]
+    N --> O[Notify Stakeholders\\NetControl]
+  end
+
+  subgraph P6[Phase 6: Review and Improve Process]
+    O --> P[Review and Improve Process\\NetControl]
+    P --> Q{Process improvements identified?}
+    Q -- No --> R([End])
+    Q -- Yes --> S[Implement Process Improvements\\NetControl]
+    S --> T[Monitor and Report Compliance\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
