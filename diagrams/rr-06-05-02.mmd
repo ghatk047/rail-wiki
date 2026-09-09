@@ -1,0 +1,55 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initial Defect Detection]
+    A([Start]) --> B[Initial Defect Detection\\Wabtrax]
+    B --> C{Defect Found?}
+    C -- No --> A
+    C -- Yes --> D[Prioritize Defects\\Umler]
+  end
+
+  subgraph P2[Phase 2: Prioritization and Scheduling]
+    D --> E{Priority Level High?}
+    E -- No --> B
+    E -- Yes --> F[Schedule Inspection Crew\\NetControl]
+  end
+
+  subgraph P3[Phase 3: On-Site Inspection]
+    F --> G[Conduct On-Site Inspection\\Track geometry car]
+    G --> H{Inspection Complete?}
+    H -- No --> F
+    H -- Yes --> I[Evaluate Inspection Results\\Umler]
+  end
+
+  subgraph P4[Phase 4: Planning and Repair Scheduling]
+    I --> J{Defect Requires Repair?}
+    J -- No --> K[Update Maintenance Records\\Umler]
+    J -- Yes --> L[Plan Repairs\\Umler]
+    L --> M{Repair Plan Approved?}
+    M -- No --> I
+    M -- Yes --> N[Schedule Repair Crew\\NetControl]
+  end
+
+  subgraph P5[Phase 5: Conducting Repairs]
+    N --> O[Conduct Repairs\\NetControl]
+    O --> P{Repairs Complete?}
+    P -- No --> N
+    P -- Yes --> Q[Post-Repair Inspection\\Track geometry car]
+  end
+
+  subgraph P6[Phase 6: Evaluation and Notification]
+    Q --> R[Evaluate Post-Repair Inspection\\Umler]
+    R --> S{Inspection Passed?}
+    S -- No --> O
+    S -- Yes --> T[Update Maintenance Records\\Umler]
+    T --> U[Notify Stakeholders\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
