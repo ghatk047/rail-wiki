@@ -1,0 +1,70 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Incident Detection and Notification]
+    A([Start]) --> B[Detect incident\\Wabtrax]
+    B --> C{Incident detected?}
+    C -- Yes --> D[Notify Control Operator\\Harriman Dispatching Center]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Initial Assessment]
+    D --> E[Assess incident severity\\Train Dispatcher]
+    E --> F{Incident requires further action?}
+    F -- Yes --> G[Notify Hazmat Compliance Officer\\TRANSCAER]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Data Collection and Verification]
+    G --> H[Collect incident data\\TRANSCAER]
+    H --> I{Data complete and verified?}
+    I -- Yes --> J[Notify Emergency Response Coordinator\\AskRail, I-ETMS]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Communication and Coordination]
+    J --> K[Coordinate response efforts\\Emergency Response Coordinator]
+    K --> L{Coordination complete?}
+    L -- Yes --> M[Notify VP Network Planning Operations\\NetControl, PS Technology]
+    L -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Resource Allocation]
+    M --> N[Allocate resources\\VP Network Planning Operations]
+    N --> O{Resources allocated?}
+    O -- Yes --> P[Notify Emergency Response Coordinator, Hazmat Compliance Officer\\AskRail, TRANSCAER]
+    O -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Post-Incident Review and Continuous Improvement]
+    P --> Q[Conduct post-incident review\\Service Design / Network Planning Analyst, Emergency Response Coordinator]
+    Q --> R{Review complete?}
+    R -- Yes --> S[Implement improvements\\Chairman, President and CEO]
+    R -- No --> Hold6([Hold])
+    S --> T[Train and drill\\TRANSCAER Regional Coordinator, Emergency Response Coordinator]
+    T --> U{Training complete?}
+    U -- Yes --> V[Monitor and report\\Hazmat Compliance Officer, Emergency Response Coordinator]
+    U -- No --> Hold7([Hold])
+    V --> W[Review and update procedures\\Service Design / Network Planning Analyst, Emergency Response Coordinator]
+    W --> X{Procedures updated?}
+    X -- Yes --> Y[Final review and approval\\Chairman, President and CEO]
+    X -- No --> Hold8([Hold])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold6 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold7 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold8 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style U fill:#c8791a,color:#fff,stroke:#c8791a
+  style X fill:#c8791a,color:#fff,stroke:#c8791a
