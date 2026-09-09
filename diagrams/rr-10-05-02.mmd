@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Identify Event]
+    A([Start]) --> B{Identify Demurrage or Accessorial Event?}
+    B -- Yes --> C[Verify Car Status and Location\\nI-ETMS]
+    B -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Verify Car Status]
+    C --> D{Car status verified?}
+    D -- No --> C
+    D -- Yes --> E[Determine Applicable Charges\\nLoup Logistics]
+  end
+
+  subgraph P3[Phase 3: Determine Charges]
+    E --> F{Charges determined?}
+    F -- No --> E
+    F -- Yes --> G[Generate Billing Document\\nShipmentVision]
+  end
+
+  subgraph P4[Phase 4: Send Notification]
+    G --> H{Billing document generated?}
+    H -- No --> G
+    H -- Yes --> I[Send Billing Notification to Customer\\nUP customer portal up.com secure portal]
+  end
+
+  subgraph P5[Phase 5: Review and Approve]
+    I --> J{Notification sent?}
+    J -- No --> I
+    J -- Yes --> K[Review and Approve Billing\\nTransentric]
+  end
+
+  subgraph P6[Phase 6: Update Records and Monitor]
+    K --> L{Billing reviewed and approved?}
+    L -- No --> K
+    L -- Yes --> M[Update Customer Records\\nUP customer portal up.com secure portal]
+    M --> N[Monitor and Resolve Disputes\\nTransentric]
+    N --> O{Disputes resolved?}
+    O -- No --> N
+    O -- Yes --> P[Update Internal Systems\\nNetControl]
+    P --> Q[Review and Report Metrics\\nWabtrax]
+    Q --> R[Adjust Pricing Strategy\\nLoup Logistics]
+    R --> S[Close Billing Cycle\\nUP customer portal up.com secure portal]
+    S --> T{Billing cycle closed?}
+    T -- No --> S
+    T -- Yes --> L1([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style L1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style B fill:#c8791a,color:#fff,stroke:#c8791a
+  style D fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
