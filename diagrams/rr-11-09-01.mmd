@@ -1,0 +1,58 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive and Validate Manifest]
+    A([Start]) --> B[Receive Interline Manifest\nInterline Settlement System ISS / SSDX]
+    B --> C{Manifest Data Valid?}
+    C -- No --> D[Review Manifest Data\nUmler]
+    D --> C
+    C -- Yes --> E[Update Umler Database\nUmler]
+  end
+
+  subgraph P2[Phase 2: Generate and Send Car Hire Data]
+    E --> F[Generate Car Hire Data\nCHARM Car Hire Accounting Rate Master]
+    F --> G{Car Hire Data Generated?}
+    G -- No --> H[Review Manifest Data\nUmler]
+    H --> F
+    G -- Yes --> I[Send Car Hire Data to Originating Railroad\nISS / SSDX]
+  end
+
+  subgraph P3[Phase 3: Review and Confirm Car Hire Data]
+    I --> J[Review and Confirm Car Hire Data\nISS / SSDX]
+    J --> K{Car Hire Data Confirmed?}
+    K -- No --> L[Generate Car Hire Data\nCHARM Car Hire Accounting Rate Master]
+    L --> F
+    K -- Yes --> M[Update CHARM Database\nCHARM Car Hire Accounting Rate Master]
+  end
+
+  subgraph P4[Phase 4: Generate Train Schedule]
+    M --> N[Generate Train Schedule for Dispatching\nNetControl service design use]
+    N --> O{Train Schedule Generated?}
+    O -- No --> P[Review Car Hire Data\nISS / SSDX]
+    P --> J
+    O -- Yes --> Q[Dispatch Train\nNetControl service design use]
+  end
+
+  subgraph P5[Phase 5: Monitor Train Movement]
+    Q --> R[Monitor Train Movement\nI-ETMS Interoperable Electronic Train Management System]
+    R --> S{Train Movement Monitored?}
+    S -- No --> T[Dispatch Train\nNetControl service design use]
+    T --> N
+    S -- Yes --> U[Update Train Status in Umler\nUmler]
+  end
+
+  subgraph P6[Phase 6: Finalize Interline Operation]
+    U --> V[Finalize Interline Operation\nISS / SSDX]
+    V --> W{Operation Finalized?}
+    W -- No --> X[Monitor Train Movement\nI-ETMS Interoperable Electronic Train Management System]
+    X --> R
+    W -- Yes --> Y([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Y fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style S fill:#c8791a,color:#fff,stroke:#c8791a
+  style W fill:#c8791a,color:#fff,stroke:#c8791a
