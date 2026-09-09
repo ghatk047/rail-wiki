@@ -1,0 +1,63 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Application Submission]
+    A([Start]) --> B[Initial Application Submission\\nPS Technology PST]
+    B --> C{Application complete?}
+    C -- No --> B
+    C -- Yes --> D[Background Check and Medical Clearance\\nCloudMoyo Crew Management CCM]
+  end
+
+  subgraph P2[Phase 2: Background Check]
+    D --> E{Check Passed?}
+    E -- No --> Rej1([Reject])
+    E -- Yes --> F[Initial Training Assignment\\nHASTUS]
+  end
+
+  subgraph P3[Phase 3: Initial Training]
+    F --> G{Training Complete?}
+    G -- No --> F
+    G -- Yes --> H[On-the-Job Training OJT\\nPS Technology PST, EHMS]
+  end
+
+  subgraph P4[Phase 4: OJT Completion]
+    H --> I{OJT Passed?}
+    I -- No --> H
+    I -- Yes --> J[Written Exam Preparation\\nPS Technology PST]
+  end
+
+  subgraph P5[Phase 5: Written Exam]
+    J --> K{Exam Passed?}
+    K -- No --> J
+    K -- Yes --> L[Practical Exam Preparation\\nPS Technology PST, EHMS]
+  end
+
+  subgraph P6[Phase 6: Practical Exam and Certification]
+    L --> M{Practical Exam Passed?}
+    M -- No --> L
+    M -- Yes --> N[Certification Review\\nPS Technology PST, CloudMoyo Crew Management CCM]
+    N --> O{Review Approved?}
+    O -- No --> Rej2([Reject])
+    O -- Yes --> P[Certification Issuance\\nPS Technology PST, CloudMoyo Crew Management CCM]
+    P --> Q[Certification Maintenance\\nPS Technology PST, CloudMoyo Crew Management CCM]
+    Q --> R{Maintenance Complete?}
+    R -- No --> Q
+    R -- Yes --> S[Annual Review and Recertification\\nPS Technology PST, CloudMoyo Crew Management CCM]
+    S --> T{Recertification Approved?}
+    T -- No --> Rej3([Reject])
+    T -- Yes --> U([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style U fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej2 fill:#20242b,color:#fff,stroke:#20242b
+  style Rej3 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style E fill:#c8791a,color:#fff,stroke:#c8791a
+  style G fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
