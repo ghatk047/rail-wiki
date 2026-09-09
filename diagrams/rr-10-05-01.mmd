@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Receive Shipment Report]
+    A([Start]) --> B[Receive Shipment Report\nShipmentVision]
+    B --> C{Report Valid?}
+    C -- No --> E([Bad Order])
+    C -- Yes --> D[Verify Shipment Status\nLoup Logistics]
+  end
+
+  subgraph P2[Phase 2: Verify Shipment Status]
+    D --> F{Shipment Status Correct?}
+    F -- No --> B
+    F -- Yes --> G[Calculate Demurrage Charges\nUP customer portal up.com secure portal]
+  end
+
+  subgraph P3[Phase 3: Review and Approve Charges]
+    G --> H{Charges Approved?}
+    H -- No --> I([Hold])
+    H -- Yes --> J[Generate Billing Document\nUP customer portal up.com secure portal]
+  end
+
+  subgraph P4[Phase 4: Send Billing Document to Customer]
+    J --> K{Document Sent Successfully?}
+    K -- No --> J
+    K -- Yes --> L[Receive Payment from Customer\nUP customer portal up.com secure portal]
+  end
+
+  subgraph P5[Phase 5: Update Customer Records]
+    L --> M{Payment Received?}
+    M -- No --> I
+    M -- Yes --> N[Update Customer Records\nUP customer portal up.com secure portal]
+  end
+
+  subgraph P6[Phase 6: Review and Adjust if Necessary]
+    N --> O[Review and Adjust if Necessary\nClaims Adjuster]
+    O --> P{Adjustments Needed?}
+    P -- No --> Q[Finalize Billing Process\nUP customer portal up.com secure portal]
+    P -- Yes --> J
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style E fill:#20242b,color:#fff,stroke:#20242b
+  style I fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
