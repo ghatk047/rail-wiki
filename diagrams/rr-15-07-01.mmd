@@ -1,0 +1,67 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Assessment]
+    A([Start]) --> B[Assessment of Current Terminal Operations\nNetControl]
+    B --> C{Opportunities Identified?}
+    C -- No --> B
+    C -- Yes --> D[Identify Terminal Rationalization Opportunities\nNetControl]
+  end
+
+  subgraph P2[Phase 2: Planning]
+    D --> E[Develop Terminal Rationalization Plan\nNetControl]
+    E --> F{Plan Approved?}
+    F -- No --> Hold1([Hold])
+    F -- Yes --> G[Obtain Regulatory Approval\nNetControl service design use]
+    G --> H{Approval Granted?}
+    H -- No --> Rej1([Reject])
+  end
+
+  subgraph P3[Phase 3: Implementation]
+    H -- Yes --> I[Implement Terminal Rationalization\nNetControl, I-ETMS]
+    I --> J{Implementation Successful?}
+    J -- No --> I
+    J -- Yes --> K[Monitor and Adjust Operations\nNetControl, I-ETMS]
+    K --> L{Operations Stable?}
+    L -- No --> K
+  end
+
+  subgraph P4[Phase 4: Review]
+    L -- Yes --> M[Review and Optimize Terminal Operations\nNetControl, I-ETMS]
+    M --> N{Optimization Complete?}
+    N -- No --> M
+    N -- Yes --> O[Update Terminal Equipment and Systems\nNetControl, I-ETMS]
+    O --> P{Equipment Updated?}
+    P -- No --> O
+  end
+
+  subgraph P5[Phase 5: Training]
+    P -- Yes --> Q[Conduct Training for Operational Teams\nNetControl service design use]
+    Q --> R{Training Complete?}
+    R -- No --> Q
+    R -- Yes --> S[Evaluate Terminal Rationalization Impact\nNetControl, I-ETMS]
+    S --> T{Impact Evaluated?}
+    T -- No --> S
+  end
+
+  subgraph P6[Phase 6: Reporting]
+    T -- Yes --> U[Report to Stakeholders\nNetControl service design use]
+    U --> V{Reporting Complete?}
+    V -- No --> U
+    V -- Yes --> W[Plan for Continuous Improvement\nNetControl, I-ETMS]
+    W --> X([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style X fill:#20242b,color:#fff,stroke:#20242b
+  style Rej1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style H fill:#c8791a,color:#fff,stroke:#c8791a
+  style J fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style N fill:#c8791a,color:#fff,stroke:#c8791a
+  style P fill:#c8791a,color:#fff,stroke:#c8791a
+  style R fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
