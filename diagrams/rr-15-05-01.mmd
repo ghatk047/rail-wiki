@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Transition Plan\\NetControl / TCS cutover precedent]
+    B --> C{Plan approved?}
+    C -- No --> A
+    C -- Yes --> D[Update Umler Database\\Umler]
+  end
+
+  subgraph P2[Phase 2: Review and Approval]
+    D --> E[Review Changes\\NetControl]
+    E --> F{Changes reviewed?}
+    F -- No --> D
+    F -- Yes --> G[Approve Changes\\Chairman, President and CEO plan sponsor level]
+  end
+
+  subgraph P3[Phase 3: System Updates]
+    G --> H[Update EHMS System\\EHMS]
+    H --> I{EHMS updated?}
+    I -- No --> H
+    I -- Yes --> J[Update TRAIN II System\\TRAIN II]
+  end
+
+  subgraph P4[Phase 4: Additional System Updates]
+    J --> K{TRAIN II updated?}
+    K -- No --> J
+    K -- Yes --> L[Update CHARM System\\CHARM]
+  end
+
+  subgraph P5[Phase 5: Interline and Dispatching Center Update]
+    L --> M{CHARM updated?}
+    M -- No --> L
+    M -- Yes --> N[Update Interline Settlement System\\Interline Settlement System]
+    N --> O{Interline updated?}
+    O -- No --> N
+    O -- Yes --> P[Update Harriman Dispatching Center\\Harriman Dispatching Center]
+  end
+
+  subgraph P6[Phase 6: Training, Monitoring, and Finalization]
+    P --> Q{Dispatching center updated?}
+    Q -- No --> P
+    Q -- Yes --> R[Conduct Training Sessions\\NetControl]
+    R --> S[Monitor and Validate Systems\\NetControl, I-ETMS]
+    S --> T{Systems validated?}
+    T -- No --> R
+    T -- Yes --> U[Final Review and Sign-Off\\Chairman, President and CEO plan sponsor level]
+  end
+
+  subgraph P7[Phase 7: Communication]
+    U --> V{Sign-off approved?}
+    V -- No --> S
+    V -- Yes --> W[Communicate to Stakeholders\\NetControl]
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style W fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style K fill:#c8791a,color:#fff,stroke:#c8791a
+  style M fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
+  style Q fill:#c8791a,color:#fff,stroke:#c8791a
+  style T fill:#c8791a,color:#fff,stroke:#c8791a
+  style V fill:#c8791a,color:#fff,stroke:#c8791a
