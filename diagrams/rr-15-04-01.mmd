@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Project Initiation]
+    A([Start]) --> B[Project Initiation Meeting\\NetControl / TCS cutover precedent]
+    B --> C{Decision Approved?}
+    C -- Yes --> D[System Compatibility Assessment\\NetControl, I-ETMS]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Regulatory Review]
+    D --> E[Regulatory Compliance Review\\NetControl, I-ETMS]
+    E --> F{Compliance Approved?}
+    F -- Yes --> G[Training and Documentation Development\\NetControl, I-ETMS]
+    F -- No --> Hold2([Hold])
+  end
+
+  subgraph P3[Phase 3: Pilot Testing]
+    G --> H[Pilot Testing\\Chief Dispatcher, Yardmaster]
+    H --> I{Pilot Successful?}
+    I -- Yes --> J[Final System Configuration\\NetControl, I-ETMS]
+    I -- No --> Hold3([Hold])
+  end
+
+  subgraph P4[Phase 4: Go-Live Preparation]
+    J --> K[Go-Live Preparation\\NetControl, I-ETMS]
+    K --> L{Preparation Complete?}
+    L -- Yes --> M[System Go-Live\\Integration Program Management Office PMO lead]
+    L -- No --> Hold4([Hold])
+  end
+
+  subgraph P5[Phase 5: Post-Go-Live Monitoring]
+    M --> N[Post-Go-Live Monitoring\\NetControl, I-ETMS]
+    N --> O{Monitoring Successful?}
+    O -- Yes --> P[Final Review and Documentation Update\\Integration Program Management Office PMO lead]
+    O -- No --> Hold5([Hold])
+  end
+
+  subgraph P6[Phase 6: Finalization]
+    P --> Q([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style Q fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold2 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold3 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold4 fill:#20242b,color:#fff,stroke:#20242b
+  style Hold5 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
