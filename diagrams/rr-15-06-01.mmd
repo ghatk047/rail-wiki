@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
+  subgraph P1[Phase 1: Initiation]
+    A([Start]) --> B[Initiate Consolidation Plan\nNetControl]
+    B --> C{Plan Approved?}
+    C -- Yes --> D[Define New Crew Districts\nNetControl]
+    C -- No --> Hold1([Hold])
+  end
+
+  subgraph P2[Phase 2: Assignment]
+    D --> E[Assign Crews to New Districts\nPS Technology PST]
+    E --> F{Assignment Complete?}
+    F -- Yes --> G[Redesign Dispatch Territories\nI-ETMS]
+    F -- No --> E
+  end
+
+  subgraph P3[Phase 3: Implementation]
+    G --> H[Implement New Dispatch Territories\nChief Dispatcher, I-ETMS]
+    H --> I{Implementation Complete?}
+    I -- Yes --> J[Update Equipment Registers\nUmler]
+    I -- No --> G
+  end
+
+  subgraph P4[Phase 4: Safety Audit]
+    J --> K[Conduct Safety Audits\nEHMS Equipment Health Management System]
+    K --> L{Audit Passed?}
+    L -- Yes --> M[Monitor and Adjust Operations\nNetControl]
+    L -- No --> K
+  end
+
+  subgraph P5[Phase 5: Performance Review]
+    M --> N[Review and Report Performance\nIntegration Program Management Office PMO lead, NetControl]
+    N --> O{Performance Satisfactory?}
+    O -- Yes --> P[Finalize Consolidation\nNetControl]
+    O -- No --> M
+  end
+
+  subgraph P6[Phase 6: Documentation]
+    P --> Q[Document Lessons Learned\nIntegration Program Management Office PMO lead, NetControl]
+    Q --> R([End])
+  end
+
+  style A fill:#20242b,color:#fff,stroke:#20242b
+  style R fill:#20242b,color:#fff,stroke:#20242b
+  style Hold1 fill:#20242b,color:#fff,stroke:#20242b
+  style C fill:#c8791a,color:#fff,stroke:#c8791a
+  style F fill:#c8791a,color:#fff,stroke:#c8791a
+  style I fill:#c8791a,color:#fff,stroke:#c8791a
+  style L fill:#c8791a,color:#fff,stroke:#c8791a
+  style O fill:#c8791a,color:#fff,stroke:#c8791a
