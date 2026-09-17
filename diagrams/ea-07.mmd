@@ -1,0 +1,70 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    ISS["Interline Settlement System\nSwitching settlement - Car hire data exchange"]
+    CHDX["Car Hire Data Exchange\nCar hire event - Interchange partner railroad"]
+    GCOR["General Code of Operating Rules\nOperating rules administration - Efficiency testing"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NC["NetControl\nTrain sheet - Authority - Movement planning"]
+    Umler["Universal Machine Language Equipment Register\nEquipment record - Interchange event"]
+    NC -->|"train sheet"| GCOR
+    Umler -->|"equipment record"| NC
+  end
+
+  subgraph EXEC["🚚 Execution Control"]
+    direction TB
+    HDC["Harriman Dispatching Center\nDispatching - Movement control - Track authority"]
+    IETMS["Interoperable Electronic Train Management System\nPTC initialization - Bad order card"]
+    HDC -->|"track authority"| IETMS
+    IETMS -->|"bad order card"| HDC
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    EHMS["Equipment Health Management System\nHealth monitoring - Maintenance scheduling"]
+    C3RS["Confidential Close Call Reporting System\nIncident reporting - Root cause analysis"]
+    EHMS -->|"health data"| C3RS
+    C3RS -->|"root cause"| NC
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    TRAINII["Tele Rail Automated Information Network Phase 2\nData aggregation - Reporting"]
+    Wabtrax["Wabtrax\nDefect detector alarm - Machine vision portal"]
+    TRAINII -->|"aggregated data"| REPORTING
+    Wabtrax -->|"defect alarm"| REPORTING
+  end
+
+  subgraph REPORTING["📝 Regulatory Filings and Annual Reporting"]
+    direction TB
+    REPORTING["Reporting System\nSTB filings - Annual reports"]
+  end
+
+  ISS -->|"switching settlement"| NC
+  CHDX -->|"car hire event"| Umler
+  GCOR -->|"operating rules"| HDC
+  NC -->|"movement plan"| EXEC
+  Umler -->|"equipment record"| DATA
+  HDC -->|"track authority"| DATA
+  IETMS -->|"bad order card"| ANALYTICS
+  EHMS -->|"health data"| REPORTING
+  C3RS -->|"root cause"| REPORTING
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#0b8043
+  classDef data fill:#ffecb3,stroke:#fbc02d,color:#89503d
+  classDef analytics fill:#ffe0b2,stroke:#ffa000,color:#795548
+  classDef reporting fill:#ffcdd2,stroke:#e53935,color:#5d4037
+
+  class ISS,CHDX,GCOR ext
+  class NC,Umler plan
+  class HDC,IETMS exec
+  class EHMS,C3RS data
+  class TRAINII,Wabtrax analytics
+  class REPORTING reporting
