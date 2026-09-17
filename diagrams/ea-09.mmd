@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    UPGo["UPGo\nInterchange partner railroad - Waybill - Consist"]
+    EMP["EMP\nContainer fleet - Track authority - PTC initialisation"]
+    UMAX["UMAX\nContainer fleet - Defect detector alarm - Car hire event"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NetControl["NetControl\nTrain sheet - Authority - Movement planning"]
+    IETMS["I-ETMS\nInteroperable Electronic Train Management System - PTC initialisation - Track authority"]
+    Umler["Umler\nUniversal Machine Language Equipment Register - Car hire event - Interchange event"]
+  end
+
+  subgraph EXEC["🚚 Execution Control"]
+    direction TB
+    YardSystem["Yard System\nDriver scanning / gate technology - Lift and stack operations - Chassis and container pool management"]
+    ICTFLongBeach["ICTF Long Beach\nIntermodal Container Transfer Facility - Port and international interchange - Transload operations"]
+    JolietTerminal["Joliet Intermodal Terminal\nLift and stack operations - Appointment and terminal capacity management - Bad order card"]
+    GlobalIVTerminal["Global IV Intermodal Terminal\nAutomotive loading, multilevel handling and vehicle damage - Chassis and container pool management - Drayage and motor carrier coordination"]
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    EHMS["EHMS\nEquipment Health Management System - Umler equipment record - Defect detector alarm"]
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2 - Interchange event - Car hire data exchange"]
+    CHARM["CHARM\nCar Hire Accounting Rate Master - Switching settlement data exchange - ISS / Car hire data exchange"]
+  end
+
+  UPGo -->|"waybill"| NetControl
+  EMP -->|"track authority"| IETMS
+  UMAX -->|"defect detector alarm"| YardSystem
+  NetControl -->|"train sheet"| YardSystem
+  IETMS -->|"PTC initialisation"| ICTFLongBeach
+  Umler -->|"car hire event"| JolietTerminal
+  YardSystem -->|"lift and stack operations"| GlobalIVTerminal
+  ICTFLongBeach -->|"port and international interchange"| DATA
+  JolietTerminal -->|"appointment and terminal capacity management"| CHARM
+  GlobalIVTerminal -->|"drayage and motor carrier coordination"| EHMS
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8791a,color:#fff,stroke:#c8791a
+
+  class UPGo,EMP,UMAX ext
+  class NetControl,IETMS,Umler plan
+  class YardSystem,ICTFLongBeach,JolietTerminal,GlobalIVTerminal exec
+  class EHMS,TRAINII,CHARM data
