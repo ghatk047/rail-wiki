@@ -1,0 +1,53 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    LL["Loup Logistics\nFreight Sales - Account Management - Contract Management"]
+    SV["ShipmentVision\nWaybill Intake - Shipment Tracing - Customer Service Center"]
+    UP["UP customer portal up.com secure portal\nDigital Customer Channels - APIs - Freight Claims"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NC["NetControl\nTrain sheet - Authority - Movement planning"]
+    GCOR["GCOR\nPricing, Tariffs and Rate Quotation - Bid, RFP and Shuttle Train Capacity Auctions"]
+    LL -->|"freight sales data"| NC
+    NC -->|"train sheet"| GCOR
+  end
+
+  subgraph EXEC["🚚 Execution Control"]
+    direction TB
+    HDC["Harriman Dispatching Center\nDispatching - Terminal and Yard Operations - Road and Yard Crews"]
+    PST["PS Technology PST\nMechanical, Engineering MOW - Intermodal and Interline - Hours of Service"]
+    NC -->|"track authority"| HDC
+    HDC -->|"consist and waybill"| PST
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    UMLER["Umler\nEquipment Health Management System - Car Hire Accounting Rate Master - Interchange Event"]
+    EHMS["EHMS\nDefect Detector Alarm - Machine Vision Portals - RailAI"]
+    PST -->|"equipment record"| UMLER
+    UMLER -->|"bad order card"| EHMS
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    ISS["Interline Settlement System ISS / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX\nDemurrage and Accessorial Billing - Industrial Development and Site Selection - Service Disruption Communication and Recovery"]
+    WABTRAX["Wabtrax\nFreight Claims, Loss and Damage - TRANSCAER - SERTC"]
+    EHMS -->|"defect data"| ISS
+    ISS -->|"billing data"| WABTRAX
+  end
+
+  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#0b5345
+  classDef data fill:#ffe0b2,stroke:#f57f17,color:#8a2be2
+  classDef analytics fill:#ffcdd2,stroke:#d32f2f,color:#ffffff
+
+  class LL,SV,UP ext
+  class NC,GCOR plan
+  class HDC,PST exec
+  class UMLER,EHMS data
+  class ISS,WABTRAX analytics
