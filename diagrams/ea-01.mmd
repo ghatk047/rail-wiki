@@ -1,0 +1,75 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    INTERLINE["Interchange partner railroad\nWaybill - Consist - Interchange event"]
+    SHIPPER["Shipper EDI\nFreight orders - Car requests - Load instructions"]
+  end
+
+  subgraph PLANNING["📋 Planning"]
+    direction TB
+    NETCONTROL["NetControl\nOperating Plan Design - Train Symbol Blocking Plan - Line Capacity Route Planning"]
+    GCOR["GCOR General Code of Operating Rules\nRules compliance - Safety protocols - Operational guidelines"]
+    NETCONTROL -->|"operating plan"| GCOR
+  end
+
+  subgraph EXECUTION["🚚 Execution Control"]
+    direction TB
+    CADX["NetControl / CADx\nTrain sheet - Authority - Movement planning"]
+    IETMS["I-ETMS Interoperable Electronic Train Management System\nPTC initialisation - Track authority - Speed control"]
+    CADX -->|"train sheet"| IETMS
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    EHMS["EHMS Equipment Health Management System\nLocomotive health - Maintenance schedules - Fault detection"]
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2 - Equipment tracking - Performance metrics"]
+    EHMS -->|"equipment status"| TRAINII
+  end
+
+  subgraph TERMINAL["🚉 Terminal and Yard Execution"]
+    direction TB
+    HARRIMAN["Harriman Dispatching Center\nDispatch coordination - Crew management - Train control"]
+    WABTRAX["Wabtrax\nTrain tracking - Performance monitoring - Data logging"]
+    HARRIMAN -->|"dispatch orders"| WABTRAX
+  end
+
+  subgraph MECHANICAL["🛠️ Mechanical and Engineering"]
+    direction TB
+    UMLER["Umler Universal Machine Language Equipment Register\nEquipment record - Interchange data - Maintenance history"]
+    DEFECTDETECTOR["Wayside defect detector network\nHot bearing - Wheel impact - Acoustic detection"]
+    UMLER -->|"equipment record"| DEFECTDETECTOR
+  end
+
+  subgraph COMMERCIAL["💰 Commercial and Billing"]
+    direction TB
+    CHARM["CHARM Car Hire Accounting Rate Master\nCar hire event - Interchange event - Settlement data"]
+    ISS["Interline Settlement System / SSDX / CHDX\nSettlement processing - Revenue accounting - Cost allocation"]
+    CHARM -->|"car hire event"| ISS
+  end
+
+  INTERLINE -->|"waybill"| NETCONTROL
+  SHIPPER -->|"freight order"| NETCONTROL
+  GCOR -->|"rules compliance"| EXECUTION
+  IETMS -->|"track authority"| TERMINAL
+  TRAINII -->|"performance metrics"| DATA
+  WABTRAX -->|"train tracking"| TERMINAL
+  DEFECTDETECTOR -->|"defect alarm"| MECHANICAL
+  ISS -->|"settlement data"| COMMERCIAL
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#0b5345
+  classDef data fill:#ffe0b2,stroke:#fbc02d,color:#89503b
+  classDef term fill:#ffccbc,stroke:#ef6c00,color:#795548
+  classDef mech fill:#e1bee7,stroke:#9c27b0,color:#4a148c
+  classDef comm fill:#ffcdd2,stroke:#d32f2f,color:#880e4f
+
+  class INTERLINE,SHIPPER ext
+  class NETCONTROL,GCOR plan
+  class CADX,IETMS exec
+  class EHMS,TRAINII data
+  class HARRIMAN,WABTRAX term
+  class UMLER,DEFECTDETECTOR mech
+  class CHARM,ISS comm
