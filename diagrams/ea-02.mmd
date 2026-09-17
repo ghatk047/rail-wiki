@@ -1,0 +1,62 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    INTERLINE["Interchange partner railroad\nConsist - Waybill - Interchange event"]
+    SHIPPER["Shipper EDI\nWaybill - Consist - Car hire event"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NETCONTROL["NetControl\nTrain sheet - Authority - Movement planning"]
+    CADX["CADx Computer-Aided Dispatch\nConsist - Waybill - Train schedule"]
+    INTERLINE -->|"consist and waybill"| NETCONTROL
+    NETCONTROL -->|"train sheet"| CADX
+  end
+
+  subgraph EXEC["🖥 Execution Control"]
+    direction TB
+    HDC["Harriman Dispatching Center\nTerritory dispatching - Track warrant control"]
+    PST["PS Technology PST\nCrew call - Hours of service - Train status"]
+    CADX -->|"train sheet"| HDC
+    HDC -->|"track authority"| PST
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    UMLER["Umler\nEquipment record - Defect detector alarm - Maintenance schedule"]
+    EHMS["EHMS Equipment Health Management System\nEquipment status - Maintenance request - Repair history"]
+    PST -->|"hours of service"| UMLER
+    UMLER -->|"maintenance schedule"| EHMS
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    TRAINII["TRAIN II Tele Rail Automated Information Network Phase 2\nTrain performance - Delay analysis - Route optimization"]
+    WABTRAX["Wabtrax\nTrack geometry data - Defect detection - Maintenance planning"]
+    EHMS -->|"equipment status"| TRAINII
+    WABTRAX -->|"track defects"| TRAINII
+  end
+
+  subgraph SETTLEMENT["💰 Settlement and Billing"]
+    direction TB
+    ISS["Interline Settlement System / SSDX / CHDX\nSettlement data - Revenue calculation - Billing"]
+    CHARM["CHARM Car Hire Accounting Rate Master\nCar hire event - Revenue tracking - Cost allocation"]
+    TRAINII -->|"train performance"| ISS
+    CHARM -->|"car hire event"| ISS
+  end
+
+  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8e6c9,stroke:#388e3c,color:#004d40
+  classDef analytics fill:#ffecb3,stroke:#f57f17,color:#827717
+  classDef settlement fill:#ffe0b2,stroke:#ffa000,color:#89503b
+
+  class INTERLINE,SHIPPER ext
+  class NETCONTROL,CADX plan
+  class HDC,PST exec
+  class UMLER,EHMS data
+  class TRAINII,WABTRAX analytics
+  class ISS,CHARM settlement
