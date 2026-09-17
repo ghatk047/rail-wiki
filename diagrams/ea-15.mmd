@@ -1,0 +1,72 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    INTERLINE["Interchange partner railroad\nConsist - Waybill - Interchange event"]
+    SHIPPER["Shipper EDI\nFreight orders - Load plans"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    GCOR["General Code of Operating Rules\nOperating plan - Service design"]
+    NC["NetControl service design use\nTrain sheet - Authority - Movement planning"]
+    GCOR -->|"operating rules"| NC
+    SHIPPER -->|"freight orders"| NC
+  end
+
+  subgraph EXEC["🚚 Execution Control"]
+    direction TB
+    HDC["Harriman Dispatching Center\nDispatch control - Track authority"]
+    PS_TECH["PS Technology PST\nCrew management - Hours of service"]
+    IETMS["Interoperable Electronic Train Management System\nPTC initialisation - Movement tracking"]
+    HDC -->|"track authority"| PS_TECH
+    PS_TECH -->|"hours of service"| IETMS
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    UMLER["Universal Machine Language Equipment Register\nEquipment record - Car hire event"]
+    EHMS["Equipment Health Management System\nMaintenance schedule - Defect detection"]
+    TRAIN_II["Tele Rail Automated Information Network Phase 2\nTrain status - Performance data"]
+    CHARM["Car Hire Accounting Rate Master\nHire rates - Settlements"]
+    UMLER -->|"equipment record"| EHMS
+    EHMS -->|"defect detection"| TRAIN_II
+    TRAIN_II -->|"performance data"| CHARM
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    ISS["Interline Settlement System / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX\nSettlements - Financial reporting"]
+    WABTRAX["Wabtrax\nTrain location - Performance analysis"]
+    MACHINE_VISION["Machine Vision portals\nDefect detection - Quality control"]
+    ISS -->|"settlements"| WABTRAX
+    WABTRAX -->|"performance analysis"| MACHINE_VISION
+  end
+
+  subgraph MAINTENANCE["🔧 Mechanical and Engineering"]
+    direction TB
+    NC_CUT["NetControl / TCS cutover precedent\nCutover planning - Systems integration"]
+    WAYSIDE_DEFECT["Wayside defect detector network hot bearing / wheel impact / acoustic\nDefect detection - Maintenance alerts"]
+    NC_CUT -->|"systems integration"| WAYSIDE_DEFECT
+  end
+
+  INTERLINE -->|"consist and waybill"| PLAN
+  PLAN -->|"train sheet"| EXEC
+  EXEC -->|"movement tracking"| DATA
+  DATA -->|"performance data"| ANALYTICS
+  ANALYTICS -->|"financial reporting"| MAINTENANCE
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#b3e5fc,stroke:#0288d1,color:#004d40
+  classDef data fill:#f9fbe7,stroke:#a1887f,color:#6d4c41
+  classDef analytics fill:#fce4ec,stroke:#e91e63,color:#b71c1c
+  classDef maintenance fill:#ffccbc,stroke:#ef5350,color:#8b0000
+
+  class INTERLINE,SHIPPER ext
+  class GCOR,NC plan
+  class HDC,PS_TECH,IETMS exec
+  class UMLER,EHMS,TRAIN_II,CHARM data
+  class ISS,WABTRAX,MACHINE_VISION analytics
+  class NC_CUT,WAYSIDE_DEFECT maintenance
