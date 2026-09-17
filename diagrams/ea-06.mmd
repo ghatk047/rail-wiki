@@ -1,0 +1,69 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External Feeds"]
+    direction LR
+    IETMS["I-ETMS\nTrack authority - PTC initialisation - Interchange event"]
+    WABTRAX["Wabtrax\nDefect detector alarm - Track geometry data - RailAI insights"]
+  end
+
+  subgraph PLANNING["📅 Planning and Service Design"]
+    direction TB
+    NETCONTROL["NetControl\nTrain sheet - Authority - Movement planning"]
+    UMLER["Umler\nEquipment record - Car hire event - Maintenance schedule"]
+    IETMS -->|"track authority"| NETCONTROL
+    NETCONTROL -->|"equipment record"| UMLER
+  end
+
+  subgraph EXECUTION["🔧 Execution Control"]
+    direction TB
+    PST["PS Technology\nCrew call - Hours of service - Train status"]
+    EHMS["EHMS\nEquipment health - Maintenance alert - Defect tracking"]
+    PST -->|"hours of service"| EHMS
+    EHMS -->|"maintenance alert"| PST
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2"]
+    CHARM["CHARM\nCar Hire Accounting Rate Master - Interchange settlement - Financial reporting"]
+    TRAINII -->|"car hire data"| CHARM
+    CHARM -->|"financial report"| TRAINII
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    ATIP["FRA Automated Track Inspection Program\nTrack geometry data - Rail flaw detection - Maintenance recommendation"]
+    RAILAI["RailAI\nPredictive analytics - Defect prediction - Maintenance optimization"]
+    ATIP -->|"track geometry"| RAILAI
+    RAILAI -->|"maintenance recommendation"| ATIP
+  end
+
+  subgraph MAINTENANCE["🚧 Maintenance-of-Way Programs"]
+    direction TB
+    TRACKGEOMETRYCAR["Track geometry car\nTrack inspection - Rail flaw detection - Geometry data"]
+    BOS["PTC Back Office Server BOS\nTrack authority management - PTC configuration - Interchange event"]
+    TRACKGEOMETRYCAR -->|"geometry data"| BOS
+    BOS -->|"track authority"| TRACKGEOMETRYCAR
+  end
+
+  EXT -->|"defect detector alarm"| EXECUTION
+  PLANNING -->|"train sheet"| EXECUTION
+  EXECUTION -->|"equipment health"| DATA
+  DATA -->|"financial report"| ANALYTICS
+  ANALYTICS -->|"maintenance recommendation"| MAINTENANCE
+  MAINTENANCE -->|"track geometry data"| EXT
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#004d40
+  classDef data fill:#ffcdd2,stroke:#c62828,color:#b71c1c
+  classDef analytics fill:#ffecb3,stroke:#fbc02d,color:#f57f17
+  classDef maintenance fill:#e040fb,stroke:#9c27b0,color:#4a148c
+
+  class IETMS,WABTRAX ext
+  class NETCONTROL,UMLER plan
+  class PST,EHMS exec
+  class TRAINII,CHARM data
+  class ATIP,RAILAI analytics
+  class TRACKGEOMETRYCAR,BOS maintenance
