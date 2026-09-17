@@ -1,0 +1,48 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External Feeds"]
+    direction LR
+    Ferromex["Ferromex\nInterchange - Eagle Pass gateway"]
+    UP_Mexico["UP Mexico gateway network\nCross-border interchange - Customs"]
+  end
+
+  subgraph PLANNING["📋 Planning and Service Design"]
+    direction TB
+    NetControl["NetControl\nTrain sheet - Authority - Movement planning"]
+    GCOR["GCOR\nGeneral Code of Operating Rules"]
+    Umler["Umler\nIndustry Equipment Registry - Umler-class"]
+    CHARM["CHARM\nCar Hire Accounting Rate Master"]
+  end
+
+  subgraph EXECUTION["🚚 Execution Control"]
+    direction TB
+    I_ETMS["I-ETMS\nInteroperable Electronic Train Management System"]
+    Harriman["Harriman Dispatching Center\nDispatch - Movement control"]
+    PS_Technology["PS Technology\nCrew systems - Hours of service"]
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    TRAIN_II["TRAIN II\nTele Rail Automated Information Network Phase 2"]
+    EHMS["EHMS\nEquipment Health Management System"]
+    ISS["Interline Settlement System\nSwitching Settlement Data Exchange - Car Hire Data Exchange"]
+    Wabtrax["Wabtrax\nTrack geometry cars - Maintenance planning"]
+    Machine_Vision["Machine Vision portals\nDefect detection - Asset monitoring"]
+  end
+
+  EXT -->|"interchange event"| PLANNING
+  PLANNING -->|"train sheet - authority"| EXECUTION
+  EXECUTION -->|"consist and waybill"| DATA
+  DATA -->|"defect detector alarm"| EXECUTION
+  EXECUTION -->|"hours of service"| PS_Technology
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#b3e5fc,stroke:#0288d1,color:#002984
+  classDef data fill:#fdd835,stroke:#fbc02d,color:#896a14
+
+  class Ferromex,UP_Mexico ext
+  class NetControl,GCOR,Umler,CHARM plan
+  class I_ETMS,Harriman,PS_Technology exec
+  class TRAIN_II,EHMS,ISS,Wabtrax,Machine_Vision data
