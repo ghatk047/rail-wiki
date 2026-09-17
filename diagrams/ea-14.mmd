@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External Feeds"]
+    direction LR
+    ISS["Interline Settlement System\nSwitching settlement - Car hire data exchange"]
+    GCOR["General Code of Operating Rules\nOperating rules - Compliance"]
+  end
+
+  subgraph PLANNING["📋 Planning and Service Design"]
+    direction TB
+    NetControl["NetControl\nTrain sheet - Authority - Movement planning"]
+    TE&Y["TEY New Hire Training program\nSafety-sensitive hiring - Screening - Training programs"]
+    MobileClassroom["Mobile classroom training trailers\nTraining academy - Simulator programs"]
+  end
+
+  subgraph EXECUTION["🚚 Execution Control"]
+    direction TB
+    I-ETMS["Interoperable Electronic Train Management System\nPositive train control - PTC initialization - Track authority"]
+    EHMS["Equipment Health Management System\nEquipment health - Maintenance scheduling - Defect detection"]
+    TRAINII["Tele Rail Automated Information Network Phase 2\nTrain tracking - Consist management - Waybill processing"]
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    Umler["Universal Machine Language Equipment Register\nUmler equipment record - Interchange event - Car hire event"]
+    CHARM["Car Hire Accounting Rate Master\nCar hire accounting - Revenue management - Reporting"]
+    Wabtrax["Wabtrax\nTrack geometry data - Maintenance planning - Defect detection"]
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    MachineVision["Machine Vision portals\nVisual inspection - Asset tracking - Quality control"]
+    WaysideDefect["Wayside defect detector network\nHot bearing - Wheel impact - Acoustic monitoring"]
+  end
+
+  ISS -->|"switching settlement data"| NetControl
+  GCOR -->|"operating rules"| NetControl
+  NetControl -->|"train sheet and authority"| I-ETMS
+  TE&Y -->|"safety-sensitive hiring"| MobileClassroom
+  MobileClassroom -->|"training programs"| NetControl
+  I-ETMS -->|"PTC initialization and track authority"| EHMS
+  EHMS -->|"equipment health and defect detection"| TRAINII
+  TRAINII -->|"consist management and waybill processing"| Umler
+  Umler -->|"Umler equipment record and interchange event"| CHARM
+  CHARM -->|"car hire accounting and revenue management"| Wabtrax
+  Wabtrax -->|"track geometry data and maintenance planning"| MachineVision
+  MachineVision -->|"visual inspection and asset tracking"| WaysideDefect
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#d3eaf7,stroke:#0284c7,color:#0c4a6e
+  classDef data fill:#fde0dc,stroke:#b30000,color:#ffffff
+  classDef analytics fill:#fff9db,stroke:#f5a623,color:#000000
+
+  class ISS,GCOR ext
+  class NetControl,TE&Y,MobileClassroom plan
+  class I-ETMS,EHMS,TRAINII exec
+  class Umler,CHARM,Wabtrax data
+  class MachineVision,WaysideDefect analytics
