@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External Feeds"]
+    direction LR
+    TRANSCAER["TRANSCAER\nHazmat Awareness - Emergency Response"]
+    SERTC["SERTC\nTraining - Certification"]
+  end
+
+  subgraph PLANNING["📋 Planning and Service Design"]
+    direction TB
+    NetControl["NetControl\nTrain sheet - Authority - Movement planning"]
+    GCOR["GCOR\nOperating Rules - Compliance"]
+    TRANSCAER -->|"Hazmat info"| NetControl
+    NetControl -->|"operating rules"| GCOR
+  end
+
+  subgraph EXECUTION["🚚 Execution Control"]
+    direction TB
+    I-ETMS["I-ETMS\nPTC Initialization - Track Authority"]
+    HarrimanDispatchingCenter["Harriman Dispatching Center\nConsist and Waybill - Movement control"]
+    NetControl -->|"consist and waybill"| HarrimanDispatchingCenter
+    HarrimanDispatchingCenter -->|"track authority"| I-ETMS
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    Umler["Umler\nEquipment Record - Compliance"]
+    EHMS["EHMS\nHealth Monitoring - Maintenance"]
+    Wabtrax["Wabtrax\nDefect Detection - Reporting"]
+    I-ETMS -->|"equipment status"| Umler
+    Umler -->|"maintenance needs"| EHMS
+    EHMS -->|"defect reports"| Wabtrax
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2"]
+    CHARM["CHARM\nCar Hire Accounting Rate Master"]
+    ISS["Interline Settlement System\nSettlement Data - Financials"]
+    Wabtrax -->|"defect data"| TRAINII
+    TRAINII -->|"car hire info"| CHARM
+    CHARM -->|"settlement data"| ISS
+  end
+
+  subgraph TERMINAL["🚉 Terminal and Yard Execution"]
+    direction TB
+    AskRail["AskRail\nCustomer Portal - Shipment Tracking"]
+    PSTechnology["PS Technology\nCrew Systems - Operations"]
+    HarrimanDispatchingCenter -->|"shipment info"| AskRail
+    AskRail -->|"crew schedules"| PSTechnology
+  end
+
+  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8791a,color:#fff,stroke:#c8791a
+  classDef analytics fill:#f5e6ca,stroke:#d3b088,color:#8b4513
+
+  class TRANSCAER,SERTC ext
+  class NetControl,GCOR plan
+  class I-ETMS,HarrimanDispatchingCenter exec
+  class Umler,EHMS,Wabtrax data
+  class TRAINII,CHARM,ISS analytics
+  class AskRail,PSTechnology terminal
