@@ -1,0 +1,52 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph 🌐External and Interline
+    direction LR
+    ISS["Interline Settlement System\nInterchange event - Waybill - Freight charges"]
+    CHDX["Car Hire Data Exchange\nCar hire event - Umler record - Charges"]
+    SSDX["Switching Settlement Data Exchange\nSwitching event - Waybill - Charges"]
+  end
+
+  subgraph 📋Planning
+    direction TB
+    NetC["NetControl\nTrain sheet - Authority - Movement planning"]
+    PST["PS Technology\nCrew call - Extra board - CBA rule admin"]
+    HASTUS["HASTUS\nPredictable scheduling - Rest program - Attendance"]
+    CCM["CloudMoyo Crew Management\nDeadhead - Limbo time - Tie-up"]
+  end
+
+  subgraph 🖥Execution Control
+    direction TB
+    IETMS["I-ETMS\nPTC initialization - Track authority - Movement control"]
+    EHMS["EHMS\nEquipment health - Defect detection - Maintenance"]
+    Umler["Umler\nEquipment record - Car hire event - Interchange"]
+  end
+
+  subgraph 📊Data and Analytics
+    direction TB
+    CrewPro["CrewPro\nCertification - Territory qualification - Size compliance"]
+    TrackHOS["trackHOS-class HOS monitoring tools\nHours of service - Compliance - Records"]
+    TRAINII["TRAIN II\nInterchange partner railroad - EDI - Data exchange"]
+  end
+
+  ISS -->|"interchange event"| NetC
+  CHDX -->|"car hire event"| Umler
+  SSDX -->|"switching event"| NetC
+  NetC -->|"train sheet"| PST
+  HASTUS -->|"predictable schedule"| CCM
+  CCM -->|"deadhead time"| PST
+  IETMS -->|"track authority"| EHMS
+  EHMS -->|"defect detector alarm"| Umler
+  Umler -->|"equipment record"| CrewPro
+  TrackHOS -->|"hours of service"| CrewPro
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8791a,color:#fff,stroke:#c8791a
+
+  class ISS CHDX SSDX ext
+  class NetC PST HASTUS CCM plan
+  class IETMS EHMS Umler exec
+  class CrewPro TrackHOS TRAINII data

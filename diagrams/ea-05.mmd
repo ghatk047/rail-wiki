@@ -1,0 +1,66 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    ISS["Interline Settlement System\nISS / SSDX / CHDX - Interchange event"]
+    SHIPPER["Shipper EDI\nFreight manifest - Waybill"]
+    RAILROAD["Interchange partner railroad\nConsist and waybill"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NC["NetControl\nTrain sheet - Authority - Movement planning"]
+    UMLER["Umler\nEquipment record - Bad order card"]
+    ISS -->|"interchange event"| NC
+    SHIPPER -->|"waybill"| NC
+    NC -->|"consist and waybill"| RAILROAD
+  end
+
+  subgraph EXEC["🚚 Execution Control"]
+    direction TB
+    IETMS["I-ETMS\nPTC initialisation - Track authority"]
+    WABTEC["Wabtec Modular Control Architecture\nAC4400 modernization program"]
+    NEXSYS["NEXSYS III-i\nMicroprocessor locomotive control system"]
+    NC -->|"train sheet"| IETMS
+    IETMS -->|"track authority"| WABTEC
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction LR
+    EHMS["EHMS\nEquipment health - Condition-based maintenance"]
+    DETECTOR["Wayside defect detector network\nHot bearing / wheel impact / acoustic"]
+    NC -->|"equipment record"| UMLER
+    UMLER -->|"bad order card"| EHMS
+    DETECTOR -->|"defect alarm"| EHMS
+  end
+
+  subgraph MECH["🔧 Mechanical and Engineering"]
+    direction TB
+    DOWNING["Downing B. Jenks Shop\nLocomotive heavy overhaul - Repair"]
+    NORTHPLATE["North Platte, NE locomotive shop\nRunning repair - Servicing"]
+    PROVISO["Proviso Locomotive Shop\nLocomotive heavy overhaul - Repair"]
+    WESTCOLTON["West Colton Yard and Shops\nRailcar repair - Billing"]
+  end
+
+  subgraph COMM["-commercial and Billing"]
+    direction LR
+    CHARM["CHARM\nCar hire accounting rate master"]
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2"]
+    NC -->|"car hire event"| CHARM
+    CHARM -->|"billing data"| TRAINII
+  end
+
+  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#d1c4e9,stroke:#512da8,color:#311b92
+  classDef data fill:#c8e6c9,stroke:#4caf50,color:#1b5e20
+  classDef mech fill:#ffe0b2,stroke:#f57f17,color:#d84315
+  classDef comm fill:#ffccbc,stroke:#e64a19,color:#b71c1c
+
+  class ISS,SHIPPER,RAILROAD ext
+  class NC,UMLER plan
+  class IETMS,WABTEC,NEXSYS exec
+  class EHMS,DETECTOR data
+  class DOWNING,NORTHPLATE,PROVISO,WESTCOLTON mech
+  class CHARM,TRAINII comm
