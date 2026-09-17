@@ -438,14 +438,22 @@ def main():
             }
             done.append(ea_id)
             log(f"  wrote {EA_DIR_SLUG}/{ea_id}/index.html")
+            # Persist and publish after EVERY diagram, like the process generator.
+            # One EA diagram takes minutes; a 14-diagram batch that only saved at
+            # the end would lose all finished work to a single crash or hang, and
+            # would show nothing on Pages for hours.
+            EA_TRACKER.write_text(json.dumps(tracker, indent=2), encoding="utf-8")
+            write(f"{EA_DIR_SLUG}/index.html", build_ea_index(tracker))
+            ok = commit_and_push(f"Generate {ea_id.upper()} under {TEMPLATE_VERSION}",
+                                 no_push=args.no_push)
+            log(f"  progress: {len(done)} done, {len(failed)} failed, "
+                f"{len(targets) - len(done) - len(failed)} to go")
     except KeyboardInterrupt:
         log("interrupted — publishing what is done", "WARN")
 
     EA_TRACKER.write_text(json.dumps(tracker, indent=2), encoding="utf-8")
     write(f"{EA_DIR_SLUG}/index.html", build_ea_index(tracker))
-    ok = commit_and_push(
-        f"Generate {', '.join(x.upper() for x in done) or 'EA index'} under {TEMPLATE_VERSION}",
-        no_push=args.no_push)
+    ok = commit_and_push("Update EA index", no_push=args.no_push)
 
     if done and ok and not args.no_verify and not args.no_push:
         url = f"{PAGES_BASE}/{EA_DIR_SLUG}/{done[-1]}/index.html"
