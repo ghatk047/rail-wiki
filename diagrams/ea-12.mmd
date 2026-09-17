@@ -1,0 +1,65 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    ISS["Interline Settlement System\nSettlement - Data exchange"]
+    CHDX["Car Hire Data Exchange\nHire accounting - Rate master"]
+    ISS -->|"settlement data"| CHDX
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NC["NetControl\nTrain sheet - Authority - Movement planning"]
+    PST["PS Technology PST\nCrew management - Scheduling"]
+    NC -->|"consist and waybill"| PST
+    PST -->|"crew schedule"| NC
+  end
+
+  subgraph EXEC["🖥 Execution Control"]
+    direction TB
+    IETMS["I-ETMS\nPositive train control - Track authority"]
+    EHMS["EHMS\nEquipment health - Maintenance tracking"]
+    IETMS -->|"track authority"| EHMS
+    EHMS -->|"equipment status"| IETMS
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction LR
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2"]
+    COMMIT["COMMIT Situational Awareness Testing program\nAnalytics - Monitoring"]
+    TRAINII -->|"train data"| COMMIT
+    COMMIT -->|"analytic insights"| TRAINII
+  end
+
+  subgraph SEC["🔒 Cybersecurity and Rail Security Directives"]
+    direction TB
+    CYBERSECURITY["Cybersecurity — 'secure-by-design' approach\nSecurity protocols - Incident response"]
+    CYBERSECURITY -->|"security policies"| NC
+    NC -->|"security alerts"| CYBERSECURITY
+  end
+
+  subgraph FIELD["📍 Field and Mobile Technology"]
+    direction TB
+    MVPORTALS["Machine Vision portals\nDefect detection - Car inspection"]
+    PST -->|"inspection data"| MVPORTALS
+    MVPORTALS -->|"defect reports"| PST
+  end
+
+  ISS -->|"interline data"| NC
+  CHDX -->|"hire event"| EHMS
+  MVPORTALS -->|"field data"| TRAINII
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8e6c9,stroke:#388e3c,color:#004D40
+  classDef sec fill:#ffcdd2,stroke:#d32f2f,color:#5d4037
+  classDef field fill:#ffe0b2,stroke:#f57f17,color:#8d6e63
+
+  class ISS,CHDX ext
+  class NC,PST plan
+  class IETMS,EHMS exec
+  class TRAINII,COMMIT data
+  class CYBERSECURITY sec
+  class MVPORTALS field
