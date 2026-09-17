@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+
+  subgraph EXT["🌐 External and Interline"]
+    direction LR
+    ISS["Interline Settlement System\nISS - SSDX - CHDX"]
+    Umler["Universal Machine Language Equipment Register\nUmler equipment record - Interchange event"]
+    GCOR["General Code of Operating Rules\nGCOR key train protocol"]
+  end
+
+  subgraph PLAN["📋 Planning"]
+    direction TB
+    NetControl["NetControl\nTrain sheet - Authority - Movement planning"]
+    ARC["Average Revenue per Car\nRevenue Accounting and Recognition - Freight Billing"]
+    FuelSurcharge["Fuel surcharge program\nCost Accounting and Regulatory Costing"]
+  end
+
+  subgraph EXEC["🖥 Execution Control"]
+    direction TB
+    HarrimanDispatch["Harriman Dispatching Center\nTrain dispatch - Track authority"]
+    IETMS["Interoperable Electronic Train Management System\nPTC initialisation - Movement control"]
+    PS_Tech["PS Technology\nCrew call - Hours of service"]
+  end
+
+  subgraph DATA["📊 Data and Analytics"]
+    direction TB
+    EHMS["Equipment Health Management System\nEquipment health monitoring - Maintenance scheduling"]
+    TRAIN_II["Tele Rail Automated Information Network Phase 2\nTrain data analytics - Performance metrics"]
+    CHARM["Car Hire Accounting Rate Master\nCar hire event - Revenue recognition"]
+  end
+
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    Wabtrax["Wabtrax\nTrack geometry data - Maintenance planning"]
+    MachineVision["Machine Vision portals\nDefect detector alarm - Asset inspection"]
+  end
+
+  ISS -->|"interchange event"| Umler
+  GCOR -->|"key train protocol"| NetControl
+  NetControl -->|"train sheet"| HarrimanDispatch
+  ARC -->|"revenue recognition"| CHARM
+  FuelSurcharge -->|"cost accounting"| EHMS
+  HarrimanDispatch -->|"track authority"| IETMS
+  PS_Tech -->|"crew call"| IETMS
+  EHMS -->|"equipment health"| TRAIN_II
+  TRAIN_II -->|"performance metrics"| ANALYTICS
+  CHARM -->|"car hire event"| Wabtrax
+  MachineVision -->|"defect detector alarm"| DATA
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#f3e5f5,stroke:#9c27b0,color:#6a0dad
+  classDef analytics fill:#e8eaf6,stroke:#3f51b5,color:#1a237e
+
+  class ISS,Umler,GCOR ext
+  class NetControl,ARC,FuelSurcharge plan
+  class HarrimanDispatch,IETMS,PS_Tech exec
+  class EHMS,TRAIN_II,CHARM data
+  class Wabtrax,MachineVision analytics
