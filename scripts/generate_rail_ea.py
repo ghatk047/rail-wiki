@@ -34,6 +34,7 @@ from generate_rail_wiki import (  # noqa: E402
     page_shell, esc, sys_tags, prefix, write, commit_and_push, verify_live,
     log, PRIMARY_MODEL, FALLBACK_MODEL,
     registry_systems_for, in_registry, SYS_NAMES,
+    KEPT_EXISTING, incumbent_quality, challenger_wins,
 )
 
 EA_TRACKER = DATA_DIR / "ea_diagrams.json"
@@ -249,11 +250,17 @@ def ea_registry_audit(ea_id, mmd, data):
     return findings
 
 
-def render_ea(ea_id, title, scope, l1_code, data):
-    """Score up to 3 drafts, keep the best, render SVG for display and PNG for download."""
+def render_ea(ea_id, title, scope, l1_code, data, accept_worse=False):
+    """Score up to 3 drafts, keep the best, render SVG for display and PNG for download.
+
+    On a re-run the winner must beat what is already published, unless
+    accept_worse is set. Returns KEPT_EXISTING when the incumbent survives.
+    """
     mmd_path = DIAGRAM_DIR / f"{ea_id}.mmd"
     svg_path = IMG_DIR / f"{ea_id}.svg"
     png_path = IMG_DIR / f"{ea_id}.png"
+    # Read before anything renders: render_mermaid writes mmd_path first.
+    incumbent_text, incumbent = incumbent_quality(mmd_path, svg_path, ea_richness)
 
     # Every draft is kept with its score, not just the current winner. A render
     # failure used to overwrite the scored best with an unscored retry, which is
@@ -272,6 +279,14 @@ def render_ea(ea_id, title, scope, l1_code, data):
         return None, None, []
     pool.sort(key=lambda x: x[0], reverse=True)
     best, best_score = pool[0][1], pool[0][0]
+
+    challenger = (best_score, ea_richness(best)[1].get("nodes", 0))
+    if not accept_worse and not challenger_wins(challenger, incumbent):
+        log(f"  {ea_id}: keeping the published diagram — best new draft scored "
+            f"{challenger[0]}/4 with {challenger[1]} nodes, published is "
+            f"{incumbent[0]}/4 with {incumbent[1]} nodes. "
+            f"Re-run with --accept-worse to overwrite anyway.")
+        return KEPT_EXISTING, None, []
     if best_score < 2:
         log(f"  {ea_id}: diagram is thin (score {best_score}/4) — publishing anyway, "
             f"re-run with --id {ea_id} --force", "WARN")
@@ -296,6 +311,10 @@ def render_ea(ea_id, title, scope, l1_code, data):
             break
         pool.sort(key=lambda x: x[0], reverse=True)
     if not svg_ok:
+        # render_mermaid overwrote mmd_path with the last failing candidate.
+        if incumbent_text is not None:
+            mmd_path.write_text(incumbent_text, encoding="utf-8")
+            log(f"  {ea_id}: restored the published diagram source", "WARN")
         return None, None, audit
 
     png_out = None
@@ -393,6 +412,9 @@ def main():
     ap.add_argument("--all", action="store_true", help="every incomplete diagram")
     ap.add_argument("--force", action="store_true",
                     help="regenerate even if the tracker says Complete")
+    ap.add_argument("--accept-worse", action="store_true",
+                    help="on a re-run, publish the new diagram even if it scores worse "
+                         "than the one already published (default: keep the better one)")
     ap.add_argument("--index-only", action="store_true",
                     help="rebuild the EA index page only, no model calls")
     ap.add_argument("--no-verify", action="store_true")
@@ -426,7 +448,7 @@ def main():
         log("nothing to do — use --force to rebuild a completed diagram")
         return
 
-    done, failed = [], []
+    done, failed, kept = [], [], []
     try:
         for ea_id, title, scope in targets:
             l1_code = EA_TO_L1[ea_id]
@@ -435,7 +457,12 @@ def main():
             if not data:
                 failed.append(ea_id)
                 continue
-            svg, png, audit = render_ea(ea_id, title, scope, l1_code, data)
+            svg, png, audit = render_ea(ea_id, title, scope, l1_code, data,
+                                        accept_worse=args.accept_worse)
+            if svg is KEPT_EXISTING:
+                kept.append(ea_id)
+                log(f"  {ea_id} left as published")
+                continue
             if not svg:
                 log(f"{ea_id}: diagram failed after 3 attempts — skipped", "ERROR")
                 failed.append(ea_id)
@@ -471,8 +498,10 @@ def main():
         url = f"{PAGES_BASE}/{EA_DIR_SLUG}/{done[-1]}/index.html"
         log("verified live: " + url if verify_live(url) else f"could not verify {url}")
 
-    log(f"EA run complete — {len(done)} published, {len(failed)} failed"
-        + (f" ({', '.join(failed)})" if failed else ""))
+    log(f"EA run complete — {len(done)} published, {len(kept)} left as published, "
+        f"{len(failed)} failed"
+        + (f" (failed: {', '.join(failed)})" if failed else "")
+        + (f" (kept: {', '.join(kept)})" if kept else ""))
 
 
 if __name__ == "__main__":

@@ -922,10 +922,53 @@ def finalize_svg(path):
     return ok
 
 
-def build_diagram(proc, data):
-    """Generate, score, sanitise and render. 3 drafts, best wins."""
+# Sentinel returned by a diagram builder when the challenger lost to what is
+# already published and the existing diagram was deliberately left in place.
+KEPT_EXISTING = "__kept_existing__"
+
+
+def incumbent_quality(mmd_path, svg_path, scorer):
+    """Score the currently published diagram so a re-run can be compared to it.
+
+    Returns (source_text, (score, nodes)) or (None, None) when nothing is
+    published yet. Both files must exist: the .mmd alone can be left behind by a
+    run whose render failed, and that is not a published diagram.
+
+    This must be called BEFORE any render, because render_mermaid writes the
+    candidate to mmd_path as its first act and would destroy the incumbent.
+    """
+    if not (mmd_path.exists() and svg_path.exists()):
+        return None, None
+    try:
+        text = mmd_path.read_text(encoding="utf-8")
+    except OSError:
+        return None, None
+    if not text.strip():
+        return None, None
+    score, metrics = scorer(text)
+    return text, (score, metrics.get("nodes", 0))
+
+
+def challenger_wins(challenger, incumbent):
+    """Strictly better on score, then on node count. Ties keep the incumbent.
+
+    A re-run is three fresh drafts with no memory of what is already published,
+    so without this a --force re-roll is as likely to make a diagram worse as
+    better. Ties go to the incumbent because republishing an equal diagram costs
+    a commit and a Pages build for nothing.
+    """
+    return incumbent is None or challenger > incumbent
+
+
+def build_diagram(proc, data, accept_worse=False):
+    """Generate, score, sanitise and render. 3 drafts, best wins.
+
+    On a re-run the winner must beat what is already published, unless
+    accept_worse is set. Returns KEPT_EXISTING when the incumbent survives.
+    """
     mmd_path = DIAGRAM_DIR / f"{proc['slug']}.mmd"
     svg_path = IMG_DIR / f"{proc['slug']}.svg"
+    incumbent_text, incumbent = incumbent_quality(mmd_path, svg_path, diagram_richness)
     # See generate_rail_ea.render_ea: keep every draft with its score so a render
     # failure cannot silently downgrade the published diagram to an unscored retry.
     pool = []
@@ -942,6 +985,14 @@ def build_diagram(proc, data):
         return None
     pool.sort(key=lambda x: x[0], reverse=True)
     best, best_score = pool[0][1], pool[0][0]
+
+    challenger = (best_score, diagram_richness(best)[1].get("nodes", 0))
+    if not accept_worse and not challenger_wins(challenger, incumbent):
+        log(f"  {proc['pid']}: keeping the published diagram — "
+            f"best new draft scored {challenger[0]}/6 with {challenger[1]} nodes, "
+            f"published is {incumbent[0]}/6 with {incumbent[1]} nodes. "
+            f"Re-run with --accept-worse to overwrite anyway.")
+        return KEPT_EXISTING
     if best_score < 4:
         log(f"  {proc['pid']}: diagram is thin (score {best_score}/6) — publishing anyway, "
             f"re-run with --pid {proc['pid']} --force to try again", "WARN")
@@ -962,6 +1013,12 @@ def build_diagram(proc, data):
         if not pool:
             break
         pool.sort(key=lambda x: x[0], reverse=True)
+    # Every candidate failed to parse. render_mermaid has overwritten mmd_path
+    # with the last of them, so put the published source back rather than
+    # leaving a broken file next to a working SVG.
+    if incumbent_text is not None:
+        mmd_path.write_text(incumbent_text, encoding="utf-8")
+        log(f"  {proc['pid']}: restored the published diagram source", "WARN")
     return None
 
 
@@ -1669,7 +1726,7 @@ def push_shell(tr, no_push=False):
     commit_and_push("Rebuild site shell to the reference standard", no_push=no_push)
 
 
-def process_one(proc, tr):
+def process_one(proc, tr, accept_worse=False):
     log(f"── {proc['pid']} — {proc['l1_name']} / {proc['l2_name']}")
     data = generate_process_content(proc)
     if not data:
@@ -1679,7 +1736,13 @@ def process_one(proc, tr):
         f"{len(data.get('systems', []))} systems, {len(data.get('kpis', []))} KPIs")
     registry_audit(proc["pid"], data)
 
-    svg = build_diagram(proc, data)
+    svg = build_diagram(proc, data, accept_worse=accept_worse)
+    if svg is KEPT_EXISTING:
+        # The published diagram is better than anything this run produced. The
+        # page is left exactly as it is: rewriting it with new prose around an
+        # unchanged diagram would churn a commit for no gain.
+        log(f"{proc['pid']}: left as published")
+        return KEPT_EXISTING
     if not svg:
         log(f"{proc['pid']}: diagram failed after 3 attempts — skipped", "ERROR")
         return None
@@ -1718,6 +1781,9 @@ def main():
     ap.add_argument("--start", help="resume from this PID")
     ap.add_argument("--force", action="store_true",
                     help="regenerate even if the tracker says Complete")
+    ap.add_argument("--accept-worse", action="store_true",
+                    help="on a re-run, publish the new diagram even if it scores worse "
+                         "than the one already published (default: keep the better one)")
     ap.add_argument("--bootstrap", action="store_true",
                     help="push assets, home and every index only, then exit")
     ap.add_argument("--rebuild-nav", action="store_true",
@@ -1749,7 +1815,7 @@ def main():
         return
     log(f"{len(targets)} process(es) queued | force={args.force}")
 
-    all_done, pending, ok = [], [], True
+    all_done, pending, kept, ok = [], [], [], True
 
     def flush():
         """Record, rebuild nav and push whatever is pending. Safe to call empty."""
@@ -1786,8 +1852,10 @@ def main():
             if is_complete(proc["pid"], tr) and not args.force:
                 log(f"skip {proc['pid']} — already complete (use --force to rebuild)")
                 continue
-            data = process_one(proc, tr)
-            if data:
+            data = process_one(proc, tr, accept_worse=args.accept_worse)
+            if data is KEPT_EXISTING:
+                kept.append(proc["pid"])
+            elif data:
                 pending.append((proc, data))
             if len(pending) >= max(1, args.push_every):
                 flush()
@@ -1796,8 +1864,12 @@ def main():
         log("interrupted — publishing what is done", "WARN")
     flush()
 
+    if kept:
+        log(f"{len(kept)} process(es) left as published because this run scored no "
+            f"better: {', '.join(kept)}")
     if not all_done:
-        log("no process produced usable output", "ERROR")
+        log("nothing new published" if kept else "no process produced usable output",
+            "INFO" if kept else "ERROR")
         return
 
     if ok and not args.no_verify and not args.no_push:
