@@ -1,24 +1,23 @@
 %%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
 flowchart TB
 
-  subgraph EXT["🌐 External and Interline"]
+  subgraph EXT["🌐 External Feeds"]
     direction LR
-    ISS["Interline Settlement System\nSwitching settlement - Car hire data exchange"]
-    CHDX["Car Hire Data Exchange\nCar hire event - Interchange partner railroad"]
-    GCOR["General Code of Operating Rules\nOperating rules administration - Efficiency testing"]
+    STB["Surface Transportation Board\nRegulatory Filings - Annual Reporting"]
+    INTERLINE["Interchange Partner Railroad\nWaybill - Consist"]
   end
 
-  subgraph PLAN["📋 Planning"]
+  subgraph PLANNING["📋 Planning and Service Design"]
     direction TB
+    GCOR["General Code of Operating Rules\nOperating Rules Administration - Efficiency Testing"]
     NC["NetControl\nTrain sheet - Authority - Movement planning"]
-    Umler["Universal Machine Language Equipment Register\nEquipment record - Interchange event"]
-    NC -->|"train sheet"| GCOR
-    Umler -->|"equipment record"| NC
+    GCOR -->|"operating rules"| NC
+    INTERLINE -->|"waybill - consist"| NC
   end
 
-  subgraph EXEC["🚚 Execution Control"]
+  subgraph EXECUTION["🚚 Execution Control"]
     direction TB
-    HDC["Harriman Dispatching Center\nDispatching - Movement control - Track authority"]
+    HDC["Harriman Dispatching Center\nDispatch and Movement Control - Track authority"]
     IETMS["Interoperable Electronic Train Management System\nPTC initialization - Bad order card"]
     HDC -->|"track authority"| IETMS
     IETMS -->|"bad order card"| HDC
@@ -26,45 +25,45 @@ flowchart TB
 
   subgraph DATA["📊 Data and Analytics"]
     direction TB
+    UMLER["Universal Machine Language Equipment Register\nEquipment record - Interchange event"]
     EHMS["Equipment Health Management System\nHealth monitoring - Maintenance scheduling"]
-    C3RS["Confidential Close Call Reporting System\nIncident reporting - Root cause analysis"]
-    EHMS -->|"health data"| C3RS
-    C3RS -->|"root cause"| NC
+    TRAINII["Tele Rail Automated Information Network Phase 2\nData exchange - Reporting"]
+    UMLER -->|"equipment record"| EHMS
+    EHMS -->|"maintenance schedule"| TRAINII
   end
 
   subgraph ANALYTICS["📈 Analytics and Reporting"]
     direction TB
-    TRAINII["Tele Rail Automated Information Network Phase 2\nData aggregation - Reporting"]
-    Wabtrax["Wabtrax\nDefect detector alarm - Machine vision portal"]
-    TRAINII -->|"aggregated data"| REPORTING
-    Wabtrax -->|"defect alarm"| REPORTING
+    C3RS["Confidential Close Call Reporting System\nClose call reporting - Root cause analysis"]
+    WABTRAX["Wabtrax\nDefect detector alarm - Incident reporting"]
+    C3RS -->|"close call data"| WABTRAX
+    WABTRAX -->|"incident report"| C3RS
   end
 
-  subgraph REPORTING["📝 Regulatory Filings and Annual Reporting"]
+  subgraph SECURITY["🔒 Security and Compliance"]
     direction TB
-    REPORTING["Reporting System\nSTB filings - Annual reports"]
+    PS_TECH["PS Technology\nCrew management - Hours of service"]
+    STB -->|"regulatory updates"| PS_TECH
+    PS_TECH -->|"hours of service"| NC
   end
 
-  ISS -->|"switching settlement"| NC
-  CHDX -->|"car hire event"| Umler
-  GCOR -->|"operating rules"| HDC
-  NC -->|"movement plan"| EXEC
-  Umler -->|"equipment record"| DATA
-  HDC -->|"track authority"| DATA
-  IETMS -->|"bad order card"| ANALYTICS
-  EHMS -->|"health data"| REPORTING
-  C3RS -->|"root cause"| REPORTING
+  EXT -->|"regulatory filings"| PLANNING
+  PLANNING -->|"train sheet - authority"| EXECUTION
+  EXECUTION -->|"track authority - PTC initialization"| DATA
+  DATA -->|"equipment record - maintenance schedule"| ANALYTICS
+  ANALYTICS -->|"close call data - incident report"| SECURITY
+  SECURITY -->|"hours of service"| EXECUTION
 
-  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
   classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
-  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#0b8043
-  classDef data fill:#ffecb3,stroke:#fbc02d,color:#89503d
-  classDef analytics fill:#ffe0b2,stroke:#ffa000,color:#795548
-  classDef reporting fill:#ffcdd2,stroke:#e53935,color:#5d4037
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8e6c9,stroke:#388e3c,color:#0f5132
+  classDef analy fill:#ffecb3,stroke:#fbc02d,color:#894a00
+  classDef sec fill:#ffcdd2,stroke:#e53935,color:#b71c1c
 
-  class ISS,CHDX,GCOR ext
-  class NC,Umler plan
+  class STB,INTERLINE ext
+  class GCOR,NC plan
   class HDC,IETMS exec
-  class EHMS,C3RS data
-  class TRAINII,Wabtrax analytics
-  class REPORTING reporting
+  class UMLER,EHMS,TRAINII data
+  class C3RS,WABTRAX analy
+  class PS_TECH sec
