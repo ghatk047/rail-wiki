@@ -209,6 +209,61 @@ EA_TO_L1 = {f"ea-{c.split('-')[1]}": c for c in L1_META}
 # MERMAID SANITISER  (PORTED FIX 4 + 5 — battle-tested, extend with care)
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _fix_mermaid_structure(mmd):
+    """Repair the three structural faults a 14B model reproducibly emits.
+
+    All three killed real renders in the EA batch, and all three are
+    deterministic text repairs — far cheaper than the model retries they were
+    costing, which burned two extra generations per diagram and still failed.
+
+    A. `subgraph 🌐External and Interline` — no ID, no quotes. Mermaid cannot
+       lex an emoji butted against text, giving "Lexical error ... Unrecognized
+       text". The form example shows `subgraph EXT["🌐 External Feeds"]`, but
+       the model drops the ID and quotes anyway. EA-04 lost all three attempts
+       to this.
+    B. `class ISS CHDX SSDX ext` — space-separated instead of comma-separated,
+       which is the "Expecting 'COMMA' ... got 'SPACE'" parse error that cost
+       EA-09 an attempt.
+    C. A node declared with the same ID as the subgraph enclosing it, which is
+       the "Setting ANALYTICS as parent of ANALYTICS would create a cycle"
+       error seen on EA-04 and EA-12. The subgraph is renamed rather than the
+       node, because edges reference node IDs and renaming a node there would
+       leave dangling references.
+    """
+    lines, out = mmd.split("\n"), []
+    sg_auto = 0
+    for line in lines:
+        m = re.match(r'^(\s*)subgraph\s+(\S.*)$', line)
+        if m:
+            indent, rest = m.group(1), m.group(2).strip()
+            if not re.match(r'^[A-Za-z][A-Za-z0-9_]*\s*[\[\(]', rest):
+                sg_auto += 1
+                title = rest.strip().strip('"').strip("[]").strip('"')
+                line = f'{indent}subgraph SG{sg_auto}["{title}"]'
+            out.append(line)
+            continue
+        c = re.match(r'^(\s*)class\s+(.+?)\s+([A-Za-z][A-Za-z0-9_]*)\s*$', line)
+        if c:
+            ids = [i for i in re.split(r'[,\s]+', c.group(2).strip()) if i]
+            line = f"{c.group(1)}class {','.join(ids)} {c.group(3)}"
+        out.append(line)
+    mmd = "\n".join(out)
+
+    # C — rename any subgraph whose ID is also used as a node ID.
+    sg_ids = re.findall(r'^\s*subgraph\s+([A-Za-z][A-Za-z0-9_]*)\s*[\[\(]',
+                        mmd, flags=re.MULTILINE)
+    node_ids = set()
+    for ln in mmd.split("\n"):
+        if re.match(r'^\s*subgraph\b', ln):
+            continue
+        node_ids.update(re.findall(r'\b([A-Za-z][A-Za-z0-9_]*)\s*[\[\({]', ln))
+    for sg in sg_ids:
+        if sg in node_ids:
+            mmd = re.sub(r'(^\s*subgraph\s+)' + re.escape(sg) + r'(\s*[\[\(])',
+                         r'\1' + sg + '_GRP' + r'\2', mmd, flags=re.MULTILINE)
+    return mmd
+
+
 def sanitise_mermaid(mmd_str):
     if not mmd_str:
         return None
@@ -253,6 +308,9 @@ def sanitise_mermaid(mmd_str):
     mmd_str = re.sub(r'(\[)([^\]]+)(\])', clean_label, mmd_str)
     mmd_str = re.sub(r'(\{)([^}]+)(\})', clean_label, mmd_str)
     mmd_str = re.sub(r'(\()([^)]+)(\))', clean_label, mmd_str)
+    # 5b. Repair structural faults the model reproducibly emits — see
+    #     _fix_mermaid_structure for what each one is and what it broke.
+    mmd_str = _fix_mermaid_structure(mmd_str)
     # 6. Force one canonical %%{init}%% carrying the system font stack.
     mmd_str = re.sub(r'^\s*%%\{init.*?\}%%\s*\n?', '', mmd_str, flags=re.DOTALL | re.MULTILINE)
     mmd_str = INIT_LINE + "\n" + mmd_str.lstrip()
