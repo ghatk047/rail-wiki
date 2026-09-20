@@ -926,33 +926,42 @@ def build_diagram(proc, data):
     """Generate, score, sanitise and render. 3 drafts, best wins."""
     mmd_path = DIAGRAM_DIR / f"{proc['slug']}.mmd"
     svg_path = IMG_DIR / f"{proc['slug']}.svg"
-    best, best_score = None, -1
-
+    # See generate_rail_ea.render_ea: keep every draft with its score so a render
+    # failure cannot silently downgrade the published diagram to an unscored retry.
+    pool = []
     for attempt in range(3):
         candidate = generate_process_mermaid(proc, data, attempt=attempt)
         score, metrics = diagram_richness(candidate)
-        if candidate and score > best_score:
-            best, best_score = candidate, score
+        if candidate:
+            pool.append((score, candidate))
         log(f"  diagram draft {attempt+1}: score {score}/6 {metrics}")
         if score >= 5:
             break
 
-    if not best:
+    if not pool:
         return None
+    pool.sort(key=lambda x: x[0], reverse=True)
+    best, best_score = pool[0][1], pool[0][0]
     if best_score < 4:
         log(f"  {proc['pid']}: diagram is thin (score {best_score}/6) — publishing anyway, "
             f"re-run with --pid {proc['pid']} --force to try again", "WARN")
 
     for attempt in range(1, 4):
-        ok, info = render_mermaid(best, mmd_path, svg_path, PID_W, PID_H)
+        cand_score, cand = pool[0]
+        ok, info = render_mermaid(cand, mmd_path, svg_path, PID_W, PID_H)
         if ok:
             finalize_svg(svg_path)
-            log(f"  diagram rendered as SVG ({info}) on render attempt {attempt}")
+            log(f"  diagram rendered as SVG ({info}) from the {cand_score}/6 candidate "
+                f"on render attempt {attempt}")
             return svg_path
         log(f"  mmdc attempt {attempt}/3 failed: {info}", "WARN")
+        pool.pop(0)
         retry = generate_process_mermaid(proc, data, attempt=attempt)
         if retry:
-            best = retry
+            pool.append((diagram_richness(retry)[0], retry))
+        if not pool:
+            break
+        pool.sort(key=lambda x: x[0], reverse=True)
     return None
 
 

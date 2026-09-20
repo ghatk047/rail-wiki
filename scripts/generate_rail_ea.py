@@ -255,17 +255,23 @@ def render_ea(ea_id, title, scope, l1_code, data):
     svg_path = IMG_DIR / f"{ea_id}.svg"
     png_path = IMG_DIR / f"{ea_id}.png"
 
-    best, best_score = None, -1
+    # Every draft is kept with its score, not just the current winner. A render
+    # failure used to overwrite the scored best with an unscored retry, which is
+    # how EA-09 published a 17-node diagram after its draft 3 had scored 4/4 with
+    # 24 nodes. Candidates are now rendered in descending score order.
+    pool = []
     for attempt in range(3):
         cand = generate_ea_mermaid(ea_id, title, scope, l1_code, data, attempt=attempt)
         score, metrics = ea_richness(cand)
-        if cand and score > best_score:
-            best, best_score = cand, score
+        if cand:
+            pool.append((score, cand))
         log(f"  {ea_id} draft {attempt+1}: score {score}/4 {metrics}")
         if score >= 3:
             break
-    if not best:
+    if not pool:
         return None, None, []
+    pool.sort(key=lambda x: x[0], reverse=True)
+    best, best_score = pool[0][1], pool[0][0]
     if best_score < 2:
         log(f"  {ea_id}: diagram is thin (score {best_score}/4) — publishing anyway, "
             f"re-run with --id {ea_id} --force", "WARN")
@@ -274,15 +280,21 @@ def render_ea(ea_id, title, scope, l1_code, data):
 
     svg_ok = False
     for attempt in range(1, 4):
-        svg_ok, info = render_mermaid(best, mmd_path, svg_path, EA_W, EA_H)
+        cand_score, cand = pool[0]
+        svg_ok, info = render_mermaid(cand, mmd_path, svg_path, EA_W, EA_H)
         if svg_ok:
+            best = cand
             finalize_svg(svg_path)
-            log(f"  {ea_id} rendered as SVG ({info})")
+            log(f"  {ea_id} rendered as SVG ({info}) from the {cand_score}/4 candidate")
             break
         log(f"  {ea_id} SVG render attempt {attempt}/3 failed: {info}", "WARN")
+        pool.pop(0)                      # that candidate does not parse
         retry = generate_ea_mermaid(ea_id, title, scope, l1_code, data, attempt=attempt)
         if retry:
-            best = retry
+            pool.append((ea_richness(retry)[0], retry))
+        if not pool:
+            break
+        pool.sort(key=lambda x: x[0], reverse=True)
     if not svg_ok:
         return None, None, audit
 
