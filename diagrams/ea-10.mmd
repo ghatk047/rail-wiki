@@ -1,53 +1,56 @@
 %%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
 flowchart TB
 
-  subgraph EXT["🌐 External and Interline"]
+  subgraph EXTERNAL_AND_INTERLINE["🌐 External and Interline"]
     direction LR
-    LL["Loup Logistics\nFreight Sales - Account Management - Contract Management"]
-    SV["ShipmentVision\nWaybill Intake - Shipment Tracing - Customer Service Center"]
-    UP["UP customer portal up.com secure portal\nDigital Customer Channels - APIs - Freight Claims"]
+    INTERCHANGE_PARTNER["Interchange partner railroad\nCar hire event - Interchange event - Bad order card"]
+    SHIPPER_EDI["Shipper EDI\nWaybill - Consist - Umler equipment record"]
   end
 
-  subgraph PLAN["📋 Planning"]
+  subgraph PLANNING["📅 Planning"]
     direction TB
-    NC["NetControl\nTrain sheet - Authority - Movement planning"]
-    GCOR["GCOR\nPricing, Tariffs and Rate Quotation - Bid, RFP and Shuttle Train Capacity Auctions"]
-    LL -->|"freight sales data"| NC
-    NC -->|"train sheet"| GCOR
+    NETCONTROL["NetControl\nTrain sheet - Authority - Movement planning"]
+    TRAINII["TRAIN II\nTele Rail Automated Information Network Phase 2 - Tariffs - Rate Quotation"]
+    LOUP_LOGISTICS["Loup Logistics\nBid, RFP and Shuttle Train Capacity Auctions - Demurrage and Accessorial Billing"]
+    NETCONTROL -->|"train sheet"| TRAINII
   end
 
-  subgraph EXEC["🚚 Execution Control"]
+  subgraph EXECUTION_CONTROL["📋 Execution Control"]
     direction TB
-    HDC["Harriman Dispatching Center\nDispatching - Terminal and Yard Operations - Road and Yard Crews"]
-    PST["PS Technology PST\nMechanical, Engineering MOW - Intermodal and Interline - Hours of Service"]
-    NC -->|"track authority"| HDC
-    HDC -->|"consist and waybill"| PST
+    HDC["Harriman Dispatching Center HDC\nMovement planning - Track authority - PTC initialization"]
+    IETMS["I-ETMS\nInteroperable Electronic Train Management System - Movement control - PTC monitoring"]
+    NETCONTROL -->|"authority"| HDC
   end
 
-  subgraph DATA["📊 Data and Analytics"]
+  subgraph DATA_AND_ANALYTICS["📊 Data and Analytics"]
     direction TB
-    UMLER["Umler\nEquipment Health Management System - Car Hire Accounting Rate Master - Interchange Event"]
-    EHMS["EHMS\nDefect Detector Alarm - Machine Vision Portals - RailAI"]
-    PST -->|"equipment record"| UMLER
-    UMLER -->|"bad order card"| EHMS
+    SHIPMENTSIGHT["ShipmentVision\nWaybill intake - Shipment tracing - Digital customer channels"]
+    UP_PORTAL["UP customer portal up.com secure portal\nFreight claims - Loss and damage - Service disruption communication"]
+    UMLER["Umler\nCar hire accounting - Equipment record management - Interchange event tracking"]
+    SHIPMENTSIGHT -->|"waybill"| UMLER
   end
 
-  subgraph ANALYTICS["📈 Analytics and Reporting"]
+  subgraph MECHANICAL_AND_ENGINEERING["🔧 Mechanical and Engineering"]
     direction TB
-    ISS["Interline Settlement System ISS / Switching Settlement Data Exchange SSDX / Car Hire Data Exchange CHDX\nDemurrage and Accessorial Billing - Industrial Development and Site Selection - Service Disruption Communication and Recovery"]
-    WABTRAX["Wabtrax\nFreight Claims, Loss and Damage - TRANSCAER - SERTC"]
-    EHMS -->|"defect data"| ISS
-    ISS -->|"billing data"| WABTRAX
+    EHMS["EHMS Equipment Health Management System\nEquipment health monitoring - Maintenance scheduling - Defect detection"]
+    WABTRAX["Wabtrax\nTrack geometry data collection - Track condition assessment - Defect detector alarm"]
   end
 
-  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  INTERCHANGE_PARTNER -->|"bad order card"| HDC
+  SHIPPER_EDI -->|"waybill"| NETCONTROL
+  TRAINII -->|"tariffs"| LOUP_LOGISTICS
+  HDC -->|"PTC initialization"| IETMS
+  IETMS -->|"movement control"| UMLER
+  EHMS -->|"defect detector alarm"| WABTRAX
+
+  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
   classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
-  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#0b5345
-  classDef data fill:#ffe0b2,stroke:#f57f17,color:#8a2be2
-  classDef analytics fill:#ffcdd2,stroke:#d32f2f,color:#ffffff
+  classDef exec fill:#20242b,color:#fff,stroke:#20242b
+  classDef data fill:#c8791a,color:#fff,stroke:#c8791a
+  classDef mech fill:#e6f5e7,stroke:#3d7b1e,color:#3d7b1e
 
-  class LL,SV,UP ext
-  class NC,GCOR plan
-  class HDC,PST exec
-  class UMLER,EHMS data
-  class ISS,WABTRAX analytics
+  class INTERCHANGE_PARTNER,SHIPPER_EDI ext
+  class NETCONTROL,TRAINII,LOUP_LOGISTICS plan
+  class HDC,IETMS exec
+  class SHIPMENTSIGHT,UP_PORTAL,UMLER data
+  class EHMS,WABTRAX mech
