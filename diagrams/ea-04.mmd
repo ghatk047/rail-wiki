@@ -1,52 +1,70 @@
 %%{init: {'theme':'base','themeVariables':{'fontSize':'13px','fontFamily':'Helvetica Neue, Helvetica, Arial, sans-serif'}}}%%
 flowchart TB
 
-  subgraph 🌐External and Interline
+  subgraph EXT["🌐 External Feeds"]
     direction LR
-    ISS["Interline Settlement System\nInterchange event - Waybill - Freight charges"]
-    CHDX["Car Hire Data Exchange\nCar hire event - Umler record - Charges"]
-    SSDX["Switching Settlement Data Exchange\nSwitching event - Waybill - Charges"]
+    ISS["Interline Settlement System\nSettlement data - Interchange events"]
+    CHDX["Car Hire Data Exchange\nCar hire events - Rates"]
+    GCOR["General Code of Operating Rules\nOperating rules - Compliance"]
+    SERTC["TRANSCAER\nHazardous material tracking"]
   end
 
-  subgraph 📋Planning
+  subgraph PLAN["📋 Planning and Service Design"]
     direction TB
-    NetC["NetControl\nTrain sheet - Authority - Movement planning"]
-    PST["PS Technology\nCrew call - Extra board - CBA rule admin"]
-    HASTUS["HASTUS\nPredictable scheduling - Rest program - Attendance"]
-    CCM["CloudMoyo Crew Management\nDeadhead - Limbo time - Tie-up"]
+    NC["NetControl\nTrain sheet - Authority - Movement planning"]
+    PST["PS Technology PST\nCrew calling - Extra board"]
+    Umler["Universal Machine Language Equipment Register\nEquipment records - Interchange rules"]
+    GCOR -->|"operating rules"| NC
   end
 
-  subgraph 🖥Execution Control
+  subgraph EXEC["🚚 Execution Control"]
     direction TB
-    IETMS["I-ETMS\nPTC initialization - Track authority - Movement control"]
-    EHMS["EHMS\nEquipment health - Defect detection - Maintenance"]
-    Umler["Umler\nEquipment record - Car hire event - Interchange"]
+    HDC["Harriman Dispatching Center\nDispatching - Movement control"]
+    CrewPro["CrewPro\nHours of service - Certification"]
+    HASTUS["HASTUS\nMaintenance scheduling - Equipment health"]
+    PST -->|"crew call"| HDC
   end
 
-  subgraph 📊Data and Analytics
+  subgraph DATA["📊 Data and Analytics"]
     direction TB
-    CrewPro["CrewPro\nCertification - Territory qualification - Size compliance"]
-    TrackHOS["trackHOS-class HOS monitoring tools\nHours of service - Compliance - Records"]
-    TRAINII["TRAIN II\nInterchange partner railroad - EDI - Data exchange"]
+    CCM["CloudMoyo Crew Management CCM\nScheduling - Attendance records"]
+    EHMS["Equipment Health Management System\nHealth monitoring - Maintenance alerts"]
+    TRAINII["Tele Rail Automated Information Network Phase 2\nTrain data - Waybill management"]
+    HASTUS -->|"maintenance alerts"| EHMS
   end
 
-  ISS -->|"interchange event"| NetC
-  CHDX -->|"car hire event"| Umler
-  SSDX -->|"switching event"| NetC
-  NetC -->|"train sheet"| PST
-  HASTUS -->|"predictable schedule"| CCM
-  CCM -->|"deadhead time"| PST
-  IETMS -->|"track authority"| EHMS
-  EHMS -->|"defect detector alarm"| Umler
-  Umler -->|"equipment record"| CrewPro
-  TrackHOS -->|"hours of service"| CrewPro
+  subgraph ANALYTICS["📈 Analytics and Reporting"]
+    direction TB
+    RailAI["RailAI\nPredictive analytics - Performance metrics"]
+    Wabtrax["Wabtrax\nTrack geometry monitoring - Defect detection"]
+    IETMS["Interoperable Electronic Train Management System\nPTC initialization - Track authority"]
+    TRAINII -->|"train data"| RailAI
+  end
 
-  classDef ext fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  subgraph TERMINAL["🚉 Terminal and Yard Execution"]
+    direction TB
+    CHARM["Car Hire Accounting Rate Master\nAccounting - Car hire events"]
+    ISS -->|"settlement data"| CHARM
+    GCOR -->|"operating rules"| CHARM
+  end
+
+  EXT -->|"interchange events"| PLAN
+  PLAN -->|"train sheet"| EXEC
+  EXEC -->|"hours of service"| DATA
+  DATA -->|"maintenance alerts"| ANALYTICS
+  ANALYTICS -->|"performance metrics"| TERMINAL
+  TERMINAL -->|"car hire events"| CHDX
+
+  classDef ext  fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
   classDef plan fill:#fff7ed,stroke:#ea580c,color:#7c2d12
-  classDef exec fill:#20242b,color:#fff,stroke:#20242b
-  classDef data fill:#c8791a,color:#fff,stroke:#c8791a
+  classDef exec fill:#c8e6c9,stroke:#388e3c,color:#004d40
+  classDef data fill:#ffecb3,stroke:#fbc02d,color:#556b2f
+  classDef analytics fill:#ffe0b2,stroke:#ffa000,color:#795548
+  classDef terminal fill:#ffcdd2,stroke:#e53935,color:#b71c1c
 
-  class ISS CHDX SSDX ext
-  class NetC PST HASTUS CCM plan
-  class IETMS EHMS Umler exec
-  class CrewPro TrackHOS TRAINII data
+  class ISS,CHDX,GCOR,SERTC ext
+  class NC,PST,Umler plan
+  class HDC,CrewPro,HASTUS exec
+  class CCM,EHMS,TRAINII data
+  class RailAI,Wabtrax,IETMS analytics
+  class CHARM,ISS,GCOR terminal
